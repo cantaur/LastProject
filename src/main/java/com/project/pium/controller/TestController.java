@@ -23,6 +23,7 @@ public class TestController {
         log.info("#list"+list);
         return list;
     }
+    //http://localhost:8000/rest_member/read 호출 성공
 
 
 }
