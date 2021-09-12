@@ -66,3 +66,5 @@ pom.xml
 /.mvn/wrapper/
 mvnw
 mvnw.cmd
+README.md
+.DS_Store
