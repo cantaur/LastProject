@@ -4,7 +4,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.MilestoneMapper">
 
+    <select id="selectByProject" resultType="MilestoneDTO" parameterType="long">
+        select * from milestone where project_seq=#{seq}
+    </select>
+    <select id="selectBy" resultType="MilestoneDTO" parameterType="long">
+        select * from milestone where project_seq=#{seq}
+    </select>
 
 
-
+    <insert id="insert" parameterType="MilestoneDTO">
+        <!--insert into ADDRESS(NAME, ADDR, RDATE) values(#{name}, #{addr}, now())-->
+        <!--마일스톤명, 시작, 작성일, 종료, 설명-->
+        insert into milestone(milestone_title, milestone_content, milestone_startdate, milestone_duedate) values(#{milestone_title},#{milestone_content},#{milestone_startdate},#{milestone_enddate})
+    </insert>
 </mapper>

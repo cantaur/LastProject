@@ -16,6 +16,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public List<MemberDTO> list() {
-        return memberMapper.list();
+        return memberMapper.selectAll();
     }
 }

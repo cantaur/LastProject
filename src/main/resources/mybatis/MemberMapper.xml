@@ -4,10 +4,38 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.MemberMapper">
 
-    <select id="list" resultType="MemberDTO">
+    <select id="selectAll" resultType="MemberDTO">
         select * from member
     </select>
 
+    <select id="selectByMseq" parameterType="String">
+        select member_seq * form member where = #{member_email}
+    </select>
 
+    <select id="selectByMemail" parameterType="long">
+        select member_email * form member where = #{member_seq}
+    </select>
+
+    <select id="selectByMpw" parameterType="String">
+        select member_pw * form member where = #{member_seq}
+    </select>
+
+    <select id="selectByMplatform" parameterType="String">
+        select member_platform * form member where = #{member_seq}
+    </select>
+
+
+
+    <insert id="insertByM" parameterType="memberDTO">
+        insert into member(member_email, member_pw, member_platform) values(#{member_email}, #{member_pw}, null)
+    </insert>
+
+    <delete id="deleteByM" parameterType="long">
+        delete from member where member_seq =#{member_seq}
+    </delete>
+
+    <update id="member_update" parameterType="long">
+        update member set member_pw = #{member_pw} where member_seq = #{member_seq}
+    </update>
 
 </mapper>
