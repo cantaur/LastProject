@@ -8,10 +8,15 @@
         SELECT * FROM project
     </select>
 
-    <insert id="insert" parameterType="ProjectDTO">
-        INSERT INTO project (project_title, project_content, project_status, project_isdelete,  member_seq) VALUES(#{project_title},#{project_content},"0","0",)
+    <select id="selectByMemberSeq" resultType="long" parameterType="String">
+        SELECT member_seq FROM member WHERE member_email = #{member_email};
+    </select>
 
+    <insert id="insert" parameterType="ProjectDTO">
+        INSERT INTO project (project_title, project_content, project_status, project_isdelete, member_seq)
+            VALUES(#{project_title},#{project_content},"0","0",#{member_seq})
     </insert>
+
 
 
 
