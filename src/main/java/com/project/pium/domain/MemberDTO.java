@@ -13,5 +13,4 @@ public class MemberDTO {
     private String member_pw;
     private String member_platform;
 
-
 }
