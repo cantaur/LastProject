@@ -4,18 +4,18 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.ProjectMapper">
 
-<!--    <select id="list" resultType="ProjectDTO">-->
-<!--        SELECT * FROM project-->
-<!--    </select>-->
+    <select id="list" resultType="ProjectDTO">
+        SELECT * FROM project
+    </select>
 
-<!--    <select id="selectByMemberSeq" resultType="long" parameterType="String">-->
-<!--        SELECT member_seq FROM member WHERE member_email = #{member_email};-->
-<!--    </select>-->
+    <select id="selectByMemberSeq" resultType="long" parameterType="String">
+        SELECT member_seq FROM member WHERE member_email = #{member_email};
+    </select>
 
-<!--    <insert id="insert" parameterType="ProjectDTO">-->
-<!--        INSERT INTO project (project_title, project_content, project_status, project_isdelete, member_seq)-->
-<!--            VALUES(#{project_title},#{project_content},"0","0",#{member_seq})-->
-<!--    </insert>-->
+    <insert id="insert" parameterType="ProjectDTO">
+        INSERT INTO project (project_title, project_content, project_status, project_isdelete, member_seq)
+            VALUES(#{project_title},#{project_content},"0","0",#{member_seq})
+    </insert>
 
 
 

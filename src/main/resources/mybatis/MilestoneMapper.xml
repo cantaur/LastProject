@@ -4,17 +4,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.MilestoneMapper">
 
-<!--    <select id="selectByProject" resultType="MilestoneDTO" parameterType="long">-->
-<!--        select * from milestone where project_seq=#{seq}-->
-<!--    </select>-->
-<!--    <select id="selectBy" resultType="MilestoneDTO" parameterType="long">-->
-<!--        select * from milestone where project_seq=#{seq}-->
-<!--    </select>-->
+    <select id="selectByProject" resultType="MilestoneDTO" parameterType="long">
+        select * from milestone where project_seq=#{seq}
+    </select>
+    <select id="selectBy" resultType="MilestoneDTO" parameterType="long">
+        select * from milestone where project_seq=#{seq}
+    </select>
 
 
-<!--    <insert id="insert" parameterType="MilestoneDTO">-->
-<!--        &lt;!&ndash;insert into ADDRESS(NAME, ADDR, RDATE) values(#{name}, #{addr}, now())&ndash;&gt;-->
-<!--        &lt;!&ndash;마일스톤명, 시작, 작성일, 종료, 설명&ndash;&gt;-->
-<!--        insert into milestone(milestone_title, milestone_content, milestone_startdate, milestone_duedate) values(#{milestone_title},#{milestone_content},#{milestone_startdate},#{milestone_enddate})-->
-<!--    </insert>-->
+    <insert id="insert" parameterType="MilestoneDTO">
+        <!--insert into ADDRESS(NAME, ADDR, RDATE) values(#{name}, #{addr}, now())-->
+        <!--마일스톤명, 시작, 작성일, 종료, 설명-->
+        insert into milestone(milestone_title, milestone_content, milestone_startdate, milestone_duedate) values(#{milestone_title},#{milestone_content},#{milestone_startdate},#{milestone_enddate})
+    </insert>
+
+    <insert id="insertTest" parameterType="MilestoneDTO">
+        insert into milestone(milestone_title,milestone_content,milestone_status,milestone_isdelete,projmember_seq,project_seq) values(#{milestone_title},#{milestone_content},#{milestone_status},#{milestone_isdelete},#{projmember_seq},#{project_seq})
+    </insert>
+
+
 </mapper>
