@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 @Log
 @RestController
 @RequestMapping("task")
-@CrossOrigin(origins = "*", maxAge = 3600)
 @AllArgsConstructor
 public class TaskController {
     private TaskService service;
