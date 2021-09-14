@@ -4,9 +4,7 @@ import com.project.pium.domain.MemberDTO;
 import com.project.pium.service.MemberService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,11 +17,44 @@ public class TestController {
 
     @GetMapping("read")
     public List<MemberDTO> read(){
-        List<MemberDTO> list = memberService.list();
+        List<MemberDTO> list = memberService.selectAll();
         log.info("#list"+list);
         return list;
     }
     //http://localhost:8000/rest_member/read 호출 성공
 
+    @GetMapping(value = "read", params = {"email"})
+    public List<MemberDTO> read(@RequestParam String email){
+        List<MemberDTO> memberByEmail = memberService.selectAllByEmail(email);
+        return memberByEmail;
+    }//http://localhost:8000/rest_member/read?email=abcd1234@gmail.com 호출 성공
+
+    @GetMapping("read/{mSeq}")
+    public List<MemberDTO> read(@PathVariable long mSeq){
+        List<MemberDTO> memberBySeq = memberService.selectAllByMseq(mSeq);
+        return memberBySeq;
+    }//http://localhost:8000/rest_member/read/5 호출 성공
+
+
+    @PostMapping("insert")
+    public void insertUser(@RequestBody MemberDTO memberDTO){
+        log.info("member create() : "+memberDTO);
+        memberService.insertUser(memberDTO);
+    }
+    // at Talend API Tester
+    // method : post
+    // http://localhost:8000/rest_member/insert
+    // {"member_email": "kaeun@nate.com", "member_pw": "1234", "member_platform": "Google"}
+    // Response 200 코드 확인 완료
+
+
+    @DeleteMapping("delete/{mSeq}")
+    public void deleteUser(@PathVariable long mSeq){
+        memberService.deleteUser(mSeq);
+    }
+    // at Talend API Tester
+    // method : delete
+    // http://localhost:8000/rest_member/delete/17
+    // Response 200 코드 확인 완료
 
 }

@@ -15,7 +15,30 @@ public class MemberServiceImpl implements MemberService {
     private MemberMapper memberMapper;
 
     @Override
-    public List<MemberDTO> list() {
+    public List<MemberDTO> selectAll() {
         return memberMapper.selectAll();
     }
+
+    @Override
+    public List<MemberDTO> selectAllByEmail(String mEmail) {
+        return memberMapper.selectAllByEmail(mEmail);
+    }
+
+    @Override
+    public List<MemberDTO> selectAllByMseq(long mSEQ) {
+        return memberMapper.selectAllByMseq(mSEQ);
+    }
+
+    @Override
+    public void insertUser(MemberDTO memberDTO) {
+        memberMapper.insertUser(memberDTO);
+    }
+
+    @Override
+    public void deleteUser(long mSEQ) {
+        memberMapper.deleteUser(mSEQ);
+
+    }
+
+
 }

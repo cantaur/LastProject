@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Mapper
 @Repository
+@Mapper
 public interface ProjectMapper {
     List<ProjectDTO> list();
     Long selectByMemberSeq(String member_email);
