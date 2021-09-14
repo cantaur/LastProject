@@ -4,23 +4,40 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.MilestoneMapper">
 
-    <select id="selectByProject" resultType="MilestoneDTO" parameterType="long">
-        select * from milestone where project_seq=#{seq}
-    </select>
-    <select id="selectBy" resultType="MilestoneDTO" parameterType="long">
-        select * from milestone where project_seq=#{seq}
+    <select id="msListBySeq" resultType="MilestoneDTO" parameterType="long">
+        select * from milestone where project_seq=#{project_seq}
     </select>
 
+    <select id="selectByMsSeq" resultType="MilestoneDTO" parameterType="long">
+        select * from milestone where milestone_seq=#{milestone_seq}
+    </select>
 
-    <insert id="insert" parameterType="MilestoneDTO">
+<!-- 마일스톤을 만든 사람 이름을 뽑고 싶을때-->
+    <select id="projMnameByMseq" resultType="String" parameterType="long">
+        SELECT projmember_name FROM project_member WHERE projmember_seq=(SELECT projmember_seq FROM milestone WHERE milestone_seq=#{milestone_seq})
+    </select>
+
+    <insert id="createMile" parameterType="MilestoneDTO">
         <!--insert into ADDRESS(NAME, ADDR, RDATE) values(#{name}, #{addr}, now())-->
         <!--마일스톤명, 시작, 작성일, 종료, 설명-->
-        insert into milestone(milestone_title, milestone_content, milestone_startdate, milestone_duedate) values(#{milestone_title},#{milestone_content},#{milestone_startdate},#{milestone_enddate})
+        insert into milestone(milestone_title, milestone_content, milestone_startdate, milestone_duedate,milestone_enddate,projmember_seq,project_seq) values(#{milestone_title},#{milestone_content},#{milestone_startdate},#{milestone_duedate},#{milestone_enddate},#{projmember_seq},#{project_seq})
     </insert>
 
-    <insert id="insertTest" parameterType="MilestoneDTO">
-        insert into milestone(milestone_title,milestone_content,milestone_status,milestone_isdelete,projmember_seq,project_seq) values(#{milestone_title},#{milestone_content},#{milestone_status},#{milestone_isdelete},#{projmember_seq},#{project_seq})
-    </insert>
+    <delete id="delMile" parameterType="long">
+-- id = method name from MilestoneMapper.java
+        DELETE FROM milestone WHERE milestone_seq = #{milestone_seq}
+    </delete>
 
+
+<!-- UPDATE -->
+<!-- 마감 상태 변경 (=업무 진행상태) -->
+    <update id="upStatus" parameterType="MilestoneDTO">
+        update milestone set milestone_status=#{milestone_status} where milestone_seq=#{milestone_seq}
+    </update>
+
+<!-- 업무상태 (Reopen) -> 진행중  -->
+<!--  제목 변경 -->
+<!-- 내용 변경  -->
+<!-- is delete 상태 변경(=삭제랑 똑같음) -->
 
 </mapper>
