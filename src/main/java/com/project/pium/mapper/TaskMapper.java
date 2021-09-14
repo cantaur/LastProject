@@ -15,6 +15,7 @@ public interface TaskMapper {
     List<TaskDTO> selectByPriority(String priority); //중요도로 조회
     void insert(TaskDTO task);
     void delete(long seq);
-    void updateForStatus(TaskDTO task);
+    void updateForStatus(long seq);
+    void updateForStatusZero(long seq);
     void updateAll(TaskDTO task);
 }

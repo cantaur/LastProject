@@ -2,9 +2,15 @@ package com.project.pium.service;
 
 import com.project.pium.domain.TaskDTO;
 import com.project.pium.mapper.TaskMapper;
+import lombok.AllArgsConstructor;
+import lombok.extern.java.Log;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Log
+@AllArgsConstructor
+@Service
 public class TaskServiceImpl implements TaskService {
     private TaskMapper mapper;
 
@@ -26,9 +32,10 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void deleteS(long seq) {mapper.delete(seq);}
-
     @Override
-    public void updateForStatusS(TaskDTO task) {mapper.updateForStatus(task);}
+    public void updateForStatusS(long seq) {mapper.updateForStatus(seq);}
+    @Override
+    public void updateForStatusZeroS(long seq) {mapper.updateForStatusZero(seq);}
     @Override
     public void updateAllS(TaskDTO task) {mapper.updateAll(task);}
 }

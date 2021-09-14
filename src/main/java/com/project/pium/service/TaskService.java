@@ -11,6 +11,7 @@ public interface TaskService {
     List<TaskDTO> selectByPriorityS(String priority); //중요도로 조회
     void insertS(TaskDTO task);
     void deleteS(long seq);
-    void updateForStatusS(TaskDTO task);
+    void updateForStatusS(long seq);
+    void updateForStatusZeroS(long seq);
     void updateAllS(TaskDTO task);
 }
