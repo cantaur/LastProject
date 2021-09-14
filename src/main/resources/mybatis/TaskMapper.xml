@@ -3,8 +3,40 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.TaskMapper">
+    <!--전체-->
+    <select id="selectAll" resultType="TaskDTO">
+        select * from task
+    </select>
+    <!--마일스톤시퀀스에 따른 필터링-->
+    <select id="selectByMilestone" resultType="TaskDTO" parameterType="long">
+        select * from task where milestone_seq=#{seq}
+    </select>
+    <!--진행중 임무, 종료된 임무 필터링-->
+    <select id="selectByStatus" resultType="TaskDTO" parameterType="String">
+        select * from task where task_status=#{status}
+    </select>
+    <!--중요도에 따른 필터링-->
+    <select id="selectByPriority" resultType="TaskDTO" parameterType="String">
+        select * from task where priority_code=#{priority}
+    </select>
 
+    <!--새 업무 셋팅(파일, 멤버배정 외)-->
+    <insert id="insert" parameterType="TaskDTO">
+        <!--insert into ADDRESS(NAME, ADDR, RDATE) values(#{name}, #{addr}, now())-->
+        insert into task(task_title, task_content, task_status, task_isdelete, task_startdate, task_duedate, milestone_seq) values(#{task_title}, null, "0", "0",#{task_startdate}, #{task_duedate}, #{milestone_seq})
+    </insert>
 
+    <!--업무 삭제-->
+    <delete id="delete" parameterType="long">
+        delete from task where task_seq=#{seq}
+    </delete>
 
-
+    <!--상태 수정-->
+    <update id="updateForStatus" parameterType="TaskDTO">
+        update task set task_status=#{status} where task_seq=#{seq}
+    </update>
+    <!--업무 수정(status와 isdelete는 포함되어있지 않은 상태)-->
+    <update id="updateAll" parameterType="TaskDTO">
+        update task set task_title=#{title}, task_content=#{content}, task_startdate=#{startdate}, task_duedate=#{duedate}, milestone_seq=#{milestone_seq}, priority_code=#{priority}, label_seq=#{label_seq} where task_seq=#{seq}
+    </update>
 </mapper>
