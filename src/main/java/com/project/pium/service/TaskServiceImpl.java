@@ -10,15 +10,12 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskDTO> selectAllS() {return mapper.selectAll();}
-
     @Override
     public List<TaskDTO> selectByMilestoneS(long seq) {return mapper.selectByMilestone(seq);}
-
     @Override
     public List<TaskDTO> selectByStatusS(String status) {
         return mapper.selectByStatus(status);
     }
-
     @Override
     public List<TaskDTO> selectByPriorityS(String priority) {
         return mapper.selectByPriority(priority);
