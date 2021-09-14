@@ -25,11 +25,15 @@ public class JGController {
         List<ProjectDTO> list = projectService.listS();
         return list;
     }
+
+    //http://127.0.0.1:8000/rest_jg/searchProject
+
     @GetMapping("searchMemberSeq")
     public Long selectByMemberSeq(String member_email){
         Long projectDTO = projectService.selectByMemberSeqS(member_email);
         return projectDTO;
     }
+
 
 
 }
