@@ -10,8 +10,10 @@ import java.util.List;
 @Mapper
 public interface MemberMapper {
     List<MemberDTO> selectAll();
-    long selectByMseq(String member_email);
-    String selectByMemail(long member_seq);
-    String selectByMpw(long member_seq);
-    String selectByMplatform(long member_seq);
+    List<MemberDTO> selectAllByEmail(String mEmail);
+    List<MemberDTO> selectAllByMseq(long mSEQ);
+
+    void insertUser(MemberDTO memberDTO);
+    void deleteUser(long mSEQ);
+
 }
