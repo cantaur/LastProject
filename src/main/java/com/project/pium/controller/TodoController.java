@@ -26,17 +26,16 @@ public class TodoController {
         log.info("TodoInsert(): "+todo);
         service.insertNoteS(todo);
     }
-    @PutMapping("updateNote/{seq}")
-    public void updateNote(@PathVariable long seq, @RequestBody TodoDTO todo){
-        log.info("updateNote todo_seq: "+seq);
-        log.info("updateNote:"+todo);
-        service.updateNoteS(seq, todo);
+    @PatchMapping("updateNote/{seq}")
+    public void updateNote(@RequestBody TodoDTO todo){
+        log.info("updateNote: " + todo);
+        service.updateNoteS(todo);
     }
     @PatchMapping("updateStatus/{seq}")
-    public void updateNoteStatus(@PathVariable long seq, @RequestBody TodoDTO todo){
-        log.info("updateStatus todo_seq: "+seq);
+    public void updateNoteStatus(@RequestBody TodoDTO todo){
         log.info("updateStatus: "+todo);
-        service.updateNoteStatusS(seq,todo);
+
+        service.updateNoteStatusS(todo);
     }
     @DeleteMapping("deleteNote/{seq}")
     public void deleteNote(@PathVariable long seq){

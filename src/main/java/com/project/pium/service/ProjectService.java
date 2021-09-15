@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface ProjectService {
     List<ProjectDTO> listS();
+    List<ProjectDTO> projectSelectProceeding();
+    List<ProjectDTO> projectSelectEnd();
     Long selectByMemberSeqS(String member_email);
     void insertS(ProjectDTO projectDTO);
     void updateStatus(ProjectDTO projectDTO);
@@ -13,4 +15,5 @@ public interface ProjectService {
     void updateTitle(ProjectDTO projectDTO);
     void updateContent(ProjectDTO projectDTO);
     void updateProject(ProjectDTO projectDTO);
+    void updateEnddate(ProjectDTO projectDTO);
 }

@@ -14,32 +14,31 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public List<TodoDTO> selectNoteToDoS() {
-        return null;
+        return mapper.selectNoteToDo();
     }
 
     @Override
     public List<TodoDTO> selectNoteProgS() {
-        return null;
+        return mapper.selectNoteProg();
     }
 
     @Override
     public List<TodoDTO> selectNoteDoneS() {
-        return null;
+        return mapper.selectNoteDone();
     }
 
     @Override
     public void insertNoteS(TodoDTO todo) {
-
+        mapper.insertNote(todo);
     }
 
     @Override
-    public void updateNoteS(long seq, TodoDTO todo) {
-        mapper.updateNote(seq,todo);
+    public void updateNoteS(TodoDTO todo) {
+        mapper.updateNote(todo);
     }
 
     @Override
-    public void updateNoteStatusS(long seq, TodoDTO todo) {
-        mapper.updateNoteStatus(seq);
+    public void updateNoteStatusS(TodoDTO todo) { mapper.updateNoteStatus(todo);
     }
 
     @Override
