@@ -9,7 +9,9 @@ import java.util.List;
 @Repository
 @Mapper
 public interface ProjectMapper {
-    List<ProjectDTO> list();
+    List<ProjectDTO> projectSelectAll();
+    List<ProjectDTO> projectSelectProceeding();
+    List<ProjectDTO> projectSelectEnd();
     Long selectByMemberSeq(String member_email);
     void insert(ProjectDTO projectDTO);
     void updateStatus(ProjectDTO projectDTO);
@@ -17,4 +19,5 @@ public interface ProjectMapper {
     void updateTitle(ProjectDTO projectDTO);
     void updateContent(ProjectDTO projectDTO);
     void updateProject(ProjectDTO projectDTO);
+    void updateEnddate(ProjectDTO projectDTO);
 }

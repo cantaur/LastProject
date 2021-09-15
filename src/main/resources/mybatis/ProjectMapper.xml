@@ -5,8 +5,16 @@
 <mapper namespace="com.project.pium.mapper.ProjectMapper">
 
     <!--프로젝트 전체 검색-->
-    <select id="list" resultType="ProjectDTO">
+    <select id="projectSelectAll" resultType="ProjectDTO">
         SELECT * FROM project
+    </select>
+    <!--진행상태 프로젝트 검색-->
+    <select id="projectSelectProceeding" resultType="ProjectDTO">
+        SELECT * FROM project where project_status = "0"
+    </select>
+    <!--종료상태 프로젝트 검색-->
+    <select id="projectSelectEnd" resultType="ProjectDTO">
+        SELECT * FROM project where project_status = "1"
     </select>
     <!--project 테이블 memberSEQ 데이터 추출-->
     <select id="selectByMemberSeq" resultType="long" parameterType="String">
@@ -52,8 +60,12 @@
             project_duedate = #{project_duedate}
         WHERE project_seq = #{project_seq}
     </update>
-
-
+    <!--프로젝트 실제종료일 업데이트-->
+    <update id="updateEnddate" parameterType="ProjectDTO">
+        UPDATE project
+        SET project_enddate = now()
+        WHERE project_seq = #{project_seq}
+    </update>
 
 
 

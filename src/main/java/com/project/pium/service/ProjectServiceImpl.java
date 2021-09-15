@@ -17,7 +17,17 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectDTO> listS() {
-        return projectMapper.list();
+        return projectMapper.projectSelectAll();
+    }
+
+    @Override
+    public List<ProjectDTO> projectSelectProceeding() {
+        return projectMapper.projectSelectProceeding();
+    }
+
+    @Override
+    public List<ProjectDTO> projectSelectEnd() {
+        return projectMapper.projectSelectEnd();
     }
 
     @Override
@@ -53,5 +63,10 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void updateProject(ProjectDTO projectDTO) {
         projectMapper.updateProject(projectDTO);
+    }
+
+    @Override
+    public void updateEnddate(ProjectDTO projectDTO) {
+        projectMapper.updateEnddate(projectDTO);
     }
 }

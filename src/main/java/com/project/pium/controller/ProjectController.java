@@ -10,10 +10,10 @@ import java.util.List;
 
 @Log
 @RestController
-@RequestMapping("rest_jg")
+@RequestMapping("project")
 @AllArgsConstructor
 @ResponseBody
-public class JGController {
+public class ProjectController {
 
     private ProjectService projectService;
 
@@ -22,20 +22,33 @@ public class JGController {
         List<ProjectDTO> list = projectService.listS();
         return list;
     }
-    //http://127.0.0.1:8000/rest_jg/searchProject 호출 성공
+    //http://127.0.0.1:8000/project/searchProject 호출 성공
+
+    @GetMapping("projectSelectProceeding")
+    public List<ProjectDTO> projectSelectProceeding(){
+        List<ProjectDTO> list = projectService.projectSelectProceeding();
+        return list;
+    }
+    //http://127.0.0.1:8000/project/projectSelectProceeding 호출 성공
+    @GetMapping("projectSelectEnd")
+    public List<ProjectDTO> projectSelectEnd(){
+        List<ProjectDTO> list = projectService.projectSelectEnd();
+        return list;
+    }
+    //http://127.0.0.1:8000/project/projectSelectEnd 호출 성공
     @GetMapping("searchMemberSeq/{member_email}")
     public Long selectByMemberSeq(@PathVariable("member_email") String member_email){
         Long projectDTO = projectService.selectByMemberSeqS(member_email);
         return projectDTO;
     }
-    //http://127.0.0.1:8000/rest_jg/searchMemberSeq/abcd1234@gmail.com 호출 성공
+    //http://127.0.0.1:8000/project/searchMemberSeq/abcd1234@gmail.com 호출 성공
     @PostMapping("insert")
     public void insert(@RequestBody ProjectDTO projectDTO){
         projectService.insertS(projectDTO);
     }
     /*at Talend API Tester
       method : post
-      http://127.0.0.1:8000/rest_jg/insert
+      http://127.0.0.1:8000/project/insert
       {
         "project_title":"TESTProject",
         "project_content":"TEST Project Content",
@@ -51,7 +64,7 @@ public class JGController {
     }
     /*at Talend API Tester
       method : put
-      url : http://127.0.0.1:8000/rest_jg/updateStatus
+      url : http://127.0.0.1:8000/project/updateStatus
       {"project_status":"1","project_seq":28}
       Response 200 코드 확인 완료
     */
@@ -61,7 +74,7 @@ public class JGController {
     }
     /*at Talend API Tester
       method : put
-      url : http://127.0.0.1:8000/rest_jg/updateIsdelete
+      url : http://127.0.0.1:8000/project/updateIsdelete
       {"project_isdelete":"1","project_seq":28}
       Response 200 코드 확인 완료
     */
@@ -71,7 +84,7 @@ public class JGController {
     }
     /*at Talend API Tester
      method : put
-     url : http://127.0.0.1:8000/rest_jg/updateTitle
+     url : http://127.0.0.1:8000/project/updateTitle
      {"project_title":"updateTitle TEST","project_seq":28}
      Response 200 코드 확인 완료
    */
@@ -81,7 +94,7 @@ public class JGController {
     }
     /*at Talend API Tester
      method : put
-     url : http://127.0.0.1:8000/rest_jg/updateContent
+     url : http://127.0.0.1:8000/project/updateContent
      {"project_content":"updateContent TEST","project_seq":28}
      Response 200 코드 확인 완료
    */
@@ -91,7 +104,7 @@ public class JGController {
     }
     /*at Talend API Tester
      method : put
-     url : http://127.0.0.1:8000/rest_jg/updateProject
+     url : http://127.0.0.1:8000/project/updateProject
      {
         "project_title" : "제목",
         "project_content" : "바뀔거에요",
@@ -101,6 +114,18 @@ public class JGController {
         "project_duedate" : 20211026,
         "project_seq" : "28"
      }
+     Response 200 코드 확인 완료
+   */
+    @PutMapping("updateEnddate")
+    public void updateEnddate(@RequestBody ProjectDTO projectDTO){
+        projectService.updateEnddate(projectDTO);
+    }
+    /*at Talend API Tester
+     method : put
+     url : http://127.0.0.1:8000/project/updateEnddate
+    {
+      "project_seq" : "28"
+    }
      Response 200 코드 확인 완료
    */
 }
