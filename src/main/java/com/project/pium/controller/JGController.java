@@ -36,7 +36,13 @@ public class JGController {
     /*at Talend API Tester
       method : post
       http://127.0.0.1:8000/rest_jg/insert
-      {"project_title":"TESTProject","project_content":"TEST Project Content","project_status":"0","project_isdelete":"0","member_seq":1}
+      {
+        "project_title":"TESTProject",
+        "project_content":"TEST Project Content",
+        "project_status":"0",
+        "project_isdelete":"0",
+        "member_seq":1
+      }
       Response 200 코드 확인 완료
     */
     @PutMapping("updateStatus")
@@ -45,7 +51,7 @@ public class JGController {
     }
     /*at Talend API Tester
       method : put
-      http://127.0.0.1:8000/rest_jg/updateStatus
+      url : http://127.0.0.1:8000/rest_jg/updateStatus
       {"project_status":"1","project_seq":28}
       Response 200 코드 확인 완료
     */
@@ -55,7 +61,7 @@ public class JGController {
     }
     /*at Talend API Tester
       method : put
-      http://127.0.0.1:8000/rest_jg/updateIsdelete
+      url : http://127.0.0.1:8000/rest_jg/updateIsdelete
       {"project_isdelete":"1","project_seq":28}
       Response 200 코드 확인 완료
     */
@@ -65,7 +71,7 @@ public class JGController {
     }
     /*at Talend API Tester
      method : put
-     http://127.0.0.1:8000/rest_jg/updateTitle
+     url : http://127.0.0.1:8000/rest_jg/updateTitle
      {"project_title":"updateTitle TEST","project_seq":28}
      Response 200 코드 확인 완료
    */
@@ -75,7 +81,7 @@ public class JGController {
     }
     /*at Talend API Tester
      method : put
-     http://127.0.0.1:8000/rest_jg/updateContent
+     url : http://127.0.0.1:8000/rest_jg/updateContent
      {"project_content":"updateContent TEST","project_seq":28}
      Response 200 코드 확인 완료
    */
@@ -83,5 +89,18 @@ public class JGController {
     public void updateProject(@RequestBody ProjectDTO projectDTO){
         projectService.updateProject(projectDTO);
     }
-
+    /*at Talend API Tester
+     method : put
+     url : http://127.0.0.1:8000/rest_jg/updateProject
+     {
+        "project_title" : "제목",
+        "project_content" : "바뀔거에요",
+        "project_status" : "0",
+        "project_isdelete" : "0",
+        "project_startdate" : 20210910,
+        "project_duedate" : 20211026,
+        "project_seq" : "28"
+     }
+     Response 200 코드 확인 완료
+   */
 }

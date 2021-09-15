@@ -4,18 +4,56 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.ProjectMapper">
 
+    <!--프로젝트 전체 검색-->
     <select id="list" resultType="ProjectDTO">
         SELECT * FROM project
     </select>
-
+    <!--project 테이블 memberSEQ 데이터 추출-->
     <select id="selectByMemberSeq" resultType="long" parameterType="String">
         SELECT member_seq FROM member WHERE member_email = #{member_email};
     </select>
-
+    <!--프로젝트 생성-->
     <insert id="insert" parameterType="ProjectDTO">
         INSERT INTO project (project_title, project_content, project_status, project_isdelete, member_seq)
             VALUES(#{project_title},#{project_content},"0","0",#{member_seq})
     </insert>
+    <!--프로젝트 상태 업데이트-->
+    <update id="updateStatus" parameterType="ProjectDTO">
+        UPDATE project
+        SET project_status = #{project_status}
+        WHERE project_seq = #{project_seq}
+    </update>
+    <!--프로젝트 삭제상태 업데이트-->
+    <update id="updateIsdelete" parameterType="ProjectDTO">
+        UPDATE project
+        SET project_isdelete = #{project_isdelete}
+        WHERE project_seq = #{project_seq}
+    </update>
+    <!--프로젝트 제목 업데이트-->
+    <update id="updateTitle" parameterType="ProjectDTO">
+        UPDATE project
+        SET project_title = #{project_title}
+        WHERE project_seq = #{project_seq}
+    </update>
+    <!--프로젝트 내용 업데이트-->
+    <update id="updateContent" parameterType="ProjectDTO">
+        UPDATE project
+        SET project_content = #{project_content}
+        WHERE project_seq = #{project_seq}
+    </update>
+    <!--프로젝트 전체 업데이트(enddate제외)-->
+    <update id="updateProject" parameterType="ProjectDTO">
+        UPDATE project
+        SET project_title = #{project_title},
+            project_content = #{project_content},
+            project_status = #{project_status},
+            project_isdelete = #{project_isdelete},
+            project_startdate = #{project_startdate},
+            project_duedate = #{project_duedate}
+        WHERE project_seq = #{project_seq}
+    </update>
+
+
 
 
 
