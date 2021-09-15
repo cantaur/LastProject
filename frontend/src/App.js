@@ -3,15 +3,19 @@ import React, {useState, useEffect} from 'react';
 import {pub} from './comp/Helper.js'
 import './css/common.scss';
 
-import Login from './comp/Login.js'
+import Sign from './comp/Sign.js'
+import Regist from './comp/Regist.js'
 import axios from 'axios';
 import { Link, Route, Switch, BrowserRouter as Router } from "react-router-dom";
 
 
 
 
+
+
 function App() {
-  
+
+
   let [logInCheck, logInCheckCng] = useState(false);
 
   useEffect(() => {
@@ -29,9 +33,12 @@ function App() {
 
   return (
     <>
-      <Router>
-        <Login/>
-      </Router>
+      <Route path='/sign/:type' exact>
+        <Sign/>
+      </Route>
+      <Route path='/sign' exact>
+        <Sign/>
+      </Route>
     </>
   );
 }

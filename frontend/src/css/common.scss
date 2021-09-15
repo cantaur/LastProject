@@ -2,8 +2,11 @@ $c1:#2B4C9F;
 $c1d:#213b7a;
 $c2:#FFDF39;
 $c2d:#dbbf31;
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 
-
+*{
+  font-family: 'noto sans kr' ,sans-serif;
+}
 .loginBack{
   background-color: #fff;
   width: 100vw;
@@ -19,11 +22,46 @@ $c2d:#dbbf31;
     justify-content: center;
     flex-wrap: wrap;
     padding-top:100px;
+    .logoWrap {
+      margin-bottom:1.2rem;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      height: 45.52px;
+      transition: .3s ease-in-out;
 
-    .logo{
-      width: 130px;
-      margin-bottom:1rem;
+      .logo{
+        width: 130px;
+        transition: .3s ease-in-out;
+        position: absolute;
+        left: 50%;
+        margin-left: -65px;
+      }
+      p{
+        position: absolute;
+        opacity: 0;
+        right: -100px;
+        transition: .3s ease-in-out;
+        margin:0px;
+        height: 45.52px;
+        line-height: 38.52px;
+      }
+      &.logoTrans{
+      height: 35px;
+      
+        
+        .logo{
+          width: 100px;
+          left: 0px;
+          margin-left: 0px;
+        }
+        p{
+          right: 0px;
+          opacity: 1;
+        }
+      }
     }
+    
     .form{
       background-color: #fff;
       width: 100%;
@@ -31,11 +69,21 @@ $c2d:#dbbf31;
         font-size: .8rem;
         padding: .75rem .65rem
       }
+      div {
+        transition: .3s ease-in-out;
+
+      }
       .form-control{
         font-size: .8rem;
         height: calc(2.7rem + 2px);
         padding: 1rem .65rem;
         padding-bottom: .4rem;
+        transition: .3s ease-in-out;
+      }
+      .close{
+        transform: scale(0);
+        opacity: 0;
+        margin-top:-2.8rem
       }
 
 
@@ -45,6 +93,7 @@ $c2d:#dbbf31;
         border-color: $c1;
         width: 100%;
         font-size: .9rem;
+        
       }
       .loginBtn:hover{
         background-color: $c1d;
@@ -56,7 +105,7 @@ $c2d:#dbbf31;
         border-color: $c2;
         width: 100%;
         font-size: .9rem;
-        color:#333
+        color:#333;
       }
       .registBtn:hover{
         background-color: $c2d;
@@ -67,7 +116,23 @@ $c2d:#dbbf31;
     .social {
       display: flex;
       justify-content: center;
-      margin-top:1.4rem;
+      transition: .3s ease-in-out;
+      height: 80px;
+      overflow: hidden;
+      margin-bottom: 1.4rem;
+      align-items: flex-end;
+      width: 100%;
+      margin-top: -.6rem;
+      opacity: 1;
+
+      &.close {
+        height: 0px;
+        margin-bottom: 0rem;
+        margin-top: 1rem;
+        opacity: 0;
+
+      }
+      
 
       .socialWrap{
         width: 50px;
@@ -86,7 +151,6 @@ $c2d:#dbbf31;
           border-radius: 10px;
           cursor: pointer;
           transition: .3s ease-in-out;
-          box-shadow: 2px 2px 4px rgba(0,0,0,0);
 
 
 
@@ -98,7 +162,15 @@ $c2d:#dbbf31;
           &:hover + .toolTip{
               opacity: 1;
               top:-30px;
+              z-index: 1;
 
+          }
+          &:hover{
+            
+            img{
+              transform: scale(1.1);
+            }
+            
           }
         }
 
@@ -112,7 +184,7 @@ $c2d:#dbbf31;
           font-size: .7rem;
           top:-35px;
           right: -18px;
-          z-index: 1;
+          z-index: -1;
           transition: .3s ease-in-out;
           opacity: 0;
           div{
@@ -130,23 +202,19 @@ $c2d:#dbbf31;
 
           }
         }
-        &:hover{
-          .socialBtn{
-            // box-shadow: 2px 2px 4px rgba(0,0,0,.2);
-            img{
-              transform: scale(1.1);
-            }
-          }
-          
-        }
+        
       }
     }
     .info {
       width: 100%;
-      margin-top:30px;
       color:#888;
       text-align: center;
       font-size: .5rem;
+    }
+  }
+  .registCon {
+    .logo{
+      width: 80px;
     }
   }
 }
