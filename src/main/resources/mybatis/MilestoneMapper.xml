@@ -5,16 +5,20 @@
 <mapper namespace="com.project.pium.mapper.MilestoneMapper">
 
     <select id="msListBySeq" resultType="MilestoneDTO" parameterType="long">
-        select * from milestone where project_seq=#{project_seq}
+        select * from milestone
+        where project_seq=#{project_seq}
     </select>
 
     <select id="selectByMsSeq" resultType="MilestoneDTO" parameterType="long">
-        select * from milestone where milestone_seq=#{milestone_seq}
+        select * from milestone
+        where milestone_seq=#{milestone_seq}
     </select>
 
 <!-- 마일스톤을 만든 사람 이름을 뽑고 싶을때-->
     <select id="projMnameByMseq" resultType="String" parameterType="long">
-        SELECT projmember_name FROM project_member WHERE projmember_seq=(SELECT projmember_seq FROM milestone WHERE milestone_seq=#{milestone_seq})
+        SELECT projmember_name
+        FROM project_member
+        WHERE projmember_seq=(SELECT projmember_seq FROM milestone WHERE milestone_seq=#{milestone_seq})
     </select>
 
     <insert id="createMile" parameterType="MilestoneDTO">
@@ -25,19 +29,37 @@
 
     <delete id="delMile" parameterType="long">
 -- id = method name from MilestoneMapper.java
-        DELETE FROM milestone WHERE milestone_seq = #{milestone_seq}
+        DELETE FROM milestone
+        WHERE milestone_seq = #{milestone_seq}
     </delete>
 
 
 <!-- UPDATE -->
 <!-- 마감 상태 변경 (=업무 진행상태) -->
-    <update id="upStatus" parameterType="MilestoneDTO">
-        update milestone set milestone_status=#{milestone_status} where milestone_seq=#{milestone_seq}
+    <update id="upMsStatus" parameterType="MilestoneDTO">
+        update milestone
+        set milestone_status=#{milestone_status}
+        where milestone_seq=#{milestone_seq}
     </update>
 
 <!-- 업무상태 (Reopen) -> 진행중  -->
 <!--  제목 변경 -->
-<!-- 내용 변경  -->
-<!-- is delete 상태 변경(=삭제랑 똑같음) -->
+    <update id ="upMsName" parameterType="MilestoneDTO">
+        update milestone
+        set milestone_title = #{milestone_title}
+        where milestone_seq = #{milestone_seq}
+    </update>
+    <!-- 내용 변경 -->
+    <update id ="upMsContent" parameterType="MilestoneDTO">
+        update milestone
+        set milestone_content = #{milestone_content}
+        where milestone_seq = #{milestone_seq}
+    </update>
 
+    <!--isdel-->
+    <update id ="upMsIsdel" parameterType="MilestoneDTO">
+        update milestone
+        set milestone_isdelete = #{milestone_isdelete}
+        where milestone_seq = #{milestone_seq}
+    </update>
 </mapper>

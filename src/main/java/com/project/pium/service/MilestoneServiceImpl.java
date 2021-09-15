@@ -40,11 +40,26 @@ public class MilestoneServiceImpl implements MilestoneService {
     public void delMile(long mileSeq) {
         milestoneMapper.delMile(mileSeq);
     }
+
     //마감상태 변경
     @Override
-    public void upStatus(long mileSeq, MilestoneDTO milestoneDTO) {
-        milestoneMapper.upStatus(mileSeq, milestoneDTO);
+    public void upMsStatus(MilestoneDTO milestoneDTO) {
+        milestoneMapper.upMsStatus(milestoneDTO);
+    }
+    //  제목 변경
+    @Override
+    public void upMsName(MilestoneDTO milestoneDTO) {
+        milestoneMapper.upMsName(milestoneDTO);
     }
 
+    @Override
+    public void upMsContent(MilestoneDTO milestoneDTO) {
+        milestoneMapper.upMsContent(milestoneDTO);
+    }
+
+    @Override
+    public void upMsIsdel(MilestoneDTO milestoneDTO) {
+        milestoneMapper.upMsIsdel(milestoneDTO);
+    }
 
 }

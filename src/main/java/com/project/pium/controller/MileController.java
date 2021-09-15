@@ -71,15 +71,48 @@ public class MileController {
 
     //http://localhost:8000/mile/delete/11
 
-    @PutMapping("upStatus/{mileSeq}")
-    public void upStatus (@PathVariable long mileSeq , @RequestBody MilestoneDTO milestoneDTO){
-        log.info("마일스톤번호"+mileSeq);
-        log.info("miledto"+milestoneDTO);
-        milestoneService.upStatus(mileSeq, milestoneDTO);
+    // 상태 변경
+    @PutMapping("upMsStatus")
+    public void upMsStatus(@RequestBody MilestoneDTO milestoneDTO){
+        milestoneService.upMsStatus(milestoneDTO);
     }
+    /*at Talend API Tester
+      method : put
+      url : http://localhost:8000/mile/upStatus
+      {"milestone_status":"1","milestone_seq":7}
+    */
 
-    //http://localhost:8000/mile/upStatus/7 호출 성공
+    //  제목 변경
+    @PutMapping("upMsName")
+    public void upMsName(@RequestBody MilestoneDTO milestoneDTO){
+        milestoneService.upMsName(milestoneDTO);
+    }
+    /*at Talend API Tester
+      method : put
+      url : http://localhost:8000/mile/upMsName
+      {"milestone_title":"마일스톤 RE1","milestone_seq":1}
+    */
 
+    //내용 변경
+    @PutMapping("upMsContent")
+    public void upMsContent(@RequestBody MilestoneDTO milestoneDTO){
+        milestoneService.upMsContent(milestoneDTO);
+    }
+     /*at Talend API Tester
+      method : put
+      url : http://localhost:8000/mile/upMsContent
+      {"milestone_content":"RE 마일스톤 1 내용","milestone_seq":1}
+    */
 
+    //isdel
+    @PutMapping("upMsIsdel")
+    public void upMsIsdel(@RequestBody MilestoneDTO milestoneDTO){
+        milestoneService.upMsIsdel(milestoneDTO);
+    }
+     /*at Talend API Tester
+      method : put
+      url : http://localhost:8000/mile/upMsIsdel
+      {"milestone_isdelete":1,"milestone_seq":1}
+    */
 }
 
