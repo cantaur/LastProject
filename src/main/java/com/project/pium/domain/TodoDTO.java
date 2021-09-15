@@ -18,5 +18,4 @@ public class TodoDTO {
     private String todo_status;
     private long task_seq;
     private long projmember_seq;
-
 }
