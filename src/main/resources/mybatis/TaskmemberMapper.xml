@@ -3,8 +3,25 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.TaskMapper">
+    <select id="selectAll" resultType="TaskmemberDTO"> //전체조회
+    select * from task
+    </select>
+    <select id="selectByTm" resultType="TaskmemberDTO" parameterType="long"> //업무멤번 번호로 조회
+        select * from task_member where taskmember_seq= #{taskmember_seq}
+    </select>
+    <select id="selectByT" resultType="TaskmemberDTO" parameterType="long"> // 테스크 번호로 조회
+        select * from task_member where task_seq = #{task_seq}
+    </select>
+    <select id="selectByPm" resultType="TaskmemberDTO" parameterType="long"> // 플젝멤번 번호로 조회
+        select * from task_member where projmember_seq= #{projmember_seq}
+    </select>
 
-
+    <insert id="insertByTm" parameterType="TaskmemberDTO"> //추가
+        insert into task_member(task_seq, projmember_seq) values (#{task_seq}, #{projmember_seq})
+    </insert>
+    <delete id="delete" parameterType="long"> //삭제
+        delete from task_member where task_seq = #{task_seq}
+    </delete>
 
 
 </mapper>
