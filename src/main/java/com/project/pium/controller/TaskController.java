@@ -5,7 +5,6 @@ import com.project.pium.service.TaskService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Log
@@ -64,24 +63,15 @@ public class TaskController {
 //    public void updateForStatusZero(@PathVariable long seq) {
 //        service.updateForStatusZeroS(seq);
 //    }//0으로 만듦
-    @PatchMapping("updateAll/{seq}") //http://127.0.0.1:8000/task/updateAll/1
-    public void updateAll(@PathVariable long seq, @RequestBody TaskDTO task) {
-        TaskDTO t = new TaskDTO(seq,task.getTask_title(),task.getTask_content(),
-                task.getTask_status(),task.getTask_isdelete(), task.getTask_startdate(),
-                task.getTask_duedate(), task.getTask_enddate(),task.getMilestone_seq(),
-                task.getPriority_code(),task.getLabel_seq());
-        log.info("#TaskDTO t: "+t);
-        service.updateAllS(t);
+    @PatchMapping("updateAll") //http://127.0.0.1:8000/task/updateAll/1
+    public void updateAll(@RequestBody TaskDTO task) {
+        service.updateAllS(task);
     }
-//    {"task_title":"제목",
-//            "task_content":"내용",
-//            "task_status":"1",
-//            "task_isdelete":"1",
-//            "task_startdate":null,
-//            "task_duedate":null,
-//            "task_enddate":null,
+//    {"task_seq":"1",
+//            "task_title":"제목수정",
+//            "task_content":"내용수정",
 //            "milestone_seq":1,
-//            "priority_code":"10",
-//            "label_seq":"1"
-//    }OK
+//            "label_seq":1
+//    }
+//제약조건문제로 milestoneSeq, labelSeq 값이 있어야만 함...
 }

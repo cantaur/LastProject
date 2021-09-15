@@ -26,12 +26,12 @@
         insert into task(task_title, task_content, task_status, task_isdelete, task_startdate, task_duedate, milestone_seq) values(#{task_title}, null, "0", "0",#{task_startdate}, #{task_duedate}, #{milestone_seq})
     </insert>
 
-    <!--업무 삭제상태 변경-->
-    <delete id="delete" parameterType="long">
+    <!--업무 isdelete변경-->
+    <update id="delete" parameterType="long">
          <!--delete from task where task_seq=#{seq}-->
         update task set task_isdelete="1" where task_seq=#{seq}
-    </delete>
-    <!--상태 수정-->
+    </update>
+    <!--status 수정-->
     <update id="updateForStatus" parameterType="long">
         update task set task_status="1" where task_seq=#{seq}
     </update>
