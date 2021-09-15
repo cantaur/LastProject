@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("rest_member")
 @AllArgsConstructor
-public class TestController {
+public class MemberController {
     private MemberService memberService;
 
     @GetMapping("read")
