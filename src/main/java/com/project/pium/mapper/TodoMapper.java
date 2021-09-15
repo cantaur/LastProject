@@ -13,8 +13,8 @@ public interface TodoMapper {
     List<TodoDTO>selectNoteProg(); // 메모 상태 20 조회
     List<TodoDTO>selectNoteDone(); // 메모 상태 30 조회
     void insertNote(TodoDTO todo); // 메모 생성
-    void updateNote(long seq, TodoDTO todo); // 메모 수정
-    void updateNoteStatus(long seq); // 메모 상태이동
+    void updateNote(TodoDTO todo); // 메모 수정
+    void updateNoteStatus(TodoDTO todo); // 메모 상태이동
     void deleteNote(long seq); // 메모 삭제
 //    List<TodoDTO>selectAssign(); //배정된 업무 조회
 //    List<TodoDTO>selectWork(); // 진행중인 업무

@@ -18,4 +18,8 @@ public class TodoDTO {
     private String todo_status;
     private long task_seq;
     private long projmember_seq;
+
+    public TodoDTO(long seq, String todo_name, String todo_content, String todo_status, Date todo_date, long task_seq, long projmember_seq) {
+    }
+
 }

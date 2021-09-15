@@ -9,8 +9,8 @@ public interface TodoService {
     List<TodoDTO>selectNoteProgS(); // 메모 상태 20
     List<TodoDTO>selectNoteDoneS(); // 메모 상태 30
     void insertNoteS(TodoDTO todo); // 메모 생성
-    void updateNoteS(long seq, TodoDTO todo); // 메모 수정
-    void updateNoteStatusS(long seq, TodoDTO todo); // 메모 상태이동
+    void updateNoteS(TodoDTO todd); // 메모 수정
+    void updateNoteStatusS(TodoDTO todo); // 메모 상태이동
     void deleteNoteS(long seq); // 메모 삭제
 
 //    List<TodoDTO>selectAssignS(); // 배정된 업무 조회
