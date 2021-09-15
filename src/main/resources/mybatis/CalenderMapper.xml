@@ -4,7 +4,71 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.CalenderMapper">
 
+    <!-- 달력 값 입력 -->
+    <!-- front에서 입력 값 받기 전에 확인용으로 -->
+    <insert id="createCal" parameterType="CalenderDTO">
+        INSERT INTO calender (calender_title,calender_content,calender_date,calender_startdate,calender_enddate,projmember_seq)
+        VALUES(#{calender_title},#{calender_content},#{calender_date},#{calender_startdate},#{calender_enddate},#{projmember_seq})
+    </insert>
 
+    <!--달력 리스트 출력-->
+    <select id ="calList" resultType="CalenderDTO">
+        select * from calender
+    </select>
 
+    <!-- 달력 리스트 BySeq 출력 -->
+    <select id="calListBySeq" resultType="CalenderDTO" parameterType="long">
+        select *from calender
+        where calender_seq=#{calender_seq}
+    </select>
+
+    <!-- 달력 리스트 ByProSeq 출력 -->
+    <select id="calListByProSeq" resultType="CalenderDTO" parameterType="long">
+        select *from calender
+        where projmember_seq=#{projmember_seq}
+    </select>
+
+    <!-- 달력 제목 수정 -->
+    <update id ="upCalName" parameterType="CalenderDTO">
+        update calender
+        set calender_title = #{calender_title}
+        where calender_seq = #{calender_seq}
+    </update>
+
+    <!-- 달력 내용 수정 -->
+    <update id="upCalContent" parameterType="CalenderDTO">
+        update calender
+        set calender_content = #{calender_content}
+        where calender_seq = #{calender_seq}
+    </update>
+
+    <!-- 달력 날짜 수정-->
+    <update id="upCalDate" parameterType="CalenderDTO">
+        update calender
+        set calender_date = #{calender_date}
+        where calender_seq = #{calender_seq}
+    </update>
+
+    <!-- 달력 startdate 수정-->
+    <update id="upCalSdate" parameterType="CalenderDTO">
+        update calender
+        set calender_startdate = #{calender_startdate}
+        where calender_seq = #{calender_seq}
+    </update>
+
+    <!-- 달력 enddate 수정-->
+    <update id="upCalEdate" parameterType="CalenderDTO">
+        update calender
+        set calender_enddate = #{calender_enddate}
+        where calender_seq = #{calender_seq}
+    </update>
+
+    <!-- 달력 delete 는 project 안에서 삭제하면 없어짐 -->
+    <!-- 달력 자체에서 삭제하고 싶다면 projectManager 권한 확인 하고 삭제 할 수 있게 구현해야 함-->
+    <!-- 이건 내일 이야기 해보기-->
+    <delete id = "delCal" parameterType="long">
+        DELETE FROM calender
+        WHERE calender_seq = #{calender_seq}
+    </delete>
 
 </mapper>

@@ -3,7 +3,6 @@ package com.project.pium.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -11,12 +10,11 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CalenderDTO {
-    private long calendar_seq;
-    private String calendar_title;
-    private String calendar_content;
-    private Date calendar_date;
-    private Date calendar_startdate;
-    private Date calendar_enddate;
+    private long calender_seq;
+    private String calender_title;
+    private String calender_content;
+    private Date calender_date;
+    private Date calender_startdate;
+    private Date calender_enddate;
     private long projmember_seq;
-
 }

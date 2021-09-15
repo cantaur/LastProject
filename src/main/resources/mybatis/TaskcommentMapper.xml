@@ -3,8 +3,28 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.TaskcommentMapper">
+    <!--전체코멘트조회(사용할 일이 있을지..?)-->
+    <select id="selectAll" resultType="TaskcommentDTO">
+        select * from task_comment
+    </select>
+    <!--업무별 코멘트조회(최근 글부터 오래된 글까지의 순서로)-->
+    <select id="selectBySeq" resultType="TaskcommentDTO" parameterType="long">
+        select * from task_comment where task_seq=#{seq} order by comment_date desc;
+    </select>
+    <!--코멘트 등록-->
+    <insert id="insert" parameterType="TaskcommentDTO">
+        <!--insert into ADDRESS(NAME, ADDR, RDATE) values(#{name}, #{addr}, now())-->
+        insert into task_comment(comment_content, comment_isdelete, comment_date, task_seq, projmember_seq) values(#{comment_content}, "0", now(), #{task_seq}, #{projmember_seq})
+    </insert>
 
-
-
-
+    <!--isdelete 삭제상태로 변경-->
+    <update id="delete" parameterType="long">--
+        <!--update task set task_isdelete="1" where task_seq=#{seq}-->
+        update task_comment set comment_isdelete="1" where comment_seq=#{seq}
+    </update>
+    <!--comment_content 수정-->
+    <update id="update" parameterType="TaskcommentDTO">--
+        <!--update task set task_isdelete="1" where task_seq=#{seq}-->
+        update task_comment set comment_content=#{comment_content} where comment_seq=#{comment_seq}
+    </update>
 </mapper>
