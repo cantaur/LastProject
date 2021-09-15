@@ -67,7 +67,7 @@ public class ProjectmemberController {
     public void updateImage(@PathVariable("seq") long seq, @RequestBody ProjectmemberDTO DTO) {
         DTO.setProjmember_seq(seq);
         service.updateByPmImgS(DTO);
-    } //시퀀스 set으로 넘겨줘서 성공 (한글깨짐)
+    } //시퀀스 set으로 넘겨줘서 성공
 
     @PatchMapping("updateTypeU/{Pmseq}")//관리자 권한 획득
     public void updateTypeUp(@PathVariable long Pmseq) {
