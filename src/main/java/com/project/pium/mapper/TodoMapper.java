@@ -9,8 +9,8 @@ import java.util.List;
 @Mapper
 @Repository
 public interface TodoMapper {
-    List<TodoDTO>selectNoteTo(); // 메모 상태 10 조회
-    List<TodoDTO>selectNoteDo(); // 메모 상태 20 조회
+    List<TodoDTO>selectNoteToDo(); // 메모 상태 10 조회
+    List<TodoDTO>selectNoteProg(); // 메모 상태 20 조회
     List<TodoDTO>selectNoteDone(); // 메모 상태 30 조회
     void insertNote(TodoDTO todo); // 메모 생성
     void updateNote(long seq, TodoDTO todo); // 메모 수정
