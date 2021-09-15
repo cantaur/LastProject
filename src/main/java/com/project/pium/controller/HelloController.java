@@ -13,8 +13,12 @@ import java.util.Date;
 
 @RestController
 public class HelloController {
-    @GetMapping("/api/hello")
-    public String hello(){
-        return "안녕하세요. 현재 서버시간은 "+new Date() +"입니다. \n";
+    @GetMapping("/pium/rest/session")
+    public String logintest(){
+        return "true";
+    }
+    @GetMapping("/pium/rest/session2")
+    public String logintest2(){
+        return "false";
     }
 }
