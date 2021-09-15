@@ -1,27 +1,37 @@
-// import logo from './logo.svg';
-import './App.css';
+
 import React, {useState, useEffect} from 'react';
 import {pub} from './comp/Helper.js'
+import './css/common.scss';
+
 import Login from './comp/Login.js'
+import axios from 'axios';
+import { Link, Route, Switch, BrowserRouter as Router } from "react-router-dom";
+
 
 
 
 function App() {
-  const pubimg = process.env.PUBLIC_URL + '/img/'; 
-  const [message, setMessage] = useState("");
+  
+  let [logInCheck, logInCheckCng] = useState(false);
+
   useEffect(() => {
-    fetch('/api/hello')
-    .then(response => response.text())
-    .then(message => {
-      setMessage(message);
-    });
+    axios.get('/pium/rest/session')
+    .then((r)=>{
+      logInCheckCng(r.data)
+    })
+    .catch((e)=>{
+      console.error(e)
+      logInCheckCng(false)
+    })
     
   },[])
 
+
   return (
     <>
-      <img src={pub.img+'logo.png'}/>
-      <Login/>
+      <Router>
+        <Login/>
+      </Router>
     </>
   );
 }

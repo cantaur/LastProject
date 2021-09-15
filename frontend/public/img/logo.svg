@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="327px" height="150px" viewBox="0 0 327 150" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="logo" transform="translate(-86.000000, -293.000000)">
+            <g id="Group" transform="translate(86.964455, 293.242083)">
+                <path d="M83.0355454,14.7579175 C120.038624,14.7579175 150.035545,44.7548392 150.035545,81.7579175 C150.035545,118.760996 120.038624,148.757917 83.0355454,148.757917 C46.0324672,148.757917 16.0355454,118.760996 16.0355454,81.7579175 C16.0355454,75.3423493 16.9372644,69.1373889 18.6208781,63.2628606 L83.0017972,84.7241693 L60.9252274,18.491966 C67.8475076,16.0729429 75.2879562,14.7579175 83.0355454,14.7579175 Z" id="Combined-Shape" fill="#2B4C9F"></path>
+                <text id="ium" font-family="ArialRoundedMTBold, Arial Rounded MT Bold" font-size="100" font-weight="normal" fill="#2B4C9F">
+                    <tspan x="149.047264" y="106.757917">ium</tspan>
+                </text>
+                <text id="p" font-family="ArialRoundedMTBold, Arial Rounded MT Bold" font-size="100" font-weight="normal" fill="#FFFFFF">
+                    <tspan x="83.7855454" y="104.757917">p</tspan>
+                </text>
+                <path d="M47.3382259,0.000304224299 L72.2793946,74.7241693 L-0.000240945841,50.6631381 C5.80275647,26.6112474 23.9376405,7.36824109 47.3382259,0.000304224299 Z" id="Combined-Shape" fill="#FFDF39"></path>
+                <rect id="Rectangle" fill="#FFDF39" x="153.035545" y="31.7579175" width="18" height="18" rx="8"></rect>
+            </g>
+        </g>
+    </g>
+</svg>
