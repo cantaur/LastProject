@@ -24,8 +24,8 @@ public class TaskmemberServiceImpl implements TaskmemberService{
     }
 
     @Override
-    public List<TaskmemberDTO> selectTS(long task_seq) { //업무 번호로 조회
-        return mapper.selectT(task_seq);
+    public List<TaskmemberDTO> selectByTS(long task_seq) { //업무 번호로 조회
+        return mapper.selectByT(task_seq);
     }
 
     @Override

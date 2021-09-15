@@ -3,24 +3,31 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.TaskmemberMapper">
-    <select id="selectAll" resultType="TaskmemberDTO"> //전체조회
-    select * from task
+    <!-- 전체 조회 -->
+    <select id="selectAll" resultType="TaskmemberDTO">
+    select * from task_member
     </select>
-    <select id="selectByTm" resultType="TaskmemberDTO" parameterType="long"> //업무멤번 번호로 조회
+    <!-- 업무멤버 번호로 조회 -->
+    <select id="selectByTm" resultType="TaskmemberDTO" parameterType="long">
         select * from task_member where taskmember_seq= #{taskmember_seq}
     </select>
-    <select id="selectByT" resultType="TaskmemberDTO" parameterType="long"> // 테스크 번호로 조회
+    <!--  업무멤버번호로 조회 -->
+    <select id="selectByT" resultType="TaskmemberDTO" parameterType="long">
         select * from task_member where task_seq = #{task_seq}
     </select>
-    <select id="selectByPm" resultType="TaskmemberDTO" parameterType="long"> // 플젝멤번 번호로 조회
+    <!-- 플젝멤버번호로 조회 -->
+    <select id="selectByPm" resultType="TaskmemberDTO" parameterType="long">
         select * from task_member where projmember_seq= #{projmember_seq}
     </select>
 
-    <insert id="insertByTm" parameterType="TaskmemberDTO"> //추가
+
+    <!-- 추가 -->
+    <insert id="insertByTm" parameterType="TaskmemberDTO">
         insert into task_member(task_seq, projmember_seq) values (#{task_seq}, #{projmember_seq})
     </insert>
-    <delete id="delete" parameterType="long"> //삭제
-        delete from task_member where task_seq = #{task_seq}
+    <!-- 삭제 -->
+    <delete id="delete" parameterType="long">
+        delete from task_member where taskmember_seq = #{taskmember_seq}
     </delete>
 
 
