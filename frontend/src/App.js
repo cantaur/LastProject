@@ -39,6 +39,9 @@ function App() {
       <Route path='/sign' exact>
         <Sign/>
       </Route>
+      <Route path='/' exact>
+        <Sign/>
+      </Route>
     </>
   );
 }
