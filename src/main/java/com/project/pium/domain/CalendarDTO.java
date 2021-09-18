@@ -9,12 +9,12 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CalenderDTO {
-    private long calender_seq;
-    private String calender_title;
-    private String calender_content;
-    private Date calender_date;
-    private Date calender_startdate;
-    private Date calender_enddate;
+public class CalendarDTO {
+    private long calendar_seq;
+    private String calendar_title;
+    private String calendar_content;
+    private Date calendar_date;
+    private Date calendar_startdate;
+    private Date calendar_enddate;
     private long projmember_seq;
 }
