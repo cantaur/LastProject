@@ -1,3 +1,6 @@
+
+//default 
+
 $c1:#2B4C9F;
 $c1d:#213b7a;
 $c2:#FFDF39;
@@ -7,6 +10,21 @@ $c2d:#dbbf31;
 *{
   font-family: 'noto sans kr' ,sans-serif;
 }
+.outerWrap{
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  padding:15px;
+}
+.innerWrap{
+  width: 1080px;
+  height: 100%;
+}
+
+
+//default end
+
+// Sign 
 .loginBack{
   background-color: #fff;
   width: 100vw;
@@ -217,4 +235,49 @@ $c2d:#dbbf31;
       width: 80px;
     }
   }
+}
+
+// ProjectList
+.pListTop {
+  position: fixed;
+  top:0px;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  padding:20px 15px;
+  align-items: center;
+  .innerWrap {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    img{
+      width: 130px;
+      margin-bottom: 6px;
+      margin-right: 15px;
+    }
+    .btn-secondary{
+      background-color:transparent;
+      border-color:$c1;
+      border:1px solid;
+      color:$c1;
+    }
+  } 
+}
+.pListWrap{
+  margin-top:100px;
+  h4{
+    font-size: 1.4rem;
+    margin-bottom:20px;
+  }
+  .cardWrap{
+    margin-bottom: 50px;
+    .noProjectMsg{
+      // width: max-content;
+      padding: 20px;
+      background-color: #f2f2f2;
+      border-radius: 10px;
+      color:#555
+    }
+  }
+  
 }
