@@ -16,7 +16,15 @@ function signLogoTrans(state = false, action){
   }
 }
 
-let store = createStore(combineReducers({signLogoTrans}));
+function datePickerModal(state=false, action){
+  if(action.type==='open'){
+    return true
+  }else {
+    return false
+  }
+}
+
+let store = createStore(combineReducers({signLogoTrans, datePickerModal}));
 
 
 ReactDOM.render(

@@ -4,6 +4,7 @@ import {pub} from './comp/Helper.js'
 import './css/common.scss';
 
 import Sign from './comp/Sign.js'
+import Test from './comp/Test.js'
 import ProjectList from './comp/ProjectList.js'
 import axios from 'axios';
 import { Link, Route, Switch, BrowserRouter as Router } from "react-router-dom";
@@ -44,6 +45,9 @@ function App() {
       </Route>
       <Route path='/' exact>
         <Sign/>
+      </Route>
+      <Route path='/test' exact>
+        <Test/>
       </Route>
     </>
   );
