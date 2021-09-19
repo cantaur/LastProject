@@ -90,11 +90,18 @@ function Sign(p){
                 <>
                   <Button className="loginBtn" onClick={()=>{
                     axios.post('/login', {
-                      params:{
-                        userEmail : loginId,
-                        password : loginPw
-                      }
+                      userEmail : loginId,
+                      password : loginPw
                     })
+                    .then((r)=>{
+                      console.log(r)
+                      console.log("성공! 아이디 : " + loginId + ", 비번 : "+loginPw)
+                    })
+                    .catch((e)=>{
+                      console.log(e)
+                      console.log("실패ㅠㅠ 아이디 : " + loginId + ", 비번 : "+loginPw)
+                    })
+                    console.log('통신완료')
                   }}>로그인</Button>
                   <Link to="/sign/regist" className="registBtn btn btn-primary">회원가입</Link>
                 </>
