@@ -56,16 +56,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                //.antMatchers("/login","/signup").permitAll() //login 페이지는 모두에게 접근이 허용된다.
-                .anyRequest().permitAll()
-                //.anyRequest().authenticated() //이외의 어떠한 요청은 인증이 되어있어야 접근이 가능하다.
-            .and()
-                .csrf().ignoringAntMatchers("/signup") //기본적으로 springSecurity에선 post로 controller로 정보를 보내줄때 csrf라는 토큰이 필요한데 이것을 무시하기위한 경로
+                .antMatchers("/sign/**").permitAll() //login 페이지는 모두에게 접근이 허용된다.
+                .anyRequest().anonymous() //이외의 어떠한 요청은 인증이 되어있어야 접근이 가능하다.
+            //.and()
+                //.csrf().ignoringAntMatchers("/sign/**") //기본적으로 springSecurity에선 post로 controller로 정보를 보내줄때 csrf라는 토큰이 필요한데 이것을 무시하기위한 경로
             .and()
                 .formLogin()
                 .loginPage("/sign/login")
-                //.usernameParameter("userEmail")
-                //.passwordParameter("password")
+                .usernameParameter("userEmail")
+                .passwordParameter("password")
                 .defaultSuccessUrl("/",true) //로그인 성공시 url
                 .failureUrl("/login?error=true") //로그인 실패시 url
             .and()
