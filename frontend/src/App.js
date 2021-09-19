@@ -35,11 +35,11 @@ function App() {
 
   return (
     <>
-      <Route path='/sign/:type' exact>
-        <Sign/>
+      <Route path='/' exact>
+        <Sign type="login"/>
       </Route>
-      <Route path='/sign' exact>
-        <Sign/>
+      <Route path='/regist' exact>
+        <Sign type="regist"/>
       </Route>
       <Route path='/project' exact>
         <ProjectList/>

@@ -9,18 +9,19 @@ import {connect} from 'react-redux';
 
 
 function Sign(p){
-  let { type } = useParams();
+  // let { type } = useParams();
   const history = useHistory()
-  useEffect(()=>{
-    if(type == 'login'){
-      console.log('로그인')
-    }else if(type == 'regist'){
-      console.log('회원가입')
+  let type = p.type;
+  // useEffect(()=>{
+  //   if(type == 'login'){
+  //     console.log('로그인')
+  //   }else if(type == 'regist'){
+  //     console.log('회원가입')
 
-    }else {
-      history.push('/sign/login')
-    }
-  })
+  //   }else {
+  //     history.push('/sign/login')
+  //   }
+  // })
   
 
   return(
@@ -80,14 +81,14 @@ function Sign(p){
               type=='login' &&
                 <>
                   <Button className="loginBtn">로그인</Button>
-                  <Link to="/sign/regist" className="registBtn btn btn-primary">회원가입</Link>
+                  <Link to="/regist" className="registBtn btn btn-primary">회원가입</Link>
                 </>
             }
             {
               type=='regist' &&
               <>
                 <Button className="loginBtn" disabled>가입하기</Button>
-                <Link to="/sign/login" className="registBtn btn btn-primary">로그인으로 돌아가기</Link>
+                <Link to="/" className="registBtn btn btn-primary">로그인으로 돌아가기</Link>
               </>
             }
             
