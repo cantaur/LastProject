@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Log
 @Configuration
@@ -54,17 +55,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
         http
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/sign/**").permitAll() //login 페이지는 모두에게 접근이 허용된다.
-                .anyRequest().anonymous() //이외의 어떠한 요청은 인증이 되어있어야 접근이 가능하다.
+                //.anyRequest().anonymous() //이외의 어떠한 요청은 인증이 되어있어야 접근이 가능하다.
             //.and()
                 //.csrf().ignoringAntMatchers("/sign/**") //기본적으로 springSecurity에선 post로 controller로 정보를 보내줄때 csrf라는 토큰이 필요한데 이것을 무시하기위한 경로
             .and()
                 .formLogin()
-                .loginPage("/sign/login")
-                .usernameParameter("userEmail")
-                .passwordParameter("password")
+                //.loginPage("/sign/login")
+                //.usernameParameter("userEmail")
+                //.passwordParameter("password")
                 .defaultSuccessUrl("/",true) //로그인 성공시 url
                 .failureUrl("/login?error=true") //로그인 실패시 url
             .and()

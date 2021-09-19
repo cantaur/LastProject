@@ -116,17 +116,17 @@ function Sign(p){
               type=='regist' &&
               <>
                 <Button className="loginBtn" onClick={()=>{
-                  axios.post('/signup', {
-                    userEmail : registId,
-                    password : registIPw
+                  axios.post('http://localhost:8000/signup', {
+                    member_email : registId,
+                    member_pw : registPw
                   })
                   .then((r)=>{
                     console.log(r)
-                    console.log("성공! 아이디 : " + registId + ", 비번 : "+registIPw)
+                    console.log("성공! 아이디 : " + registId + ", 비번 : "+registPw)
                   })
                   .catch((e)=>{
                     console.log(e)
-                    console.log("실패ㅠㅠ 아이디 : " + registId + ", 비번 : "+registIPw)
+                    console.log("실패ㅠㅠ 아이디 : " + registId + ", 비번 : "+registPw)
                   })
                 }}>가입하기</Button>
                 <Link to="/sign/login" className="registBtn btn btn-primary">로그인으로 돌아가기</Link>
