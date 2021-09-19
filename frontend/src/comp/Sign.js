@@ -9,19 +9,23 @@ import {connect} from 'react-redux';
 
 
 function Sign(p){
-  // let { type } = useParams();
-  const history = useHistory()
-  let type = p.type;
-  // useEffect(()=>{
-  //   if(type == 'login'){
-  //     console.log('로그인')
-  //   }else if(type == 'regist'){
-  //     console.log('회원가입')
 
-  //   }else {
-  //     history.push('/sign/login')
-  //   }
-  // })
+  let [loginId, loginIdCng] = useState('');
+  let [loginPw, loginPwCng] = useState('');
+  let { type } = useParams();
+  const history = useHistory()
+
+
+  useEffect(()=>{
+    if(type == 'login'){
+      console.log('로그인')
+    }else if(type == 'regist'){
+      console.log('회원가입')
+
+    }else {
+      history.push('/sign/login')
+    }
+  })
   
 
   return(
@@ -41,13 +45,17 @@ function Sign(p){
                       controlId="floatingInput"
                       label="이메일 주소"
                     >
-                      <Form.Control type="email" placeholder="name@example.com" />
+                      <Form.Control type="email" placeholder="name@example.com" onChange={(e)=>{
+                        loginIdCng(e.target.value);
+                      }}/>
                     </FloatingLabel>
                   </Form.Group>
 
                   <Form.Group className="mb-3" controlId="formBasicPassword">
                     <FloatingLabel controlId="floatingPassword" label="비밀번호">
-                      <Form.Control type="password" placeholder="비밀번호" />
+                      <Form.Control type="password" placeholder="비밀번호" onChange={(e)=>{
+                        loginPwCng(e.target.value);
+                      }}/>
                     </FloatingLabel>
                   </Form.Group>
                 </>
@@ -80,15 +88,22 @@ function Sign(p){
             {
               type=='login' &&
                 <>
-                  <Button className="loginBtn">로그인</Button>
-                  <Link to="/regist" className="registBtn btn btn-primary">회원가입</Link>
+                  <Button className="loginBtn" onClick={()=>{
+                    axios.post('/login', {
+                      params:{
+                        userEmail : loginId,
+                        password : loginPw
+                      }
+                    })
+                  }}>로그인</Button>
+                  <Link to="/sign/regist" className="registBtn btn btn-primary">회원가입</Link>
                 </>
             }
             {
               type=='regist' &&
               <>
                 <Button className="loginBtn" disabled>가입하기</Button>
-                <Link to="/" className="registBtn btn btn-primary">로그인으로 돌아가기</Link>
+                <Link to="/sign/login" className="registBtn btn btn-primary">로그인으로 돌아가기</Link>
               </>
             }
             

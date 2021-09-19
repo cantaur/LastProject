@@ -7,7 +7,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { combineReducers, createStore } from 'redux';
 
+// function loginInfo(state={'seq':''}, action){
 
+// }
 function signLogoTrans(state = false, action){
   if(action.type==='open'){
     return true
