@@ -111,15 +111,6 @@ function AddProject(p){
 
 
 function MyVerticallyCenteredModal(p) {
-  // useEffect( () => {
-  //   console.log('나타남')
-  //   return()=>{
-  //   console.log('사라짐')
-
-  //     p.datePickerModalControll({type:'close'})
-  //   }
-  // },[])
-
   return (
     <Modal
       {...p}
@@ -172,7 +163,6 @@ function MyVerticallyCenteredModal(p) {
 
 function transReducer(state){
   return {
-    signLogoTrans : state.signLogoTrans,
     datePickerModal : state.datePickerModal,
   }
 }

@@ -18,6 +18,10 @@ const colors = [
   '#596E80',
   '#F99620',
 ]
+// const pages = {
+//   'list':'/project',
+//   'carender':'/project/carendar'
+// }
 
 
 export {pub, colors};
