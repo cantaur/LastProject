@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react"
 import {pub} from './Helper.js'
+import AuthenticationService from './AuthenticationService.js'
 import {FloatingLabel, Form, Button} from 'react-bootstrap'
 import { Link, useParams, withRouter, useHistory } from "react-router-dom";
 import {CSSTransition} from 'react-transition-group';
@@ -89,19 +90,31 @@ function Sign(p){
               type=='login' &&
                 <>
                   <Button className="loginBtn" onClick={()=>{
-                    axios.post('/login', {
-                      userEmail : loginId,
-                      password : loginPw
-                    })
+                    // axios.post('/login', {
+                      
+                    //   data:{
+                    //     userEmail : loginId,
+                    //     password : loginPw
+                    //   }
+                    // })
+                    // .then((r)=>{
+                    //   console.log(r)
+                    //   console.log("성공! 아이디 : " + loginId + ", 비번 : "+loginPw)
+                    // })
+                    // .catch((e)=>{
+                    //   console.log(e)
+                    //   console.log("실패ㅠㅠ 아이디 : " + loginId + ", 비번 : "+loginPw)
+                    // })
+                    // console.log('통신완료')
+                    AuthenticationService.executeJwtAuthenticationService(loginId, loginPw)
                     .then((r)=>{
-                      console.log(r)
-                      console.log("성공! 아이디 : " + loginId + ", 비번 : "+loginPw)
+                      console.log(r);
+                      console.log('통신성공')
                     })
                     .catch((e)=>{
-                      console.log(e)
-                      console.log("실패ㅠㅠ 아이디 : " + loginId + ", 비번 : "+loginPw)
+                      console.log(e);
+                      console.log('통신실패')
                     })
-                    console.log('통신완료')
                   }}>로그인</Button>
                   <Link to="/sign/regist" className="registBtn btn btn-primary">회원가입</Link>
                 </>
