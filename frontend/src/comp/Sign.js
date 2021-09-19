@@ -12,6 +12,8 @@ function Sign(p){
 
   let [loginId, loginIdCng] = useState('');
   let [loginPw, loginPwCng] = useState('');
+  let [registId, registIdCng] = useState('');
+  let [registPw, registPwCng] = useState('');
   let { type } = useParams();
   const history = useHistory()
 
@@ -68,13 +70,17 @@ function Sign(p){
                     controlId="floatingInput"
                     label="이메일 주소"
                   >
-                    <Form.Control type="email" placeholder="name@example.com" />
+                    <Form.Control type="email" placeholder="name@example.com" onChange={(e)=>{
+                        registIdCng(e.target.value);
+                      }}/>
                   </FloatingLabel>
                 </Form.Group>
 
                 <Form.Group className="mb-2" controlId="formBasicPassword">
                   <FloatingLabel controlId="floatingPassword" label="비밀번호">
-                    <Form.Control type="password" placeholder="비밀번호" />
+                    <Form.Control type="password" placeholder="비밀번호" onChange={(e)=>{
+                        registPwCng(e.target.value);
+                      }}/>
                   </FloatingLabel>
                 </Form.Group>
               </>
@@ -109,7 +115,20 @@ function Sign(p){
             {
               type=='regist' &&
               <>
-                <Button className="loginBtn" disabled>가입하기</Button>
+                <Button className="loginBtn" onClick={()=>{
+                  axios.post('/signup', {
+                    userEmail : registId,
+                    password : registIPw
+                  })
+                  .then((r)=>{
+                    console.log(r)
+                    console.log("성공! 아이디 : " + registId + ", 비번 : "+registIPw)
+                  })
+                  .catch((e)=>{
+                    console.log(e)
+                    console.log("실패ㅠㅠ 아이디 : " + registId + ", 비번 : "+registIPw)
+                  })
+                }}>가입하기</Button>
                 <Link to="/sign/login" className="registBtn btn btn-primary">로그인으로 돌아가기</Link>
               </>
             }
