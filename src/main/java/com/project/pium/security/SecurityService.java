@@ -2,6 +2,7 @@ package com.project.pium.security;
 
 import com.project.pium.domain.SignDTO;
 import com.project.pium.email.EmailSenderService;
+import com.project.pium.mapper.MemberMapper;
 import com.project.pium.mapper.SignMapper;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class SecurityService implements UserDetailsService {
 
     @Autowired
     private SignMapper signMapper;
+    @Autowired
+    private MemberMapper memberMapper;
     @Autowired
     private EmailSenderService emailSenderService;
     @Autowired
@@ -72,17 +75,22 @@ public class SecurityService implements UserDetailsService {
         log.info("#입력된 이메일주소: "+signDTO.getMember_email());
         log.info("#유저 비밀번호 :"+signDTO.getMember_pw());
         log.info("#플랫폼 : "+signDTO.getMember_platform());
-        int flag = signMapper.signup(signDTO);
-        log.info("#flag(1이면 성공): "+flag);
 
-        //임의의 authKey 생성 & 이메일 발송
-        String authKey = emailSenderService.sendAuthMail(signDTO.getMember_email());
-        log.info("#생성된 authkey"+authKey);
-        signDTO.setAuthKey(authKey);
-        String email = signDTO.getMember_email();
-        String setAuthKey = signDTO.getAuthKey();
-        signMapper.authkeySave(setAuthKey,email);
+        if(memberMapper.selectAllByEmail(signDTO.getMember_email()).size() !=0){
+            return "Duplicated";
 
-        return "success";
+        }else{
+            int flag = signMapper.signup(signDTO);
+
+            //임의의 authKey 생성 & 이메일 발송
+            String authKey = emailSenderService.sendAuthMail(signDTO.getMember_email());
+            log.info("#생성된 authkey"+authKey);
+            signDTO.setAuthKey(authKey);
+            String email = signDTO.getMember_email();
+            String setAuthKey = signDTO.getAuthKey();
+            signMapper.authkeySave(setAuthKey,email);
+
+            return "success";
+        }
     }
 }

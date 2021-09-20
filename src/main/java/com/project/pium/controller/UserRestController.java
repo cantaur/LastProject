@@ -23,7 +23,15 @@ public class UserRestController {
 
     @PostMapping("/ajax/regist")
     public String saveUserInfo(@RequestBody SignDTO signDTO) throws Exception {
-        return userDetailsService.insertUser(signDTO);
+
+        String msg = userDetailsService.insertUser(signDTO);
+        if(msg.equals("Duplicated")){
+            log.info("실패하면 이게 뜬다아아아ㅏㅇ");
+            return "fail";
+
+        }else{
+            return "success";
+        }
     }
 
     @GetMapping("/signUpConfirm")
