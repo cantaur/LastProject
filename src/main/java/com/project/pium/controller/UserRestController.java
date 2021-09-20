@@ -22,7 +22,7 @@ public class UserRestController {
 
     @PostMapping("/ajax/regist")
     public String saveUserInfo(@RequestBody SignDTO signDTO) throws Exception {
-        return userDetailsService.InsertUser(signDTO);
+        return userDetailsService.insertUser(signDTO);
     }
 
     @GetMapping("/signUpConfirm")

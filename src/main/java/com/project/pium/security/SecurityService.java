@@ -48,7 +48,22 @@ public class SecurityService implements UserDetailsService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-    public String InsertUser(SignDTO signDTO) throws Exception{
+    public String updateUserRoll(SignDTO signDTO){
+        log.info("로그인한 주인?"+signDTO.getMember_email());
+        log.info("로그인한 유저의 인증번호?: "+signDTO.getAuthKey());
+
+
+
+        return "success";
+
+
+    }
+
+
+
+
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
+    public String insertUser(SignDTO signDTO) throws Exception{
 
         signDTO.setMember_pw(bCryptPasswordEncoder.encode(signDTO.getMember_pw())); //암호화
         log.info("#입력된 이메일주소: "+signDTO.getMember_email());
@@ -72,7 +87,7 @@ public class SecurityService implements UserDetailsService {
             log.info("#userNo : "+userNo);
             int roleNo = signMapper.findRoleNo("user");
             log.info("#roleNo : "+roleNo);
-            signMapper.userRoleSave(userNo, roleNo);
+            //signMapper.userRoleSave(userNo, roleNo);
 
             return "success";
         }
