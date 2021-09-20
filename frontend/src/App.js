@@ -38,7 +38,7 @@ function App() {
       <Route path='/sign/:type' exact>
         <Sign/>
       </Route>
-      <Route path='/sign' exact>
+      <Route path='/login' exact>
         <Sign/>
       </Route>
       <Route path='/project' exact>
