@@ -1,9 +1,10 @@
-package com.project.pium.domain;
+package com.project.pium.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.project.pium.domain.SignDTO;
 import lombok.extern.java.Log;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -43,6 +44,7 @@ public class MemberPrincipalVO implements UserDetails{
 
         return signDTOS.get(0).getMember_email();
     }
+
 
     @Override
     public boolean isAccountNonExpired() {// 유저 아이디가 만료 되었는지

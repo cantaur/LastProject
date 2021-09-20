@@ -5,12 +5,18 @@
 <mapper namespace="com.project.pium.mapper.SignMapper">
 
     <insert id="signup" parameterType="SignDTO">
-            insert into member(member_email, member_pw, member_platform) values(#{member_email}, #{member_pw}, #{member_platform});
+            insert into member(member_email, member_pw, member_platform) values(#{member_email}, #{member_pw}, "pium");
     </insert>
 
     <insert id="userRoleSave" parameterType="int">
         INSERT INTO member_auth(member_seq,authorities_no) VALUES(#{member_seq},#{authorities_no})
     </insert>
+
+<!--    authkey 업데이트-->
+    <update id="authkeySave" parameterType="String">
+        update member set authKey=#{authKey} where member_email=#{member_email}
+    </update>
+
 
 
     <select id="findByUserId" resultType="SignDTO" parameterType="String">

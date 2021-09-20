@@ -1,7 +1,6 @@
 package com.project.pium.security;
 
 import com.project.pium.domain.SignDTO;
-import com.project.pium.domain.MemberPrincipalVO;
 import com.project.pium.mapper.SignMapper;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @Log
@@ -22,6 +23,8 @@ public class SecurityService implements UserDetailsService {
 
     @Autowired
     private SignMapper signMapper;
+    @Autowired
+    private EmailSenderService emailSenderService;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -37,7 +40,6 @@ public class SecurityService implements UserDetailsService {
         log.info("#userAuthes"+userAuthes);
         log.info("#userAuthes size: "+userAuthes.size());
 
-
         if(userAuthes.size() == 0) {
             throw new UsernameNotFoundException("User "+id+" Not Found!");
         }
@@ -49,17 +51,31 @@ public class SecurityService implements UserDetailsService {
     public String InsertUser(SignDTO signDTO) throws Exception{
 
         signDTO.setMember_pw(bCryptPasswordEncoder.encode(signDTO.getMember_pw()));
-        log.info("비밀번호"+signDTO.getMember_pw());
+        log.info("#유저 비밀번호 :"+signDTO.getMember_pw());
         int flag = signMapper.signup(signDTO);
-        log.info("#flag: "+flag);
+
+        //임의의 authKey 생성 & 이메일 발송
+        log.info("#입력된 이메일주소: "+signDTO.getMember_email());
+        String authKey = emailSenderService.sendAuthMail(signDTO.getMember_email());
+        log.info("#생성된 authkey"+authKey);
+        signDTO.setAuthKey(authKey);
+        String email = signDTO.getMember_email();
+        String setAuthKey = signDTO.getAuthKey();
+
+
+        signMapper.authkeySave(setAuthKey,email);
+
+
+        log.info("#flag(1이면 성공): "+flag);
         if (flag > 0) {
 
             int userNo = signMapper.findUserNo(signDTO.getMember_email());
-            log.info("#userNo"+userNo);
-            log.info("권한확인"+signDTO.getAuthorities_name());
+            log.info("#user email : "+signDTO.getMember_email());
+            log.info("#userNo : "+userNo);
             int roleNo = signMapper.findRoleNo("user");
-            log.info("#roleNo"+roleNo);
+            log.info("#roleNo : "+roleNo);
             signMapper.userRoleSave(userNo, roleNo);
+            log.info("#플랫폼 : "+signDTO.getMember_platform());
 
             return "success";
         }

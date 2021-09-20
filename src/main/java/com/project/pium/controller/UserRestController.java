@@ -4,11 +4,9 @@ import com.project.pium.domain.SignDTO;
 import com.project.pium.security.SecurityService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 
 /**
@@ -25,6 +23,15 @@ public class UserRestController {
     @PostMapping("/signup")
     public String saveUserInfo(@RequestBody SignDTO signDTO) throws Exception {
         return userDetailsService.InsertUser(signDTO);
+    }
+
+    @GetMapping("/signUpConfirm")
+    public void signUpConfirm(@RequestParam Map<String, String> map){
+        //email,authkey 일치할 경우 authStatus 업데이트
+        log.info("#인증시도 "+map);
+
+
+
     }
 
 }

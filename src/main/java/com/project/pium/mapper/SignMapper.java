@@ -15,6 +15,8 @@ public interface SignMapper {
     int signup(SignDTO signDTO);
     //유저 권한 저장
     int userRoleSave(@Param("member_seq") int userNo, @Param("authorities_no") int roleNo);
+    //유저 인증키 저장
+    void authkeySave(@Param("authKey") String setAuthKey, @Param("member_email") String email);
     //유저 정보
     ArrayList<SignDTO> findByUserId(String id);
     //유저 FK번호 알아내기
