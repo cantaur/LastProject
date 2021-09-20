@@ -2,37 +2,44 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import Loading from './comp/Loading.js';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { combineReducers, createStore } from 'redux';
 
-// function loginInfo(state={'seq':''}, action){
-
-// }
-function signLogoTrans(state = false, action){
-  if(action.type==='open'){
-    return true
-  } else{
-    return false
+function loading(state = false, action){
+  switch (action.type){
+    case 'lodingOn':
+      return true;
+    case 'lodingOff':
+      return false;
+    default:
+      return state;
   }
+
 }
+
 
 function datePickerModal(state=false, action){
-  if(action.type==='open'){
-    return true
-  }else {
-    return false
+  switch (action.type){
+    case 'modalOn':
+      return true;
+    case 'modalOff':
+      return false;
+    default:
+      return state;
   }
 }
 
-let store = createStore(combineReducers({signLogoTrans, datePickerModal}));
+let store = createStore(combineReducers({datePickerModal, loading}));
 
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
+        <Loading/>
         <App />
       </Provider>
     </BrowserRouter>

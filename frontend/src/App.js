@@ -4,8 +4,11 @@ import {pub} from './comp/Helper.js'
 import './css/common.scss';
 
 import Sign from './comp/Sign.js'
-import RegistEmail from './comp/RegistEmail.js'
+import EmailAuth from './comp/EmailAuth.js'
+import EmailSend from './comp/EmailSend.js'
 import Test from './comp/Test.js'
+import ErrPage from './comp/ErrPage.js'
+import NonePage from './comp/NonePage.js'
 import ProjectList from './comp/ProjectList.js'
 import ProjectView from './comp/ProjectView.js'
 import axios from 'axios';
@@ -36,31 +39,50 @@ function App() {
 
   return (
     <>
-      <Route path='/sign/:type' exact>
-        <Sign/>
-      </Route>
+      <Switch>
+        <Route path='/sign/:type' exact>
+          <Sign/>
+        </Route>
+        <Route path='/sign' exact>
+          <Sign/>
+        </Route>
 
-      <Route path='/login' exact>
-        <Sign/>
-      </Route>
+        <Route path='/login' exact>
+          <Sign/>
+        </Route>
 
-      <Route path='/regist/email' exact>\
-        <RegistEmail/>
-      </Route>
+        <Route path='/signUpConfirm' exact>
+          <EmailAuth/>
+        </Route>
+
+        <Route path='/emailSend/:email' exact>
+          <EmailSend/>
+        </Route>
 
 
-      <Route path='/project' exact>
-        <ProjectList/>
-      </Route>
-      <Route path='/project/:page/:seq' exact>
-        <ProjectView/>
-      </Route>
-      <Route path='/' exact>
-        <Sign/>
-      </Route>
-      <Route path='/test' exact>
-        <Test/>
-      </Route>
+        <Route path='/project' exact>
+          <ProjectList/>
+        </Route>
+        <Route path='/project/:page/:seq' exact>
+          <ProjectView/>
+        </Route>
+
+        <Route path='/' exact>
+          <Sign/>
+        </Route>
+
+        <Route path='/test' exact>
+          <Test/>
+        </Route>
+
+        <Route path='/err' exact>
+          <ErrPage/>
+        </Route>
+
+        <Route>
+          <NonePage/>
+        </Route>
+      </Switch>
     </>
   );
 }

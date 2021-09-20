@@ -140,6 +140,61 @@ $c2d:#dbbf31;
     justify-content: center;
     flex-wrap: wrap;
     padding-top:100px;
+    &.emailAuthCon{
+      .checkDiv{
+        width: 70px;
+        height: 70px;
+        background-color: $c1;
+        text-align: center;
+        line-height: 84px;
+        border-radius: 100px;
+        i{
+          color: #fff;
+          font-size: 2.4rem;
+        }
+      }
+      .emailText{
+        width: 100%;
+        text-align: center;
+        margin-top:1rem;
+        font-weight: bold;
+        margin-bottom: .5rem;
+
+      }
+      .msgBox{
+        background-color: #f2f2f2;
+        border-radius: 10px;
+        padding:10px;
+        text-align: center;
+        font-size: .8rem;
+        width: 100%;
+        margin-bottom:1rem
+      }
+    }
+    
+    .loginBtn{
+      background-color: $c1;
+      border-color: $c1;
+      width: 100%;
+      font-size: .9rem;
+      
+    }
+    .loginBtn:hover{
+      background-color: $c1d;
+      border-color: $c1d;
+    }
+    .registBtn{
+      margin-top: .5rem;
+      background-color: $c2;
+      border-color: $c2;
+      width: 100%;
+      font-size: .9rem;
+      color:#333;
+    }
+    .registBtn:hover{
+      background-color: $c2d;
+      border-color: $c2d;
+    }
     .logoWrap {
       margin-bottom:1.2rem;
       width: 100%;
@@ -206,29 +261,7 @@ $c2d:#dbbf31;
 
 
 
-      .loginBtn{
-        background-color: $c1;
-        border-color: $c1;
-        width: 100%;
-        font-size: .9rem;
-        
-      }
-      .loginBtn:hover{
-        background-color: $c1d;
-        border-color: $c1d;
-      }
-      .registBtn{
-        margin-top: .5rem;
-        background-color: $c2;
-        border-color: $c2;
-        width: 100%;
-        font-size: .9rem;
-        color:#333;
-      }
-      .registBtn:hover{
-        background-color: $c2d;
-        border-color: $c2d;
-      }
+      
 
     }
     .social {

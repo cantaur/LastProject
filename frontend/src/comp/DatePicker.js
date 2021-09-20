@@ -51,7 +51,6 @@ function DatePicker(p) {
 
 function transReducer(state){
   return {
-    signLogoTrans : state.signLogoTrans,
     datePickerModal : state.datePickerModal,
   }
 }

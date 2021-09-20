@@ -64,7 +64,7 @@ function ProjectList(p){
         show={modalShow}
         onHide={() => {
           setModalShow(false);
-          p.dispatch({type:'close'})
+          p.dispatch({type:'modalOff'})
         }}
         datePickerModalControll={p.dispatch}
         datePickerModal={p.datePickerModal}
@@ -143,7 +143,7 @@ function MyVerticallyCenteredModal(p) {
           <DatePicker/>
           <p className="dateBtn datePickerWrap" onClick={
             ()=>{
-              p.datePickerModalControll({type:'open'})
+              p.datePickerModalControll({type:'modalOn'})
             }
           }>
             프로젝트 일정

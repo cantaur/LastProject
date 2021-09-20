@@ -19,12 +19,7 @@ function Sign(p){
 
 
   useEffect(()=>{
-    if(type == 'login'){
-      console.log('로그인')
-    }else if(type == 'signup'){
-      console.log('회원가입')
-
-    }else {
+    if(type != 'login' && type != 'signup'){
       history.push('/sign/login')
     }
   })
@@ -102,16 +97,19 @@ function Sign(p){
               type=='signup' &&
               <>
                 <Button className="loginBtn" onClick={()=>{
+                  p.dispatch({type:"lodingOn"})
                   axios.post('http://localhost:8000/ajax/regist', {
                     member_email : signUpId,
                     member_pw : signUpPw,
                     member_platform : "pium"
                   })
                   .then((r)=>{
-                    console.log(r)
-                    console.log("성공! 아이디 : " + signUpId + ", 비번 : "+signUpPw)
+                    p.dispatch({type:"lodingOff"})
+                    history.push('/emailSend/'+signUpId)
                   })
                   .catch((e)=>{
+                    p.dispatch({type:"lodingOff"})
+                    history.push('/err')
                     console.log(e)
                     console.log("실패ㅠㅠ 아이디 : " + signUpId + ", 비번 : "+signUpPw)
                   })
@@ -160,7 +158,7 @@ function Sign(p){
 }
 function transReducer(state){
   return {
-    signLogoTrans : state.signLogoTrans
+    loading : state.loading
   }
 }
 
