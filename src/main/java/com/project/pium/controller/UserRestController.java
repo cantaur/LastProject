@@ -27,12 +27,4 @@ public class UserRestController {
         return userDetailsService.InsertUser(signDTO);
     }
 
-    @PostMapping("/login")
-    public UserDetails loginS(@RequestParam String id) throws Exception {
-        log.info("받아오나"+id);
-        return userDetailsService.loadUserByUsername(id);
-    }
-
-
-
 }

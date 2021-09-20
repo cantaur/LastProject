@@ -42,13 +42,13 @@ function Sign(p){
             {
               type=='login' &&
                 <>
-                  <form action="http://localhost:8000/login" method="post">
+                  <form action="/login" method="post">
                     <Form.Group className="mb-2" controlId="formBasicEmail">
                       <FloatingLabel
                         controlId="floatingInput"
                         label="이메일 주소"
                       >
-                        <Form.Control type="email" name="userEmail" placeholder="name@example.com" onChange={(e)=>{
+                        <Form.Control type="email" name="username" placeholder="name@example.com" onChange={(e)=>{
                           loginIdCng(e.target.value);
                         }}/>
                       </FloatingLabel>
