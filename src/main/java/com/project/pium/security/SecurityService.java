@@ -1,6 +1,7 @@
 package com.project.pium.security;
 
 import com.project.pium.domain.SignDTO;
+import com.project.pium.email.EmailSenderService;
 import com.project.pium.mapper.SignMapper;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -25,7 +25,6 @@ public class SecurityService implements UserDetailsService {
     private SignMapper signMapper;
     @Autowired
     private EmailSenderService emailSenderService;
-
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -43,25 +42,29 @@ public class SecurityService implements UserDetailsService {
         if(userAuthes.size() == 0) {
             throw new UsernameNotFoundException("User "+id+" Not Found!");
         }
-
         return new MemberPrincipalVO(userAuthes);
     }
 
+    //이메일 인증 완료 서비스 : member_auth 테이블에 추가(==user 권한 생성)
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-    public String updateUserRoll(SignDTO signDTO){
-        log.info("로그인한 주인?"+signDTO.getMember_email());
-        log.info("로그인한 유저의 인증번호?: "+signDTO.getAuthKey());
-
-
-
+    public String updateUserRoll(Map<String, String> map, SignDTO signDTO){
+        log.info("#map"+map);
+        String email= map.get("email");
+        String authKey= map.get("authKey");
+        if(authKey==signDTO.getAuthKey()){
+            int userNo = signMapper.findUserNo(email);
+            log.info("#userNo : "+userNo);
+            int roleNo = signMapper.findRoleNo("user");
+            log.info("#roleNo : "+roleNo);
+            signMapper.userRoleSave(userNo, roleNo);
+        }
         return "success";
-
-
     }
 
 
 
 
+    //회원가입 서비스 : member 테이블에 추가, 인증 이메일 발송, 가입 대기 상태
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public String insertUser(SignDTO signDTO) throws Exception{
 
@@ -80,17 +83,6 @@ public class SecurityService implements UserDetailsService {
         String setAuthKey = signDTO.getAuthKey();
         signMapper.authkeySave(setAuthKey,email);
 
-        if (flag > 0) {
-
-            int userNo = signMapper.findUserNo(signDTO.getMember_email());
-            log.info("#user email : "+signDTO.getMember_email());
-            log.info("#userNo : "+userNo);
-            int roleNo = signMapper.findRoleNo("user");
-            log.info("#roleNo : "+roleNo);
-            //signMapper.userRoleSave(userNo, roleNo);
-
-            return "success";
-        }
-        return "fail";
+        return "success";
     }
 }

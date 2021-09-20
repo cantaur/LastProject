@@ -1,4 +1,4 @@
-package com.project.pium.security;
+package com.project.pium.email;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;

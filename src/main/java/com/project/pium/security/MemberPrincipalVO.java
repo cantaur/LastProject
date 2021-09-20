@@ -26,9 +26,9 @@ public class MemberPrincipalVO implements UserDetails{
         log.info("#유저의 정보 넘어오는지 확인"+signDTOS);
 
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        for(int x=0; x<signDTOS.size(); x++) {
-            authorities.add(new SimpleGrantedAuthority(signDTOS.get(x).getAuthorities_name()));
-            log.info("#유저의 authorities(권한): "+signDTOS.get(x).getAuthorities_name());
+        for(int i=0; i<signDTOS.size(); i++) {
+            authorities.add(new SimpleGrantedAuthority(signDTOS.get(i).getAuthorities_name()));
+            log.info("#유저의 authorities(권한): "+signDTOS.get(i).getAuthorities_name());
         }
         return authorities;
     }

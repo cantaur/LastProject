@@ -1,14 +1,9 @@
-package com.project.pium.security;
+package com.project.pium.email;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.util.Random;

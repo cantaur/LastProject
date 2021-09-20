@@ -11,6 +11,7 @@ import java.util.Map;
 
 /**
  * 회원가입을 위한 RestController
+ * 인증메일 컨펌
  */
 
 @Log
@@ -26,9 +27,9 @@ public class UserRestController {
     }
 
     @GetMapping("/signUpConfirm")
-    public void signUpConfirm(@RequestParam Map<String, String> map){
-        //email,authkey 일치할 경우 authStatus 업데이트
-        log.info("#인증시도 "+map);
+    public void signUpConfirm(@RequestParam Map<String, String> map, SignDTO signDTO){
+        //email,authkey 일치할 경우 member_auth 테이블에 추가(==user 권한 생성)
+        userDetailsService.updateUserRoll(map, signDTO);
 
 
 
