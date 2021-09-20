@@ -5,7 +5,7 @@
 <mapper namespace="com.project.pium.mapper.SignMapper">
 
     <insert id="signup" parameterType="SignDTO">
-            insert into member(member_email, member_pw, member_platform) values(#{member_email}, #{member_pw}, "pium");
+            insert into member(member_email, member_pw, member_platform) values(#{member_email}, #{member_pw}, #{member_platform});
     </insert>
 
     <insert id="userRoleSave" parameterType="int">

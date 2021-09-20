@@ -123,7 +123,8 @@ function Sign(p){
                 <Button className="loginBtn" onClick={()=>{
                   axios.post('http://localhost:8000/signup', {
                     member_email : registId,
-                    member_pw : registPw
+                    member_pw : registPw,
+                    member_platform : "pium"
                   })
                   .then((r)=>{
                     console.log(r)

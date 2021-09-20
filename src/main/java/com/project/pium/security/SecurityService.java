@@ -50,23 +50,21 @@ public class SecurityService implements UserDetailsService {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public String InsertUser(SignDTO signDTO) throws Exception{
 
-        signDTO.setMember_pw(bCryptPasswordEncoder.encode(signDTO.getMember_pw()));
+        signDTO.setMember_pw(bCryptPasswordEncoder.encode(signDTO.getMember_pw())); //암호화
+        log.info("#입력된 이메일주소: "+signDTO.getMember_email());
         log.info("#유저 비밀번호 :"+signDTO.getMember_pw());
+        log.info("#플랫폼 : "+signDTO.getMember_platform());
         int flag = signMapper.signup(signDTO);
+        log.info("#flag(1이면 성공): "+flag);
 
         //임의의 authKey 생성 & 이메일 발송
-        log.info("#입력된 이메일주소: "+signDTO.getMember_email());
         String authKey = emailSenderService.sendAuthMail(signDTO.getMember_email());
         log.info("#생성된 authkey"+authKey);
         signDTO.setAuthKey(authKey);
         String email = signDTO.getMember_email();
         String setAuthKey = signDTO.getAuthKey();
-
-
         signMapper.authkeySave(setAuthKey,email);
 
-
-        log.info("#flag(1이면 성공): "+flag);
         if (flag > 0) {
 
             int userNo = signMapper.findUserNo(signDTO.getMember_email());
@@ -75,7 +73,6 @@ public class SecurityService implements UserDetailsService {
             int roleNo = signMapper.findRoleNo("user");
             log.info("#roleNo : "+roleNo);
             signMapper.userRoleSave(userNo, roleNo);
-            log.info("#플랫폼 : "+signDTO.getMember_platform());
 
             return "success";
         }
