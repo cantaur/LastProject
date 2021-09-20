@@ -1,5 +1,6 @@
 package com.project.pium.security;
 
+import com.project.pium.domain.MemberDTO;
 import com.project.pium.domain.SignDTO;
 import com.project.pium.email.EmailSenderService;
 import com.project.pium.mapper.MemberMapper;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -50,12 +52,10 @@ public class SecurityService implements UserDetailsService {
 
     //이메일 인증 완료 서비스 : member_auth 테이블에 추가(==user 권한 생성)
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
-    public String updateUserRoll(Map<String, String> map, SignDTO signDTO){
-        log.info("#map"+map);
-        String email= map.get("email");
-        String authKey= map.get("authKey");
-        if(authKey==signDTO.getAuthKey()){
-            int userNo = signMapper.findUserNo(email);
+    public String updateUserRoll(SignDTO signDTO){
+        List<MemberDTO> userInfo = memberMapper.selectAllByEmail(signDTO.getMember_email());
+        if(userInfo.size()!=0){
+            int userNo = signMapper.findUserNo(signDTO.getMember_email());
             log.info("#userNo : "+userNo);
             int roleNo = signMapper.findRoleNo("user");
             log.info("#roleNo : "+roleNo);

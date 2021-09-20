@@ -36,7 +36,7 @@ function EmailAuth(p){
       } else {
         emailLoadingCng(false);
         axios.post('http://localhost:8000/ajax/signUpConfirm', {
-          'email' : email,
+          'member_email' : email,
           'authKey' : authKey,
         })
         .then((r)=>{

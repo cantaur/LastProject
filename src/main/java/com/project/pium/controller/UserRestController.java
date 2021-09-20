@@ -34,13 +34,11 @@ public class UserRestController {
         }
     }
 
-    @GetMapping("/signUpConfirm")
-    public void signUpConfirm(@RequestParam Map<String, String> map, SignDTO signDTO){
+    @PostMapping("/ajax/signUpConfirm")
+    public void signUpConfirm(@RequestBody SignDTO signDTO){
+        log.info("signDTO : "+signDTO);
         //email,authkey 일치할 경우 member_auth 테이블에 추가(==user 권한 생성)
-        userDetailsService.updateUserRoll(map, signDTO);
-
-
-
+        userDetailsService.updateUserRoll(signDTO);
     }
 
 }
