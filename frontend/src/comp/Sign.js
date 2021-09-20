@@ -10,10 +10,10 @@ import {connect} from 'react-redux';
 
 function Sign(p){
 
-  let [loginId, loginIdCng] = useState('');
-  let [loginPw, loginPwCng] = useState('');
-  let [registId, registIdCng] = useState('');
-  let [registPw, registPwCng] = useState('');
+  let [signUpId, signUpIdCng] = useState('');
+  let [signUpPw, signUpPwCng] = useState('');
+
+
   let { type } = useParams();
   const history = useHistory()
 
@@ -21,7 +21,7 @@ function Sign(p){
   useEffect(()=>{
     if(type == 'login'){
       console.log('로그인')
-    }else if(type == 'regist'){
+    }else if(type == 'signup'){
       console.log('회원가입')
 
     }else {
@@ -34,7 +34,7 @@ function Sign(p){
     <>
       <div className="loginBack">
         <div className="loginCon">
-          <div className={"logoWrap " + (type=='regist'?"logoTrans":"")}>
+          <div className={"logoWrap " + (type=='signup'?"logoTrans":"")}>
             <img src={pub.img+'logo.svg'} className="logo"/>
             <p>회원가입</p>
           </div>
@@ -48,17 +48,13 @@ function Sign(p){
                         controlId="floatingInput"
                         label="이메일 주소"
                       >
-                        <Form.Control type="email" name="username" required placeholder="name@example.com" onChange={(e)=>{
-                          loginIdCng(e.target.value);
-                        }}/>
+                        <Form.Control type="email" name="username" required placeholder="name@example.com"/>
                       </FloatingLabel>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicPassword">
                       <FloatingLabel controlId="floatingPassword" label="비밀번호">
-                        <Form.Control type="password" name="password" required placeholder="비밀번호" onChange={(e)=>{
-                          loginPwCng(e.target.value);
-                        }}/>
+                        <Form.Control type="password" name="password" required placeholder="비밀번호"/>
                       </FloatingLabel>
                     </Form.Group>
 
@@ -68,7 +64,7 @@ function Sign(p){
                 </>
             }
             {
-              type=='regist' &&
+              type=='signup' &&
               <>
                 <Form.Group className="mb-2" controlId="formBasicEmail">
                   <FloatingLabel
@@ -76,7 +72,7 @@ function Sign(p){
                     label="이메일 주소"
                   >
                     <Form.Control type="email" placeholder="name@example.com" onChange={(e)=>{
-                        registIdCng(e.target.value);
+                        signUpIdCng(e.target.value);
                       }}/>
                   </FloatingLabel>
                 </Form.Group>
@@ -84,13 +80,13 @@ function Sign(p){
                 <Form.Group className="mb-2" controlId="formBasicPassword">
                   <FloatingLabel controlId="floatingPassword" label="비밀번호">
                     <Form.Control type="password" placeholder="비밀번호" onChange={(e)=>{
-                        registPwCng(e.target.value);
+                        signUpPwCng(e.target.value);
                       }}/>
                   </FloatingLabel>
                 </Form.Group>
               </>
             }
-            <Form.Group className={type=='regist'?'mb-3':'close'} controlId="formBasicPassword">
+            <Form.Group className={type=='signup'?'mb-3':'close'} controlId="formBasicPassword">
               <FloatingLabel controlId="floatingPassword" label="비밀번호 확인">
                 <Form.Control type="password" placeholder="비밀번호 확인" />
               </FloatingLabel>
@@ -99,40 +95,25 @@ function Sign(p){
             {
               type=='login' &&
                 <>
-                  {/* <Button className="loginBtn" onClick={()=>{
-                    axios.post('/login', {
-                      userEmail : loginId,
-                      password : loginPw
-                    })
-                    .then((r)=>{
-                      console.log(r)
-                      console.log("성공! 아이디 : " + loginId + ", 비번 : "+loginPw)
-                    })
-                    .catch((e)=>{
-                      console.log(e)
-                      console.log("실패ㅠㅠ 아이디 : " + loginId + ", 비번 : "+loginPw)
-                    })
-                    console.log('통신완료')
-                  }}>로그인</Button> */}
-                  <Link to="/sign/regist" className="registBtn btn btn-primary">회원가입</Link>
+                  <Link to="/sign/signup" className="registBtn btn btn-primary">회원가입</Link>
                 </>
             }
             {
-              type=='regist' &&
+              type=='signup' &&
               <>
                 <Button className="loginBtn" onClick={()=>{
-                  axios.post('http://localhost:8000/signup', {
-                    member_email : registId,
-                    member_pw : registPw,
+                  axios.post('http://localhost:8000/ajax/regist', {
+                    member_email : signUpId,
+                    member_pw : signUpPw,
                     member_platform : "pium"
                   })
                   .then((r)=>{
                     console.log(r)
-                    console.log("성공! 아이디 : " + registId + ", 비번 : "+registPw)
+                    console.log("성공! 아이디 : " + signUpId + ", 비번 : "+signUpPw)
                   })
                   .catch((e)=>{
                     console.log(e)
-                    console.log("실패ㅠㅠ 아이디 : " + registId + ", 비번 : "+registPw)
+                    console.log("실패ㅠㅠ 아이디 : " + signUpId + ", 비번 : "+signUpPw)
                   })
                 }}>가입하기</Button>
                 <Link to="/sign/login" className="registBtn btn btn-primary">로그인으로 돌아가기</Link>
@@ -142,7 +123,7 @@ function Sign(p){
 
             
           </div>
-          <div className={'social ' + (type=='regist'?'close':'')}>
+          <div className={'social ' + (type=='signup'?'close':'')}>
             <div className="socialWrap">
               <div className="socialBtn">
                 <img src={pub.img+'google.png'}/>

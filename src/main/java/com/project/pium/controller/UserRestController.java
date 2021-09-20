@@ -20,7 +20,7 @@ public class UserRestController {
     @Autowired
     private SecurityService userDetailsService;
 
-    @PostMapping("/signup")
+    @PostMapping("/ajax/regist")
     public String saveUserInfo(@RequestBody SignDTO signDTO) throws Exception {
         return userDetailsService.InsertUser(signDTO);
     }

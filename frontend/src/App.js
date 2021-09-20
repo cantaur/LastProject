@@ -4,6 +4,7 @@ import {pub} from './comp/Helper.js'
 import './css/common.scss';
 
 import Sign from './comp/Sign.js'
+import RegistEmail from './comp/RegistEmail.js'
 import Test from './comp/Test.js'
 import ProjectList from './comp/ProjectList.js'
 import ProjectView from './comp/ProjectView.js'
@@ -38,9 +39,16 @@ function App() {
       <Route path='/sign/:type' exact>
         <Sign/>
       </Route>
+
       <Route path='/login' exact>
         <Sign/>
       </Route>
+
+      <Route path='/regist/email' exact>\
+        <RegistEmail/>
+      </Route>
+
+
       <Route path='/project' exact>
         <ProjectList/>
       </Route>
