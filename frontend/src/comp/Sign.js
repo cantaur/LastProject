@@ -35,7 +35,7 @@ function Sign(p){
       <div className="loginBack">
         <div className="loginCon">
           <div className={"logoWrap " + (type=='regist'?"logoTrans":"")}>
-            {/* <img src={pub.img+'logo.svg'} className="logo"/> */}
+            <img src={pub.img+'logo.svg'} className="logo"/>
             <p>회원가입</p>
           </div>
           <div className="form">
