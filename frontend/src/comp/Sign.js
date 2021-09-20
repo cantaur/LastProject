@@ -35,7 +35,7 @@ function Sign(p){
       <div className="loginBack">
         <div className="loginCon">
           <div className={"logoWrap " + (type=='regist'?"logoTrans":"")}>
-            <img src={pub.img+'logo.svg'} className="logo"/>
+            {/* <img src={pub.img+'logo.svg'} className="logo"/> */}
             <p>회원가입</p>
           </div>
           <div className="form">
@@ -48,7 +48,7 @@ function Sign(p){
                         controlId="floatingInput"
                         label="이메일 주소"
                       >
-                        <Form.Control type="email" name="username" placeholder="name@example.com" onChange={(e)=>{
+                        <Form.Control type="email" name="username" required placeholder="name@example.com" onChange={(e)=>{
                           loginIdCng(e.target.value);
                         }}/>
                       </FloatingLabel>
@@ -56,7 +56,7 @@ function Sign(p){
 
                     <Form.Group className="mb-3" controlId="formBasicPassword">
                       <FloatingLabel controlId="floatingPassword" label="비밀번호">
-                        <Form.Control type="password" name="password" placeholder="비밀번호" onChange={(e)=>{
+                        <Form.Control type="password" name="password" required placeholder="비밀번호" onChange={(e)=>{
                           loginPwCng(e.target.value);
                         }}/>
                       </FloatingLabel>
