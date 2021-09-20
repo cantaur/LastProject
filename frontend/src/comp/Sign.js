@@ -42,24 +42,29 @@ function Sign(p){
             {
               type=='login' &&
                 <>
-                  <Form.Group className="mb-2" controlId="formBasicEmail">
-                    <FloatingLabel
-                      controlId="floatingInput"
-                      label="이메일 주소"
-                    >
-                      <Form.Control type="email" placeholder="name@example.com" onChange={(e)=>{
-                        loginIdCng(e.target.value);
-                      }}/>
-                    </FloatingLabel>
-                  </Form.Group>
+                  <form action="http://localhost:8000/login" method="post">
+                    <Form.Group className="mb-2" controlId="formBasicEmail">
+                      <FloatingLabel
+                        controlId="floatingInput"
+                        label="이메일 주소"
+                      >
+                        <Form.Control type="email" name="userEmail" placeholder="name@example.com" onChange={(e)=>{
+                          loginIdCng(e.target.value);
+                        }}/>
+                      </FloatingLabel>
+                    </Form.Group>
 
-                  <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <FloatingLabel controlId="floatingPassword" label="비밀번호">
-                      <Form.Control type="password" placeholder="비밀번호" onChange={(e)=>{
-                        loginPwCng(e.target.value);
-                      }}/>
-                    </FloatingLabel>
-                  </Form.Group>
+                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                      <FloatingLabel controlId="floatingPassword" label="비밀번호">
+                        <Form.Control type="password" name="password" placeholder="비밀번호" onChange={(e)=>{
+                          loginPwCng(e.target.value);
+                        }}/>
+                      </FloatingLabel>
+                    </Form.Group>
+
+                    <Button className="loginBtn" type="submit">로그인</Button>
+
+                  </form>
                 </>
             }
             {
@@ -94,7 +99,7 @@ function Sign(p){
             {
               type=='login' &&
                 <>
-                  <Button className="loginBtn" onClick={()=>{
+                  {/* <Button className="loginBtn" onClick={()=>{
                     axios.post('/login', {
                       userEmail : loginId,
                       password : loginPw
@@ -108,7 +113,7 @@ function Sign(p){
                       console.log("실패ㅠㅠ 아이디 : " + loginId + ", 비번 : "+loginPw)
                     })
                     console.log('통신완료')
-                  }}>로그인</Button>
+                  }}>로그인</Button> */}
                   <Link to="/sign/regist" className="registBtn btn btn-primary">회원가입</Link>
                 </>
             }
