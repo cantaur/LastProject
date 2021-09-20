@@ -105,11 +105,17 @@ function Sign(p){
                   })
                   .then((r)=>{
                     p.dispatch({type:"lodingOff"})
-                    history.push('/emailSend/'+signUpId)
+                    if(r.data == 'fail'){
+                      alert('중복된 이메일입니다.')
+                    } else if(r.data == 'success') {
+                      history.push('/emailSend/'+signUpId)
+                    } else {
+                      history.push('/err')
+                    }
                   })
                   .catch((e)=>{
                     p.dispatch({type:"lodingOff"})
-                    history.push('/err')
+                    
                     console.log(e)
                     console.log("실패ㅠㅠ 아이디 : " + signUpId + ", 비번 : "+signUpPw)
                   })
