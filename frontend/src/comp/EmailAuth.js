@@ -34,7 +34,7 @@ function EmailAuth(p){
       if(!email){
         history.push('/err')
       } else {
-        p.dispatch({type:"lodingOn"})
+        emailLoadingCng(false);
         axios.post('http://localhost:8000/ajax/signUpConfirm', {
           'email' : email,
           'authKey' : authKey,
@@ -43,14 +43,12 @@ function EmailAuth(p){
           console.log(r)
           console.log(email+', '+authKey)
 
-          p.dispatch({type:"lodingOff"})
           emailLoadingCng(true)
         })
         .catch((e)=>{
           console.log(e)
           console.log(email+', '+authKey)
 
-          p.dispatch({type:"lodingOff"})
           // history.push('/err')
         })
       }
