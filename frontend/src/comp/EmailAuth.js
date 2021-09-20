@@ -5,6 +5,7 @@ import {FloatingLabel, Form, Button} from 'react-bootstrap'
 import { Link, useParams, withRouter, useHistory } from "react-router-dom";
 import {CSSTransition} from 'react-transition-group';
 import {connect} from 'react-redux';
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 
@@ -25,7 +26,7 @@ function EmailAuth(p){
   const email = getParameterByName('email')
   const authKey = getParameterByName('authKey')
 
-  const [emailLoading, emailLoadingCng] = useState(true)
+  const [emailLoading, emailLoadingCng] = useState(false)
   useEffect(()=>{
     if(!authKey){
       history.push('/err')
@@ -33,19 +34,25 @@ function EmailAuth(p){
       if(!email){
         history.push('/err')
       } else {
-        // p.dispatch({type:"lodingOn"})
-        // axios.post('http://localhost:8000/ajax/', {
-        //   'email' : email,
-        //   'authKey' : authKey,
-        // })
-        // .then((r)=>{
-        //   p.dispatch({type:"lodingOff"})
-        //   // emailLoadingCng(ture)
-        // })
-        // .catch((e)=>{
-        //   p.dispatch({type:"lodingOff"})
-        //   history.push('/err')
-        // })
+        p.dispatch({type:"lodingOn"})
+        axios.post('http://localhost:8000/ajax/signUpConfirm', {
+          'email' : email,
+          'authKey' : authKey,
+        })
+        .then((r)=>{
+          console.log(r)
+          console.log(email+', '+authKey)
+
+          p.dispatch({type:"lodingOff"})
+          emailLoadingCng(true)
+        })
+        .catch((e)=>{
+          console.log(e)
+          console.log(email+', '+authKey)
+
+          p.dispatch({type:"lodingOff"})
+          // history.push('/err')
+        })
       }
     }
 
@@ -56,27 +63,42 @@ function EmailAuth(p){
     <>
       <div className="loginBack">
         <div className="loginCon emailAuthCon">
-          <div className="checkDiv">
-            <i class={'fas fa-check ' + (emailLoading?'':'loading')}></i>
-          </div>
-          <p className="emailText">{email}</p>
           {
             emailLoading &&
-            <div className="msgBox">
-              계정의 인증이 완료되었습니다.
-              <br/>
-              가입한 정보로 로그인 해주세요.
+            <div className={'checkDiv'}>
+              <i class={'fas fa-check'}></i>
             </div>
+          }
+          
+          
+          {
+            emailLoading &&
+            <>
+              <p className="emailText">{email}</p>
+              <div className="msgBox">
+                계정의 인증이 완료되었습니다.
+                <br/>
+                가입한 정보로 로그인 해주세요.
+              </div>
+              <Button className="registBtn" onClick={()=>{
+                history.push('/sign/login')
+              }}>로그인 하러가기</Button>
+            </>
+            
           }
           {
             !emailLoading &&
+            <>
+            <div className={"iconArea"} style={{marginBottom:'2rem'}}>
+                <CircularProgress />
+            </div>
             <div className="msgBox">
               인증 처리 중입니다.
             </div>
+            </>
+            
           }
-          <Button className="registBtn" onClick={()=>{
-            history.push('/sign/login')
-          }}>로그인 하러가기</Button>
+          
         </div>
       </div>
     </>

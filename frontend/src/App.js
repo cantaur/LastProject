@@ -51,7 +51,7 @@ function App() {
           <Sign/>
         </Route>
 
-        <Route path='/member/signUpConfirm' exact>
+        <Route path='/signUpConfirm' exact>
           <EmailAuth/>
         </Route>
 
