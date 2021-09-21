@@ -80,17 +80,24 @@ public class SecurityService implements UserDetailsService {
             return "Duplicated";
 
         }else{
-            int flag = signMapper.signup(signDTO);
+            if(signDTO.getMember_platform().equals("pium")){
+                int flag = signMapper.signup(signDTO);
 
-            //임의의 authKey 생성 & 이메일 발송
-            String authKey = emailSenderService.sendAuthMail(signDTO.getMember_email());
-            log.info("#생성된 authkey"+authKey);
-            signDTO.setAuthKey(authKey);
-            String email = signDTO.getMember_email();
-            String setAuthKey = signDTO.getAuthKey();
-            signMapper.authkeySave(setAuthKey,email);
+                //임의의 authKey 생성 & 이메일 발송
+                String authKey = emailSenderService.sendAuthMail(signDTO.getMember_email());
+                log.info("#생성된 authkey"+authKey);
+                signDTO.setAuthKey(authKey);
+                String email = signDTO.getMember_email();
+                String setAuthKey = signDTO.getAuthKey();
+                signMapper.authkeySave(setAuthKey,email);
 
-            return "success";
+                return "success";
+
+            }else{
+                int flag = signMapper.signup(signDTO);
+                return "success";
+            }
+
         }
     }
 }

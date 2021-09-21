@@ -68,3 +68,4 @@ mvnw
 mvnw.cmd
 README.md
 .DS_Store
+application-oauth.properties

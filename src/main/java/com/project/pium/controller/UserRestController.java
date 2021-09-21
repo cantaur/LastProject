@@ -34,6 +34,19 @@ public class UserRestController {
         }
     }
 
+    @PostMapping("/ajax/google/login")
+    public String saveUserGoogle(@RequestBody SignDTO signDTO) throws Exception {
+
+        String msg = userDetailsService.insertUser(signDTO);
+        if(msg.equals("Duplicated")){
+            log.info("실패하면 이게 뜬다아아아ㅏㅇ");
+            return "fail";
+
+        }else{
+            return "success";
+        }
+    }
+
     @PostMapping("/ajax/signUpConfirm")
     public void signUpConfirm(@RequestBody SignDTO signDTO){
         log.info("signDTO : "+signDTO);
