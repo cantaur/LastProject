@@ -5,8 +5,10 @@ import java.util.List;
 
 public interface MemberService {
     List<MemberDTO> selectAll();
+    String findUserEmail(String mEmail);
     List<MemberDTO> selectAllByEmail(String mEmail);
     List<MemberDTO> selectAllByMseq(long mSEQ);
+
 
     void insertUser(MemberDTO memberDTO);
     void deleteUser(long mSEQ);

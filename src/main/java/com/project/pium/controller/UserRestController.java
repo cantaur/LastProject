@@ -2,10 +2,12 @@ package com.project.pium.controller;
 
 import com.project.pium.domain.SignDTO;
 import com.project.pium.security.SecurityService;
+import com.project.pium.service.MemberService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 
@@ -20,6 +22,8 @@ public class UserRestController {
 
     @Autowired
     private SecurityService userDetailsService;
+    @Autowired
+    private MemberService memberService;
 
     @PostMapping("/ajax/regist")
     public String saveUserInfo(@RequestBody SignDTO signDTO) throws Exception {
@@ -35,12 +39,14 @@ public class UserRestController {
     }
 
     @PostMapping("/ajax/google/login")
-    public String saveUserGoogle(@RequestBody SignDTO signDTO) throws Exception {
+    public String saveUserGoogle(@RequestBody SignDTO signDTO, HttpSession session) throws Exception {
 
         String msg = userDetailsService.insertUser(signDTO);
+        String mEmail=signDTO.getMember_email();
         if(msg.equals("Duplicated")){
-            log.info("실패하면 이게 뜬다아아아ㅏㅇ");
-            return "fail";
+            String gEmail = memberService.findUserEmail(mEmail);
+            session.setAttribute("googleLogin", gEmail);
+            return "successGoogleLogin";
 
         }else{
             return "success";
@@ -53,5 +59,10 @@ public class UserRestController {
         //email,authkey 일치할 경우 member_auth 테이블에 추가(==user 권한 생성)
         userDetailsService.updateUserRoll(signDTO);
     }
+
+
+
+
+
 
 }

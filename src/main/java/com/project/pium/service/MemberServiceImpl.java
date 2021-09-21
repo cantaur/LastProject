@@ -20,6 +20,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public String findUserEmail(String mEmail) {
+        return memberMapper.findUserEmail(mEmail);
+    }
+
+    @Override
     public List<MemberDTO> selectAllByEmail(String mEmail) {
         return memberMapper.selectAllByEmail(mEmail);
     }
