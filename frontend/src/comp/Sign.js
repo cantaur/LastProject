@@ -5,14 +5,31 @@ import {FloatingLabel, Form, Button, Alert} from 'react-bootstrap'
 import { Link, useParams, withRouter, useHistory } from "react-router-dom";
 import {CSSTransition} from 'react-transition-group';
 import {connect} from 'react-redux';
+import GoogleLogin from 'react-google-login';
 
 
 
 function Sign(p){
+  const clientId = process.env.REACT_APP_GOOGLE_CID;
+  console.log(clientId)
 
-  
+  const onSuccess = async(r) => {
+    console.log(r);
+    console.log(r.profileObj.email)
+    axios.post(host+'/ajax/google/login', {
+      member_email : r.profileObj.email,
+      member_pw : r.profileObj.googleId,
+      member_platform : "google"
+    })
+    .then((r)=>{
+      console.log(r)
+    })
+    .catch((e)=>{
+      console.log(e)
+    })
+    
+  }
 
- 
 
   let [signUpData, signUpDataCng] = useState({'email':'', 'pw':'', 'pwCheck':'','dupEmail':false});
 
@@ -104,12 +121,16 @@ function Sign(p){
 
   return(
     <>
+      
       <div className="loginBack">
+        
         <div className="loginCon">
+          
           <div className={"logoWrap " + (type=='signup'?"logoTrans":"")}>
             <img src={pub.img+'logo.svg'} className="logo"/>
             <p>회원가입</p>
           </div>
+          
           <div className="form">
             {
               fail=='fail' &&
@@ -222,9 +243,17 @@ function Sign(p){
           </div>
           <div className={'social ' + (type=='signup'?'close':'')}>
             <div className="socialWrap">
-              <div className="socialBtn">
+            
+              <GoogleLogin className="socialBtn"
+                icon={false}
+                buttonText=""
+                clientId={clientId}
+                onSuccess={onSuccess}
+                onFailure={onSuccess}
+                cookiePolicy={'single_host_origin'}
+              >
                 <img src={pub.img+'google.png'}/>
-              </div>
+              </GoogleLogin>
               <p className="toolTip" style={{'right':'-13px'}}><div></div>구글로 로그인</p>
 
             </div>
