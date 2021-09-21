@@ -95,7 +95,17 @@ public class SecurityService implements UserDetailsService {
 
             }else{
                 int flag = signMapper.signup(signDTO);
-                return "success";
+                if (flag > 0) {
+
+                    int userNo = signMapper.findUserNo(signDTO.getMember_email());
+                    log.info("#userNo : "+userNo);
+                    int roleNo = signMapper.findRoleNo("user");
+                    log.info("#roleNo : "+roleNo);
+                    signMapper.userRoleSave(userNo, roleNo);
+
+                    return "success";
+                }
+                return "fail";
             }
 
         }
