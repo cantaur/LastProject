@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react"
-import {pub, colors} from './Helper.js'
+import {pub, colors,host} from './Helper.js'
 import DatePicker from './DatePicker.js'
 import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstrap'
 import { Link, useParams, withRouter, useHistory } from "react-router-dom";
@@ -20,7 +20,15 @@ function ProjectList(p){
     <>
       <div className="pListTop outerWrap">
         <div className="innerWrap">
-          <img src={pub.img+'logo.svg'}/>
+          <img src={pub.img+'logo.svg'} onClick={()=>{
+            axios.get(host+'/ajax/loginUser')
+            .then((r)=>{
+              console.log(r);
+            })
+            .catch((e)=>{
+              console.log(e)
+            })
+          }}/>
           <Dropdown>
             <Dropdown.Toggle variant="secondary" size="sm" id="dropdown-basic">
               test@gmail.com
