@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react"
-import {pub} from './Helper.js'
+import {pub, host} from './Helper.js'
 import {FloatingLabel, Form, Button} from 'react-bootstrap'
 import { Link, useParams, withRouter, useHistory } from "react-router-dom";
 import {CSSTransition} from 'react-transition-group';
@@ -35,7 +35,7 @@ function EmailAuth(p){
         history.push('/err')
       } else {
         emailLoadingCng(false);
-        axios.post('http://localhost:8000/ajax/signUpConfirm', {
+        axios.post(host+'/ajax/signUpConfirm', {
           'member_email' : email,
           'authKey' : authKey,
         })

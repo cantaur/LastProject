@@ -43,6 +43,9 @@ function App() {
         <Route path='/sign/:type' exact>
           <Sign/>
         </Route>
+        <Route path='/sign/:type/:fail' exact>
+          <Sign/>
+        </Route>
         <Route path='/sign' exact>
           <Sign/>
         </Route>

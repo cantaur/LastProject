@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react"
-import {pub} from './Helper.js'
-import {FloatingLabel, Form, Button} from 'react-bootstrap'
+import {pub, host} from './Helper.js'
+import {FloatingLabel, Form, Button, Alert} from 'react-bootstrap'
 import { Link, useParams, withRouter, useHistory } from "react-router-dom";
 import {CSSTransition} from 'react-transition-group';
 import {connect} from 'react-redux';
@@ -10,11 +10,84 @@ import {connect} from 'react-redux';
 
 function Sign(p){
 
-  let [signUpId, signUpIdCng] = useState('');
-  let [signUpPw, signUpPwCng] = useState('');
+  
+
+ 
+
+  let [signUpData, signUpDataCng] = useState({'email':'', 'pw':'', 'pwCheck':'','dupEmail':false});
+
+  function emailRegFunc(mail){
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)){
+      return true
+    }else{
+      return false
+    }
+  }
 
 
-  let { type } = useParams();
+  function signEmailCheck(){
+    if(signUpData['email'] == ''){
+      return true;
+    }else {
+      if(emailRegFunc(signUpData['email'])){
+        return true;
+      }else {
+        return false;
+      }
+    }
+    
+  }
+
+  function signPwCheck(){
+    if(signUpData['pw'] == '' && signUpData['pwCheck'] == ''){
+      return true
+    } else {
+      if(signUpData['pw'] === signUpData['pwCheck']){
+        return true;
+      }else {
+        return false;
+      }
+    }
+    
+  }
+  function totalCheck(){
+    if(signUpData['pw'] != '' && signUpData['pwCheck'] != '' && signUpData['email'] != '' && signPwCheck() && signPwCheck()){
+      return true 
+    }else {
+      return false
+    }
+  }
+
+
+  function signUpAxios(){
+    p.dispatch({type:"lodingOn"})
+    axios.post(host+'/ajax/regist', {
+      member_email : signUpData['email'],
+      member_pw : signUpData['pw'],
+      member_platform : "pium"
+    })
+    .then((r)=>{
+      p.dispatch({type:"lodingOff"})
+      if(r.data == 'fail'){
+        let signData = {...signUpData}
+        signData['dupEmail'] = true;
+        signUpDataCng(signData);
+      } else if(r.data == 'success') {
+        history.push('/emailSend/'+signUpData['email'])
+      } else {
+        history.push('/err')
+      }
+    })
+    .catch((e)=>{
+      p.dispatch({type:"lodingOff"})
+      history.push('/err')
+      console.log(e)
+    })
+  }
+
+
+
+  let { type, fail } = useParams();
   const history = useHistory()
 
 
@@ -22,7 +95,11 @@ function Sign(p){
     if(type != 'login' && type != 'signup'){
       history.push('/sign/login')
     }
-  })
+    
+    if(fail != '' && fail != 'fail'){
+      history.push('/sign/login')
+    }
+  },[])
   
 
   return(
@@ -34,6 +111,12 @@ function Sign(p){
             <p>회원가입</p>
           </div>
           <div className="form">
+            {
+              fail=='fail' &&
+              <Alert variant={'danger'} style={{fontSize:'.8rem'}}>
+                로그인 정보가 일치하지 않습니다.
+              </Alert>
+            }
             {
               type=='login' &&
                 <>
@@ -61,31 +144,62 @@ function Sign(p){
             {
               type=='signup' &&
               <>
+              {
+                signUpData['dupEmail'] &&
+                <Alert variant={'danger'} style={{fontSize:'.8rem'}}>
+                  이미 가입된 이메일입니다.
+                </Alert>
+              }
+                
                 <Form.Group className="mb-2" controlId="formBasicEmail">
                   <FloatingLabel
                     controlId="floatingInput"
                     label="이메일 주소"
                   >
                     <Form.Control type="email" placeholder="name@example.com" onChange={(e)=>{
-                        signUpIdCng(e.target.value);
-                      }}/>
+                      let signData = {...signUpData}
+                      signData['email'] = e.target.value;
+                      signUpDataCng(signData);
+                      
+
+                    }}/>
                   </FloatingLabel>
+                  <p className={'infoText ' + (signEmailCheck() ? '' : 'on')}>이메일 형식을 확인해주세요.</p>
+
                 </Form.Group>
 
                 <Form.Group className="mb-2" controlId="formBasicPassword">
                   <FloatingLabel controlId="floatingPassword" label="비밀번호">
                     <Form.Control type="password" placeholder="비밀번호" onChange={(e)=>{
-                        signUpPwCng(e.target.value);
-                      }}/>
+                      let signData = {...signUpData};
+                      signData['pw'] = e.target.value;
+                      signUpDataCng(signData);
+                      
+                    }}/>
                   </FloatingLabel>
                 </Form.Group>
+                <Form.Group className={type=='signup'?'mb-3':'close'} controlId="formBasicPassword">
+                  <FloatingLabel controlId="floatingPassword" label="비밀번호 확인">
+                    <Form.Control type="password" placeholder="비밀번호 확인" onChange={(e)=>{
+                      let signData = {...signUpData}
+                      signData['pwCheck'] = e.target.value;
+                      signUpDataCng(signData);
+                      
+                    }} onKeyPress={(e)=>{
+                      if(e.key == 'Enter'){
+                        if(totalCheck()){
+                          signUpAxios()
+                        }
+                      }
+                    }}/>
+                  </FloatingLabel>
+                  <p className={'infoText ' + (signPwCheck() ? '' : 'on')}>비밀번호가 일치하지 않습니다.</p>
+
+                </Form.Group>
+
               </>
             }
-            <Form.Group className={type=='signup'?'mb-3':'close'} controlId="formBasicPassword">
-              <FloatingLabel controlId="floatingPassword" label="비밀번호 확인">
-                <Form.Control type="password" placeholder="비밀번호 확인" />
-              </FloatingLabel>
-            </Form.Group>   
+            
             
             {
               type=='login' &&
@@ -96,31 +210,10 @@ function Sign(p){
             {
               type=='signup' &&
               <>
-                <Button className="loginBtn" onClick={()=>{
-                  p.dispatch({type:"lodingOn"})
-                  axios.post('http://localhost:8000/ajax/regist', {
-                    member_email : signUpId,
-                    member_pw : signUpPw,
-                    member_platform : "pium"
-                  })
-                  .then((r)=>{
-                    p.dispatch({type:"lodingOff"})
-                    if(r.data == 'fail'){
-                      alert('중복된 이메일입니다.')
-                    } else if(r.data == 'success') {
-                      history.push('/emailSend/'+signUpId)
-                    } else {
-                      history.push('/err')
-                    }
-                  })
-                  .catch((e)=>{
-                    p.dispatch({type:"lodingOff"})
-                    
-                    console.log(e)
-                    console.log("실패ㅠㅠ 아이디 : " + signUpId + ", 비번 : "+signUpPw)
-                  })
-                }}>가입하기</Button>
-                <Link to="/sign/login" className="registBtn btn btn-primary">로그인으로 돌아가기</Link>
+                <Button className="loginBtn" disabled={!totalCheck()?'disabled':''} onClick={signUpAxios}>가입하기</Button>
+                <Link to="/sign/login" onClick={()=>{
+                  signUpDataCng({'email':'', 'pw':'', 'pwCheck':'','dupEmail':false});
+                }} className="registBtn btn btn-primary">로그인으로 돌아가기</Link>
               </>
             }
             

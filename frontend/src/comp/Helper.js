@@ -23,5 +23,7 @@ const colors = [
 //   'carender':'/project/carendar'
 // }
 
+const host = 'http://localhost:8000';
 
-export {pub, colors};
+
+export {pub, colors, host};

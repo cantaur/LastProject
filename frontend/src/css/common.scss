@@ -179,6 +179,7 @@ $c2d:#dbbf31;
       border-color: $c1;
       width: 100%;
       font-size: .9rem;
+      transition: .3s ease-in-out;
       
     }
     .loginBtn:hover{
@@ -240,6 +241,21 @@ $c2d:#dbbf31;
     .form{
       background-color: #fff;
       width: 100%;
+      .infoText{
+        font-size: .5rem;
+        color:firebrick;
+        text-align: right;
+        transition: .3s ease-in-out;
+        overflow: hidden;
+        opacity: 0;
+        height: 0;
+        margin-bottom:0rem;
+        &.on{
+          opacity: 1;
+          margin-bottom:.8rem;
+          height: 15px;
+        }
+      }
       label{
         font-size: .8rem;
         padding: .75rem .65rem
