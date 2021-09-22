@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.Principal;
-
+import java.util.Map;
 
 
 /**
@@ -127,10 +127,10 @@ public class UserRestController {
 
 
     @PostMapping("ajax/naverUser")
-    public String naverLogin(@RequestParam String token){
-        log.info("#token"+token);
+    @ResponseBody
+    public String naverLogin(@RequestBody Map <String, String>data){
+        log.info("#token"+data);
         return "success";
-
     }
 
 
