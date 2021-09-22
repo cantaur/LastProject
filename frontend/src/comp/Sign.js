@@ -1,21 +1,38 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useLocation } from "react"
 import {pub, host} from './Helper.js'
 import {FloatingLabel, Form, Button, Alert} from 'react-bootstrap'
 import { Link, useParams, withRouter, useHistory } from "react-router-dom";
 import {CSSTransition} from 'react-transition-group';
 import {connect} from 'react-redux';
 import GoogleLogin from 'react-google-login';
+import KakaoLogin from 'react-kakao-login';
 
-
+const { naver } = window;
 
 function Sign(p){
-  const clientId = process.env.REACT_APP_GOOGLE_CID;
-  console.log(clientId)
+  const googleCid = process.env.REACT_APP_GOOGLE_CID;
+  const naverCid = process.env.REACT_APP_NAVER_CID;
+  const kakaoCid = process.env.REACT_APP_KAKAO_CID;
 
-  const onSuccess = async(r) => {
-    console.log(r);
-    console.log(r.profileObj.email)
+
+  const initializeNaverLogin = () => {
+    const naverLogin = new naver.LoginWithNaverId({
+      clientId: naverCid,
+      callbackUrl: 'http://localhost:3000/test', 
+      isPopup: false,
+      loginButton: { color: 'white', type: 1, height: '47' }
+    });
+    naverLogin.init();
+  };
+
+
+  const onFailure = async(r) => {
+    // history.push('/err')
+    console.log(r)
+  }
+
+  const onSuccessGoogle = async(r) => {
     axios.post(host+'/ajax/google/login', {
       member_email : r.profileObj.email,
       member_pw : r.profileObj.googleId,
@@ -27,8 +44,14 @@ function Sign(p){
     .catch((e)=>{
       console.log(e)
     })
-    
   }
+
+  const onSuccessKakao = async(r) => {
+    console.log(r)
+  }
+
+
+  
 
 
   let [signUpData, signUpDataCng] = useState({'email':'', 'pw':'', 'pwCheck':'','dupEmail':false});
@@ -109,6 +132,7 @@ function Sign(p){
 
 
   useEffect(()=>{
+
     if(type != 'login' && type != 'signup'){
       history.push('/sign/login')
     }
@@ -116,6 +140,8 @@ function Sign(p){
     if(fail != '' && fail != 'fail'){
       history.push('/sign/login')
     }
+    initializeNaverLogin();
+
   },[])
   
 
@@ -247,9 +273,9 @@ function Sign(p){
               <GoogleLogin className="socialBtn"
                 icon={false}
                 buttonText=""
-                clientId={clientId}
-                onSuccess={onSuccess}
-                onFailure={onSuccess}
+                clientId={googleCid}
+                onSuccess={onSuccessGoogle}
+                onFailure={onFailure}
                 cookiePolicy={'single_host_origin'}
               >
                 <img src={pub.img+'google.png'}/>
@@ -258,23 +284,35 @@ function Sign(p){
 
             </div>
 
-            <div className="socialWrap">
+            <div className="socialWrap" >
 
-              <div className="socialBtn">
+              <div className="socialBtn" >
+                <div id="naverIdLogin"></div>
                 <img src={pub.img+'naver.png'}/>
               </div>
+
+              
               <p className="toolTip"><div></div>네이버로 로그인</p>
 
             </div>
 
-            <div className="socialWrap">
 
-              <div className="socialBtn">
-                <img src={pub.img+'kakao.png'}/>
-              </div>
-              <p className="toolTip"><div></div>카카오로 로그인</p>
+            <KakaoLogin className="socialBtn"
+              token={kakaoCid}
+              render={renderProps => (
+                <div className="socialWrap">
+                  <div className="socialBtn" onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                    <img src={pub.img+'kakao.png'}/>
+                  </div>
+                  <p className="toolTip"><div></div>카카오로 로그인</p>
+                </div>
+              )}
+              onSuccess={onSuccessKakao}
+              onFailure={onFailure}
+            />
+                
+              
 
-            </div>
           </div>
           
           <p className="info">Copyright © pium 2021.</p>

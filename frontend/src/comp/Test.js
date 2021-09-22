@@ -1,8 +1,34 @@
 
 import React, {useState, useEffect} from 'react';
-import {pub} from './Helper.js'
+import {pub, host} from './Helper.js'
+
+const { naver } = window;
 
 function Test(){
+  const googleCid = process.env.REACT_APP_GOOGLE_CID;
+  const naverCid = process.env.REACT_APP_NAVER_CID;
+  const kakaoCid = process.env.REACT_APP_KAKAO_CID;
+  
+  const initializeNaverLogin = () => {
+    const naverLogin = new naver.LoginWithNaverId({
+      clientId: naverCid,
+      callbackUrl: 'http://localhost:3000/test', 
+      isPopup: false,
+      loginButton: { color: 'white', type: 1, height: '47' }
+    });
+    naverLogin.init();
+    window.location.href.includes("access_token");
+    const location = window.location.href.split('=')[1];
+    const sns_auth = location.split("&")[0];
+
+    naverLogin.getLoginStatus(async function(status){
+      console.log('ssss')
+    })
+  };
+  useEffect(()=>{
+    initializeNaverLogin();
+    
+  })
   return(
     <>
       <p>컴포넌트 경로 : src/comp/Test.js</p>
