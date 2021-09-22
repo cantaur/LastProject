@@ -336,7 +336,7 @@ function Sign(p){
             />
                 
               
-              <p onClick={()=>{window.location.href=naverUrl}}>네이버로그인 테스트용</p>
+              {/*<p onClick={()=>{window.location.href=naverUrl}}>네이버로그인 테스트용</p>*/}
           </div>
           
           <p className="info">Copyright © pium 2021.</p>

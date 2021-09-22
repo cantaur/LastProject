@@ -13,7 +13,7 @@ public class SignDTO {
     private String member_pw;
     private String member_platform;
     private String authKey;
-    private String authStatus;
+    //private String authStatus;
     private int member_enabled;
     private String authorities_name; //권한 이름
 

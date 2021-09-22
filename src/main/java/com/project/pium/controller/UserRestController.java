@@ -91,6 +91,7 @@ public class UserRestController {
 
 
 
+
     //로그인 첫 화면 요청 메소드
     @RequestMapping("/ajax/naver")
     public String login(HttpSession session) {
