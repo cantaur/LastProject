@@ -61,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/**/*.{js,html,css}", "/", "/static/**").permitAll()
                 .antMatchers("/built/**", "/images/**", "main.css", "/favicon*", "/site.webmanifest").permitAll()
-                .antMatchers("/sign/**","/login","/ajax/**","/signUpConfirm").permitAll() //login 페이지는 모두에게 접근이 허용된다.
+                .antMatchers("/sign/**","/login","/ajax/**","/signUpConfirm", "/test").permitAll() //login 페이지는 모두에게 접근이 허용된다.
                 .anyRequest().permitAll() //이외의 어떠한 요청은 인증이 되어있어야 접근이 가능하다.
             //.and()
                 //.csrf().ignoringAntMatchers("/sign/**") //기본적으로 springSecurity에선 post로 controller로 정보를 보내줄때 csrf라는 토큰이 필요한데 이것을 무시하기위한 경로
