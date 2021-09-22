@@ -7,7 +7,6 @@ import com.project.pium.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.scribejava.core.model.OAuth2AccessToken;
-import com.google.gson.Gson;
 import lombok.extern.java.Log;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,6 +122,15 @@ public class UserRestController {
 
 
         return apiResult;
+    }
+
+
+
+    @PostMapping("ajax/naverUser")
+    public String naverLogin(@RequestParam String token){
+        log.info("#token"+token);
+        return "success";
+
     }
 
 
