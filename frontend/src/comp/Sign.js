@@ -146,7 +146,7 @@ function Sign(p){
     axios.get(host+'/ajax/naver')
     .then(r=>{
       console.log(r);
-      naverUrlCng(r);
+      naverUrlCng(r.data);
     })
     .catch(e=>{
       console.log(e)
