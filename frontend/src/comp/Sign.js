@@ -134,6 +134,7 @@ function Sign(p){
   let { type, fail } = useParams();
   const history = useHistory()
 
+  let [naverUrl, naverUrlCng] = useState('');
 
   useEffect(()=>{
 
@@ -144,7 +145,11 @@ function Sign(p){
     if(fail != '' && fail != 'fail'){
       history.push('/sign/login')
     }
-    // initializeNaverLogin();
+
+    axios.get('/ajax/naver')
+    .then(r=>{
+      naverUrlCng(r.data)
+    })
 
   },[])
   
@@ -331,7 +336,7 @@ function Sign(p){
             />
                 
               
-
+              <p onClick={()=>{window.location.href=naverUrl}}>네이버로그인 테스트용</p>
           </div>
           
           <p className="info">Copyright © pium 2021.</p>
