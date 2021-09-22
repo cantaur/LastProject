@@ -106,7 +106,7 @@ public class UserRestController {
         return naverAuthUrl;
     }
 
-    //네이버 로그인 성공시 callback호출 메소드
+    //네이버 로그인 성공시 callback호출 메소드{"resultcode":"00","message":"success","response":{"id":"zr1Rcx61KbYcSBJ_WVOcqsUFUcvqQLPPWb20h-SaVB8","email":"kaeun3391@naver.com"}}
     @RequestMapping(value = "/test")
     public String callback(@RequestParam String code, @RequestParam String state, HttpSession session) throws IOException {
         log.info("여기는 callback");
@@ -115,21 +115,29 @@ public class UserRestController {
         log.info("#session"+session);
         log.info("#code"+code);
         log.info("#state"+state);
+
+
         ObjectNode userInfo = new ObjectMapper().readValue(naverLoginBO.getUserProfile(oauthToken), ObjectNode.class);
         log.info("#userInfo: "+userInfo);
         String apiResult = naverLoginBO.getUserProfile(oauthToken);
         log.info("apiResult : "+apiResult);
 
 
-        return apiResult;
+        return code;
     }
 
 
 
     @PostMapping("ajax/naverUser")
     @ResponseBody
-    public String naverLogin(@RequestBody Map <String, String>data){
-        log.info("#token"+data);
+    public String naverLogin(@RequestBody Map <String, String>data, HttpSession session){
+        log.info("#data"+data);
+        String access_token = data.get("access_token");
+        String state = data.get("state");
+        //OAuth2AccessToken oauthToken = naverLoginBO.getAccessToken(session, access_token, state);
+
+
+
         return "success";
     }
 
