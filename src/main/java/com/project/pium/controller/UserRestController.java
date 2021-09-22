@@ -123,7 +123,7 @@ public class UserRestController {
         log.info("apiResult : "+apiResult);
 
 
-        return code;
+        return "<script type=\"text/javascript\">window.location.href=\"http://localhost:8000/sign/login\"</script>";
     }
 
 
