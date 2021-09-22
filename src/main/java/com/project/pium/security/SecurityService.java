@@ -79,12 +79,12 @@ public class SecurityService implements UserDetailsService {
         List<MemberDTO> userInfo = memberMapper.selectAllByEmail(signDTO.getMember_email());
 
         if(userInfo.size() !=0){
-            log.info("이미 가입한 구글 사용자입니다.");
+            log.info("이미 가입한 구글 사용자");
             //이미 가입된 정보가 있을 경우 spring security 강제 로그인으로 넘김
             return "loginGoogle";
         }else{
             if(platform.equals("google")){
-                log.info("가입처리를 진행하겠습니다.");
+                log.info("가입처리 진행");
                 int flag = signMapper.signup(signDTO);
                 log.info("#flag"+flag);
                 updateUserRoll(signDTO);
