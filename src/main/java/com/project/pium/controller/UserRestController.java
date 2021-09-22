@@ -96,17 +96,12 @@ public class UserRestController {
     public String login(HttpSession session) {
         /* 네이버아이디로 인증 URL을 생성하기 위하여 naverLoginBO클래스의 getAuthorizationUrl메소드 호출 */
         String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
-        //https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=sE***************&
-        //redirect_uri=http%3A%2F%2F211.63.89.90%3A8090%2Flogin_project%2Fcallback&state=e68c269c-5ba9-4c31-85da-54c16c658125
-
-        //https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=QXwMhEJgn0WCLxz2R4V3&
-        //redirect_uri=http%3A%2F%2Flocalhost%3A8000%2Ftest&state=722b7f73-71dc-452e-8d67-702a851633f6
         log.info("네이버:" + naverAuthUrl);
 
         return naverAuthUrl;
     }
 
-    //네이버 로그인 성공시 callback호출 메소드{"resultcode":"00","message":"success","response":{"id":"zr1Rcx61KbYcSBJ_WVOcqsUFUcvqQLPPWb20h-SaVB8","email":"kaeun3391@naver.com"}}
+    //네이버 로그인 성공시 callback호출 메소드
     @RequestMapping(value = "/test")
     public String callback(@RequestParam String code, @RequestParam String state, HttpSession session) throws IOException {
         log.info("여기는 callback");
