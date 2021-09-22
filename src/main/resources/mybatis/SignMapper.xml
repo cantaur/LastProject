@@ -24,6 +24,7 @@
             m.member_seq AS member_seq,
             m.member_pw AS member_pw,
             m.member_email AS member_email,
+            m.member_platform AS member_platform,
             a.authorities_name AS authorities_name
         FROM member AS m
                  INNER JOIN member_auth AS ma

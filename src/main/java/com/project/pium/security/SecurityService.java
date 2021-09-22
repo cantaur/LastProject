@@ -33,9 +33,9 @@ public class SecurityService implements UserDetailsService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    /* DB에서 유저정보를 불러온다.
-     * Custom한 Userdetails 클래스를 리턴 해주면 된다.
-     * */
+    /**
+     * DB에서 유저정보를 불러와 Custom한 Userdetails 클래스를 리턴한다.
+     */
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
         log.info("#id : "+id);
@@ -50,24 +50,57 @@ public class SecurityService implements UserDetailsService {
         return new MemberPrincipalVO(userAuthes);
     }
 
-    //이메일 인증 완료 서비스 : member_auth 테이블에 추가(==user 권한 생성)
+    /**
+     * user 권한 생성(==member_auth 테이블에 추가)
+     * local 회원가입 시 ->이메일 인증 완료되면->user 권한 생성
+     * social 회원가입 시 ->user 권한 생성
+     */
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public String updateUserRoll(SignDTO signDTO){
-        List<MemberDTO> userInfo = memberMapper.selectAllByEmail(signDTO.getMember_email());
-        if(userInfo.size()!=0){
+        //List<MemberDTO> userInfo = memberMapper.selectAllByEmail(signDTO.getMember_email());
+
             int userNo = signMapper.findUserNo(signDTO.getMember_email());
             log.info("#userNo : "+userNo);
             int roleNo = signMapper.findRoleNo("user");
             log.info("#roleNo : "+roleNo);
             signMapper.userRoleSave(userNo, roleNo);
-        }
+
         return "success";
     }
+    
+    //social 회원가입 서비스
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
+    public String signUpGoogle(SignDTO signDTO) throws Exception{
+        signDTO.setMember_pw(bCryptPasswordEncoder.encode(signDTO.getMember_pw())); //암호화
+        log.info("#입력된 이메일주소: "+signDTO.getMember_email());
+        log.info("#유저 비밀번호 :"+signDTO.getMember_pw());
+        log.info("#플랫폼 : "+signDTO.getMember_platform());
+        String platform= signDTO.getMember_platform();
+        List<MemberDTO> userInfo = memberMapper.selectAllByEmail(signDTO.getMember_email());
+
+        if(userInfo.size() !=0){
+            log.info("이미 가입한 구글 사용자입니다.");
+            //이미 가입된 정보가 있을 경우 spring security 강제 로그인으로 넘김
+            return "loginGoogle";
+        }else{
+            if(platform.equals("google")){
+                log.info("가입처리를 진행하겠습니다.");
+                int flag = signMapper.signup(signDTO);
+                log.info("#flag"+flag);
+                updateUserRoll(signDTO);
+                return "loginGoogle";
+            }
+
+        }
+
+        return platform;
+    }
+    
 
 
 
 
-    //회원가입 서비스 : member 테이블에 추가, 인증 이메일 발송, 가입 대기 상태
+    //local 회원가입 서비스 : member 테이블에 추가, 인증 이메일 발송, 가입 대기 상태
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public String insertUser(SignDTO signDTO) throws Exception{
 
@@ -92,22 +125,9 @@ public class SecurityService implements UserDetailsService {
                 signMapper.authkeySave(setAuthKey,email);
 
                 return "success";
-
-            }else{
-                int flag = signMapper.signup(signDTO);
-                if (flag > 0) {
-
-                    int userNo = signMapper.findUserNo(signDTO.getMember_email());
-                    log.info("#userNo : "+userNo);
-                    int roleNo = signMapper.findRoleNo("user");
-                    log.info("#roleNo : "+roleNo);
-                    signMapper.userRoleSave(userNo, roleNo);
-
-                    return "success";
-                }
-                return "fail";
             }
 
         }
+        return "fail";
     }
 }

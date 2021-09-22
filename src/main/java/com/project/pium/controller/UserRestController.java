@@ -1,5 +1,6 @@
 package com.project.pium.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.project.pium.domain.SignDTO;
 import com.project.pium.security.SecurityService;
 import com.project.pium.service.MemberService;
@@ -40,9 +41,8 @@ public class UserRestController {
 
         String msg = userDetailsService.insertUser(signDTO);
         if(msg.equals("Duplicated")){
-            log.info("실패하면 이게 뜬다아아아ㅏㅇ");
+            log.info("중복된 이메일로 로그인 시도");
             return "fail";
-
         }else{
             return "success";
         }
@@ -53,24 +53,20 @@ public class UserRestController {
     @PostMapping("/ajax/google/login")
     public String saveUserGoogle(@RequestBody SignDTO signDTO, HttpServletRequest request) throws Exception {
 
-
-        String msg = userDetailsService.insertUser(signDTO);
+        String msg = userDetailsService.signUpGoogle(signDTO);
         String mEmail=signDTO.getMember_email();
-        if(msg.equals("Duplicated")){
+        if(msg.equals("loginGoogle")){ //이미 가입된 구글ID로 판별이 되었을 때 security 강제 로그인 시도
             String gEmail = memberService.findUserEmail(mEmail);
-            log.info("#gEmail"+gEmail);
             UserDetails ckUserDetails = userDetailsService.loadUserByUsername(gEmail);
-            Authentication authentication = new UsernamePasswordAuthenticationToken(ckUserDetails, ckUserDetails.getPassword(), ckUserDetails.getAuthorities());
+            Authentication authentication = new UsernamePasswordAuthenticationToken(ckUserDetails.getUsername(), ckUserDetails.getPassword(), ckUserDetails.getAuthorities());
 
             SecurityContext securityContext = SecurityContextHolder.getContext();
             securityContext.setAuthentication(authentication);
             HttpSession session = request.getSession(true);
             session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
-
             return "successGoogleLogin";
-
         }else{
-            return "success";
+            return "successGoogleSignup";
         }
     }
 
@@ -86,8 +82,7 @@ public class UserRestController {
     @GetMapping("/ajax/loginUser")
     @ResponseBody
     public Object currentUserName(Principal principal) {
-        log.info("seq 줄수있는지"+principal.getName());
-        return principal.getClass();
+        return principal.getName();
     }
 
 
