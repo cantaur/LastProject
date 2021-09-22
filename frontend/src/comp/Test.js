@@ -1,5 +1,7 @@
 
+import axios from 'axios';
 import React, {useState, useEffect} from 'react';
+import { useLocation } from 'react-router-dom';
 import {pub, host} from './Helper.js'
 
 const { naver } = window;
@@ -7,28 +9,35 @@ const { naver } = window;
 function Test(){
   const googleCid = process.env.REACT_APP_GOOGLE_CID;
   const naverCid = process.env.REACT_APP_NAVER_CID;
+  const naverSecret = process.env.REACT_APP_NAVERS_CID;
   const kakaoCid = process.env.REACT_APP_KAKAO_CID;
-  
-  const initializeNaverLogin = () => {
-    const naverLogin = new naver.LoginWithNaverId({
-      clientId: naverCid,
-      callbackUrl: 'http://localhost:3000/test', 
-      isPopup: false,
-      loginButton: { color: 'white', type: 1, height: '47' }
-    });
-    naverLogin.init();
-    window.location.href.includes("access_token");
-    const location = window.location.href.split('=')[1];
-    const sns_auth = location.split("&")[0];
+  const location = useLocation();
+  function naverGetId(){
+    if (!location.hash) return;
+    const token = location.hash.split('=')[1].split('&')[0];
+    const state = location.hash.split('&state=')[1].split('&token_type=')[0]
 
-    naverLogin.getLoginStatus(async function(status){
-      console.log('ssss')
-    })
-  };
+
+    // const test = 'https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id='+naverCid+'&client_secret='+naverSecret+'&code='+token+'&state='+state;
+
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    const { data } = axios.get( "https://openapi.naver.com/v1/nid/me", config ); 
+    console.log(data); 
+
+  }
+
+
+
+  // function test(){
+  //   axios.get('https://openapi.naver.com/v1/nid/me')
+  //   .then((r)=>{
+  //     console.log(r)
+  //   })
+  // }
   useEffect(()=>{
-    initializeNaverLogin();
+    naverGetId();
     
-  })
+  },[])
   return(
     <>
       <p>컴포넌트 경로 : src/comp/Test.js</p>

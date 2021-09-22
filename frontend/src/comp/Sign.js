@@ -7,6 +7,7 @@ import {CSSTransition} from 'react-transition-group';
 import {connect} from 'react-redux';
 import GoogleLogin from 'react-google-login';
 import KakaoLogin from 'react-kakao-login';
+import NaverLogin from 'react-naver-login';
 
 const { naver } = window;
 
@@ -16,15 +17,15 @@ function Sign(p){
   const kakaoCid = process.env.REACT_APP_KAKAO_CID;
 
 
-  const initializeNaverLogin = () => {
-    const naverLogin = new naver.LoginWithNaverId({
-      clientId: naverCid,
-      callbackUrl: 'http://localhost:3000/test', 
-      isPopup: false,
-      loginButton: { color: 'white', type: 1, height: '47' }
-    });
-    naverLogin.init();
-  };
+  // const initializeNaverLogin = () => {
+  //   const naverLogin = new naver.LoginWithNaverId({
+  //     clientId: naverCid,
+  //     callbackUrl: 'http://localhost:3000/test', 
+  //     isPopup: false,
+  //     loginButton: { color: 'white', type: 1, height: '47' }
+  //   });
+  //   naverLogin.init();
+  // };
 
 
   const onFailure = async(r) => {
@@ -130,6 +131,7 @@ function Sign(p){
   let { type, fail } = useParams();
   const history = useHistory()
 
+  let [naverUrl, naverUrlCng] = useState('');
 
   useEffect(()=>{
 
@@ -140,7 +142,14 @@ function Sign(p){
     if(fail != '' && fail != 'fail'){
       history.push('/sign/login')
     }
-    initializeNaverLogin();
+    // initializeNaverLogin();
+    axios.get(host+'/ajax/naver')
+    .then(r=>{
+      naverUrlCng(r);
+    })
+    .catch(e=>{
+      console.log(e)
+    })
 
   },[])
   
@@ -286,8 +295,10 @@ function Sign(p){
 
             <div className="socialWrap" >
 
-              <div className="socialBtn" >
-                <div id="naverIdLogin"></div>
+              <div className="socialBtn" onClick={()=>{
+                window.location.href = naverUrl;
+              }}>
+                {/* <div id="naverIdLogin"></div> */}
                 <img src={pub.img+'naver.png'}/>
               </div>
 
