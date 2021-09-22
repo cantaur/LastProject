@@ -16,13 +16,16 @@ function Test(){
     if (!location.hash) return;
     const token = location.hash.split('=')[1].split('&')[0];
     const state = location.hash.split('&state=')[1].split('&token_type=')[0]
-
-
-    // const test = 'https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id='+naverCid+'&client_secret='+naverSecret+'&code='+token+'&state='+state;
-
-    const config = { headers: { Authorization: `Bearer ${token}` } };
-    const { data } = axios.get( "https://openapi.naver.com/v1/nid/me", config ); 
-    console.log(data); 
+    axios.post(host+'/ajax/naverUser',{
+      'access_token' : token,
+      'state' : state
+    })
+    .then(r=>{
+      console.log(r)
+    })
+    .catch(e=>{
+      console.log(e)
+    })
 
   }
 

@@ -16,6 +16,9 @@ function Sign(p){
   const naverCid = process.env.REACT_APP_NAVER_CID;
   const kakaoCid = process.env.REACT_APP_KAKAO_CID;
 
+  const _clickSnsLoginNaver = (e) => {
+    let naverid = e.id;
+  }
 
   // const initializeNaverLogin = () => {
   //   const naverLogin = new naver.LoginWithNaverId({
@@ -131,7 +134,6 @@ function Sign(p){
   let { type, fail } = useParams();
   const history = useHistory()
 
-  let [naverUrl, naverUrlCng] = useState('');
 
   useEffect(()=>{
 
@@ -143,14 +145,6 @@ function Sign(p){
       history.push('/sign/login')
     }
     // initializeNaverLogin();
-    axios.get(host+'/ajax/naver')
-    .then(r=>{
-      console.log(r);
-      naverUrlCng(r.data);
-    })
-    .catch(e=>{
-      console.log(e)
-    })
 
   },[])
   
@@ -293,20 +287,33 @@ function Sign(p){
               <p className="toolTip" style={{'right':'-13px'}}><div></div>구글로 로그인</p>
 
             </div>
+            <NaverLogin
+              clientId={naverCid}
+              callbackUrl={"http://localhost:8000/test"}
+              render={renderProps=>(
+                <div className="socialWrap">
+                <div className="socialBtn" onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                  <img src={pub.img+'naver.png'}/>
+                </div>
+                <p className="toolTip"><div></div>네이버로 로그인</p>
+                </div>
+              )}
+              onSuccess={(e)=>_clickSnsLoginNaver(e)}
+              onFail={console.error}
+              onLogout={console.info}
+            />
 
-            <div className="socialWrap" >
+            {/* <div className="socialWrap" >
 
-              <div className="socialBtn" onClick={()=>{
-                window.location.href = naverUrl;
-              }}>
-                {/* <div id="naverIdLogin"></div> */}
+              <div className="socialBtn" >
+                <div id="naverIdLogin"></div>
                 <img src={pub.img+'naver.png'}/>
               </div>
 
               
               <p className="toolTip"><div></div>네이버로 로그인</p>
 
-            </div>
+            </div> */}
 
 
             <KakaoLogin className="socialBtn"
