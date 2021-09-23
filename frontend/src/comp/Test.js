@@ -38,7 +38,13 @@ function Test(){
   //   })
   // }
   useEffect(()=>{
-    naverGetId();
+      axios.get(host+'/ajax/myproject')
+      .then(r=>{
+          console.log(r)
+      })
+      .catch(e=>{
+          console.log(e)
+      })
     
   },[])
   return(
@@ -49,6 +55,10 @@ function Test(){
       <p>예시: npm install react-redux --save (yarn 사용시 yarn add react-redux --save)</p>
       <p>페이지 추가시 App.js에서 Test 컴포넌트 있는 부분 보시고 추가하시면 됩니당 잘 안되면 문의</p>
       <p>그 외에는 마음대로 작업하세용 다 지워도댐 ㄱㄱㄱ</p>
+
+        <p onClick={()=>{
+
+        }}>테스트용버튼</p>
     </>
   )
 }

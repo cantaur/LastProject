@@ -9,10 +9,18 @@ import java.util.List;
 @Repository
 @Mapper
 public interface ProjectMapper {
+    List<ProjectDTO> myProject(long memberSeq);
+
+
+
+
+
+
+
+
     List<ProjectDTO> projectSelectAll();
     List<ProjectDTO> projectSelectProceeding();
     List<ProjectDTO> projectSelectEnd();
-    Long selectByMemberSeq(String member_email);
     void insert(ProjectDTO projectDTO);
     void updateStatus(ProjectDTO projectDTO);
     void updateIsdelete(ProjectDTO projectDTO);

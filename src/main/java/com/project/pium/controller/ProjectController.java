@@ -1,21 +1,42 @@
 package com.project.pium.controller;
 
 import com.project.pium.domain.ProjectDTO;
+import com.project.pium.service.MemberService;
 import com.project.pium.service.ProjectService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.plaf.SpinnerUI;
+import java.security.Principal;
 import java.util.List;
 
 @Log
 @RestController
-@RequestMapping("project")
 @AllArgsConstructor
 @ResponseBody
 public class ProjectController {
 
     private ProjectService projectService;
+    private MemberService memberService;
+
+
+    //로그인한 유저가 참여중인 프로젝트 검색
+    @GetMapping ("/ajax/myproject")
+    public List<ProjectDTO> myProject(Principal principal){
+        log.info("뭐지??");
+        String sessionEmail = principal.getName();
+        long sessionSeq = memberService.findUserNo(sessionEmail);
+        List<ProjectDTO> myProject = projectService.myProject(sessionSeq);
+        log.info("#myProject"+myProject);
+        return myProject;
+    }
+
+
+
+
+
+
 
     @GetMapping("searchProject")
     public List<ProjectDTO> list(){
@@ -35,12 +56,7 @@ public class ProjectController {
         List<ProjectDTO> list = projectService.projectSelectEnd();
         return list;
     }
-    //http://127.0.0.1:8000/project/projectSelectEnd 호출 성공
-    @GetMapping("searchMemberSeq/{member_email}")
-    public Long selectByMemberSeq(@PathVariable("member_email") String member_email){
-        Long projectDTO = projectService.selectByMemberSeqS(member_email);
-        return projectDTO;
-    }
+
     //http://127.0.0.1:8000/project/searchMemberSeq/abcd1234@gmail.com 호출 성공
     @PostMapping("insert")
     public void insert(@RequestBody ProjectDTO projectDTO){

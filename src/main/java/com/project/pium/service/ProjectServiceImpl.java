@@ -16,6 +16,20 @@ public class ProjectServiceImpl implements ProjectService {
     private ProjectMapper projectMapper;
 
     @Override
+    public List<ProjectDTO> myProject(long memberSeq) {
+        return projectMapper.myProject(memberSeq);
+    }
+
+
+
+
+
+
+
+
+
+
+    @Override
     public List<ProjectDTO> listS() {
         return projectMapper.projectSelectAll();
     }
@@ -30,10 +44,7 @@ public class ProjectServiceImpl implements ProjectService {
         return projectMapper.projectSelectEnd();
     }
 
-    @Override
-    public Long selectByMemberSeqS(String member_email) {
-        return projectMapper.selectByMemberSeq(member_email);
-    }
+
 
     @Override
     public void insertS(ProjectDTO projectDTO) {

@@ -4,6 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.ProjectMapper">
 
+    <!--로그인한 유저가 참여중인 프로젝트 검색-->
+    <select id="myProject" resultType="ProjectDTO" parameterType="long">
+        select * from project where project_seq in(SELECT project_seq FROM project_member where member_seq = #{member_seq})
+    </select>
+
+
+
     <!--프로젝트 전체 검색-->
     <select id="projectSelectAll" resultType="ProjectDTO">
         SELECT * FROM project
@@ -16,10 +23,7 @@
     <select id="projectSelectEnd" resultType="ProjectDTO">
         SELECT * FROM project where project_status = "1"
     </select>
-    <!--project 테이블 memberSEQ 데이터 추출-->
-    <select id="selectByMemberSeq" resultType="long" parameterType="String">
-        SELECT member_seq FROM member WHERE member_email = #{member_email};
-    </select>
+
     <!--프로젝트 생성-->
     <insert id="insert" parameterType="ProjectDTO">
         INSERT INTO project (project_title, project_content, project_status, project_isdelete, member_seq)

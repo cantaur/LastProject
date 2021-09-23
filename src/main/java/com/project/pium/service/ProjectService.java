@@ -5,10 +5,14 @@ import com.project.pium.domain.ProjectDTO;
 import java.util.List;
 
 public interface ProjectService {
+    List<ProjectDTO> myProject(long memberSeq);
+
+
+
     List<ProjectDTO> listS();
     List<ProjectDTO> projectSelectProceeding();
     List<ProjectDTO> projectSelectEnd();
-    Long selectByMemberSeqS(String member_email);
+
     void insertS(ProjectDTO projectDTO);
     void updateStatus(ProjectDTO projectDTO);
     void updateIsdelete(ProjectDTO projectDTO);

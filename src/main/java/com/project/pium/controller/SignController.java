@@ -28,11 +28,13 @@ import java.util.Map;
 /**
  * 회원가입을 위한 RestController
  * 인증메일 컨펌
+ * 소셜 로그인 구현
+ * 앱 실행 시 세션값 프론트에 넘김
  */
 
 @Log
 @RestController
-public class UserRestController {
+public class SignController {
 
     @Autowired
     private SecurityService userDetailsService;
@@ -95,10 +97,10 @@ public class UserRestController {
 
 
 
-    //로그인 첫 화면 요청 메소드
+    //네이버아이디로 인증 URL을 생성하기 위해 pium앱 로그인페이지에서 호출되는 메소드
     @RequestMapping("/ajax/naver")
     public String login(HttpSession session) {
-        /* 네이버아이디로 인증 URL을 생성하기 위하여 naverLoginBO클래스의 getAuthorizationUrl메소드 호출 */
+
         String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
         log.info("네이버:" + naverAuthUrl);
 
@@ -142,6 +144,7 @@ public class UserRestController {
 
 
 
+    //앱 실행시 세션값이 있으면 프론트에 email과 seq 넘겨주고, 세션이 없으면 false 반환
     @GetMapping("/ajax/loginUser")
     @ResponseBody
     public Object currentUserName(Principal principal) {
@@ -152,15 +155,10 @@ public class UserRestController {
         }else{
             HashMap<String, Object> userInfo = new HashMap<>();
             String sessionEmail = principal.getName();
-            int sessionSeq = memberService.findUserNo(sessionEmail);
+            long sessionSeq = memberService.findUserNo(sessionEmail);
             userInfo.put("email",sessionEmail);
             userInfo.put("seq",sessionSeq);
             return userInfo;
         }
-
     }
-
-    //만약에 이게 없으면 펄스폭탄을 줘 뭔소리야 ㅋㅋ
-
-
 }
