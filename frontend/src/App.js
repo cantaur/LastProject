@@ -25,92 +25,65 @@ import {connect} from 'react-redux';
 
 
 function App(p) {
-  console.log(p.loginUser)
   return (
-    <>
-    {
-      p.loginUser.email == '' &&
-      <Switch>
-        <Route path='/' exact>
-          <Sign/>
-        </Route>
-        <Route path='/sign/:type' exact>
-          <Sign/>
-        </Route>
-        <Route path='/sign/:type/:fail' exact>
-          <Sign/>
-        </Route>
-        <Route path='/sign' exact>
-          <Sign/>
-        </Route>
+    <Switch>
+      <Route path='/' exact>
+        <Sign/>
+      </Route>
+      <Route path='/sign/:type' exact>
+        <Sign/>
+      </Route>
+      <Route path='/sign/:type/:fail' exact>
+        <Sign/>
+      </Route>
+      <Route path='/sign' exact>
+        <Sign/>
+      </Route>
 
-        <Route path='/login' exact>
-          <Sign/>
-        </Route>
+      <Route path='/login' exact>
+        <Sign/>
+      </Route>
 
-        <Route path='/signUpConfirm' exact>
-          <EmailAuth/>
-        </Route>
+      <Route path='/signUpConfirm' exact>
+        <EmailAuth/>
+      </Route>
 
-        <Route path='/emailSend/:email' exact>
-          <EmailSend/>
-        </Route>
+      <Route path='/emailSend/:email' exact>
+        <EmailSend/>
+      </Route>
+    
+      <Route path='/' exact>
+        <ProjectList/>
+      </Route>
+      <Route path='/project' exact>
+        <ProjectList/>
+      </Route>
+      <Route path='/project/:seq/:page' exact>
+        <ProjectView/>
+      </Route>
+        
 
-        <Route path='/test' exact>
-          <Test/>
-        </Route>
+      <Route path='/test' exact>
+        <Test/>
+      </Route>
 
-        <Route path='/test2' exact>
-          <Test2/>
-        </Route>
+      <Route path='/test2' exact>
+        <Test2/>
+      </Route>
 
-        <Route path='/err' exact>
-          <ErrPage/>
-        </Route>
+      <Route path='/err' exact>
+        <ErrPage/>
+      </Route>
 
-        <Route path='/404' exact>
-          <NonePage/>
-        </Route>
+      <Route path='/404' exact>
+        <NonePage/>
+      </Route>
 
-        <Route>
-          <NonePage/>
-        </Route>
-      </Switch>
-    }
-    {
-      p.loginUser.email != '' && 
-      <Switch>
-        <Route path='/' exact>
-          <ProjectList/>
-        </Route>
-        <Route path='/project' exact>
-          <ProjectList/>
-        </Route>
-        <Route path='/project/:seq/:page' exact>
-          <ProjectView/>
-        </Route>
-        <Route path='/test' exact>
-          <Test/>
-        </Route>
+      <Route>
+        <NonePage/>
+      </Route>
+    </Switch>
 
-        <Route path='/test2' exact>
-          <Test2/>
-        </Route>
-
-        <Route path='/err' exact>
-          <ErrPage/>
-        </Route>
-
-        <Route path='/404' exact>
-          <NonePage/>
-        </Route>
-
-        <Route>
-          <NonePage/>
-        </Route>
-      </Switch>
-    }    
-    </>
   );
 }
 function transReducer(state){
