@@ -18,12 +18,12 @@ const colors = [
   '#596E80',
   '#F99620',
 ]
-// const pages = {
-//   'list':'/project',
-//   'carender':'/project/carendar'
-// }
+const pages = [
+  'calender',
+  'kanban'
+]
 
 const host = 'http://localhost:8000';
 
 
-export {pub, colors, host};
+export {pub, colors, host, pages};

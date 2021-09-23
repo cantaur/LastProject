@@ -8,6 +8,15 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { combineReducers, createStore } from 'redux';
 
+function pageInfo(state = '', action){
+  switch (action.type){
+    case 'pagePush':
+      return action.val;
+    
+    default:
+      return state;
+  }
+}
 function loading(state = false, action){
   switch (action.type){
     case 'lodingOn':
@@ -32,7 +41,7 @@ function datePickerModal(state=false, action){
   }
 }
 
-let store = createStore(combineReducers({datePickerModal, loading}));
+let store = createStore(combineReducers({datePickerModal, loading, pageInfo}));
 
 
 ReactDOM.render(
@@ -47,7 +56,4 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

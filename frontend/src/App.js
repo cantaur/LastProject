@@ -67,7 +67,7 @@ function App() {
         <Route path='/project' exact>
           <ProjectList/>
         </Route>
-        <Route path='/project/:page/:seq' exact>
+        <Route path='/project/:seq/:page' exact>
           <ProjectView/>
         </Route>
 
@@ -87,6 +87,9 @@ function App() {
           <ErrPage/>
         </Route>
 
+        <Route path='/404' exact>
+          <NonePage/>
+        </Route>
         <Route>
           <NonePage/>
         </Route>
