@@ -12,30 +12,30 @@ import ErrPage from './comp/ErrPage.js'
 import NonePage from './comp/NonePage.js'
 import ProjectList from './comp/ProjectList.js'
 import ProjectView from './comp/ProjectView.js'
+import {host} from './comp/Helper.js'
+
 import axios from 'axios';
 import { Link, Route, Switch, BrowserRouter as Router } from "react-router-dom";
+import {connect} from 'react-redux';
 
 
 
 
 
 
-function App() {
 
-
-  let [logInCheck, logInCheckCng] = useState(false);
-
-  useEffect(() => {
-    axios.get('/pium/rest/session')
-    .then((r)=>{
-      logInCheckCng(r.data)
+function App(p) {
+  useEffect(()=>{
+    axios.get(host+'/ajax/loginUser')
+    .then(r=>{
+      console.log(r.data)
     })
-    .catch((e)=>{
-      console.error(e)
-      logInCheckCng(false)
+    .catch(e=>{
+      console.log(e)
     })
-    
   },[])
+  
+
 
 
   return (
@@ -97,5 +97,10 @@ function App() {
     </>
   );
 }
+function transReducer(state){
+  return {
+    loginUser : state.loginUser,
+  }
+}
 
-export default App;
+export default connect(transReducer)(App);

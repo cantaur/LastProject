@@ -137,7 +137,6 @@ function Sign(p){
   let [naverUrl, naverUrlCng] = useState('');
 
   useEffect(()=>{
-
     if(type != 'login' && type != 'signup'){
       history.push('/sign/login')
     }

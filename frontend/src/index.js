@@ -8,6 +8,18 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { combineReducers, createStore } from 'redux';
 
+
+function loginUser(state={id:'',seq:''}, action){
+  switch (action.type){
+    case 'login':
+      return {id:action.id, seq:action.seq}
+    case 'logout':
+      return {id:'', seq:''}
+    default:
+      return {id:'', seq:''}
+  }
+}
+
 function pageInfo(state = '', action){
   switch (action.type){
     case 'pagePush':
