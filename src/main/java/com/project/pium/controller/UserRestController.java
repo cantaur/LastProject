@@ -145,15 +145,16 @@ public class UserRestController {
     @GetMapping("/ajax/loginUser")
     @ResponseBody
     public Object currentUserName(Principal principal) {
-        HashMap<String, Object> userInfo = new HashMap<>();
-        String sessionEmail = principal.getName();
-        int sessionSeq = memberService.findUserNo(sessionEmail);
-        userInfo.put("sessionEmail",sessionEmail);
-        userInfo.put("sessionSeq",sessionSeq);
+
         if(principal ==null){
             return "false";
 
         }else{
+            HashMap<String, Object> userInfo = new HashMap<>();
+            String sessionEmail = principal.getName();
+            int sessionSeq = memberService.findUserNo(sessionEmail);
+            userInfo.put("sessionEmail",sessionEmail);
+            userInfo.put("sessionSeq",sessionSeq);
             return userInfo;
         }
 
