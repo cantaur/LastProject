@@ -8,6 +8,15 @@
         select * from member
     </select>
 
+    <select id="findUserNo" resultType="Integer" parameterType="String">
+        SELECT member_seq FROM member WHERE member_email = #{member_email}
+    </select>
+
+
+
+
+
+
     <select id="findUserEmail" resultType="String" parameterType="String">
         select member_email from member where member_email=#{member_email}
     </select>

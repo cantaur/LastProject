@@ -13,6 +13,7 @@ public interface MemberMapper {
     String findUserEmail(String mEmail);
     List<MemberDTO> selectAllByEmail(String mEmail);
     List<MemberDTO> selectAllByMseq(long mSEQ);
+    int findUserNo(String id);
 
 
     void insertUser(MemberDTO memberDTO);

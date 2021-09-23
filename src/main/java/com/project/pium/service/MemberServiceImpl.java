@@ -35,6 +35,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public int findUserNo(String id) {
+        return memberMapper.findUserNo(id);
+    }
+
+    @Override
     public void insertUser(MemberDTO memberDTO) {
         memberMapper.insertUser(memberDTO);
     }

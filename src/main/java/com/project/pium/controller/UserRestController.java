@@ -20,7 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.Map;
+
 
 
 /**
@@ -39,6 +41,7 @@ public class UserRestController {
 
     private NaverLoginBO naverLoginBO;
     private String apiResult = null;
+
 
     @Autowired
     private void setNaverLoginBO(NaverLoginBO naverLoginBO) {
@@ -139,27 +142,24 @@ public class UserRestController {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @GetMapping("/ajax/loginUser")
     @ResponseBody
     public Object currentUserName(Principal principal) {
-        return principal.getName();
+        HashMap<String, Object> userInfo = new HashMap<>();
+        String sessionEmail = principal.getName();
+        int sessionSeq = memberService.findUserNo(sessionEmail);
+        userInfo.put("sessionEmail",sessionEmail);
+        userInfo.put("sessionSeq",sessionSeq);
+        if(principal ==null){
+            return "false";
+
+        }else{
+            return userInfo;
+        }
+
     }
 
+    //만약에 이게 없으면 펄스폭탄을 줘 뭔소리야 ㅋㅋ
 
 
 }
