@@ -149,8 +149,8 @@ function Sign(p){
     .then(r=>{
       naverUrlCng(r.data)
     })
-
   },[])
+  
   
 
   return(
@@ -347,7 +347,8 @@ function Sign(p){
 }
 function transReducer(state){
   return {
-    loading : state.loading
+    loading : state.loading,
+    loginUser : state.loginUser
   }
 }
 

@@ -20,15 +20,7 @@ function ProjectList(p){
     <>
       <div className="pListTop outerWrap">
         <div className="innerWrap">
-          <img src={pub.img+'logo.svg'} onClick={()=>{
-            axios.get(host+'/ajax/loginUser')
-            .then((r)=>{
-              console.log(r);
-            })
-            .catch((e)=>{
-              console.log(e)
-            })
-          }}/>
+          <img src={pub.img+'logo.svg'}/>
           <Dropdown>
             <Dropdown.Toggle variant="secondary" size="sm" id="dropdown-basic">
               test@gmail.com
@@ -39,7 +31,9 @@ function ProjectList(p){
               <Dropdown.Item onClick={()=>{
                 setModalShow(true)
               }}style={{'fontSize':'.8rem'}}>프로젝트 생성</Dropdown.Item>
-              <Dropdown.Item href="sign/login" style={{'fontSize':'.8rem'}}>로그아웃</Dropdown.Item>
+              <Dropdown.Item href="sign/login" style={{'fontSize':'.8rem'}} onClick={()=>{
+                p.dispatch({type:'logout'})
+              }}>로그아웃</Dropdown.Item>
             
             </Dropdown.Menu>
           </Dropdown>
@@ -172,6 +166,7 @@ function MyVerticallyCenteredModal(p) {
 function transReducer(state){
   return {
     datePickerModal : state.datePickerModal,
+    loginUser : state.loginUser
   }
 }
 

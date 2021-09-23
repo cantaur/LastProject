@@ -25,22 +25,15 @@ import {connect} from 'react-redux';
 
 
 function App(p) {
-  useEffect(()=>{
-    axios.get(host+'/ajax/loginUser')
-    .then(r=>{
-      console.log(r.data)
-    })
-    .catch(e=>{
-      console.log(e)
-    })
-  },[])
-  
-
-
-
+  console.log(p.loginUser)
   return (
     <>
+    {
+      p.loginUser.email == '' &&
       <Switch>
+        <Route path='/' exact>
+          <Sign/>
+        </Route>
         <Route path='/sign/:type' exact>
           <Sign/>
         </Route>
@@ -63,18 +56,6 @@ function App(p) {
           <EmailSend/>
         </Route>
 
-
-        <Route path='/project' exact>
-          <ProjectList/>
-        </Route>
-        <Route path='/project/:seq/:page' exact>
-          <ProjectView/>
-        </Route>
-
-        <Route path='/' exact>
-          <Sign/>
-        </Route>
-
         <Route path='/test' exact>
           <Test/>
         </Route>
@@ -90,10 +71,45 @@ function App(p) {
         <Route path='/404' exact>
           <NonePage/>
         </Route>
+
         <Route>
           <NonePage/>
         </Route>
       </Switch>
+    }
+    {
+      p.loginUser.email != '' && 
+      <Switch>
+        <Route path='/' exact>
+          <ProjectList/>
+        </Route>
+        <Route path='/project' exact>
+          <ProjectList/>
+        </Route>
+        <Route path='/project/:seq/:page' exact>
+          <ProjectView/>
+        </Route>
+        <Route path='/test' exact>
+          <Test/>
+        </Route>
+
+        <Route path='/test2' exact>
+          <Test2/>
+        </Route>
+
+        <Route path='/err' exact>
+          <ErrPage/>
+        </Route>
+
+        <Route path='/404' exact>
+          <NonePage/>
+        </Route>
+
+        <Route>
+          <NonePage/>
+        </Route>
+      </Switch>
+    }    
     </>
   );
 }

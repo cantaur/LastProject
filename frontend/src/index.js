@@ -7,16 +7,21 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { combineReducers, createStore } from 'redux';
+import axios from 'axios';
+import {host} from './comp/Helper.js'
 
 
-function loginUser(state={id:'',seq:''}, action){
+
+// let loginSample = {email:'test@gmail.com', seq: '1'}
+
+function loginUser(state={email:'', seq:''}, action){
   switch (action.type){
     case 'login':
-      return {id:action.id, seq:action.seq}
+      return {email:action.email, seq:action.seq}
     case 'logout':
-      return {id:'', seq:''}
+      return {email:'', seq:''}
     default:
-      return {id:'', seq:''}
+      return {email:'', seq:''}
   }
 }
 
@@ -41,7 +46,6 @@ function loading(state = false, action){
 
 }
 
-
 function datePickerModal(state=false, action){
   switch (action.type){
     case 'modalOn':
@@ -53,7 +57,27 @@ function datePickerModal(state=false, action){
   }
 }
 
-let store = createStore(combineReducers({datePickerModal, loading, pageInfo}));
+let store = createStore(combineReducers({datePickerModal, loading, pageInfo,loginUser}));
+
+
+axios.get(host+'/ajax/loginUser')
+.then(r=>{
+  console.log(r)
+  if(r.data == 'false'){
+    store.dispatch({type:'logout'})
+  }else {
+    if(r.data.email){
+      store.dispatch({type:'login', email:r.data.email, seq:r.data.seq})
+    }else {
+      store.dispatch({type:'logout'})
+    }
+  }
+})
+.catch(e=>{
+  console.log(e)
+  store.dispatch({type:'logout'})
+})
+console.log(store.getState().loginUser)
 
 
 ReactDOM.render(
