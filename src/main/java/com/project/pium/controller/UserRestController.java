@@ -153,8 +153,8 @@ public class UserRestController {
             HashMap<String, Object> userInfo = new HashMap<>();
             String sessionEmail = principal.getName();
             int sessionSeq = memberService.findUserNo(sessionEmail);
-            userInfo.put("sessionEmail",sessionEmail);
-            userInfo.put("sessionSeq",sessionSeq);
+            userInfo.put("email",sessionEmail);
+            userInfo.put("seq",sessionSeq);
             return userInfo;
         }
 
