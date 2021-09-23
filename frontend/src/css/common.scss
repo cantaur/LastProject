@@ -120,8 +120,6 @@ $c2d:#dbbf31;
   }
 
 }
-
-
 //default end
 
 // Sign 
@@ -583,7 +581,7 @@ $c2d:#dbbf31;
 }
 
 
-//view 
+//view (headside)
 
 .viewOutWrap{
   width: 100vw;
@@ -622,35 +620,21 @@ $c2d:#dbbf31;
         margin:0px 4px;
         margin-left: 5px;
         font-size: .8rem;
-        color:#aaa;
+        color:#000;
       }
     }
     .rightWrap{
       display: flex;
       align-items: center;
-      .searchBox{
-        display: flex;
-        position: relative;
+      .searchBtn{
         margin-right: 20px;
-        input{
-          font-size: .75rem;
-          border-radius: 100px;
-          padding-top: .1rem;
-          padding-bottom: .12rem;
-          padding-left: .6rem;
-          padding-right: 1.2rem;
-          box-shadow: none;
-        }
-        i{
-          position: absolute;
-          right: 8px;
-          top:6px;
-          cursor: pointer;
-        }
+        font-size: 1.3rem;
+        cursor: pointer;
       }
       .noticeWrap{
         margin-right: 40px;
         position: relative;
+        cursor: pointer;
         i{
           font-size: 1.4rem;
         }
@@ -675,6 +659,36 @@ $c2d:#dbbf31;
     height: 100vh;
     background-color: #fff;
     z-index: 1;
+    .tipRightBox{
+      position: relative;
+      .tipRight{
+        position: absolute;
+        left: 50px;
+        width: max-content;
+        font-size: .7rem;
+        color: #fff;
+        background-color: rgba(0,0,0,.8);
+        padding:0px 4px;
+        height: 20px;
+        line-height: 19px;
+        top:50%;
+        margin:0;
+        margin-top:-12px;
+        border-radius: 4px;
+        opacity: 0;
+        cursor: default;
+        z-index: -9999;
+        transition: .3s ease-in-out;
+        font-weight: normal;
+      }
+      &:hover{
+        .tipRight{
+          z-index: 10;
+          left: 42px;
+          opacity: 1;
+        }
+      }
+    }
     .prjIcon {
       width: 30px;
       height: 30px;
@@ -687,6 +701,69 @@ $c2d:#dbbf31;
       cursor: pointer;
       margin-top:6px
 
+    }
+    .memberIconWrap{
+      padding:0px 5px;
+      position: absolute;
+      bottom:0px;
+      z-index: 1;
+      right: 0px;
+      bottom:50px;
+      width: 100%;
+      .memberIcon {
+        margin-bottom:20px;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        line-height: 44px;
+        border-radius: 100px;
+        text-align: center;
+        i{
+          font-size: 1.7rem;
+          color:#fff;
+        }
+      }
+      .profile{
+        cursor: pointer;
+        .profileIcon{
+          width: 40px;
+          height: 40px;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          border:1px solid #ccc;
+          border-radius: 100px;
+          img{
+            width: 100%;
+          }
+        }
+      }
+      
+    }
+    .pageIconWrap{
+      margin-top:60px;
+      padding:0px 4px;
+      i{
+        display: block;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        font-size: 1.4rem;
+        margin-bottom:20px;
+        cursor: pointer;
+        opacity: .5;
+        transition:.3s ease-in-out;
+        &:hover{
+          opacity: 1;
+          color: #000 !important;
+        }
+        &.on{
+          opacity: 1 !important;
+          color: #000 !important;
+
+        }
+      }
     }
   }
 }
