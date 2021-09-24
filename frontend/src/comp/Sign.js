@@ -291,7 +291,7 @@ function Sign(p){
               <p className="toolTip" style={{'right':'-13px'}}><div></div>구글로 로그인</p>
 
             </div>
-            <NaverLogin
+            {/* <NaverLogin
               clientId={naverCid}
               callbackUrl={"http://localhost:8000/test"}
               render={renderProps=>(
@@ -305,11 +305,13 @@ function Sign(p){
               onSuccess={(e)=>_clickSnsLoginNaver(e)}
               onFail={console.error}
               onLogout={console.info}
-            />
+            /> */}
 
-            {/* <div className="socialWrap" >
+            <div className="socialWrap" >
 
-              <div className="socialBtn" >
+              <div className="socialBtn" onClick={()=>{
+                window.location.href = naverUrl;
+              }}>
                 <div id="naverIdLogin"></div>
                 <img src={pub.img+'naver.png'}/>
               </div>
@@ -317,7 +319,7 @@ function Sign(p){
               
               <p className="toolTip"><div></div>네이버로 로그인</p>
 
-            </div> */}
+            </div>
 
 
             <KakaoLogin className="socialBtn"
