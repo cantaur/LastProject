@@ -3,7 +3,7 @@ import axios from 'axios';
 import React, {useState, useEffect} from 'react';
 import { useLocation } from 'react-router-dom';
 import {pub, host} from './Helper.js'
-
+import '../css/test.css';
 const { naver } = window;
 
 function Test(){
@@ -28,15 +28,6 @@ function Test(){
     })
 
   }
-
-
-
-  // function test(){
-  //   axios.get('https://openapi.naver.com/v1/nid/me')
-  //   .then((r)=>{
-  //     console.log(r)
-  //   })
-  // }
   useEffect(()=>{
       axios.get(host+'/ajax/myproject')
       .then(r=>{
@@ -45,20 +36,41 @@ function Test(){
       .catch(e=>{
           console.log(e)
       })
-    
+
   },[])
   return(
     <>
-      <p>컴포넌트 경로 : src/comp/Test.js</p>
-      <hr/>
-      <p>모듈 추가시 꼭 --save를 붙혀주세요.</p>
-      <p>예시: npm install react-redux --save (yarn 사용시 yarn add react-redux --save)</p>
-      <p>페이지 추가시 App.js에서 Test 컴포넌트 있는 부분 보시고 추가하시면 됩니당 잘 안되면 문의</p>
-      <p>그 외에는 마음대로 작업하세용 다 지워도댐 ㄱㄱㄱ</p>
+      {/*<p>컴포넌트 경로 : src/comp/Test.js</p>*/}
+      {/*<hr/>*/}
+      {/*<p>모듈 추가시 꼭 --save를 붙혀주세요.</p>*/}
+      {/*<p>예시: npm install react-redux --save (yarn 사용시 yarn add react-redux --save)</p>*/}
+      {/*<p>페이지 추가시 App.js에서 Test 컴포넌트 있는 부분 보시고 추가하시면 됩니당 잘 안되면 문의</p>*/}
 
-        <p onClick={()=>{
+      {/*  <p onClick={()=>{*/}
 
-        }}>테스트용버튼</p>
+      {/*  }}>테스트용버튼</p>*/}
+        <div className="app">
+            <header>
+                <br/>
+                <br/>
+                <p>To Do List</p>&emsp;&emsp;&emsp;&emsp;<p>알림</p>
+                <br/>
+            </header>
+            <div className="lists">
+                <div className="list">
+                    <div className="list-label">To do</div>
+                    <div className="list-item" draggable="true">item 1</div>
+                    <div className="list-item" draggable="true">item 2</div>
+                    <div className="list-item" draggable="true">item 3</div>
+                </div>
+                <div className="list">
+                    <div className="list-label">In Progress</div>
+                </div>
+                <div className="list">
+                    <div className="list-label">Done</div>
+                </div>
+            </div>
+        </div>
     </>
   )
 }
