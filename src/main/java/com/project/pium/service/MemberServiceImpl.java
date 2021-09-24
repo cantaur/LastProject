@@ -18,6 +18,11 @@ public class MemberServiceImpl implements MemberService {
     public List<MemberDTO> selectAllByEmail(String mEmail) {
         return memberMapper.selectAllByEmail(mEmail);
     }
+    @Override
+    public long findUserNo(String mEmail) {
+        return memberMapper.findUserNo(mEmail);
+    }
+
 
 
 
@@ -41,10 +46,6 @@ public class MemberServiceImpl implements MemberService {
         return memberMapper.selectAllByMseq(mSEQ);
     }
 
-    @Override
-    public int findUserNo(String id) {
-        return memberMapper.findUserNo(id);
-    }
 
 
 
