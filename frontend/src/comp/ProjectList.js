@@ -14,8 +14,12 @@ import {connect} from 'react-redux';
 
 //카드의 컬러 index는 seq / 10의 나머지값으로 함
 function ProjectList(p){
+  const history = useHistory();
   let [modalShow, setModalShow] = useState(false);
- 
+  useEffect(()=>{
+    console.log(p.loginUser)
+  })
+
   return(
     <>
       <div className="pListTop outerWrap">
@@ -23,7 +27,7 @@ function ProjectList(p){
           <img src={pub.img+'logo.svg'}/>
           <Dropdown>
             <Dropdown.Toggle variant="secondary" size="sm" id="dropdown-basic">
-              test@gmail.com
+              {p.loginUser.email != ''?p.loginUser.email:'유저 정보 없음'}
             </Dropdown.Toggle>
 
             <Dropdown.Menu style={{'minWidth':'unset','width':'100%'}}>
@@ -32,7 +36,7 @@ function ProjectList(p){
                 setModalShow(true)
               }}style={{'fontSize':'.8rem'}}>프로젝트 생성</Dropdown.Item>
               <Dropdown.Item href="sign/login" style={{'fontSize':'.8rem'}} onClick={()=>{
-                p.dispatch({type:'logout'})
+                window.location.href = host+'/logout'
               }}>로그아웃</Dropdown.Item>
             
             </Dropdown.Menu>
@@ -62,7 +66,7 @@ function ProjectList(p){
       </div>
       
 
-      <MyVerticallyCenteredModal
+      <ProjectCreateModal
         show={modalShow}
         onHide={() => {
           setModalShow(false);
@@ -77,6 +81,8 @@ function ProjectList(p){
 }
 
 function ProjectCard(p){
+  const history = useHistory();
+
   return(
     <div className="projectCard">
       <div className="typeWrap">
@@ -84,8 +90,10 @@ function ProjectCard(p){
         <p className="end">마감일 지남</p>
         <p className="go">진행중</p>
       </div>
-      <p className="title">프로젝트의 제목이 들어갈 공간입니다아아아</p>
-      <p className="sub">프로젝트 설명 프로젝트 설명 프로젝트 설명 프로젝트 설명 프로젝트 설명 프로젝트 설명 프로젝트 설명 프로젝트 설명 프로젝트 설명</p>
+      <p className="title" onClick={()=>{
+        history.push('/project/100/kanban')
+      }}>프로젝트의 제목이 들어갈 공간입니다아아아</p>
+      <p className="sub">프로젝트 설명이 없습니다.</p>
       <div className="date"><i class="far fa-clock"></i> 2021-09-18 ~ 2021-09-20</div>
       <div className="icon" style={{backgroundColor:p.color}}>프</div>
     </div>
@@ -112,7 +120,8 @@ function AddProject(p){
 
 
 
-function MyVerticallyCenteredModal(p) {
+function ProjectCreateModal(p) {
+  
   return (
     <Modal
       {...p}

@@ -32,10 +32,9 @@ function DatePicker(p) {
 
   return (
     <div className={'App '+ (p.datePickerModal?' on':'')}>
-    {/* <div className={'App '+ (p.datePickerModal?'':' on')}> */}
-      {/* <h1>
+      <h1>
         {renderDate(dates.startDate)} | {renderDate(dates.endDate)}
-      </h1> */}
+      </h1>
       <DayPickerRangeController
         startDate={dates.startDate}
         endDate={dates.endDate}

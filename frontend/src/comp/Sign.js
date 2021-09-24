@@ -16,37 +16,25 @@ function Sign(p){
   const naverCid = process.env.REACT_APP_NAVER_CID;
   const kakaoCid = process.env.REACT_APP_KAKAO_CID;
 
-  const _clickSnsLoginNaver = (e) => {
-    let naverid = e.id;
-  }
-
-  // const initializeNaverLogin = () => {
-  //   const naverLogin = new naver.LoginWithNaverId({
-  //     clientId: naverCid,
-  //     callbackUrl: 'http://localhost:3000/test', 
-  //     isPopup: false,
-  //     loginButton: { color: 'white', type: 1, height: '47' }
-  //   });
-  //   naverLogin.init();
-  // };
-
 
   const onFailure = async(r) => {
-    // history.push('/err')
-    console.log(r)
+    history.push('/err')
   }
 
   const onSuccessGoogle = async(r) => {
+    p.dispatch({type:"lodingOn"})
     axios.post(host+'/ajax/google/login', {
       member_email : r.profileObj.email,
       member_pw : r.profileObj.googleId,
       member_platform : "google"
     })
     .then((r)=>{
-      console.log(r)
+      p.dispatch({type:"lodingOff"})
+      window.location.href = '/project'
     })
     .catch((e)=>{
-      console.log(e)
+      p.dispatch({type:"lodingOff"})
+      history.push('/err')
     })
   }
 
@@ -67,7 +55,6 @@ function Sign(p){
       return false
     }
   }
-
 
   function signEmailCheck(){
     if(signUpData['email'] == ''){
@@ -291,21 +278,7 @@ function Sign(p){
               <p className="toolTip" style={{'right':'-13px'}}><div></div>구글로 로그인</p>
 
             </div>
-            {/* <NaverLogin
-              clientId={naverCid}
-              callbackUrl={"http://localhost:8000/test"}
-              render={renderProps=>(
-                <div className="socialWrap">
-                <div className="socialBtn" onClick={renderProps.onClick} disabled={renderProps.disabled}>
-                  <img src={pub.img+'naver.png'}/>
-                </div>
-                <p className="toolTip"><div></div>네이버로 로그인</p>
-                </div>
-              )}
-              onSuccess={(e)=>_clickSnsLoginNaver(e)}
-              onFail={console.error}
-              onLogout={console.info}
-            /> */}
+            
 
             <div className="socialWrap" >
 

@@ -21,7 +21,7 @@ function loginUser(state={email:'', seq:''}, action){
     case 'logout':
       return {email:'', seq:''}
     default:
-      return {email:'', seq:''}
+      return state
   }
 }
 
@@ -62,6 +62,7 @@ let store = createStore(combineReducers({datePickerModal, loading, pageInfo,logi
 
 axios.get(host+'/ajax/loginUser')
 .then(r=>{
+  console.log(r.data)
   if(r.data == 'false'){
     console.log('---로그인한 유저없음---')
     store.dispatch({type:'logout'})
@@ -77,7 +78,7 @@ axios.get(host+'/ajax/loginUser')
   }
 })
 .catch(e=>{
-  console.log(e)
+  console.log('---로그인 오류발생---')
   store.dispatch({type:'logout'})
 })
 
