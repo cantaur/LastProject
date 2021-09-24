@@ -20,7 +20,7 @@ const colors = [
 ]
 const pages = [
   'calender',
-  'kanban'
+  'todo'
 ]
 
 const host = 'http://localhost:8000';

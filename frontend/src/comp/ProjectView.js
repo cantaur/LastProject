@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import {pub, colors, pages} from './Helper.js'
 import DatePicker from './DatePicker.js'
 import HeadSide from './HeadSide.js'
-import Kanban from './page/Kanban.js'
+import Todo from './page/Todo.js'
 import Calender from './page/Calender.js'
 import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstrap'
 import { Link, useParams, withRouter, useHistory } from "react-router-dom";
@@ -22,8 +22,10 @@ function ProjectList(p){
     const isPage = pages.find(e=> e === page)
     if(isPage == undefined){
       history.push('/404')
+    } else {
+      p.dispatch({type:"pagePush", val:isPage})
+      
     }
-    p.dispatch({type:"pagePush", val:isPage})
   },[])
 
   return(
@@ -31,8 +33,8 @@ function ProjectList(p){
       <HeadSide/>
       <div className="viewInnerWrap">
         {
-          p.pageInfo == 'kanban' &&
-          <Kanban className="kanbanWrap"/>
+          p.pageInfo == 'todo' &&
+          <Todo className="kanbanWrap"/>
         }
         {
           p.pageInfo == 'calender' &&

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useCallback } from "react"
 import {pub, colors,host} from './Helper.js'
 import DatePicker from './DatePicker.js'
 import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstrap'
@@ -16,8 +16,32 @@ import {connect} from 'react-redux';
 function ProjectList(p){
   const history = useHistory();
   let [modalShow, setModalShow] = useState(false);
+
+  const [prjInfo, prjInfoCng] = useState({
+    title:'',
+    sub:'',
+    stDate:'',
+    edDate:''
+  });
+  const { title, sub, stDate, edDate } = prjInfo;
+
+  const prjInfoChange = e =>{
+    const {value, name} = e.target;
+    prjInfoCng({
+      ...prjInfo,
+      [name]: value
+    })
+  }
+
+  let dateModalClose =useCallback((e)=>{
+    if(!e.target.closest('.datePickerWrap') ){
+      p.dispatch({type:'modalOff'})
+    }
+  },[])
+
   useEffect(()=>{
     console.log(p.loginUser)
+    console.log(prjInfo)
   })
 
   return(
@@ -71,9 +95,21 @@ function ProjectList(p){
         onHide={() => {
           setModalShow(false);
           p.dispatch({type:'modalOff'})
+          window.removeEventListener('click', dateModalClose)
+          prjInfoCng({
+            title:'',
+            sub:'',
+            stDate:'',
+            edDate:''
+          });
         }}
+        title={title}
+        sub={sub}
+        stDate={stDate}
+        edDate={edDate}
+        dateModalClose={dateModalClose}
         datePickerModalControll={p.dispatch}
-        datePickerModal={p.datePickerModal}
+        prjInfoChange={prjInfoChange}
       />
       
     </>
@@ -81,6 +117,7 @@ function ProjectList(p){
 }
 
 function ProjectCard(p){
+  
   const history = useHistory();
 
   return(
@@ -121,7 +158,6 @@ function AddProject(p){
 
 
 function ProjectCreateModal(p) {
-  
   return (
     <Modal
       {...p}
@@ -141,29 +177,37 @@ function ProjectCreateModal(p) {
             controlId="floatingInput"
             label="프로젝트 제목"
           >
-            <Form.Control type="text" placeholder="프로젝트 제목" />
+            <Form.Control type="text" placeholder="프로젝트 제목" name="title" value={p.title} onChange={p.prjInfoChange}/>
           </FloatingLabel>
         </Form.Group>
 
         <Form.Group className=" piumInput" controlId="floatingTextarea">
           <FloatingLabel controlId="floatingTextarea" label="설명">
-            <Form.Control type="textarea" placeholder="설명" />
+            <Form.Control type="textarea" placeholder="설명" name="sub" value={p.sub} onChange={p.prjInfoChange}/>
           </FloatingLabel>
         </Form.Group>
+
         <div className="datePickerWrap">
-          <DatePicker/>
-          <p className="dateBtn datePickerWrap" onClick={
+          <DatePicker
+            stDate={p.stDate}
+            edDate={p.edDate}
+          />
+          <p className="dateBtn" onClick={
             ()=>{
               p.datePickerModalControll({type:'modalOn'})
+              window.addEventListener('click', p.dateModalClose)
             }
           }>
-            프로젝트 일정
+            <i class="far fa-calendar-check"></i> {p.stDate != ''?'일정 수정':'일정 선택'}
+          </p>
+          <p className="dateInfo">
+            {p.stDate != ''?p.stDate+' ~ '+p.edDate:''}
           </p>
         </div>
         
       </Modal.Body>
       <Modal.Footer className="modalBtnWrap">
-        <Button onClick={p.onHide} className="modalBtn danger">완료처리</Button>
+        {/* <Button onClick={p.onHide} className="modalBtn danger">완료처리</Button> */}
         <Button onClick={p.onHide} className="modalBtn">생성하기</Button>
       </Modal.Footer>
     </Modal>
