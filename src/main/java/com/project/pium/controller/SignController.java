@@ -124,23 +124,23 @@ public class SignController {
         log.info("apiResult : "+apiResult);
 
 
-        return "<script type=\"text/javascript\">window.location.href=\"http://localhost:8000/sign/login\"</script>";
+        return "<script type=\"text/javascript\">window.location.href=\"http://localhost:8000/project\"</script>";
     }
 
 
 
-    @PostMapping("ajax/naverUser")
-    @ResponseBody
-    public String naverLogin(@RequestBody Map <String, String>data, HttpSession session){
-        log.info("#data"+data);
-        String access_token = data.get("access_token");
-        String state = data.get("state");
-        //OAuth2AccessToken oauthToken = naverLoginBO.getAccessToken(session, access_token, state);
-
-
-
-        return "success";
-    }
+//    @PostMapping("ajax/naverUser")
+//    @ResponseBody
+//    public String naverLogin(@RequestBody Map <String, String>data, HttpSession session){
+//        log.info("#data"+data);
+//        String access_token = data.get("access_token");
+//        String state = data.get("state");
+//        //OAuth2AccessToken oauthToken = naverLoginBO.getAccessToken(session, access_token, state);
+//
+//
+//
+//        return "success";
+//    }
 
 
 
