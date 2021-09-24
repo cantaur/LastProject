@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
 
 @Service
 @Log
@@ -57,7 +57,6 @@ public class SecurityService implements UserDetailsService {
      */
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public String updateUserRoll(SignDTO signDTO){
-        //List<MemberDTO> userInfo = memberMapper.selectAllByEmail(signDTO.getMember_email());
 
             int userNo = signMapper.findUserNo(signDTO.getMember_email());
             log.info("#userNo : "+userNo);

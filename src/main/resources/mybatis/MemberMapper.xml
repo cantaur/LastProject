@@ -39,9 +39,7 @@
 
 
 
-    <insert id="insertUser" parameterType="memberDTO">
-        insert into member(member_email, member_pw, member_platform) values(#{member_email}, #{member_pw}, null)
-    </insert>
+
 
     <delete id="deleteUser" parameterType="long">
         delete from member where member_seq =#{member_seq}

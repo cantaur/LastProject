@@ -36,16 +36,7 @@ public class MemberController {
     }//http://localhost:8000/rest_member/read/5 호출 성공
 
 
-    @PostMapping("insert")
-    public void insertUser(@RequestBody MemberDTO memberDTO){
-        log.info("member create() : "+memberDTO);
-        memberService.insertUser(memberDTO);
-    }
-    // at Talend API Tester
-    // method : post
-    // http://localhost:8000/rest_member/insert
-    // {"member_email": "kaeun@nate.com", "member_pw": "1234", "member_platform": "Google"}
-    // Response 200 코드 확인 완료
+
 
 
     @DeleteMapping("delete/{mSeq}")

@@ -16,7 +16,7 @@ public interface MemberMapper {
     int findUserNo(String id);
 
 
-    void insertUser(MemberDTO memberDTO);
+
     void deleteUser(long mSEQ);
 
 }

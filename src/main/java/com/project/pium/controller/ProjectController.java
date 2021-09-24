@@ -20,17 +20,56 @@ public class ProjectController {
     private ProjectService projectService;
     private MemberService memberService;
 
+    //현재 로그인한 유저의 세션값 얻어오는 로직 모듈화
+    public String currentUserName(Principal principal){
+        if(principal ==null){
+            return "false";
+        }else{
+            String sessionEmail = principal.getName();
+            return sessionEmail;
+        }
+    }
 
-    //로그인한 유저가 참여중인 프로젝트 검색
+
+
+    //로그인한 유저가 참여 중인 모든 프로젝트 리스트
     @GetMapping ("/ajax/myproject")
     public List<ProjectDTO> myProject(Principal principal){
-        log.info("뭐지??");
-        String sessionEmail = principal.getName();
-        long sessionSeq = memberService.findUserNo(sessionEmail);
+        String email= currentUserName(principal);
+        long sessionSeq = memberService.findUserNo(email);
         List<ProjectDTO> myProject = projectService.myProject(sessionSeq);
         log.info("#myProject"+myProject);
         return myProject;
     }
+
+    //로그인한 유저가 참여 중이며 현재 진행 중인 프로젝트 리스트
+    @GetMapping("/ajax/opendproject")
+    public List<ProjectDTO> opendProject(Principal principal){
+
+        return null;
+
+    }
+
+    //로그인한 유저가 참여 중이며 완료처리된 프로젝트 리스트
+    @GetMapping("/ajax/closedproject")
+    public List<ProjectDTO> closedProject(Principal principal){
+
+        return null;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
