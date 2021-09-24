@@ -1,5 +1,5 @@
 
-//default 
+//default
 
 $c1:#2B4C9F;
 $c1d:#213b7a;
@@ -64,7 +64,7 @@ $c2d:#dbbf31;
       }
     }
   }
-  
+
 }
 .piumInput{
   label{
@@ -134,7 +134,7 @@ $c2d:#dbbf31;
 }
 //default end
 
-// Sign 
+// Sign
 .loginBack{
   background-color: #fff;
   width: 100vw;
@@ -144,7 +144,7 @@ $c2d:#dbbf31;
   justify-content: center;
 
   .loginCon {
-    
+
     width: 270px;
     display: flex;
     justify-content: center;
@@ -162,7 +162,7 @@ $c2d:#dbbf31;
         i{
           color: #fff;
           font-size: 2.4rem;
-          
+
         }
       }
       .emailText{
@@ -183,14 +183,14 @@ $c2d:#dbbf31;
         margin-bottom:1rem
       }
     }
-    
+
     .loginBtn{
       background-color: $c1;
       border-color: $c1;
       width: 100%;
       font-size: .9rem;
       transition: .3s ease-in-out;
-      
+
     }
     .loginBtn:hover{
       background-color: $c1d;
@@ -234,8 +234,8 @@ $c2d:#dbbf31;
       }
       &.logoTrans{
       height: 35px;
-      
-        
+
+
         .logo{
           width: 100px;
           left: 0px;
@@ -247,7 +247,7 @@ $c2d:#dbbf31;
         }
       }
     }
-    
+
     .form{
       background-color: #fff;
       width: 100%;
@@ -289,7 +289,7 @@ $c2d:#dbbf31;
 
 
 
-      
+
 
     }
     .social {
@@ -311,7 +311,7 @@ $c2d:#dbbf31;
         opacity: 0;
 
       }
-      
+
 
       .socialWrap{
         width: 50px;
@@ -350,7 +350,7 @@ $c2d:#dbbf31;
             width: 100%;
             transition: .3s ease-in-out;
           }
-          
+
           &:hover + .toolTip{
               opacity: 1;
               top:-30px;
@@ -358,11 +358,11 @@ $c2d:#dbbf31;
 
           }
           &:hover{
-            
+
             img{
               transform: scale(1.1);
             }
-            
+
           }
         }
 
@@ -394,7 +394,7 @@ $c2d:#dbbf31;
 
           }
         }
-        
+
       }
     }
     .info {
@@ -435,7 +435,7 @@ $c2d:#dbbf31;
       color:$c1;
       min-width: 110px;
     }
-  } 
+  }
 }
 .pListWrap{
   margin-top:40px;
@@ -476,7 +476,7 @@ $c2d:#dbbf31;
       align-items: center;
       position: relative;
       justify-content: center;
-      
+
       i{
         padding:15px;
         font-size: 40px;
@@ -487,7 +487,7 @@ $c2d:#dbbf31;
           color:#333;
         }
       }
-      
+
     }
     .projectCard{
       width: 255px;
@@ -551,7 +551,7 @@ $c2d:#dbbf31;
         margin-bottom:0px;
         overflow: hidden;
         text-overflow: ellipsis;
-      
+
 
       }
       .date{
@@ -587,10 +587,10 @@ $c2d:#dbbf31;
         }
 
       }
-    
+
     }
   }
-  
+
 }
 
 
@@ -680,7 +680,7 @@ $c2d:#dbbf31;
     &::-webkit-scrollbar-thumb {
       border-radius: 3.5px;
       background-color: #ccc;
-  
+
       &:hover {
         background-color: #ccc;
       }
@@ -749,7 +749,7 @@ $c2d:#dbbf31;
         }
       }
     }
-    
+
   }
   .viewSide {
     width: 50px;
@@ -795,7 +795,7 @@ $c2d:#dbbf31;
         }
       }
 
-      
+
       &:hover{
         .tipRight{
           z-index: 10;
@@ -857,7 +857,7 @@ $c2d:#dbbf31;
           font-size: 1.7rem;
           color:#fff;
         }
-        
+
       }
       .profile{
         cursor: pointer;
@@ -874,7 +874,7 @@ $c2d:#dbbf31;
           }
         }
       }
-      
+
     }
     .pageIconWrap{
       margin-top:60px;
@@ -913,4 +913,12 @@ $c2d:#dbbf31;
 //Calender
 .calenderWrap{
 
+}
+.fc-daygrid-day-number {
+  color: black;
+  text-decoration: none;
+}
+.fc-col-header-cell-cushion {
+  color: black;
+  text-decoration: none;
 }
