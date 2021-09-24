@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -108,8 +109,8 @@ public class SignController {
     }
 
     //네이버 로그인 성공시 callback호출 메소드
-    @RequestMapping(value = "/test")
-    public String callback(@RequestParam String code, @RequestParam String state, HttpSession session) throws IOException {
+    @RequestMapping(value = "/sign/naverlogin")
+    public String callback(@RequestParam String code, @RequestParam String state, HttpSession session, HttpServletRequest request) throws Exception {
         log.info("여기는 callback");
         OAuth2AccessToken oauthToken;
         oauthToken = naverLoginBO.getAccessToken(session, code, state);
@@ -120,27 +121,27 @@ public class SignController {
 
         ObjectNode userInfo = new ObjectMapper().readValue(naverLoginBO.getUserProfile(oauthToken), ObjectNode.class);
         log.info("#userInfo: "+userInfo);
-        String apiResult = naverLoginBO.getUserProfile(oauthToken);
-        log.info("apiResult : "+apiResult);
+        String pwd= userInfo.path("response").path("id").asText();
+        String email= userInfo.path("response").path("email").asText();
 
+        SignDTO signDTO = new SignDTO(-1,email,pwd,"naver",null,0,null);
+        String msg = userDetailsService.signUpNaver(signDTO);
+        if(msg.equals("loginNaver")){
+            String mEmail = memberService.findUserEmail(email);
+            UserDetails ckUserDetails = userDetailsService.loadUserByUsername(mEmail);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(ckUserDetails.getUsername(), ckUserDetails.getPassword(), ckUserDetails.getAuthorities());
 
-        return "<script type=\"text/javascript\">window.location.href=\"http://localhost:8000/project\"</script>";
+            SecurityContext securityContext = SecurityContextHolder.getContext();
+            securityContext.setAuthentication(authentication);
+            session = request.getSession(true);
+            session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+            return "<script type=\"text/javascript\">window.location.href=\"http://localhost:8000/project\"</script>";
+        }else{
+            return "success";
+        }
+
     }
 
-
-
-//    @PostMapping("ajax/naverUser")
-//    @ResponseBody
-//    public String naverLogin(@RequestBody Map <String, String>data, HttpSession session){
-//        log.info("#data"+data);
-//        String access_token = data.get("access_token");
-//        String state = data.get("state");
-//        //OAuth2AccessToken oauthToken = naverLoginBO.getAccessToken(session, access_token, state);
-//
-//
-//
-//        return "success";
-//    }
 
 
 

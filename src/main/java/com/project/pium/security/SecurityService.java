@@ -67,7 +67,7 @@ public class SecurityService implements UserDetailsService {
         return "success";
     }
     
-    //social 회원가입 서비스
+    //social(google) 회원가입 서비스
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public String signUpGoogle(SignDTO signDTO) throws Exception{
         signDTO.setMember_pw(bCryptPasswordEncoder.encode(signDTO.getMember_pw())); //암호화
@@ -89,11 +89,41 @@ public class SecurityService implements UserDetailsService {
                 updateUserRoll(signDTO);
                 return "loginGoogle";
             }
-
         }
-
         return platform;
     }
+
+
+    //social(naver) 회원가입 서비스
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
+    public String signUpNaver(SignDTO signDTO) throws Exception{
+        signDTO.setMember_pw(bCryptPasswordEncoder.encode(signDTO.getMember_pw())); //암호화
+        log.info("#입력된 이메일주소: "+signDTO.getMember_email());
+        log.info("#유저 비밀번호 :"+signDTO.getMember_pw());
+        log.info("#플랫폼 : "+signDTO.getMember_platform());
+        String platform= signDTO.getMember_platform();
+        List<MemberDTO> userInfo = memberMapper.selectAllByEmail(signDTO.getMember_email());
+
+        if(userInfo.size() !=0){
+            log.info("이미 가입한 네이버 사용자");
+            //이미 가입된 정보가 있을 경우 spring security 강제 로그인으로 넘김
+            return "loginNaver";
+        }else{
+            if(platform.equals("naver")){
+                log.info("가입처리 진행");
+                int flag = signMapper.signup(signDTO);
+                log.info("#flag"+flag);
+                updateUserRoll(signDTO);
+                return "loginNaver";
+            }
+        }
+        return platform;
+    }
+
+
+
+
+
     
 
 
