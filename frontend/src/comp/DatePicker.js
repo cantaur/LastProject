@@ -22,22 +22,18 @@ function DatePicker(p) {
   };
 
   const onFocusChange = (focusedInput) => {
-    console.log(onFocusChange);
     setFocusedInput(focusedInput);
   };
 
   const renderDate = (date) => {
-    return date ? moment(date).format("MM/DD/YY") : null;
+    return date ? moment(date).format("YYYY-MM-DD") : null;
   };
 
   return (
     <div className={'App '+ (p.datePickerModal?' on':'')}>
-      <h1>
-        {renderDate(dates.startDate)} | {renderDate(dates.endDate)}
-      </h1>
       <DayPickerRangeController
-        startDate={dates.startDate}
-        endDate={dates.endDate}
+        startDate={moment(p.stDate, 'YYYY-MM-DD')}
+        endDate={moment(p.edDate, 'YYYY-MM-DD')}
         onDatesChange={handleDatesChange}
         focusedInput={focusedInput || defaultFocusedInput}
         onFocusChange={onFocusChange}

@@ -22,7 +22,7 @@ const pColorBo = {
 
 function pagePath(page){
   switch (page){
-    case 'kanban':
+    case 'todo':
       return 0;
     case 'calender':
       return 1;
@@ -32,13 +32,12 @@ function pagePath(page){
 function HeadSide(p){
   let [searchModal, searchModalCng] = useState(false);
   const pagePathNum = pagePath(p.pageInfo);
-
   
 
-  useEffect(()=>{
+  // useEffect(()=>{
 
     
-  },[])
+  // },[])
   return(
     <>
       {/* 헤더 */}
@@ -60,15 +59,16 @@ function HeadSide(p){
           </Form.Select>
         </div>
         <div className="rightWrap">
-          <i class="fas fa-search searchBtn" onClick={()=>{searchModalCng(true);}}></i>
+          <i class="fas fa-search searchBtn" onClick={()=>{
+            searchModalCng(true)
+          }}></i>
 
           <Modal className="searchBox" show={searchModal} onHide={()=>{searchModalCng(false)}}>
             <Modal.Header>
               <i class="fas fa-search" style={pColor}></i>
-              <Form.Control type="text" placeholder="검색어를 입력해주세요." className="searchInput" ref="searchInput"/>
+              <Form.Control type="text" placeholder="검색어를 입력해주세요." className="searchInput"/>
             </Modal.Header>
             <Modal.Body>
-              {/* <p className="noMsg">검색결과가 없습니다.</p> */}
               <div className="result">
                 <b style={pColorB}>마일스톤</b>
                 <p>검색결과로 나온 마일스톤 이름</p>
@@ -125,9 +125,7 @@ function HeadSide(p){
             <p className="tipRight r45">멤버 설정</p>
             <i class="fas fa-users" style={pColor}></i>            
           </div>
-          {/* <div className={"memberModalWrap " + (memberModalAni?"on":"")} ref={modalEl}>
-            zzz
-          </div> */}
+
 
           <div className="profile tipRightBox">
             <p className="tipRight r45">프로필 설정</p>
