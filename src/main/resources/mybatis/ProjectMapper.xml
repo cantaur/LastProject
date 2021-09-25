@@ -16,12 +16,12 @@
         SELECT * FROM project
     </select>
     <!--진행상태 프로젝트 검색-->
-    <select id="projectSelectProceeding" resultType="ProjectDTO">
-        SELECT * FROM project where project_status = "0"
+    <select id="projectSelectProceeding" resultType="ProjectDTO" parameterType="long">
+        SELECT * FROM project where project_status = "0" and member_seq = #{member_seq}
     </select>
     <!--종료상태 프로젝트 검색-->
-    <select id="projectSelectEnd" resultType="ProjectDTO">
-        SELECT * FROM project where project_status = "1"
+    <select id="projectSelectEnd" resultType="ProjectDTO" parameterType="long">
+        SELECT * FROM project where project_status = "1" and and member_seq = #{member_seq}
     </select>
 
     <!--프로젝트 생성-->

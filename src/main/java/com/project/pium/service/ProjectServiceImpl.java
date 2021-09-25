@@ -35,13 +35,13 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectDTO> projectSelectProceeding() {
-        return projectMapper.projectSelectProceeding();
+    public List<ProjectDTO> projectSelectProceeding(long member_seq) {
+        return projectMapper.projectSelectProceeding(member_seq);
     }
 
     @Override
-    public List<ProjectDTO> projectSelectEnd() {
-        return projectMapper.projectSelectEnd();
+    public List<ProjectDTO> projectSelectEnd(long member_seq) {
+        return projectMapper.projectSelectEnd(member_seq);
     }
 
 

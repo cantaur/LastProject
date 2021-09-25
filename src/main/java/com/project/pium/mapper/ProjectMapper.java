@@ -19,8 +19,8 @@ public interface ProjectMapper {
 
 
     List<ProjectDTO> projectSelectAll();
-    List<ProjectDTO> projectSelectProceeding();
-    List<ProjectDTO> projectSelectEnd();
+    List<ProjectDTO> projectSelectProceeding(long member_seq);
+    List<ProjectDTO> projectSelectEnd(long member_seq);
     void insert(ProjectDTO projectDTO);
     void updateStatus(ProjectDTO projectDTO);
     void updateIsdelete(ProjectDTO projectDTO);

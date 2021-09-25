@@ -45,18 +45,24 @@ public class ProjectController {
     //로그인한 유저가 참여 중이며 현재 진행 중인 프로젝트 리스트
     @GetMapping("/ajax/opendproject")
     public List<ProjectDTO> opendProject(Principal principal){
-
-        return null;
+    String email = currentUserName(principal);
+    long member_seq = memberService.findUserNo(email);
+    List<ProjectDTO> list = projectService.projectSelectProceeding(member_seq);
+    log.info("#######"+ list);
+        return list;
 
     }
 
     //로그인한 유저가 참여 중이며 완료처리된 프로젝트 리스트
     @GetMapping("/ajax/closedproject")
     public List<ProjectDTO> closedProject(Principal principal){
-
-        return null;
-
+            String email = currentUserName(principal);
+            long member_seq = memberService.findUserNo(email);
+            List<ProjectDTO> list = projectService.projectSelectEnd(member_seq);
+            return list;
     }
+
+
 
 
 
@@ -84,17 +90,6 @@ public class ProjectController {
     }
     //http://127.0.0.1:8000/project/searchProject 호출 성공
 
-    @GetMapping("projectSelectProceeding")
-    public List<ProjectDTO> projectSelectProceeding(){
-        List<ProjectDTO> list = projectService.projectSelectProceeding();
-        return list;
-    }
-    //http://127.0.0.1:8000/project/projectSelectProceeding 호출 성공
-    @GetMapping("projectSelectEnd")
-    public List<ProjectDTO> projectSelectEnd(){
-        List<ProjectDTO> list = projectService.projectSelectEnd();
-        return list;
-    }
 
     //http://127.0.0.1:8000/project/searchMemberSeq/abcd1234@gmail.com 호출 성공
     @PostMapping("insert")

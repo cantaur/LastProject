@@ -10,8 +10,8 @@ public interface ProjectService {
 
 
     List<ProjectDTO> listS();
-    List<ProjectDTO> projectSelectProceeding();
-    List<ProjectDTO> projectSelectEnd();
+    List<ProjectDTO> projectSelectProceeding(long member_seq);
+    List<ProjectDTO> projectSelectEnd(long member_seq);
 
     void insertS(ProjectDTO projectDTO);
     void updateStatus(ProjectDTO projectDTO);
