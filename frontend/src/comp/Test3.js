@@ -19,7 +19,7 @@ function Test3(){
 
     axios({
       method:'post',
-      url:'uploadFile',
+      url:host+'/ajax/uploadFile',
       data:formData,
       headers: {"Content-Type": "multipart/form-data"}
     })
