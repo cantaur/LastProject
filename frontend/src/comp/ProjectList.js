@@ -97,20 +97,6 @@ function ProjectList(p){
   const alertOpen =()=> alertModalCng(true);
 
 
-  //프로젝트 목록 새로고침
-  const prjListAxios = () => {
-    axios.get(host+'/ajax/myproject')
-    .then(r=>{
-      console.log(r)
-      p.listCng(r.data);
-      p.dispatch({type:'loadingOff'})
-
-    })
-    .catch(e=>{
-      console.log(e)
-      p.dispatch({type:'loadingOff'})
-    })
-  }
 
   //프론트 작업용 샘플
   let listSample = [
@@ -244,7 +230,6 @@ function ProjectList(p){
                       loginUser={p.loginUser}
                       prjUpdateFn={prjUpdateFn}
                       dispatch={p.dispatch}
-                      prjListAxios={prjListAxios}
                       listCng={listCng}
                       pjStatus={0}
                       key={i}
@@ -278,7 +263,6 @@ function ProjectList(p){
                       prjUpdateFn={prjUpdateFn}
                       dispatch={p.dispatch}
                       alertOpen={alertOpen}
-                      prjListAxios={prjListAxios}
                       listCng={listCng}
                       key={i}
                     />
@@ -323,7 +307,6 @@ function ProjectList(p){
         alert={alert}
         alertCng={alertCng}
         listCng={listCng}
-        prjListAxios={prjListAxios}
       />
       
     </>
@@ -346,7 +329,17 @@ function ProjectCard(p){
                 project_seq:p.seq
               })
               .then(r=>{
-                p.prjListAxios();
+                //목록 새로고침
+                axios.get(host+'/ajax/myproject')
+                .then(r=>{
+                  console.log(r)
+                  p.listCng(r.data);
+                  p.dispatch({type:'loadingOff'})
+                })
+                .catch(e=>{
+                  console.log(e)
+                  p.dispatch({type:'loadingOff'})
+                })                
                 console.log(r)
               })
               .catch(e=>{
@@ -377,8 +370,18 @@ function ProjectCard(p){
                 project_seq:p.seq
               })
               .then(r=>{
-                p.prjListAxios();
                 console.log(r)
+                //목록 새로고침
+                axios.get(host+'/ajax/myproject')
+                .then(r=>{
+                  console.log(r)
+                  p.listCng(r.data);
+                  p.dispatch({type:'loadingOff'})
+                })
+                .catch(e=>{
+                  console.log(e)
+                  p.dispatch({type:'loadingOff'})
+                })
               })
               .catch(e=>{
                 console.log(e)
@@ -520,8 +523,18 @@ function ProjectCreateModal(p) {
               axios.post(host+'/ajax/updateProject',p.prjInfo)
               .then(r=>{
                 console.log(r)
-                p.prjListAxios();
                 p.onHide();
+                //목록 새로고침
+                axios.get(host+'/ajax/myproject')
+                .then(r=>{
+                  console.log(r)
+                  p.listCng(r.data);
+                  p.dispatch({type:'loadingOff'})
+                })
+                .catch(e=>{
+                  console.log(e)
+                  p.dispatch({type:'loadingOff'})
+                })
               })
               .catch(e=>{
                 p.dispatch({type:'loadingOff'})
