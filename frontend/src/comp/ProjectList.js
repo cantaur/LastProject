@@ -115,20 +115,20 @@ function ProjectList(p){
 
 
   useEffect(()=>{
-    // p.dispatch({type:'loadingOn'})
-    // axios.get(host+'/ajax/myproject')
-    // .then(r=>{
-    //   console.log(r)
-    //   listCng(r.data);
-    //   p.dispatch({type:'loadingOff'})
+    p.dispatch({type:'loadingOn'})
+    axios.get(host+'/ajax/myproject')
+    .then(r=>{
+      console.log(r)
+      listCng(r.data);
+      p.dispatch({type:'loadingOff'})
 
-    // })
-    // .catch(e=>{
-    //   console.log(e)
-    //   p.dispatch({type:'loadingOff'})
+    })
+    .catch(e=>{
+      console.log(e)
+      p.dispatch({type:'loadingOff'})
 
-    // })
-    listCng(listSample)
+    })
+    // listCng(listSample)
     
   },[])
 
