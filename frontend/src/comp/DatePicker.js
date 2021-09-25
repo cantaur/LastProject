@@ -32,8 +32,8 @@ function DatePicker(p) {
   const handleCng = (dates) => {
     p.prjInfoCng({
       ...p.prjInfo, 
-      stDate:renderDate(dates.startDate), 
-      edDate:renderDate(dates.endDate)
+      project_startdate:renderDate(dates.startDate), 
+      project_duedate:renderDate(dates.endDate)
     })
     handleDatesChange(dates)
   }
@@ -44,8 +44,8 @@ function DatePicker(p) {
   return (
     <div className={'App '+ (p.datePickerModal?' on':'')}>
       <DayPickerRangeController
-        startDate={p.stDate?moment(p.stDate, 'YYYY-MM-DD'):dates.startDate}
-        endDate={p.edDate?moment(p.edDate, 'YYYY-MM-DD'):dates.endDate}
+        startDate={p.project_startdate?moment(p.project_startdate, 'YYYY-MM-DD'):dates.startDate}
+        endDate={p.project_duedate?moment(p.project_duedate, 'YYYY-MM-DD'):dates.endDate}
         onDatesChange={handleCng}
         focusedInput={focusedInput || defaultFocusedInput}
         onFocusChange={onFocusChange}

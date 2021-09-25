@@ -18,6 +18,15 @@ const colors = [
   '#596E80',
   '#F99620',
 ]
+const seqColorTrans = (seq) => {
+  if(Number(seq) <= 10){
+    return colors[seq]
+  } else {
+    console.log(seq % 10)
+    return colors[seq % 10]
+  }
+
+}
 const pages = [
   'calender',
   'todo'
@@ -26,4 +35,4 @@ const pages = [
 const host = 'http://localhost:8000';
 
 
-export {pub, colors, host, pages};
+export {pub, colors, host, pages,seqColorTrans};

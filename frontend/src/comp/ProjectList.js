@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState, useCallback } from "react"
-import {pub, colors,host} from './Helper.js'
+import {pub, colors,host,seqColorTrans} from './Helper.js'
 import DatePicker from './DatePicker.js'
 import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstrap'
 import { Link, useParams, withRouter, useHistory } from "react-router-dom";
@@ -21,12 +21,12 @@ function ProjectList(p){
 
   //프로젝트 생성, 수정_정보
   const [prjInfo, prjInfoCng] = useState({
-    title:'',
-    sub:'',
-    stDate:'',
-    edDate:''
+    project_title:'',
+    project_content:'',
+    project_startdate:'',
+    project_duedate:''
   });
-  const { title, sub, stDate, edDate } = prjInfo;
+  const { project_title, project_content, project_startdate, project_duedate } = prjInfo;
 
   //프로젝트 생성, 수정시 상태 업데이트
   const prjInfoChange = e =>{
@@ -39,8 +39,11 @@ function ProjectList(p){
 
   //프로젝트 생성, 수정 날짜성택 이중모달 컨트롤
   let dateModalClose =useCallback((e)=>{
-    if(!e.target.closest('.datePickerWrap') ){
+    if(!e.target.closest('.DayPicker_1') ){
       p.dispatch({type:'modalOff'})
+      setTimeout(()=>{
+        window.removeEventListener('click', dateModalClose)
+      })
     }
   },[])
 
@@ -50,19 +53,48 @@ function ProjectList(p){
 
 
   //프로젝트 목록
+  let [list, listCng] = useState();
 
-  // let [list, list]
+  // const prjStatusFn = (date, ) => {
+    
+  // }
+
 
 
 
   useEffect(()=>{
-    axios.get(host+'/ajax/myproject')
-    .then(r=>{
-      console.log(r)
-    })
-    .catch(e=>{
-      console.log(e)
-    })
+    // axios.get(host+'/ajax/myproject')
+    // .then(r=>{
+    //   console.log(r)
+    // })
+    // .catch(e=>{
+    //   console.log(e)
+    // })
+    let listSample = [
+      {
+        member_seq: 4,
+        project_content: "내용입니다아1",
+        project_duedate: "2021-11-25",
+        project_enddate: "",
+        project_isdelete: "0",
+        project_seq: 1,
+        project_startdate: "2021-09-25",
+        project_status: "0",
+        project_title: "진행중프로젝트1"
+      },
+      {
+        member_seq: 42,
+        project_content: "내용입니다아2",
+        project_duedate: "2022-11-25",
+        project_enddate: "",
+        project_isdelete: "0",
+        project_seq: 1,
+        project_startdate: "2021-09-25",
+        project_status: "0",
+        project_title: "진행중프로젝트2"
+      },
+    ]
+    listCng(listSample);
   },[])
 
   return(
@@ -95,9 +127,18 @@ function ProjectList(p){
           <h4 className="active">진행중인 프로젝트 &#x1F680;</h4>
           <div className="cardWrap">
             {
-              colors.map((row, i)=>{
+              
+              list &&
+              list.map((row, i)=>{
                 return(
-                  <ProjectCard color={row} key={i}/>
+                  <ProjectCard 
+                    color={seqColorTrans(row.member_seq)}
+                    title={row.project_title}
+                    content={row.project_content}
+                    startDate={row.project_startdate}
+                    dueDate={row.project_duedate}
+                    key={i}
+                  />
                 )
               })
             }
@@ -118,17 +159,17 @@ function ProjectList(p){
           p.dispatch({type:'modalOff'})
           window.removeEventListener('click', dateModalClose)
           prjInfoCng({
-            title:'',
-            sub:'',
-            stDate:'',
-            edDate:''
+            project_title:'',
+            project_content:'',
+            project_startdate:'',
+            project_duedate:''
           });
           alertCng(false)
         }}
-        title={title}
-        sub={sub}
-        stDate={stDate}
-        edDate={edDate}
+        project_title={project_title}
+        project_content={project_content}
+        project_startdate={project_startdate}
+        project_duedate={project_duedate}
         dateModalClose={dateModalClose}
         datePickerModalControll={p.dispatch}
         prjInfoCng={prjInfoCng}
@@ -186,7 +227,6 @@ function AddProject(p){
 
 function ProjectCreateModal(p) {
   useEffect(()=>{
-    console.log(p.alert)
 
   })
   return (
@@ -216,36 +256,38 @@ function ProjectCreateModal(p) {
             controlId="floatingInput"
             label="프로젝트 제목"
           >
-            <Form.Control type="text" placeholder="프로젝트 제목" name="title" value={p.title} onChange={p.prjInfoChange}/>
+            <Form.Control type="text" placeholder="프로젝트 제목" name="project_title" value={p.project_title} onChange={p.prjInfoChange}/>
           </FloatingLabel>
         </Form.Group>
         
 
         <Form.Group className=" piumInput" controlId="floatingTextarea">
           <FloatingLabel controlId="floatingTextarea" label="설명">
-            <Form.Control type="textarea" placeholder="설명" name="sub" value={p.sub} onChange={p.prjInfoChange}/>
+            <Form.Control type="textarea" placeholder="설명" name="project_content" value={p.project_content} onChange={p.prjInfoChange}/>
           </FloatingLabel>
         </Form.Group>
 
         <div className="datePickerWrap">
           <DatePicker
-            stDate={p.stDate}
-            edDate={p.edDate}
+            project_startdate={p.project_startdate}
+            project_duedate={p.project_duedate}
             prjInfoCng={p.prjInfoCng}
             prjInfo={p.prjInfo}
           />
           <p className="dateBtn" onClick={
             ()=>{
               p.datePickerModalControll({type:'modalOn'})
-              window.addEventListener('click', p.dateModalClose)
+              setTimeout(()=>{
+                window.addEventListener('click', p.dateModalClose)
+              })
             }
           }>
-            <i class="far fa-calendar-check"></i> {p.stDate?'일정 수정':'일정 선택'}
+            <i class="far fa-calendar-check"></i> {p.project_startdate?'일정 수정':'일정 선택'}
           </p>
           <p className="dateInfo">
-            {p.stDate?(p.stDate + " ~ "):''}
+            {p.project_startdate?(p.project_startdate + " ~ "):''}
             
-            {p.edDate?p.edDate:''}
+            {p.project_duedate?p.project_duedate:''}
 
           </p>
         </div>
@@ -255,8 +297,7 @@ function ProjectCreateModal(p) {
         <Button onClick={p.onHide} className="modalBtn" onClick={()=>{
           p.onHide()
           p.dispatch({type:'loadingOn'})
-          console.log(p.prjInfo.title)
-          if(p.prjInfo.title != ''){
+          if(p.prjInfo.project_title != ''){
             axios.post(host+'/ajax/createProject',p.prjInfo)
             .then(r=>{
               p.dispatch({type:'loadingOff'})
