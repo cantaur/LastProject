@@ -18,7 +18,6 @@ public interface ProjectMapper {
 
 
 
-
     List<ProjectDTO> projectSelectAll();
     List<ProjectDTO> projectSelectProceeding(long member_seq);
     List<ProjectDTO> projectSelectEnd(long member_seq);
