@@ -8,6 +8,7 @@ import EmailAuth from './comp/EmailAuth.js'
 import EmailSend from './comp/EmailSend.js'
 import Test from './comp/Test.js'
 import Test2 from './comp/Test2.js'
+import Test3 from './comp/Test3.js'
 import ErrPage from './comp/ErrPage.js'
 import NonePage from './comp/NonePage.js'
 import ProjectList from './comp/ProjectList.js'
@@ -69,6 +70,9 @@ function App(p) {
 
       <Route path='/test2' exact>
         <Test2/>
+      </Route>
+      <Route path='/test3' exact>
+        <Test3/>
       </Route>
 
       <Route path='/err' exact>

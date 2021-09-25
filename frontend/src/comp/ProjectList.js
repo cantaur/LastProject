@@ -109,7 +109,8 @@ function ProjectList(p){
         edDate={edDate}
         dateModalClose={dateModalClose}
         datePickerModalControll={p.dispatch}
-        prjInfoChange={prjInfoChange}
+        prjInfoCng={prjInfoCng}
+        prjInfo={prjInfo}
       />
       
     </>
@@ -191,6 +192,8 @@ function ProjectCreateModal(p) {
           <DatePicker
             stDate={p.stDate}
             edDate={p.edDate}
+            prjInfoCng={p.prjInfoCng}
+            prjInfo={p.prjInfo}
           />
           <p className="dateBtn" onClick={
             ()=>{
