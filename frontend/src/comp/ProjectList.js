@@ -177,8 +177,16 @@ function ProjectList(p){
             axios.post(host+'/ajax/deleteProject')
             .then(r=>{
               console.log(r)
-              p.dispatch({type:'loadingOff'})
-              prjListAxios();
+              axios.get(host+'/ajax/myproject')
+              .then(r=>{
+                console.log(r)
+                listCng(r.data);
+                p.dispatch({type:'loadingOff'})
+              })
+              .catch(e=>{
+                console.log(e)
+                p.dispatch({type:'loadingOff'})
+              })
               alertModalCng(false)
             })
             .catch(e=>{
@@ -315,6 +323,7 @@ function ProjectList(p){
         alert={alert}
         alertCng={alertCng}
         listCng={listCng}
+        prjListAxios={prjListAxios}
       />
       
     </>
