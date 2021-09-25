@@ -88,7 +88,13 @@ function ProjectList(p){
     if(!list){
       return 0;
     }else {
-      return list.filter(r => r.project_status == 1).length;;
+      let i = 0;
+      list.map(row=>{
+        if(row.project_isdelete==0 && row.project_status==1){
+          i++;
+        }
+      })
+      return i;
     }
   }
   //확인용 문구 팝업
@@ -96,21 +102,10 @@ function ProjectList(p){
   const alertClose =()=> alertModalCng(false);
   const alertOpen =()=> alertModalCng(true);
 
+  //삭제확인용 seq state
+  const [deleteSeq, deleteSeqCng] = useState();
 
-  //프로젝트 목록 새로고침
-  const prjListAxios = () => {
-    axios.get(host+'/ajax/myproject')
-    .then(r=>{
-      console.log(r)
-      p.listCng(r.data);
-      p.dispatch({type:'loadingOff'})
 
-    })
-    .catch(e=>{
-      console.log(e)
-      p.dispatch({type:'loadingOff'})
-    })
-  }
 
   //프론트 작업용 샘플
   let listSample = [
@@ -119,7 +114,7 @@ function ProjectList(p){
       project_content: "내용입니다아1",
       project_duedate: "2021-11-25",
       project_enddate: "",
-      project_isdelete: "0",
+      project_isdelete: 0,
       project_seq: 1,
       project_startdate: "2021-09-25",
       project_status: 1,
@@ -174,7 +169,9 @@ function ProjectList(p){
           </Button>
           <Button variant="danger" onClick={()=>{
             p.dispatch({type:'loadingOn'})
-            axios.post(host+'/ajax/deleteProject')
+            axios.post(host+'/ajax/deleteProject',{
+              project_seq:deleteSeq
+            })
             .then(r=>{
               console.log(r)
               axios.get(host+'/ajax/myproject')
@@ -229,7 +226,7 @@ function ProjectList(p){
             {
               list &&
               list.map((row, i)=>{
-                if(row.project_status==0){
+                if(row.project_status==0 && row.project_isdelete == 0){
                   return(
                     <ProjectCard 
                       color={seqColorTrans(row.project_seq)}
@@ -244,7 +241,7 @@ function ProjectList(p){
                       loginUser={p.loginUser}
                       prjUpdateFn={prjUpdateFn}
                       dispatch={p.dispatch}
-                      prjListAxios={prjListAxios}
+                      deleteSeqCng={deleteSeqCng}
                       listCng={listCng}
                       pjStatus={0}
                       key={i}
@@ -261,7 +258,7 @@ function ProjectList(p){
               completePrjCnt(list) != 0
               ?
               list.map((row, i)=>{
-                if(row.project_status==1){
+                if(row.project_status==1 && row.project_isdelete == 0){
                   return(
                     <ProjectCard 
                       color={seqColorTrans(row.project_seq)}
@@ -278,8 +275,9 @@ function ProjectList(p){
                       prjUpdateFn={prjUpdateFn}
                       dispatch={p.dispatch}
                       alertOpen={alertOpen}
-                      prjListAxios={prjListAxios}
+                      alertModalCng={alertModalCng}
                       listCng={listCng}
+                      deleteSeqCng={deleteSeqCng}
                       key={i}
                     />
                   )
@@ -323,7 +321,6 @@ function ProjectList(p){
         alert={alert}
         alertCng={alertCng}
         listCng={listCng}
-        prjListAxios={prjListAxios}
       />
       
     </>
@@ -346,7 +343,17 @@ function ProjectCard(p){
                 project_seq:p.seq
               })
               .then(r=>{
-                p.prjListAxios();
+                //목록 새로고침
+                axios.get(host+'/ajax/myproject')
+                .then(r=>{
+                  console.log(r)
+                  p.listCng(r.data);
+                  p.dispatch({type:'loadingOff'})
+                })
+                .catch(e=>{
+                  console.log(e)
+                  p.dispatch({type:'loadingOff'})
+                })                
                 console.log(r)
               })
               .catch(e=>{
@@ -367,7 +374,10 @@ function ProjectCard(p){
           </>
           :
           <>
-            <div className="editBtn editBtn2 toolTipBox" onClick={p.alertOpen}>
+            <div className="editBtn editBtn2 toolTipBox" onClick={()=>{
+              p.deleteSeqCng(p.seq)
+              p.alertModalCng(true)
+            }}>
               <i class="far fa-trash-alt"></i>
               <div className="toolTip" style={{'marginLeft':'-41px',lineHeight:'12px'}}>프로젝트 삭제</div>
             </div>
@@ -377,8 +387,18 @@ function ProjectCard(p){
                 project_seq:p.seq
               })
               .then(r=>{
-                p.prjListAxios();
                 console.log(r)
+                //목록 새로고침
+                axios.get(host+'/ajax/myproject')
+                .then(r=>{
+                  console.log(r)
+                  p.listCng(r.data);
+                  p.dispatch({type:'loadingOff'})
+                })
+                .catch(e=>{
+                  console.log(e)
+                  p.dispatch({type:'loadingOff'})
+                })
               })
               .catch(e=>{
                 console.log(e)
@@ -520,8 +540,18 @@ function ProjectCreateModal(p) {
               axios.post(host+'/ajax/updateProject',p.prjInfo)
               .then(r=>{
                 console.log(r)
-                p.prjListAxios();
                 p.onHide();
+                //목록 새로고침
+                axios.get(host+'/ajax/myproject')
+                .then(r=>{
+                  console.log(r)
+                  p.listCng(r.data);
+                  p.dispatch({type:'loadingOff'})
+                })
+                .catch(e=>{
+                  console.log(e)
+                  p.dispatch({type:'loadingOff'})
+                })
               })
               .catch(e=>{
                 p.dispatch({type:'loadingOff'})

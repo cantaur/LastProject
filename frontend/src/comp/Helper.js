@@ -22,7 +22,6 @@ const seqColorTrans = (seq) => {
   if(Number(seq) <= 9){
     return colors[seq]
   } else {
-    console.log(seq % 10)
     return colors[seq % 10]
   }
 

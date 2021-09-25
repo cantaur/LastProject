@@ -53,7 +53,7 @@ $c2d:#dbbf31;
   }
   .modalBtnWrap{
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     .modalBtn{
       font-size: .8rem;
       background-color: $c1;
