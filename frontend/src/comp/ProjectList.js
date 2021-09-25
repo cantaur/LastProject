@@ -15,8 +15,11 @@ import {connect} from 'react-redux';
 //카드의 컬러 index는 seq / 10의 나머지값으로 함
 function ProjectList(p){
   const history = useHistory();
+
+  //프로젝트 생성, 수정_모달 상태
   let [modalShow, setModalShow] = useState(false);
 
+  //프로젝트 생성, 수정_정보
   const [prjInfo, prjInfoCng] = useState({
     title:'',
     sub:'',
@@ -25,6 +28,7 @@ function ProjectList(p){
   });
   const { title, sub, stDate, edDate } = prjInfo;
 
+  //프로젝트 생성, 수정시 상태 업데이트
   const prjInfoChange = e =>{
     const {value, name} = e.target;
     prjInfoCng({
@@ -33,15 +37,33 @@ function ProjectList(p){
     })
   }
 
+  //프로젝트 생성, 수정 날짜성택 이중모달 컨트롤
   let dateModalClose =useCallback((e)=>{
     if(!e.target.closest('.datePickerWrap') ){
       p.dispatch({type:'modalOff'})
     }
   },[])
 
+  //프로젝트 생성,수정_제목 알림 상태
+  let [alert, alertCng] = useState(false);
+
+
+
+  //프로젝트 목록
+
+  // let [list, list]
+
+
+
   useEffect(()=>{
-    
-  })
+    axios.get(host+'/ajax/myproject')
+    .then(r=>{
+      console.log(r)
+    })
+    .catch(e=>{
+      console.log(e)
+    })
+  },[])
 
   return(
     <>
@@ -57,7 +79,7 @@ function ProjectList(p){
               
               <Dropdown.Item onClick={()=>{
                 setModalShow(true)
-              }}style={{'fontSize':'.8rem'}}>프로젝트 생성</Dropdown.Item>
+              }}style={{'fontSize':'.8rem'}}>프로젝트 만들기</Dropdown.Item>
               <Dropdown.Item href="sign/login" style={{'fontSize':'.8rem'}} onClick={()=>{
                 window.location.href = host+'/logout'
               }}>로그아웃</Dropdown.Item>
@@ -101,6 +123,7 @@ function ProjectList(p){
             stDate:'',
             edDate:''
           });
+          alertCng(false)
         }}
         title={title}
         sub={sub}
@@ -110,6 +133,10 @@ function ProjectList(p){
         datePickerModalControll={p.dispatch}
         prjInfoCng={prjInfoCng}
         prjInfo={prjInfo}
+        prjInfoChange={prjInfoChange}
+        dispatch={p.dispatch}
+        alert={alert}
+        alertCng={alertCng}
       />
       
     </>
@@ -149,7 +176,7 @@ function AddProject(p){
   return(
     <div className="addProjectBtn">
       <i class="fas fa-plus toolTipBox" onClick={p.show}>
-        <div className="toolTip" style={{'marginLeft':'-47.33px'}}>새 프로젝트 생성</div>
+        <div className="toolTip" style={{'marginLeft':'-47.33px'}}>새 프로젝트 만들기</div>
       </i>
     </div>
   )
@@ -158,6 +185,10 @@ function AddProject(p){
 
 
 function ProjectCreateModal(p) {
+  useEffect(()=>{
+    console.log(p.alert)
+
+  })
   return (
     <Modal
       {...p}
@@ -165,13 +196,21 @@ function ProjectCreateModal(p) {
       aria-labelledby="contained-modal-title-vcenter"
       centered
       className="modalWrap"
+      style={{marginTop:'-70px'}}
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter" className="modalTitle">
-          새 프로젝트 생성
+          새 프로젝트 만들기
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        {
+          p.alert
+          ?
+          <Alert variant={'danger'} style={{fontSize:'.8rem',marginBottom:'.4rem'}}>프로젝트 제목을 입력해주세요.</Alert>
+          : null
+        }
+        
         <Form.Group className="mb-2 piumInput" controlId="floatingInput">
           <FloatingLabel
             controlId="floatingInput"
@@ -180,6 +219,7 @@ function ProjectCreateModal(p) {
             <Form.Control type="text" placeholder="프로젝트 제목" name="title" value={p.title} onChange={p.prjInfoChange}/>
           </FloatingLabel>
         </Form.Group>
+        
 
         <Form.Group className=" piumInput" controlId="floatingTextarea">
           <FloatingLabel controlId="floatingTextarea" label="설명">
@@ -200,17 +240,43 @@ function ProjectCreateModal(p) {
               window.addEventListener('click', p.dateModalClose)
             }
           }>
-            <i class="far fa-calendar-check"></i> {p.stDate != ''?'일정 수정':'일정 선택'}
+            <i class="far fa-calendar-check"></i> {p.stDate?'일정 수정':'일정 선택'}
           </p>
           <p className="dateInfo">
-            {p.stDate != ''?p.stDate+' ~ '+p.edDate:''}
+            {p.stDate?(p.stDate + " ~ "):''}
+            
+            {p.edDate?p.edDate:''}
+
           </p>
         </div>
         
       </Modal.Body>
       <Modal.Footer className="modalBtnWrap">
+        <Button onClick={p.onHide} className="modalBtn" onClick={()=>{
+          p.onHide()
+          p.dispatch({type:'loadingOn'})
+          console.log(p.prjInfo.title)
+          if(p.prjInfo.title != ''){
+            axios.post(host+'/ajax/createProject',p.prjInfo)
+            .then(r=>{
+              p.dispatch({type:'loadingOff'})
+              console.log(r)
+            })
+            .catch(e=>{
+              p.dispatch({type:'loadingOff'})
+
+              console.log(e)
+            })
+
+          }else {
+            p.alertCng(true)
+            p.dispatch({type:'loadingOff'})
+
+          }
+          
+        }}>만들기</Button>
         {/* <Button onClick={p.onHide} className="modalBtn danger">완료처리</Button> */}
-        <Button onClick={p.onHide} className="modalBtn">생성하기</Button>
+
       </Modal.Footer>
     </Modal>
   );
@@ -221,7 +287,8 @@ function ProjectCreateModal(p) {
 function transReducer(state){
   return {
     datePickerModal : state.datePickerModal,
-    loginUser : state.loginUser
+    loginUser : state.loginUser,
+    loading:state.loading
   }
 }
 

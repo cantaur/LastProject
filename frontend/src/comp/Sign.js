@@ -22,18 +22,18 @@ function Sign(p){
   }
 
   const onSuccessGoogle = async(r) => {
-    p.dispatch({type:"lodingOn"})
+    p.dispatch({type:"loadingOn"})
     axios.post(host+'/ajax/google/login', {
       member_email : r.profileObj.email,
       member_pw : r.profileObj.googleId,
       member_platform : "google"
     })
     .then((r)=>{
-      p.dispatch({type:"lodingOff"})
+      p.dispatch({type:"loadingOff"})
       window.location.href = '/project'
     })
     .catch((e)=>{
-      p.dispatch({type:"lodingOff"})
+      p.dispatch({type:"loadingOff"})
       history.push('/err')
     })
   }
@@ -91,14 +91,14 @@ function Sign(p){
 
 
   function signUpAxios(){
-    p.dispatch({type:"lodingOn"})
+    p.dispatch({type:"loadingOn"})
     axios.post(host+'/ajax/regist', {
       member_email : signUpData['email'],
       member_pw : signUpData['pw'],
       member_platform : "pium"
     })
     .then((r)=>{
-      p.dispatch({type:"lodingOff"})
+      p.dispatch({type:"loadingOff"})
       if(r.data == 'fail'){
         let signData = {...signUpData}
         signData['dupEmail'] = true;
@@ -110,7 +110,7 @@ function Sign(p){
       }
     })
     .catch((e)=>{
-      p.dispatch({type:"lodingOff"})
+      p.dispatch({type:"loadingOff"})
       history.push('/err')
       console.log(e)
     })

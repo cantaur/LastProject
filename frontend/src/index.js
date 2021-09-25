@@ -36,9 +36,9 @@ function pageInfo(state = '', action){
 }
 function loading(state = false, action){
   switch (action.type){
-    case 'lodingOn':
+    case 'loadingOn':
       return true;
-    case 'lodingOff':
+    case 'loadingOff':
       return false;
     default:
       return state;

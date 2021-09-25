@@ -29,19 +29,24 @@ function DatePicker(p) {
     return date ? moment(date).format("YYYY-MM-DD") : null;
   };
 
-  useEffect(()=>{
+  const handleCng = (dates) => {
     p.prjInfoCng({
       ...p.prjInfo, 
-      stDate:moment(dates.startDate).format("YYYY-MM-DD"), 
-      edDate:moment(dates.endDate).format('YYYY-MM-DD')
+      stDate:renderDate(dates.startDate), 
+      edDate:renderDate(dates.endDate)
     })
+    handleDatesChange(dates)
+  }
+
+  useEffect(()=>{
+    
   })
   return (
     <div className={'App '+ (p.datePickerModal?' on':'')}>
       <DayPickerRangeController
         startDate={p.stDate?moment(p.stDate, 'YYYY-MM-DD'):dates.startDate}
         endDate={p.edDate?moment(p.edDate, 'YYYY-MM-DD'):dates.endDate}
-        onDatesChange={handleDatesChange}
+        onDatesChange={handleCng}
         focusedInput={focusedInput || defaultFocusedInput}
         onFocusChange={onFocusChange}
         numberOfMonths={2}
