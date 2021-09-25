@@ -88,13 +88,22 @@ function ProjectList(p){
     if(!list){
       return 0;
     }else {
-      return list.filter(r => r.project_status == 1).length;;
+      let i = 0;
+      list.map(row=>{
+        if(row.project_isdelete==0 && row.project_status==1){
+          i++;
+        }
+      })
+      return i;
     }
   }
   //확인용 문구 팝업
   const [alertModal, alertModalCng] = useState(false)
   const alertClose =()=> alertModalCng(false);
   const alertOpen =()=> alertModalCng(true);
+
+  //삭제확인용 seq state
+  const [deleteSeq, deleteSeqCng] = useState();
 
 
 
@@ -105,7 +114,7 @@ function ProjectList(p){
       project_content: "내용입니다아1",
       project_duedate: "2021-11-25",
       project_enddate: "",
-      project_isdelete: "0",
+      project_isdelete: 0,
       project_seq: 1,
       project_startdate: "2021-09-25",
       project_status: 1,
@@ -160,7 +169,9 @@ function ProjectList(p){
           </Button>
           <Button variant="danger" onClick={()=>{
             p.dispatch({type:'loadingOn'})
-            axios.post(host+'/ajax/deleteProject')
+            axios.post(host+'/ajax/deleteProject',{
+              project_seq:deleteSeq
+            })
             .then(r=>{
               console.log(r)
               axios.get(host+'/ajax/myproject')
@@ -215,7 +226,7 @@ function ProjectList(p){
             {
               list &&
               list.map((row, i)=>{
-                if(row.project_status==0){
+                if(row.project_status==0 && row.project_isdelete == 0){
                   return(
                     <ProjectCard 
                       color={seqColorTrans(row.project_seq)}
@@ -230,6 +241,7 @@ function ProjectList(p){
                       loginUser={p.loginUser}
                       prjUpdateFn={prjUpdateFn}
                       dispatch={p.dispatch}
+                      deleteSeqCng={deleteSeqCng}
                       listCng={listCng}
                       pjStatus={0}
                       key={i}
@@ -246,7 +258,7 @@ function ProjectList(p){
               completePrjCnt(list) != 0
               ?
               list.map((row, i)=>{
-                if(row.project_status==1){
+                if(row.project_status==1 && row.project_isdelete == 0){
                   return(
                     <ProjectCard 
                       color={seqColorTrans(row.project_seq)}
@@ -263,7 +275,9 @@ function ProjectList(p){
                       prjUpdateFn={prjUpdateFn}
                       dispatch={p.dispatch}
                       alertOpen={alertOpen}
+                      alertModalCng={alertModalCng}
                       listCng={listCng}
+                      deleteSeqCng={deleteSeqCng}
                       key={i}
                     />
                   )
@@ -360,7 +374,10 @@ function ProjectCard(p){
           </>
           :
           <>
-            <div className="editBtn editBtn2 toolTipBox" onClick={p.alertOpen}>
+            <div className="editBtn editBtn2 toolTipBox" onClick={()=>{
+              p.deleteSeqCng(p.seq)
+              p.alertModalCng(true)
+            }}>
               <i class="far fa-trash-alt"></i>
               <div className="toolTip" style={{'marginLeft':'-41px',lineHeight:'12px'}}>프로젝트 삭제</div>
             </div>
