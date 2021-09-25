@@ -115,19 +115,20 @@ function ProjectList(p){
 
 
   useEffect(()=>{
-    p.dispatch({type:'loadingOn'})
-    axios.get(host+'/ajax/myproject')
-    .then(r=>{
-      console.log(r)
-      listCng(r.data);
-      p.dispatch({type:'loadingOff'})
+    // p.dispatch({type:'loadingOn'})
+    // axios.get(host+'/ajax/myproject')
+    // .then(r=>{
+    //   console.log(r)
+    //   listCng(r.data);
+    //   p.dispatch({type:'loadingOff'})
 
-    })
-    .catch(e=>{
-      console.log(e)
-      p.dispatch({type:'loadingOff'})
+    // })
+    // .catch(e=>{
+    //   console.log(e)
+    //   p.dispatch({type:'loadingOff'})
 
-    })
+    // })
+    listCng(listSample)
     
   },[])
 
@@ -218,6 +219,7 @@ function ProjectList(p){
         dispatch={p.dispatch}
         alert={alert}
         alertCng={alertCng}
+        listCng={listCng}
       />
       
     </>
@@ -350,19 +352,57 @@ function ProjectCreateModal(p) {
       </Modal.Body>
       <Modal.Footer className="modalBtnWrap">
         <Button onClick={p.onHide} className="modalBtn" onClick={()=>{
-          p.onHide()
           p.dispatch({type:'loadingOn'})
           if(p.prjInfo.project_title != ''){
-            axios.post(host+'/ajax/createProject',p.prjInfo)
-            .then(r=>{
-              p.dispatch({type:'loadingOff'})
-              console.log(r)
-            })
-            .catch(e=>{
-              p.dispatch({type:'loadingOff'})
+            if(p.prjInfo.project_seq) {
+              axios.post(host+'/ajax/updateProject',p.prjInfo)
+              .then(r=>{
+                console.log(r)
+                //수정하고 한번더 리스트 새로고침함
+                axios.get(host+'/ajax/myproject')
+                .then(r=>{
+                  console.log(r)
+                  p.listCng(r.data);
+                  p.onHide()
+                  p.dispatch({type:'loadingOff'})
 
-              console.log(e)
-            })
+                })
+                .catch(e=>{
+                  console.log(e)
+                  p.dispatch({type:'loadingOff'})
+                })
+              })
+              .catch(e=>{
+                p.dispatch({type:'loadingOff'})
+
+                console.log(e)
+              })
+            }else {
+              axios.post(host+'/ajax/createProject',p.prjInfo)
+              .then(r=>{
+                console.log(r)
+                //생성하고 한번더 리스트 새로고침함
+                axios.get(host+'/ajax/myproject')
+                .then(r=>{
+                  console.log(r)
+                  p.listCng(r.data);
+                  p.onHide()
+                  p.dispatch({type:'loadingOff'})
+
+                })
+                .catch(e=>{
+                  console.log(e)
+                  p.dispatch({type:'loadingOff'})
+
+                })
+              })
+              .catch(e=>{
+                p.dispatch({type:'loadingOff'})
+
+                console.log(e)
+              })
+            }
+            
 
           }else {
             p.alertCng(true)
