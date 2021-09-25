@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.swing.plaf.SpinnerUI;
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Log
@@ -20,6 +23,7 @@ public class ProjectController {
     private ProjectService projectService;
     private MemberService memberService;
 
+
     //현재 로그인한 유저의 세션값 얻어오는 로직 모듈화
     public String currentUserName(Principal principal){
         if(principal ==null){
@@ -30,6 +34,20 @@ public class ProjectController {
         }
     }
 
+    //새 프로젝트 만들기
+    @PostMapping("/ajax/createProject")
+    public String createProject(@RequestBody ProjectDTO projectDTO, Principal principal){
+        String email= currentUserName(principal);
+        long sessionSeq = memberService.findUserNo(email);
+        projectDTO.setMember_seq(sessionSeq);
+
+        String msg= projectService.insertProject(projectDTO);
+        if(msg.equals("success")){
+            return "success";
+        }else {
+            return "fail";
+        }
+    }
 
 
     //로그인한 유저가 참여 중인 모든 프로젝트 리스트
@@ -41,6 +59,27 @@ public class ProjectController {
         log.info("#myProject"+myProject);
         return myProject;
     }
+
+    //프로젝트 수정 버튼 눌렀을 때 수행되는 메소드
+    @PutMapping("/ajax/updateProject")
+    public void updateProject(@RequestBody ProjectDTO projectDTO, Principal principal){
+        String email= currentUserName(principal);
+        long sessionSeq = memberService.findUserNo(email);
+        projectService.updateProject(projectDTO);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //로그인한 유저가 참여 중이며 현재 진행 중인 프로젝트 리스트
     @GetMapping("/ajax/opendproject")
@@ -96,23 +135,7 @@ public class ProjectController {
         return list;
     }
 
-    //http://127.0.0.1:8000/project/searchMemberSeq/abcd1234@gmail.com 호출 성공
-    @PostMapping("insert")
-    public void insert(@RequestBody ProjectDTO projectDTO){
-        projectService.insertS(projectDTO);
-    }
-    /*at Talend API Tester
-      method : post
-      http://127.0.0.1:8000/project/insert
-      {
-        "project_title":"TESTProject",
-        "project_content":"TEST Project Content",
-        "project_status":"0",
-        "project_isdelete":"0",
-        "member_seq":1
-      }
-      Response 200 코드 확인 완료
-    */
+
     @PutMapping("updateStatus")
     public void updateStatus(@RequestBody ProjectDTO projectDTO){
         projectService.updateStatus(projectDTO);
@@ -153,24 +176,7 @@ public class ProjectController {
      {"project_content":"updateContent TEST","project_seq":28}
      Response 200 코드 확인 완료
    */
-    @PutMapping("updateProject")
-    public void updateProject(@RequestBody ProjectDTO projectDTO){
-        projectService.updateProject(projectDTO);
-    }
-    /*at Talend API Tester
-     method : put
-     url : http://127.0.0.1:8000/project/updateProject
-     {
-        "project_title" : "제목",
-        "project_content" : "바뀔거에요",
-        "project_status" : "0",
-        "project_isdelete" : "0",
-        "project_startdate" : 20210910,
-        "project_duedate" : 20211026,
-        "project_seq" : "28"
-     }
-     Response 200 코드 확인 완료
-   */
+
     @PutMapping("updateEnddate")
     public void updateEnddate(@RequestBody ProjectDTO projectDTO){
         projectService.updateEnddate(projectDTO);

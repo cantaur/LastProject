@@ -4,6 +4,29 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.ProjectmemberMapper">
 
+
+
+
+
+
+
+    <insert id="insertByPm" parameterType="ProjectmemberDTO">
+        insert into project_member(projmember_type, projmember_name, projmember_image, project_seq, member_seq)
+        values (#{projmember_type}, #{projmember_name}, null, #{project_seq}, #{member_seq})
+    </insert>
+
+
+
+
+
+
+
+
+
+
+
+
+
     <!-- 프로젝트 멤버 리스트 -->
     <select id="selectAll" resultType="projectmemberDTO">
         select * from project_member
@@ -25,10 +48,7 @@
         select projmember_name from Project_member where projmember_type= #{projmember_type}
     </select>
 
-    <insert id="insertByPm" parameterType="ProjectmemberDTO">
-        insert into project_member(projmember_type, projmember_name, projmember_image, project_seq, member_seq)
-        values (#{projmember_type}, #{projmember_name}, null, #{project_seq}, #{member_seq})
-    </insert>
+
     <delete id="deleteByPm" parameterType="long">
         Delete from Project_member where projmember_seq= #{projmember}
     </delete>

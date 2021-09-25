@@ -9,6 +9,33 @@
         select * from project where project_seq in(SELECT project_seq FROM project_member where member_seq = #{member_seq})
     </select>
 
+    <!--프로젝트 생성-->
+    <insert id="insertProject" parameterType="ProjectDTO">
+        INSERT INTO project (project_title, project_content, project_startdate, project_duedate, member_seq)
+        VALUES(#{project_title},#{project_content},#{project_startdate},#{project_duedate},#{member_seq})
+    </insert>
+
+<!-- 프로젝트 생성 시 프로젝트 멤버 테이블에 관리자셋팅-->
+
+    <insert id="insertManager" parameterType="long">
+        INSERT INTO project_member (projmember_type, project_seq, member_seq)
+        VALUES("0",#{project_seq},#{member_seq})
+
+    </insert>
+
+<!--  마지막으로 입력된 프로젝트 seq 검색-->
+    <select id="findSeq" resultType="long">
+        select last_insert_id();
+
+    </select>
+
+
+
+
+
+
+
+
 
 
     <!--프로젝트 전체 검색-->
@@ -24,11 +51,7 @@
         SELECT * FROM project where project_status = "1"
     </select>
 
-    <!--프로젝트 생성-->
-    <insert id="insert" parameterType="ProjectDTO">
-        INSERT INTO project (project_title, project_content, project_status, project_isdelete, member_seq)
-            VALUES(#{project_title},#{project_content},"0","0",#{member_seq})
-    </insert>
+
     <!--프로젝트 상태 업데이트-->
     <update id="updateStatus" parameterType="ProjectDTO">
         UPDATE project

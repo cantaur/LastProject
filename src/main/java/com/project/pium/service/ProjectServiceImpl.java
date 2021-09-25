@@ -5,6 +5,8 @@ import com.project.pium.mapper.ProjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +21,32 @@ public class ProjectServiceImpl implements ProjectService {
     public List<ProjectDTO> myProject(long memberSeq) {
         return projectMapper.myProject(memberSeq);
     }
+
+
+    //로그인한 유저가 참여 중인 모든 프로젝트 리스트
+    //프로젝트 테이블과 프로젝트멤버 테이블에 동시에 인서트 되지 않으면 테이블에 추가되지 않도록 트랜젝션 처리
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
+    public String insertProject(ProjectDTO projectDTO){
+        log.info("#프로젝트생성중: "+projectDTO);
+        projectMapper.insertProject(projectDTO);
+        long memSeq = projectDTO.getMember_seq();
+        log.info("memSeq"+memSeq);
+        long lastProjSeq = projectMapper.findSeq();
+        log.info("#last: "+lastProjSeq);
+        int flag= projectMapper.insertManager(lastProjSeq,memSeq);
+        if(flag ==1){
+            return "success";
+        }else{
+            return "fail";
+        }
+
+
+    }
+
+
+
+
 
 
 
@@ -46,10 +74,6 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 
-    @Override
-    public void insertS(ProjectDTO projectDTO) {
-        projectMapper.insert(projectDTO);
-    }
 
     @Override
     public void updateStatus(ProjectDTO projectDTO) {
