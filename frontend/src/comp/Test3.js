@@ -9,32 +9,41 @@ function Test3(){
   useEffect(()=>{
     
   },[])
-  let [uploadData, uploadDataCng] = useState({file:''})
+
+  const [files, filesCng] = useState('');
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('file', files)
+
+    axios({
+      method:'post',
+      url:'uploadFile',
+      data:formData,
+      headers: {"Content-Type": "multipart/form-data"}
+    })
+    .then(r=>{
+      console.log(r)
+      console.log('업로드성공')
+    })
+    .catch(e=>{
+      console.log(e)
+      console.log('업로드실패')
+    })
+  }
+
+  const handleUpload = e => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    filesCng(file)
+  };
+
   return(
     <>
-      <input type="file" onChange={(e)=>{
-        uploadDataCng({file:e.target.value})
-        console.log(uploadData.file)
 
-      }}/>
-      <button onClick={()=>{
-        if(uploadData.file != ''){
-          axios.post('',{
-            file:uploadData.file
-          })
-          .then(r=>{
-            console.log(r)
-            console.log('업로드성공')
-          })
-          .catch(e=>{
-            console.log(e)
-            console.log('업로드실패')
-          })
-        } else {
-
-        }
-        
-      }}>파일 업로드</button>
+      <input type="file" onChange={handleUpload}/>
+      <button onClick={handleSubmit}>파일 업로드</button>
 
     </>
   )

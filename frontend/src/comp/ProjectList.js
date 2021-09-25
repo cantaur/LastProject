@@ -40,8 +40,7 @@ function ProjectList(p){
   },[])
 
   useEffect(()=>{
-    console.log(p.loginUser)
-    console.log(prjInfo)
+    
   })
 
   return(
