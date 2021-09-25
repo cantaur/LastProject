@@ -69,9 +69,9 @@ function ProjectList(p){
   }
 
   //수정일때 모달 조작
-  const prjUpdateFn = (memberSeq, title, content, startDate, dueDate, seq) => {
+  const prjUpdateFn = (type, title, content, startDate, dueDate, seq) => {
     p.dispatch({type:'login', email:'test@gmail.com', seq:4})
-    if(memberSeq == p.loginUser.seq){
+    if(type == 0){
       prjInfoCng({
         project_seq:seq,
         project_title:title,
@@ -83,7 +83,34 @@ function ProjectList(p){
     }
   }
 
+  // 완료된 프로젝트 카운트
+  const completePrjCnt = (list) => {
+    if(!list){
+      return 0;
+    }else {
+      return list.filter(r => r.project_status == 1).length;;
+    }
+  }
+  //확인용 문구 팝업
+  const [alertModal, alertModalCng] = useState(false)
+  const alertClose =()=> alertModalCng(false);
+  const alertOpen =()=> alertModalCng(true);
 
+
+  //프로젝트 목록 새로고침
+  const prjListAxios = () => {
+    axios.get(host+'/ajax/myproject')
+    .then(r=>{
+      console.log(r)
+      p.listCng(r.data);
+      p.dispatch({type:'loadingOff'})
+
+    })
+    .catch(e=>{
+      console.log(e)
+      p.dispatch({type:'loadingOff'})
+    })
+  }
 
   //프론트 작업용 샘플
   let listSample = [
@@ -95,8 +122,9 @@ function ProjectList(p){
       project_isdelete: "0",
       project_seq: 1,
       project_startdate: "2021-09-25",
-      project_status: "0",
-      project_title: "진행중프로젝트1"
+      project_status: 1,
+      project_title: "진행중프로젝트1",
+      projmember_type: 0
     },
     {
       member_seq: 4,
@@ -106,8 +134,9 @@ function ProjectList(p){
       project_isdelete: "0",
       project_seq: 4,
       project_startdate: "2021-09-25",
-      project_status: "0",
-      project_title: "진행중프로젝트2"
+      project_status: 0,
+      project_title: "진행중프로젝트2",
+      projmember_type: 0
     },
   ]
 
@@ -115,6 +144,7 @@ function ProjectList(p){
 
 
   useEffect(()=>{
+    
     p.dispatch({type:'loadingOn'})
     axios.get(host+'/ajax/myproject')
     .then(r=>{
@@ -126,14 +156,41 @@ function ProjectList(p){
     .catch(e=>{
       console.log(e)
       p.dispatch({type:'loadingOff'})
-
     })
+  
     // listCng(listSample)
     
   },[])
 
   return(
     <>
+      <Modal show={alertModal} onHide={alertClose} className="modalWrap">
+        <Modal.Header style={{borderBottom:0}}>
+          <Modal.Title className="modalTitle" >정말 프로젝트를 삭제할까요? &#x1f625;</Modal.Title>
+        </Modal.Header>
+        <Modal.Footer style={{borderTop:0}}>
+          <Button variant="secondary" onClick={alertClose} style={{fontSize:'.8rem'}}>
+            취소
+          </Button>
+          <Button variant="danger" onClick={()=>{
+            p.dispatch({type:'loadingOn'})
+            axios.post(host+'/ajax/deleteProject')
+            .then(r=>{
+              console.log(r)
+              p.dispatch({type:'loadingOff'})
+              prjListAxios();
+              alertModalCng(false)
+            })
+            .catch(e=>{
+              console.log(e)
+              p.dispatch({type:'loadingOff'})
+              alertModalCng(false)
+            })
+          }} style={{fontSize:'.8rem'}}>
+            삭제
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <div className="pListTop outerWrap">
         <div className="innerWrap">
           <img src={pub.img+'logo.svg'}/>
@@ -164,29 +221,67 @@ function ProjectList(p){
             {
               list &&
               list.map((row, i)=>{
-                return(
-                  <ProjectCard 
-                    color={seqColorTrans(row.project_seq)}
-                    seq={row.project_seq}
-                    managerSeq={row.member_seq}
-                    title={row.project_title}
-                    content={row.project_content}
-                    startDate={row.project_startdate}
-                    dueDate={row.project_duedate}
-                    status={prjStatusFn(row.project_duedate)}
-                    loginUser={p.loginUser}
-                    prjUpdateFn={prjUpdateFn}
-                    dispatch={p.dispatch}
-                    key={i}
-                  />
-                )
+                if(row.project_status==0){
+                  return(
+                    <ProjectCard 
+                      color={seqColorTrans(row.project_seq)}
+                      seq={row.project_seq}
+                      managerSeq={row.member_seq}
+                      title={row.project_title}
+                      content={row.project_content}
+                      startDate={row.project_startdate}
+                      dueDate={row.project_duedate}
+                      status={prjStatusFn(row.project_duedate)}
+                      type={row.projmember_type}
+                      loginUser={p.loginUser}
+                      prjUpdateFn={prjUpdateFn}
+                      dispatch={p.dispatch}
+                      prjListAxios={prjListAxios}
+                      listCng={listCng}
+                      pjStatus={0}
+                      key={i}
+                    />
+                  )
+                }
               })
             }
             <AddProject show={()=>setModalShow(true)}/>
           </div>
           <h4 className="inActive">완료된 프로젝트 &#x1F648;</h4>
           <div className="cardWrap">
-            <NoProject title="완료된 프로젝트"/>
+            {
+              completePrjCnt(list) != 0
+              ?
+              list.map((row, i)=>{
+                if(row.project_status==1){
+                  return(
+                    <ProjectCard 
+                      color={seqColorTrans(row.project_seq)}
+                      seq={row.project_seq}
+                      managerSeq={row.member_seq}
+                      title={row.project_title}
+                      content={row.project_content}
+                      startDate={row.project_startdate}
+                      dueDate={row.project_duedate}
+                      status={prjStatusFn(row.project_duedate)}
+                      type={row.projmember_type}
+                      loginUser={p.loginUser}
+                      pjStatus={1}
+                      prjUpdateFn={prjUpdateFn}
+                      dispatch={p.dispatch}
+                      alertOpen={alertOpen}
+                      prjListAxios={prjListAxios}
+                      listCng={listCng}
+                      key={i}
+                    />
+                  )
+                }
+              })
+              :<NoProject title="완료된 프로젝트"/>
+            }
+            
+                
+            
           </div>
         </div>
       </div>
@@ -226,22 +321,82 @@ function ProjectList(p){
   )
 }
 
-function ProjectCard(p){
-
-  
+function ProjectCard(p){  
   const history = useHistory();
   return(
     <div className="projectCard">
+      {
+        p.type==0
+        ?
+          p.pjStatus==0
+          ?
+          <>
+            <div className="editBtn editBtn2 toolTipBox" onClick={()=>{
+              p.dispatch({type:'loadingOn'})
+              axios.post('/ajax/closeProject',{
+                project_seq:p.seq
+              })
+              .then(r=>{
+                p.prjListAxios();
+                console.log(r)
+              })
+              .catch(e=>{
+                console.log(e)
+                p.dispatch({type:'loadingOff'})
+              })
+            }}>
+              <i class="fas fa-check"></i>
+              <div className="toolTip" style={{'marginLeft':'-64px',lineHeight:'12px'}}>완료된 프로젝트로 이동</div>
+            </div>
+            <div className="editBtn editBtn3 toolTipBox" onClick={()=>{
+              p.prjUpdateFn(p.type, p.title, p.content, p.startDate, p.dueDate, p.seq)
+            }}>
+              
+              <i class="fas fa-pen"></i>
+              <div className="toolTip" style={{'marginLeft':'-41px',lineHeight:'12px'}}>프로젝트 수정</div>
+            </div>
+          </>
+          :
+          <>
+            <div className="editBtn editBtn2 toolTipBox" onClick={p.alertOpen}>
+              <i class="far fa-trash-alt"></i>
+              <div className="toolTip" style={{'marginLeft':'-41px',lineHeight:'12px'}}>프로젝트 삭제</div>
+            </div>
+            <div className="editBtn editBtn3 toolTipBox" onClick={()=>{
+              p.dispatch({type:'loadingOn'})
+              axios.post('/ajax/openProject',{
+                project_seq:p.seq
+              })
+              .then(r=>{
+                p.prjListAxios();
+                console.log(r)
+              })
+              .catch(e=>{
+                console.log(e)
+                p.dispatch({type:'loadingOff'})
+              })
+            }}>
+              <i class="fas fa-undo-alt"></i>
+              <div className="toolTip" style={{'marginLeft':'-64px',lineHeight:'12px'}}>진행중인 프로젝트로 복원</div>
+            </div>
+          </>
+        :null
+      }
+      
       <div className="typeWrap">
         {
-          p.managerSeq == p.loginUser
+          p.type==0
           ?<p className="admin">관리자</p>
           : null
         }
         {
-          p.status == '진행중'
-          ?<p className="go">진행중</p>
-          :<p className="end">마감일 지남</p>
+          p.pjStatus == 0 
+          ?
+            p.status == '진행중'
+            ?<p className="go">진행중</p>
+            :<p className="end">마감일 지남</p>
+          : null
+            
         }
       </div>
       <p className="title" onClick={()=>{
@@ -253,9 +408,7 @@ function ProjectCard(p){
         ?<div className="date"><i class="far fa-clock"></i> {p.startDate} ~ {p.dueDate}</div>
         :null
       }
-      <div className={'icon '+(p.managerSeq == p.loginUser.seq?'active':'')}  style={{backgroundColor:p.color}} onClick={()=>{
-        p.prjUpdateFn(p.managerSeq, p.title, p.content, p.startDate, p.dueDate, p.seq)
-      }}>{p.title.substring(0,1)}</div>
+      <div className={'icon '} style={{backgroundColor:p.color}}>{p.title.substring(0,1)}</div>
     </div>
   )
 }
@@ -351,30 +504,18 @@ function ProjectCreateModal(p) {
         
       </Modal.Body>
       <Modal.Footer className="modalBtnWrap">
-        <Button onClick={p.onHide} className="modalBtn" onClick={()=>{
+        <Button className="modalBtn" onClick={()=>{
           p.dispatch({type:'loadingOn'})
           if(p.prjInfo.project_title != ''){
             if(p.prjInfo.project_seq) {
               axios.post(host+'/ajax/updateProject',p.prjInfo)
               .then(r=>{
                 console.log(r)
-                //수정하고 한번더 리스트 새로고침함
-                axios.get(host+'/ajax/myproject')
-                .then(r=>{
-                  console.log(r)
-                  p.listCng(r.data);
-                  p.onHide()
-                  p.dispatch({type:'loadingOff'})
-
-                })
-                .catch(e=>{
-                  console.log(e)
-                  p.dispatch({type:'loadingOff'})
-                })
+                p.prjListAxios();
+                p.onHide();
               })
               .catch(e=>{
                 p.dispatch({type:'loadingOff'})
-
                 console.log(e)
               })
             }else {
@@ -412,11 +553,7 @@ function ProjectCreateModal(p) {
           
         }}>{p.prjInfo.project_seq?'수정하기':'만들기'}</Button>
 
-        {
-          p.prjInfo.project_seq
-          ?<Button onClick={()=>{console.log('완료기능??')}} className="modalBtn danger">완료처리</Button> 
-          :null
-        }
+        
 
       </Modal.Footer>
     </Modal>

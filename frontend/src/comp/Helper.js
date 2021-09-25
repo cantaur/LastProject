@@ -19,7 +19,7 @@ const colors = [
   '#F99620',
 ]
 const seqColorTrans = (seq) => {
-  if(Number(seq) <= 10){
+  if(Number(seq) <= 9){
     return colors[seq]
   } else {
     console.log(seq % 10)
