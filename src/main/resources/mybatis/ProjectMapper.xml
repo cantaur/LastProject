@@ -4,10 +4,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.ProjectMapper">
 
-    <!--로그인한 유저가 참여중인 프로젝트 검색-->
+    <!--로그인한 유저가 참여중인 프로젝트 리스트-->
     <select id="myProject" resultType="ProjectDTO" parameterType="long">
         select * from project where project_seq in(SELECT project_seq FROM project_member where member_seq = #{member_seq})
     </select>
+    
+    <!--로그인한 유저가 참여중인 프로젝트 리스트+프로젝트 멤버 타입 join 결과-->
+    <select id="myProjectJoin" resultType="ProjectDTO" parameterType="long">
+        SELECT DISTINCT p.*,pm.projmember_type,pm.member_seq
+        FROM project p
+                 join  project_member pm
+                       ON p.member_seq=pm.member_seq
+                           AND pm.project_seq =p.project_seq
+        WHERE  pm.member_seq=#{member_seq}
+    </select>
+    
+    
 
     <!--프로젝트 생성-->
     <insert id="insertProject" parameterType="ProjectDTO">

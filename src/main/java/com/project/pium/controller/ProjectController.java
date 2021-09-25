@@ -60,6 +60,12 @@ public class ProjectController {
         return myProject;
     }
 
+
+
+
+
+
+
     //프로젝트 수정 버튼 눌렀을 때 수행되는 메소드
     @PutMapping("/ajax/updateProject")
     public void updateProject(@RequestBody ProjectDTO projectDTO, Principal principal){

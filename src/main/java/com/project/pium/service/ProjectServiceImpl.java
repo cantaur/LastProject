@@ -17,13 +17,14 @@ public class ProjectServiceImpl implements ProjectService {
 
     private ProjectMapper projectMapper;
 
+    //로그인한 유저가 참여 중인 모든 프로젝트 리스트
     @Override
     public List<ProjectDTO> myProject(long memberSeq) {
-        return projectMapper.myProject(memberSeq);
+        return projectMapper.myProjectJoin(memberSeq);
     }
 
 
-    //로그인한 유저가 참여 중인 모든 프로젝트 리스트
+
     //프로젝트 테이블과 프로젝트멤버 테이블에 동시에 인서트 되지 않으면 테이블에 추가되지 않도록 트랜젝션 처리
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
@@ -42,6 +43,11 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
 
+    }
+
+    @Override
+    public void updateProject(ProjectDTO projectDTO) {
+        projectMapper.updateProject(projectDTO);
     }
 
 
@@ -95,10 +101,7 @@ public class ProjectServiceImpl implements ProjectService {
         projectMapper.updateContent(projectDTO);
     }
 
-    @Override
-    public void updateProject(ProjectDTO projectDTO) {
-        projectMapper.updateProject(projectDTO);
-    }
+
 
     @Override
     public void updateEnddate(ProjectDTO projectDTO) {

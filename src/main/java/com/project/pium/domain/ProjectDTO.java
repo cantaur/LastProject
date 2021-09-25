@@ -20,5 +20,7 @@ public class ProjectDTO {
     private Date project_duedate;
     private Date project_enddate;
     private long member_seq;
+    private String projmember_type;
+
 
 }

@@ -13,6 +13,8 @@ import java.util.List;
 public interface ProjectMapper {
     //유저가 참여중인 프로젝트
     List<ProjectDTO> myProject(long memberSeq);
+    //유저가 참여중인 프로젝트 리스트+프로젝트 멤버 타입
+    List<ProjectDTO> myProjectJoin(long memberSeq);
     //프로젝트 생성
     void insertProject(ProjectDTO projectDTO);
     //프로젝트 생성 시 프로젝트 멤버 테이블에 관리자 셋팅
