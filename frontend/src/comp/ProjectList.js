@@ -6,6 +6,8 @@ import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstr
 import { Link, useParams, withRouter, useHistory } from "react-router-dom";
 import {CSSTransition} from 'react-transition-group';
 import {connect} from 'react-redux';
+import moment from "moment";
+import "moment/locale/ko";
 
 
 
@@ -21,6 +23,7 @@ function ProjectList(p){
 
   //프로젝트 생성, 수정_정보
   const [prjInfo, prjInfoCng] = useState({
+    seq:'',
     project_title:'',
     project_content:'',
     project_startdate:'',
@@ -55,46 +58,77 @@ function ProjectList(p){
   //프로젝트 목록
   let [list, listCng] = useState();
 
-  // const prjStatusFn = (date, ) => {
-    
-  // }
+  //마감일이 지났는지 확인
+  const prjStatusFn = (dueDate) => {
+    let nowDate = moment();
+    if(moment().isAfter(dueDate)){
+      return '마감일 지남'
+    } else {
+      return '진행중'
+    }
+  }
+
+  //수정일때 모달 조작
+  const prjUpdateFn = (memberSeq, title, content, startDate, dueDate, seq) => {
+    p.dispatch({type:'login', email:'test@gmail.com', seq:4})
+    if(memberSeq == p.loginUser.seq){
+      prjInfoCng({
+        project_seq:seq,
+        project_title:title,
+        project_content:content,
+        project_startdate:startDate,
+        project_duedate:dueDate
+      })
+      setModalShow(true)
+    }
+  }
+
+
+
+  //프론트 작업용 샘플
+  let listSample = [
+    {
+      member_seq: 4,
+      project_content: "내용입니다아1",
+      project_duedate: "2021-11-25",
+      project_enddate: "",
+      project_isdelete: "0",
+      project_seq: 1,
+      project_startdate: "2021-09-25",
+      project_status: "0",
+      project_title: "진행중프로젝트1"
+    },
+    {
+      member_seq: 4,
+      project_content: "내용입니다아2",
+      project_duedate: "2022-11-25",
+      project_enddate: "",
+      project_isdelete: "0",
+      project_seq: 4,
+      project_startdate: "2021-09-25",
+      project_status: "0",
+      project_title: "진행중프로젝트2"
+    },
+  ]
 
 
 
 
   useEffect(()=>{
-    // axios.get(host+'/ajax/myproject')
-    // .then(r=>{
-    //   console.log(r)
-    // })
-    // .catch(e=>{
-    //   console.log(e)
-    // })
-    let listSample = [
-      {
-        member_seq: 4,
-        project_content: "내용입니다아1",
-        project_duedate: "2021-11-25",
-        project_enddate: "",
-        project_isdelete: "0",
-        project_seq: 1,
-        project_startdate: "2021-09-25",
-        project_status: "0",
-        project_title: "진행중프로젝트1"
-      },
-      {
-        member_seq: 42,
-        project_content: "내용입니다아2",
-        project_duedate: "2022-11-25",
-        project_enddate: "",
-        project_isdelete: "0",
-        project_seq: 1,
-        project_startdate: "2021-09-25",
-        project_status: "0",
-        project_title: "진행중프로젝트2"
-      },
-    ]
-    listCng(listSample);
+    p.dispatch({type:'loadingOn'})
+    axios.get(host+'/ajax/myproject')
+    .then(r=>{
+      console.log(r)
+      listCng(r.data);
+      p.dispatch({type:'loadingOff'})
+
+    })
+    .catch(e=>{
+      console.log(e)
+      p.dispatch({type:'loadingOff'})
+
+    })
+    
   },[])
 
   return(
@@ -127,16 +161,21 @@ function ProjectList(p){
           <h4 className="active">진행중인 프로젝트 &#x1F680;</h4>
           <div className="cardWrap">
             {
-              
               list &&
               list.map((row, i)=>{
                 return(
                   <ProjectCard 
-                    color={seqColorTrans(row.member_seq)}
+                    color={seqColorTrans(row.project_seq)}
+                    seq={row.project_seq}
+                    managerSeq={row.member_seq}
                     title={row.project_title}
                     content={row.project_content}
                     startDate={row.project_startdate}
                     dueDate={row.project_duedate}
+                    status={prjStatusFn(row.project_duedate)}
+                    loginUser={p.loginUser}
+                    prjUpdateFn={prjUpdateFn}
+                    dispatch={p.dispatch}
                     key={i}
                   />
                 )
@@ -159,6 +198,7 @@ function ProjectList(p){
           p.dispatch({type:'modalOff'})
           window.removeEventListener('click', dateModalClose)
           prjInfoCng({
+            project_seq:'',
             project_title:'',
             project_content:'',
             project_startdate:'',
@@ -185,22 +225,35 @@ function ProjectList(p){
 }
 
 function ProjectCard(p){
+
   
   const history = useHistory();
-
   return(
     <div className="projectCard">
       <div className="typeWrap">
-        <p className="admin">관리자</p>
-        <p className="end">마감일 지남</p>
-        <p className="go">진행중</p>
+        {
+          p.managerSeq == p.loginUser
+          ?<p className="admin">관리자</p>
+          : null
+        }
+        {
+          p.status == '진행중'
+          ?<p className="go">진행중</p>
+          :<p className="end">마감일 지남</p>
+        }
       </div>
       <p className="title" onClick={()=>{
-        history.push('/project/100/kanban')
-      }}>프로젝트의 제목이 들어갈 공간입니다아아아</p>
-      <p className="sub">프로젝트 설명이 없습니다.</p>
-      <div className="date"><i class="far fa-clock"></i> 2021-09-18 ~ 2021-09-20</div>
-      <div className="icon" style={{backgroundColor:p.color}}>프</div>
+        history.push('/project/'+p.seq+'/todo')
+      }}>{p.title}</p>
+      <p className="sub">{p.content?p.content:'프로젝트 설명이 없습니다.'}</p>
+      {
+        p.startDate
+        ?<div className="date"><i class="far fa-clock"></i> {p.startDate} ~ {p.dueDate}</div>
+        :null
+      }
+      <div className={'icon '+(p.managerSeq == p.loginUser.seq?'active':'')}  style={{backgroundColor:p.color}} onClick={()=>{
+        p.prjUpdateFn(p.managerSeq, p.title, p.content, p.startDate, p.dueDate, p.seq)
+      }}>{p.title.substring(0,1)}</div>
     </div>
   )
 }
@@ -226,9 +279,7 @@ function AddProject(p){
 
 
 function ProjectCreateModal(p) {
-  useEffect(()=>{
 
-  })
   return (
     <Modal
       {...p}
@@ -240,7 +291,11 @@ function ProjectCreateModal(p) {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter" className="modalTitle">
-          새 프로젝트 만들기
+          {
+            p.prjInfo.project_seq
+            ?'프로젝트 수정'
+            :'새 프로젝트 만들기'
+          }
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -282,7 +337,7 @@ function ProjectCreateModal(p) {
               })
             }
           }>
-            <i class="far fa-calendar-check"></i> {p.project_startdate?'일정 수정':'일정 선택'}
+            <i class="far fa-calendar-check"></i> 일정선택
           </p>
           <p className="dateInfo">
             {p.project_startdate?(p.project_startdate + " ~ "):''}
@@ -315,8 +370,13 @@ function ProjectCreateModal(p) {
 
           }
           
-        }}>만들기</Button>
-        {/* <Button onClick={p.onHide} className="modalBtn danger">완료처리</Button> */}
+        }}>{p.prjInfo.project_seq?'수정하기':'만들기'}</Button>
+
+        {
+          p.prjInfo.project_seq
+          ?<Button onClick={()=>{console.log('완료기능??')}} className="modalBtn danger">완료처리</Button> 
+          :null
+        }
 
       </Modal.Footer>
     </Modal>

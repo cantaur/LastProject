@@ -62,7 +62,6 @@ let store = createStore(combineReducers({datePickerModal, loading, pageInfo,logi
 
 axios.get(host+'/ajax/loginUser')
 .then(r=>{
-  console.log(r.data)
   if(r.data == 'false'){
     console.log('---로그인한 유저없음---')
     store.dispatch({type:'logout'})
