@@ -23,8 +23,6 @@ public class ProjectServiceImpl implements ProjectService {
         return projectMapper.myProjectJoin(memberSeq);
     }
 
-
-
     //프로젝트 테이블과 프로젝트멤버 테이블에 동시에 인서트 되지 않으면 테이블에 추가되지 않도록 트랜젝션 처리
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
@@ -41,70 +39,46 @@ public class ProjectServiceImpl implements ProjectService {
         }else{
             return "fail";
         }
-
-
     }
 
+    //프로젝트 수정
     @Override
     public void updateProject(ProjectDTO projectDTO) {
         projectMapper.updateProject(projectDTO);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    //프로젝트를 완료상태로 전환
     @Override
-    public List<ProjectDTO> listS() {
-        return projectMapper.projectSelectAll();
+    public int closeProject(long projseq) {
+        int flag= projectMapper.closeProject(projseq);
+        return flag;
+    }
+    //프로젝트를 진행상태로 전환
+    @Override
+    public int openProject(long projSeq) {
+        int flag = projectMapper.openProject(projSeq);
+        return flag;
     }
 
+    //프로젝트를 삭제상태로 전환
     @Override
-    public List<ProjectDTO> projectSelectProceeding() {
-        return projectMapper.projectSelectProceeding();
-    }
-
-    @Override
-    public List<ProjectDTO> projectSelectEnd() {
-        return projectMapper.projectSelectEnd();
+    public int updateIsdelete(long projSeq) {
+        int flag = projectMapper.updateIsdelete(projSeq);
+        log.info("삭제했나"+flag);
+        return flag;
     }
 
 
 
 
-    @Override
-    public void updateStatus(ProjectDTO projectDTO) {
-        projectMapper.updateStatus(projectDTO);
-    }
-
-    @Override
-    public void updateIsdelete(ProjectDTO projectDTO) {
-        projectMapper.updateIsdelete(projectDTO);
-    }
-
-    @Override
-    public void updateTitle(ProjectDTO projectDTO) {
-        projectMapper.updateTitle(projectDTO);
-    }
-
-    @Override
-    public void updateContent(ProjectDTO projectDTO) {
-        projectMapper.updateContent(projectDTO);
-    }
 
 
 
-    @Override
-    public void updateEnddate(ProjectDTO projectDTO) {
-        projectMapper.updateEnddate(projectDTO);
-    }
+
+
+
+
+
+
+
 }

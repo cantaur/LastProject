@@ -21,21 +21,15 @@ public interface ProjectMapper {
     int insertManager(@Param("project_seq") long projSeq, @Param("member_seq") long memSeq);
     //프로젝트 seq 검색
     long findSeq();
-
-
-
-
-
-
-
-    List<ProjectDTO> projectSelectAll();
-    List<ProjectDTO> projectSelectProceeding();
-    List<ProjectDTO> projectSelectEnd();
-
-    void updateStatus(ProjectDTO projectDTO);
-    void updateIsdelete(ProjectDTO projectDTO);
-    void updateTitle(ProjectDTO projectDTO);
-    void updateContent(ProjectDTO projectDTO);
+    //프로젝트를 완료상태로 전환
+    int closeProject(long projSeq);
+    //프로젝트를 진행상태로 전환
+    int openProject(long projSeq);
+    //프로젝트 삭제상태 업데이트
+    int updateIsdelete(long projSeq);
+    //프로젝트 수정
     void updateProject(ProjectDTO projectDTO);
-    void updateEnddate(ProjectDTO projectDTO);
+
+
+
 }

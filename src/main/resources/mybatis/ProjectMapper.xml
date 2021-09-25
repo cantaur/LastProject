@@ -18,8 +18,6 @@
                            AND pm.project_seq =p.project_seq
         WHERE  pm.member_seq=#{member_seq}
     </select>
-    
-    
 
     <!--프로젝트 생성-->
     <insert id="insertProject" parameterType="ProjectDTO">
@@ -27,8 +25,8 @@
         VALUES(#{project_title},#{project_content},#{project_startdate},#{project_duedate},#{member_seq})
     </insert>
 
-<!-- 프로젝트 생성 시 프로젝트 멤버 테이블에 관리자셋팅-->
 
+<!-- 프로젝트 생성 시 프로젝트 멤버 테이블에 관리자셋팅-->
     <insert id="insertManager" parameterType="long">
         INSERT INTO project_member (projmember_type, project_seq, member_seq)
         VALUES("0",#{project_seq},#{member_seq})
@@ -42,40 +40,57 @@
     </select>
 
 
-
-
-
-
-
-
-
-
-    <!--프로젝트 전체 검색-->
-    <select id="projectSelectAll" resultType="ProjectDTO">
-        SELECT * FROM project
-    </select>
-    <!--진행상태 프로젝트 검색-->
-    <select id="projectSelectProceeding" resultType="ProjectDTO">
-        SELECT * FROM project where project_status = "0"
-    </select>
-    <!--종료상태 프로젝트 검색-->
-    <select id="projectSelectEnd" resultType="ProjectDTO">
-        SELECT * FROM project where project_status = "1"
-    </select>
-
-
-    <!--프로젝트 상태 업데이트-->
-    <update id="updateStatus" parameterType="ProjectDTO">
+<!--프로젝트를 완료상태로 전환-->
+    <update id="closeProject" parameterType="long">
         UPDATE project
-        SET project_status = #{project_status}
+        SET project_status = "1"
         WHERE project_seq = #{project_seq}
     </update>
-    <!--프로젝트 삭제상태 업데이트-->
-    <update id="updateIsdelete" parameterType="ProjectDTO">
-        UPDATE project
-        SET project_isdelete = #{project_isdelete}
-        WHERE project_seq = #{project_seq}
-    </update>
+
+<!--프로젝트를 진행상태로 전환-->
+<update id="openProject" parameterType="long">
+    UPDATE project
+    SET project_status = "0"
+    WHERE project_seq = #{project_seq}
+</update>
+
+<!--프로젝트 삭제상태 업데이트(iddelete=1)-->
+<update id="updateIsdelete" parameterType="ProjectDTO">
+    UPDATE project
+    SET project_isdelete = "1"
+    WHERE project_seq = #{project_seq}
+</update>
+
+
+<!--프로젝트 전체 업데이트(enddate제외)-->
+<update id="updateProject" parameterType="ProjectDTO">
+    UPDATE project
+    SET project_title = #{project_title},
+        project_content = #{project_content},
+        project_startdate = #{project_startdate},
+        project_duedate = #{project_duedate}
+    WHERE project_seq = #{project_seq}
+</update>
+
+<!--프로젝트에 멤버 초대-->
+<!--프로젝트 관리자 이전-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--나중에 쓸 일이 있을지도-->
     <!--프로젝트 제목 업데이트-->
     <update id="updateTitle" parameterType="ProjectDTO">
         UPDATE project
@@ -88,17 +103,7 @@
         SET project_content = #{project_content}
         WHERE project_seq = #{project_seq}
     </update>
-    <!--프로젝트 전체 업데이트(enddate제외)-->
-    <update id="updateProject" parameterType="ProjectDTO">
-        UPDATE project
-        SET project_title = #{project_title},
-            project_content = #{project_content},
-            project_status = #{project_status},
-            project_isdelete = #{project_isdelete},
-            project_startdate = #{project_startdate},
-            project_duedate = #{project_duedate}
-        WHERE project_seq = #{project_seq}
-    </update>
+
     <!--프로젝트 실제종료일 업데이트-->
     <update id="updateEnddate" parameterType="ProjectDTO">
         UPDATE project
