@@ -13,6 +13,7 @@ public interface ProjectService {
     List<ProjectDTO> projectSelectProceeding(long member_seq);
     List<ProjectDTO> projectSelectEnd(long member_seq);
 
+
     void insertS(ProjectDTO projectDTO);
     void updateStatus(ProjectDTO projectDTO);
     void updateIsdelete(ProjectDTO projectDTO);

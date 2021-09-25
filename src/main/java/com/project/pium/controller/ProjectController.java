@@ -42,6 +42,7 @@ public class ProjectController {
         return myProject;
     }
 
+
     //로그인한 유저가 참여 중이며 현재 진행 중인 프로젝트 리스트
     @GetMapping("/ajax/opendproject")
     public List<ProjectDTO> opendProject(Principal principal){
