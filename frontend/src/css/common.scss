@@ -2,6 +2,7 @@
 //default
 
 $c1:#2B4C9F;
+$c1h:#86a8ff;
 $c1d:#213b7a;
 $c2:#FFDF39;
 $c2d:#dbbf31;
@@ -27,6 +28,20 @@ body{
 .innerWrap{
   width: 1080px;
   height: 100%;
+}
+.CalendarDay__selected, .CalendarDay__selected:active, .CalendarDay__selected:hover {
+  background: $c1d !important;
+  border: 1px double $c1d !important;
+}
+.CalendarDay__selected_span {
+  background: $c1h !important;
+  border: 1px double $c1h !important;
+}
+.CalendarDay__hovered_span,
+.CalendarDay__hovered_span:hover{
+  background: $c1h !important;
+  border: 1px double $c1h !important;
+  color:$c1d !important
 }
 
 .toolTipBox{

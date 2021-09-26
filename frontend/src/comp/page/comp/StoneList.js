@@ -23,18 +23,18 @@ function StoneList(p){
 
   //제목, 설명
   const [info, infoCng] = useState({
-    title:p.title,
-    sub:p.sub,
-    stDate:p.stDate,
-    edDate:p.edDate
+    milestone_title:p.milestone_title,
+    milestone_content:p.milestone_content,
+    milestone_startdate:p.milestone_startdate,
+    milestone_duedate:p.milestone_duedate
   })
 
   //제목, 설명 수정 더미
   const [infoDummy, infoDummyCng] =useState({
-    title:p.title,
-    sub:p.sub,
-    stDate:p.stDate,
-    edDate:p.edDate
+    milestone_title:p.milestone_title,
+    milestone_content:p.milestone_content,
+    milestone_startdate:p.milestone_startdate,
+    milestone_duedate:p.milestone_duedate
   })
 
 
@@ -57,19 +57,19 @@ function StoneList(p){
       
       <p className="titleWrap">
         <p className={"title " + (p.isView?'view':'')}  onClick={()=>{
-          history.push("/project/"+p.prjSeq+"/mileStoneView/"+p.seq)
+          history.push("/project/"+p.prjSeq+"/mileStoneView/"+p.milestone_seq)
           p.dispatch({type:'pagePush', val:'mileStoneView'})
         }}>
           <p class="tit">
             {
               titleModify
-              ? <input type="text" className="titModify" ref={titModify} value={infoDummy.title} placeholder="마일스톤 제목을 입력하세요." spellcheck="false" onChange={(e)=>{
+              ? <input type="text" className="titModify" ref={titModify} value={infoDummy.milestone_title} placeholder="마일스톤 제목을 입력하세요." spellcheck="false" onChange={(e)=>{
                 infoDummyCng({
                   ...infoDummy,
-                  title:e.target.value
+                  milestone_title:e.target.value
                 })
               }}/>
-              :infoDummy.title
+              :infoDummy.milestone_title
             }
           </p>
           {
@@ -101,13 +101,13 @@ function StoneList(p){
           <p className="sub">
             {
               subModify
-              ? <input type="text" className="subModify" ref={subModifyRef} value={infoDummy.sub} placeholder="마일스톤 설명을 입력하세요." spellcheck="false" onChange={(e)=>{
+              ? <input type="text" className="subModify" ref={subModifyRef} value={infoDummy.milestone_content} placeholder="마일스톤 설명을 입력하세요." spellcheck="false" onChange={(e)=>{
                 infoDummyCng({
                   ...infoDummy,
-                  sub:e.target.value
+                  milestone_content:e.target.value
                 })
               }}/>
-              :infoDummy.sub
+              :infoDummy.milestone_content
             }
           </p>
           {
@@ -141,18 +141,18 @@ function StoneList(p){
         {
           p.isView
           ?
-            p.stDate
+            p.milestone_startdate
             ? <div className="date on">
                 <i class="far fa-clock"></i>
-                {infoDummy.stDate} ~ {infoDummy.edDate}
+                {infoDummy.milestone_startdate} ~ {infoDummy.milestone_duedate}
               </div>
             : <div className="date on"><i class="far fa-clock"></i> 마일스톤 일정 추가하기</div>
           :
-            p.stDate  
+            p.milestone_startdate  
             ?
             <div className="date on">
               <i class="far fa-clock"></i>
-              {p.stDate} ~ {p.edDate}
+              {p.milestone_startdate} ~ {p.milestone_duedate}
             </div>
             : null
         }

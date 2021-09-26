@@ -40,7 +40,7 @@ function ProjectList(p){
     })
   }
 
-  //프로젝트 생성, 수정 날짜성택 이중모달 컨트롤
+  //프로젝트 생성, 수정 날짜선택 이중모달 컨트롤
   let dateModalClose =useCallback((e)=>{
     if(!e.target.closest('.DayPicker_1') ){
       p.dispatch({type:'modalOff'})
@@ -486,7 +486,7 @@ function ProjectCreateModal(p) {
         {
           p.alert
           ?
-          <Alert variant={'danger'} style={{fontSize:'.8rem',marginBottom:'.4rem'}}>프로젝트 제목을 입력해주세요.</Alert>
+          <Alert variant={'danger'} style={{fontSize:'.8rem',marginBottom:'.4rem'}}>프로젝트 제목을 입력해주세요. &#x1F602;</Alert>
           : null
         }
         
@@ -495,23 +495,25 @@ function ProjectCreateModal(p) {
             controlId="floatingInput"
             label="프로젝트 제목"
           >
-            <Form.Control type="text" placeholder="프로젝트 제목" name="project_title" value={p.project_title} onChange={p.prjInfoChange}/>
+            <Form.Control type="text" placeholder="프로젝트 제목" name="project_title" value={p.project_title} spellCheck="false" onChange={p.prjInfoChange}/>
           </FloatingLabel>
         </Form.Group>
         
 
         <Form.Group className=" piumInput" controlId="floatingTextarea">
           <FloatingLabel controlId="floatingTextarea" label="설명">
-            <Form.Control type="textarea" placeholder="설명" name="project_content" value={p.project_content} onChange={p.prjInfoChange}/>
+            <Form.Control type="textarea" placeholder="설명" name="project_content" value={p.project_content} spellCheck="false" onChange={p.prjInfoChange}/>
           </FloatingLabel>
         </Form.Group>
 
         <div className="datePickerWrap">
           <DatePicker
-            project_startdate={p.project_startdate}
-            project_duedate={p.project_duedate}
-            prjInfoCng={p.prjInfoCng}
-            prjInfo={p.prjInfo}
+            pickerStartDate={p.project_startdate}
+            pickerEndDate={p.project_duedate}
+            pickerDateCng={p.prjInfoCng}
+            pickerDate={p.prjInfo}
+            pickerStartKey={'project_startdate'}
+            pickerEndKey={'project_duedate'}
           />
           <p className="dateBtn" onClick={
             ()=>{
