@@ -77,7 +77,7 @@ public class ProjectmemberController {
 
 
     //프로필 이미지 확인 성고오오오옹
-    @GetMapping("/ajax/viewImage/{id}")
+    @GetMapping("/ajax/profile/{id}")
     public ResponseEntity<byte[]> findOne(@PathVariable long id) {
         ProjectmemberDTO projectmemberDTO = projectmemberService.showImage(id);
         log.info("마임타입이 뭐냐고"+projectmemberDTO.getProjmember_filetype());
