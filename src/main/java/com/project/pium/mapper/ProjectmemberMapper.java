@@ -2,13 +2,43 @@ package com.project.pium.mapper;
 
 import com.project.pium.domain.ProjectmemberDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
 
 import java.util.List;
 
 @Mapper
 @Repository
 public interface ProjectmemberMapper {
+    //프로필 수정
+    void updateProfile(ProjectmemberDTO projectmemberDTO);
+    //프로젝트seq와 멤버seq로 프로젝트멤버 seq 찾기
+    long findProjMemberSeq(@Param("project_seq") long projSeq, @Param("member_seq")long memSeq);
+    ProjectmemberDTO showImage(long projmember_seq);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     void insertByPm(ProjectmemberDTO projectmemberDTO);//추가
 
 
