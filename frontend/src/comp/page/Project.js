@@ -8,15 +8,15 @@ import {connect} from 'react-redux';
 
 
 
-function Calender(p){
+function Project(p){
   
   useEffect(()=>{
     
   },[])
 
   return(
-    <div className="pageContentWrap calenderWrap">
-      <p>캘린더 페이지 입니다</p>
+    <div className="pageContentWrap projectWrap">
+      <p>프로젝트 페이지 입니다</p>
     </div>
   )
 }
@@ -28,4 +28,4 @@ function transReducer(state){
   }
 }
 
-export default connect(transReducer)(Calender);
+export default connect(transReducer)(Project);

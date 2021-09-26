@@ -1,45 +1,52 @@
 import axios from "axios";
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState, useRef, useCallback } from "react"
 import {pub, colors} from './Helper.js'
 import DatePicker from './DatePicker.js'
 import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstrap'
-import { Link, useParams, withRouter, useHistory } from "react-router-dom";
+import { Link, useParams, withRouter, useHistory, useLocation } from "react-router-dom";
 import {CSSTransition} from 'react-transition-group';
 import {connect} from 'react-redux';
 
 
 
 
-
+//페이지 정보 (왼쪽탭 활성화)
 function pagePath(page){
   switch (page){
     case 'todo':
       return 0;
     case 'calender':
       return 1;
+    case 'mileStone':
+      return 2;
+    case 'mileStoneView':
+      return 2;
+    case 'task':
+      return 3;
   }
 }
 
-//멤버 설정 모달 상태
-// let [memberModal, memberModalCng] = useState('');
-//멤버 설정 모달_바깥클릭시 닫기 이벤트 핸들러
-// let memberModalClose =useCallback((e)=>{
-//   if(!e.target.closest('.memberModalWrap') ){
-//     setTimeout(()=>{
-//       window.removeEventListener('click', memberModalClose)
-//     })
-//   }
-// },[])
 
 function HeadSide(p){
+  const history = useHistory();
+  //검색 모달 상태
   let [searchModal, searchModalCng] = useState(false);
+
   const pagePathNum = pagePath(p.pageInfo);
-  
 
-  // useEffect(()=>{
+  //멤버 설정 모달 상태
+  let [memberModal, memberModalCng] = useState(false);
 
-    
-  // },[])
+  // 멤버 설정 모달_바깥클릭시 닫기 이벤트 핸들러
+  let memberModalClose =useCallback((e)=>{
+    if(!e.target.closest('.memberModalWrap') ){
+      memberModalCng(false)
+      setTimeout(()=>{
+        window.removeEventListener('click', memberModalClose)
+      })
+    }
+  },[])
+
   return(
     <>
       {/* 헤더 */}
@@ -48,16 +55,6 @@ function HeadSide(p){
           <Form.Select size="sm">
             <option>테스트 프로젝트 1</option>
             <option>샘플 프로젝트</option>
-          </Form.Select>
-          <b className="pathBar"><i class="fas fa-caret-right"></i></b>
-          <Form.Select size="sm">
-            <option>샘플 마일스톤이덩</option>
-            <option>샘플업무당</option>
-          </Form.Select>
-          <b className="pathBar"><i class="fas fa-caret-right"></i></b>
-          <Form.Select size="sm">
-            <option>샘플업무당2</option>
-            <option>샘플업무당1</option>
           </Form.Select>
         </div>
         <div className="rightWrap">
@@ -100,37 +97,57 @@ function HeadSide(p){
 
       {/* 사이드 */}
       <div className="viewSide" style={{backgroundColor:p.prjColor+'20'}}>
-        <div className="prjIcon tipRightBox" style={{backgroundColor:p.prjColor}}>
+        <div className="prjIcon tipRightBox" style={{backgroundColor:p.prjColor}} onClick={()=>{
+          history.push('/project')
+        }}>
           프
-          <p className="tipRight r35">프로젝트 설정</p>
+          <p className="tipRight r35">프로젝트 목록으로</p>
         </div>
 
         <div className="pageIconWrap">
-          <i class={"fas fa-home tipRightBox " + (pagePathNum==0?'on':'')} style={{color:p.prjColor}}>
+          <i class={"fas fa-home tipRightBox " + (pagePathNum==0?'on':'')} style={{color:p.prjColor}} onClick={()=>{
+            history.push('/project/'+p.prjSeq+'/todo')
+            p.dispatch({type:'pagePush', val:'todo'});
+          }}>
             <p className="tipRight">내 업무</p>
           </i>
-          <i class={"fas fa-tachometer-alt tipRightBox " + (pagePathNum==1?'on':'')} style={{color:p.prjColor}}>
+          <i class={"fas fa-tachometer-alt tipRightBox " + (pagePathNum==1?'on':'')} style={{color:p.prjColor}} onClick={()=>{
+            history.push('/project/'+p.prjSeq+'/calender')
+            p.dispatch({type:'pagePush', val:'calender'});
+          }}>
             <p className="tipRight">프로젝트</p>
           </i>
 
-          <i class={"fas fa-flag tipRightBox " + (pagePathNum==2?'on':'')} style={{color:p.prjColor}}>
+          <i class={"fas fa-flag tipRightBox " + (pagePathNum==2?'on':'')} style={{color:p.prjColor}} onClick={()=>{
+            history.push('/project/'+p.prjSeq+'/mileStone')
+            p.dispatch({type:'pagePush', val:'mileStone'});
+
+          }}>
             <p className="tipRight">마일스톤</p>
           </i>
-          <i class={"fas fa-briefcase tipRightBox "+ (pagePathNum==3?'on':'')} style={{color:p.prjColor}}>
+          <i class={"fas fa-briefcase tipRightBox "+ (pagePathNum==3?'on':'')} style={{color:p.prjColor}} onClick={()=>{
+            history.push('/project/'+p.prjSeq+'/task')
+            p.dispatch({type:'pagePush', val:'task'});
+
+          }}>
             <p className="tipRight">업무</p>
           </i>
         </div>
 
 
         <div className="memberIconWrap">
-          {/* <div className={"memberIcon tipRightBox "} onClick={()=>{
-            setTimeout(()=>{
-              window.addEventListener('click', memberModalClose)
-            })
+          <div className={"memberIcon tipRightBox "+(memberModal?'off':'')} onClick={()=>{
+            if(!memberModal){
+              setTimeout(()=>{
+                memberModalCng(true)
+                window.addEventListener('click', memberModalClose)
+              })
+            }
           }}>
+            
             <p className="tipRight r45">멤버 설정</p>
             <i class="fas fa-users" style={{color:p.prjColor}}></i>            
-          </div> */}
+          </div>
 
 
           <div className="profile tipRightBox">
@@ -141,7 +158,7 @@ function HeadSide(p){
         </div>
 
         </div>
-        <div className="memberModalWrap">
+        <div className={"memberModalWrap " + (memberModal?'on':'')}>
           <div className="inviteWrap">
             <input type="text" placeholder="초대할 이메일"/>
             <i class="fas fa-paper-plane" style={{color:p.prjColor}}></i>

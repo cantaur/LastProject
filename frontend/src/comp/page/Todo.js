@@ -15,9 +15,9 @@ function Kanban(p){
   },[])
 
   return(
-    <>
+    <div className="todoWrap pageContentWrap">
       <p>투두 페이지입니다.</p>
-    </>
+    </div>
   )
 }
 

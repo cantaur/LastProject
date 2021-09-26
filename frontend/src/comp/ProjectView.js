@@ -5,6 +5,9 @@ import DatePicker from './DatePicker.js'
 import HeadSide from './HeadSide.js'
 import Todo from './page/Todo.js'
 import Calender from './page/Calender.js'
+import MileStone from './page/MileStone.js'
+import MileStoneView from './page/MileStoneView.js'
+import Task from './page/Task.js'
 import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstrap'
 import { Link, useParams, withRouter, useHistory } from "react-router-dom";
 import {CSSTransition} from 'react-transition-group';
@@ -27,21 +30,34 @@ function ProjectList(p){
       history.push('/404')
     } else {
       p.dispatch({type:"pagePush", val:isPage})
-      
     }
   },[])
+  
+
 
   return(
     <div className="viewOutWrap">
-      <HeadSide prjColor={prjColor}/>
+      <HeadSide prjColor={prjColor} prjSeq={seq}/>
       <div className="viewInnerWrap">
         {
           p.pageInfo == 'todo' &&
-          <Todo className="kanbanWrap"/>
+          <Todo prjColor={prjColor} prjSeq={seq}/>
         }
         {
           p.pageInfo == 'calender' &&
-          <Calender className="calenderWrap"/>
+          <Calender prjColor={prjColor} prjSeq={seq}/>
+        }
+        {
+          p.pageInfo == 'mileStone' &&
+          <MileStone prjColor={prjColor} prjSeq={seq}/>
+        }
+        {
+          p.pageInfo == 'mileStoneView' &&
+          <MileStoneView prjColor={prjColor} prjSeq={seq}/>
+        }
+        {
+          p.pageInfo == 'task' &&
+          <Task prjColor={prjColor} prjSeq={seq}/>
         }
       </div>
     </div>

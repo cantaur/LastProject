@@ -29,7 +29,6 @@ function pageInfo(state = '', action){
   switch (action.type){
     case 'pagePush':
       return action.val;
-    
     default:
       return state;
   }

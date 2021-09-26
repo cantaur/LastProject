@@ -63,6 +63,9 @@ function App(p) {
       <Route path='/project/:seq/:page' exact>
         <ProjectView/>
       </Route>
+      <Route path='/project/:seq/:page/:pageSeq' exact>
+        <ProjectView/>
+      </Route>
         
 
       <Route path='/test' exact>
