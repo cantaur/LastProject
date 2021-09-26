@@ -16,7 +16,7 @@ function Kanban(p){
 
   return(
     <>
-      <p>칸반 페이지입니다.</p>
+      <p>투두 페이지입니다.</p>
     </>
   )
 }

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react"
-import {pub, colors, pages} from './Helper.js'
+import {pub, colors, pages, seqColorTrans} from './Helper.js'
 import DatePicker from './DatePicker.js'
 import HeadSide from './HeadSide.js'
 import Todo from './page/Todo.js'
@@ -18,6 +18,9 @@ function ProjectList(p){
   const page = params.page;
   const seq = params.seq;
 
+  const prjColor = seqColorTrans(seq);
+
+
   useEffect(()=>{
     const isPage = pages.find(e=> e === page)
     if(isPage == undefined){
@@ -30,7 +33,7 @@ function ProjectList(p){
 
   return(
     <div className="viewOutWrap">
-      <HeadSide/>
+      <HeadSide prjColor={prjColor}/>
       <div className="viewInnerWrap">
         {
           p.pageInfo == 'todo' &&

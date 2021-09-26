@@ -784,6 +784,100 @@ $c2d:#dbbf31;
     height: 100vh;
     background-color: #fff;
     z-index: 2;
+
+    .memberModalWrap{
+      // width: 200px;
+      background-color: #fff;
+      position: fixed;
+      bottom:145px;
+      height: auto;
+      left: 45px;
+      border-radius: 10px 10px 10px 0px;
+      border:1px solid #ccc;
+      opacity: 1;
+      transition: .2s ease-in-out;
+      transform-origin: 0% 100%;
+      transform: scale(1);
+      &.on{
+        transform: scale(1);
+        opacity: 1;
+      }
+      .memberListWrap{
+        height: max-content;
+        max-height: 100px;
+        overflow-y: auto;
+        &::-webkit-scrollbar {
+          width: 3px;
+          height: 3px;
+          background:transparent;
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 3.5px;
+          background-color: #888;
+    
+          &:hover {
+            background-color: #888;
+          }
+        }
+        &::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .memberList{
+          display: flex;
+          align-items: center;
+          padding:0px 10px;
+          &+.memberList{
+            margin-top:10px;
+            padding-top:10px;
+            border-top:1px solid #ccc;
+          }
+          .profileImg{
+            width: 40px;
+            height: 40px;
+            overflow: hidden;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            img{
+              height: 100%;
+            }
+          }
+          p{
+            margin:0
+          }
+        }
+      }
+      
+
+      .inviteWrap {
+        position: relative;
+        width: 100%;
+        padding: 10px;
+        input{
+          width: 100%;
+          font-size: .8rem;
+          padding:8px 10px;
+          padding-right: 20px;
+          border-radius: 10px;
+          border:0;
+          background-color: #f2f2f2;
+          &:focus{
+            outline: none;
+          }
+        }
+        i{
+          cursor: pointer;
+          position: absolute;
+          font-size: 1.1rem;
+
+          right: 20px;
+          top:18px;
+        }
+      }
+    }
+
     .tipRightBox{
       position: relative;
       &.off{
@@ -851,24 +945,7 @@ $c2d:#dbbf31;
       right: 0px;
       bottom:50px;
       width: 100%;
-      .memberModalWrap{
-        width: 200px;
-        background-color: #fff;
-        position: absolute;
-        bottom:95px;
-        height: 200px;
-        right: -195px;
-        border-radius: 10px 10px 10px 0px;
-        border:1px solid #ccc;
-        opacity: 0;
-        transition: .2s ease-in-out;
-        transform-origin: 0% 100%;
-        transform: scale(0.3);
-        &.on{
-          transform: scale(1);
-          opacity: 1;
-        }
-      }
+      
       .memberIcon {
         margin-bottom:20px;
         cursor: pointer;
@@ -894,6 +971,7 @@ $c2d:#dbbf31;
           align-items: center;
           border:1px solid #ccc;
           border-radius: 100px;
+          background-color: #fff;
           img{
             width: 100%;
           }
@@ -913,15 +991,15 @@ $c2d:#dbbf31;
         font-size: 1.4rem;
         margin-bottom:20px;
         cursor: pointer;
-        opacity: .5;
+        opacity: .3;
         transition:.3s ease-in-out;
         &:hover{
           opacity: 1;
-          color: #000 !important;
+          // color: #000 !important;
         }
         &.on{
           opacity: 1 !important;
-          color: #000 !important;
+          // color: #000 !important;
 
         }
       }

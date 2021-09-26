@@ -9,16 +9,7 @@ import {connect} from 'react-redux';
 
 
 
-const pColorB = {
-  backgroundColor: '#038D7F',
-}
 
-const pColor = {
-  color: '#038D7F',
-}
-const pColorBo = {
-  borderColor: '#038D7F',
-}
 
 function pagePath(page){
   switch (page){
@@ -65,20 +56,20 @@ function HeadSide(p){
 
           <Modal className="searchBox" show={searchModal} onHide={()=>{searchModalCng(false)}}>
             <Modal.Header>
-              <i class="fas fa-search" style={pColor}></i>
+              <i class="fas fa-search" style={{color:p.prjColor}}></i>
               <Form.Control type="text" placeholder="검색어를 입력해주세요." className="searchInput"/>
             </Modal.Header>
             <Modal.Body>
               <div className="result">
-                <b style={pColorB}>마일스톤</b>
+                <b style={{backgroundColor:p.prjColor}}>마일스톤</b>
                 <p>검색결과로 나온 마일스톤 이름</p>
               </div>
               <div className="result">
-                <b style={pColorB}>업무</b>
+                <b style={{backgroundColor:p.prjColor}}>업무</b>
                 <p>검색결과로 나온 업무 이름</p>
               </div>
               <div className="result">
-                <b style={pColorB}>프로젝트</b>
+                <b style={{backgroundColor:p.prjColor}}>프로젝트</b>
                 <p>검색결과로 나온 업무 이름</p>
               </div>
             </Modal.Body>
@@ -97,24 +88,24 @@ function HeadSide(p){
 
 
       {/* 사이드 */}
-      <div className="viewSide" style={{backgroundColor:'#038D7F20'}}>
-        <div className="prjIcon tipRightBox" style={pColorB}>
+      <div className="viewSide" style={{backgroundColor:p.prjColor+'20'}}>
+        <div className="prjIcon tipRightBox" style={{backgroundColor:p.prjColor}}>
           프
           <p className="tipRight r35">프로젝트 설정</p>
         </div>
 
         <div className="pageIconWrap">
-          <i class={"fas fa-home tipRightBox " + (pagePathNum==0?'on':'')} style={pColor}>
+          <i class={"fas fa-home tipRightBox " + (pagePathNum==0?'on':'')} style={{color:p.prjColor}}>
             <p className="tipRight">내 업무</p>
           </i>
-          <i class={"fas fa-tachometer-alt tipRightBox " + (pagePathNum==1?'on':'')} style={pColor}>
+          <i class={"fas fa-tachometer-alt tipRightBox " + (pagePathNum==1?'on':'')} style={{color:p.prjColor}}>
             <p className="tipRight">프로젝트</p>
           </i>
 
-          <i class={"fas fa-flag tipRightBox " + (pagePathNum==2?'on':'')} style={pColor}>
+          <i class={"fas fa-flag tipRightBox " + (pagePathNum==2?'on':'')} style={{color:p.prjColor}}>
             <p className="tipRight">마일스톤</p>
           </i>
-          <i class={"fas fa-briefcase tipRightBox "+ (pagePathNum==3?'on':'')} style={pColor}>
+          <i class={"fas fa-briefcase tipRightBox "+ (pagePathNum==3?'on':'')} style={{color:p.prjColor}}>
             <p className="tipRight">업무</p>
           </i>
         </div>
@@ -123,7 +114,7 @@ function HeadSide(p){
         <div className="memberIconWrap">
           <div className={"memberIcon tipRightBox "}>
             <p className="tipRight r45">멤버 설정</p>
-            <i class="fas fa-users" style={pColor}></i>            
+            <i class="fas fa-users" style={{color:p.prjColor}}></i>            
           </div>
 
 
@@ -132,8 +123,42 @@ function HeadSide(p){
             <div className="profileIcon">
               <img src={pub.img+'defaultProfile.svg'}/>
             </div>
+        </div>
+
+        </div>
+        <div className="memberModalWrap">
+          <div className="inviteWrap">
+            <input type="text" placeholder="초대할 이메일"/>
+            <i class="fas fa-paper-plane" style={{color:p.prjColor}}></i>
           </div>
 
+          
+          <div className="memberListWrap">
+
+            <div className="memberList">
+              <div className="profileImg">
+                <img src="/img/defaultProfile.svg"/>
+              </div>
+              <div className="profileName">
+                <p className="name">&#x1F451; 긴 이르으으으으으으으으으으음</p>
+                <p className="email">test@gmail.com</p>
+
+              </div>
+            </div>
+
+            <div className="memberList">
+              <div className="profileImg">
+                <img src="/img/defaultProfile.svg"/>
+              </div>
+              <div className="profileName">
+                <p className="name">&#x1F451; 긴 이르으으으으으으으으으으음</p>
+                <p className="email">test@gmail.com</p>
+
+              </div>
+            </div>
+          </div>
+          
+          
         </div>
         
       </div>

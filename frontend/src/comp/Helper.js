@@ -12,11 +12,11 @@ const colors = [
   '#273F92',
   '#099EEF',
   '#038D7F',
-  '#82BF4B',
-  '#FEBD28',
+  '#6ea043',
+  '#e5a000',
   '#6C483C',
   '#596E80',
-  '#F99620',
+  '#f6751a',
 ]
 const seqColorTrans = (seq) => {
   if(Number(seq) <= 9){
