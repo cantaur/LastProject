@@ -7,19 +7,20 @@ import '../css/test.css';
 
 function Test3(){
   useEffect(()=>{
-    
-  },[])
+    console.log(profileData)    
+  })
 
-  const [files, filesCng] = useState('');
+  const [profileData, profileDataCng] = useState({projmember_name:'', projmember_image:'', project_seq:''});
+
 
   const handleSubmit = e => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('file', files)
+    formData.append('file', profileData)
 
     axios({
       method:'post',
-      url:host+'/ajax/uploadFile',
+      url:host+'/ajax/updateProfile',
       data:formData,
       headers: {"Content-Type": "multipart/form-data"}
     })
@@ -33,17 +34,38 @@ function Test3(){
     })
   }
 
-  const handleUpload = e => {
+  const handleFile = e => {
     e.preventDefault();
     const file = e.target.files[0];
-    filesCng(file)
+    
+    const upload = {...profileData}
+    upload.projmember_image = file
+    profileDataCng(upload)
+  };
+  const handleName = e => {
+    e.preventDefault();
+    const name = e.target.value;
+    
+    const upload = {...profileData}
+    upload.projmember_name = name
+    profileDataCng(upload)
+  };
+
+  const handleSeq = e => {
+    e.preventDefault();
+    const seq = e.target.value;
+    
+    const upload = {...profileData}
+    upload.project_seq = Number(seq)
+    profileDataCng(upload)
   };
 
   return(
     <>
-
-      <input type="file" onChange={handleUpload}/>
-      <button onClick={handleSubmit}>파일 업로드</button>
+      <input type="text" onChange={handleSeq} placeholder="seq" style={{display:'block'}}/>
+      <input type="text" onChange={handleName} placeholder="이름" style={{display:'block'}}/>
+      <input type="file" onChange={handleFile} accept=".jpg, .jpeg, .png, .svg" style={{display:'block',marginBottom:'1rem'}}/>
+      <button onClick={handleSubmit}>정보수정하기</button>
 
     </>
   )

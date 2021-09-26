@@ -18,7 +18,7 @@ function Sign(p){
 
 
   const onFailure = async(r) => {
-    history.push('/err')
+    // history.push('/err')
   }
 
   const onSuccessGoogle = async(r) => {
