@@ -21,15 +21,15 @@ function pagePath(page){
 }
 
 //멤버 설정 모달 상태
-const [memberModal, memberModal]
+// let [memberModal, memberModalCng] = useState('');
 //멤버 설정 모달_바깥클릭시 닫기 이벤트 핸들러
-let memberModalClose =useCallback((e)=>{
-  if(!e.target.closest('.memberModalWrap') ){
-    setTimeout(()=>{
-      window.removeEventListener('click', memberModalClose)
-    })
-  }
-},[])
+// let memberModalClose =useCallback((e)=>{
+//   if(!e.target.closest('.memberModalWrap') ){
+//     setTimeout(()=>{
+//       window.removeEventListener('click', memberModalClose)
+//     })
+//   }
+// },[])
 
 function HeadSide(p){
   let [searchModal, searchModalCng] = useState(false);
@@ -123,14 +123,14 @@ function HeadSide(p){
 
 
         <div className="memberIconWrap">
-          <div className={"memberIcon tipRightBox "} onClick={()=>{
+          {/* <div className={"memberIcon tipRightBox "} onClick={()=>{
             setTimeout(()=>{
               window.addEventListener('click', memberModalClose)
             })
           }}>
             <p className="tipRight r45">멤버 설정</p>
             <i class="fas fa-users" style={{color:p.prjColor}}></i>            
-          </div>
+          </div> */}
 
 
           <div className="profile tipRightBox">
