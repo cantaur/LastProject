@@ -4,6 +4,43 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.ProjectmemberMapper">
 
+    <!--해당 프로젝트의 닉네임과 사진 변경-->
+    <update id="updateProfile" parameterType="projectmemberDTO">
+        UPDATE project_member
+        SET projmember_name = #{projmember_name},
+            projmember_filename = #{projmember_filename},
+            projmember_filetype = #{projmember_filetype},
+            projmember_data = #{projmember_data}
+        WHERE projmember_seq = #{projmember_seq}
+    </update>
+
+    <!--프로젝트seq와(프론트에서 넘겨줌) 멤버seq(세션으로 받음)로 프로젝트멤버 seq 찾기-->
+    <select id="findProjMemberSeq" parameterType="long" resultType="long">
+        SELECT projmember_seq FROM project_member
+        WHERE project_seq=#{project_seq} AND member_seq=#{member_seq};
+    </select>
+
+    <!--이미지 꺼내봐요-->
+    <select id="showImage" parameterType="long" resultType="projectmemberDTO">
+        select * from project_member where projmember_seq=#{projmember_seq};
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

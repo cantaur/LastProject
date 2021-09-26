@@ -11,7 +11,9 @@ public class ProjectmemberDTO {
     private long projmember_seq;
     private String projmember_type;
     private String projmember_name;
-    private String projmember_image;
+    private String projmember_filename;
+    private String projmember_filetype;
+    private byte[] projmember_data;
     private long project_seq;
     private long member_seq;
 

@@ -14,61 +14,24 @@ import java.util.List;
 @Service
 
 public class ProjectmemberServiceImpl implements ProjectmemberService  {
-    private ProjectmemberMapper mapper;
+    private ProjectmemberMapper projectmemberMapper;
 
     @Override
-    public List<ProjectmemberDTO> selectAllS() {
-        return mapper.selectAll();
+    public void updateProfileS(ProjectmemberDTO projectmemberDTO){
+        log.info("#projectmemberDTO : "+projectmemberDTO);
+
+        projectmemberMapper.updateProfile(projectmemberDTO);
     }
 
     @Override
-    public List<ProjectmemberDTO> selectByPmseqS(long projmember_seq) {
-        return mapper.selectByPmseq(projmember_seq);
+    public long findProjMemberSeq(long projSeq, long memSeq) {
+        return projectmemberMapper.findProjMemberSeq(projSeq,memSeq);
     }
 
     @Override
-    public List<ProjectmemberDTO> selectByMseqS(long member_seq) {
-        return mapper.selectByMseq(member_seq);
-    }
-
-    @Override
-    public List<ProjectmemberDTO> selectByPmnameS(String projmember_name) {
-        return mapper.selectByPmname(projmember_name);
-    }
-
-    @Override
-    public String selectByBossS(String projmember_type) {
-        return mapper.selectByBoss(projmember_type);
-    }
-
-    @Override
-    public void insertByPmS(ProjectmemberDTO projectmemberDTO) {
-        mapper.insertByPm(projectmemberDTO);
-    }
-
-    @Override
-    public void deleteByPmS(long projmember_seq) {
-        mapper.deleteByPm(projmember_seq);
-    }
-
-    @Override
-    public void updateByPmNameS(ProjectmemberDTO projectmemberDTO) {
-        mapper.updateByPmName(projectmemberDTO);
+    public ProjectmemberDTO showImage(long projmember_seq) {
+        return projectmemberMapper.showImage(projmember_seq);
     }
 
 
-    @Override
-    public void updateByPmImgS(ProjectmemberDTO projectmemberDTO) {
-        mapper.updateByPmImg(projectmemberDTO);
-    }
-
-    @Override
-    public void updateByPmTypeUpS(long projmember_seq) {
-        mapper.updateByPmTypeUp(projmember_seq);
-    }
-
-    @Override
-    public void updateByPmTypeDownS(long projmember_seq) {
-        mapper.updateByPmTypeDown(projmember_seq);
-    }
 }
