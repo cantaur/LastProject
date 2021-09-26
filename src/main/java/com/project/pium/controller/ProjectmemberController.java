@@ -3,19 +3,75 @@ package com.project.pium.controller;
 
 import com.project.pium.domain.ProjectDTO;
 import com.project.pium.domain.ProjectmemberDTO;
+import com.project.pium.file.payload.UploadFileResponse;
+import com.project.pium.service.MemberService;
+import com.project.pium.service.ProjectService;
 import com.project.pium.service.ProjectmemberService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @Log
 @RestController
-@RequestMapping("Pm")
 @AllArgsConstructor
+@ResponseBody
 public class ProjectmemberController {
+    private ProjectService projectService;
+    private MemberService memberService;
     private ProjectmemberService service;
+    private FileController fileController;
+
+
+    //현재 로그인한 유저의 세션값 얻어오는 로직 모듈화
+    public String currentUserName(Principal principal){
+        if(principal ==null){
+            return "false";
+        }else{
+            String sessionEmail = principal.getName();
+            return sessionEmail;
+        }
+    }
+
+    //프로젝트멤버 프로필 변경
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/ajax/updateProfile")
+    public String updateProfile(@RequestParam(value="project_seq") Integer projSeq,
+                                @RequestParam(value="projmember_image") MultipartFile file,
+                                @RequestParam(value="projmember_name") String title) throws Exception {
+        //UploadFileResponse uploadFile= fileController.uploadFile(file);
+        //log.info("업로드된 파일이 있는가?"+uploadFile.getFileName());
+        log.info("뭘찍냐?"+projSeq+","+title);
+
+        return "success";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @GetMapping("AllPm") //모든 플젝멤버 조회
     public List<ProjectmemberDTO> AllPm() {

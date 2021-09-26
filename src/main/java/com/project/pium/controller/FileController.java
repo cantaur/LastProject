@@ -1,11 +1,15 @@
 package com.project.pium.controller;
 
+import com.project.pium.domain.FileDTO;
+import com.project.pium.service.DBFileStorageService;
 import com.project.pium.service.FileStorageService;
 import com.project.pium.file.payload.UploadFileResponse;
+import com.project.pium.service.MemberService;
 import lombok.extern.java.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -15,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,29 +32,44 @@ public class FileController {
 
     @Autowired
     private FileStorageService fileStorageService;
+    @Autowired
+    private DBFileStorageService dbFileStorageService;
+
+
+
+    //현재 로그인한 유저의 세션값 얻어오는 로직 모듈화
+    public String currentUserName(Principal principal){
+        if(principal ==null){
+            return "false";
+        }else{
+            String sessionEmail = principal.getName();
+            return sessionEmail;
+        }
+    }
 
     @PostMapping("/ajax/uploadFile")
-    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
-        String fileName = fileStorageService.storeFile(file);
-        log.info("#fileName"+fileName);
+    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file, FileDTO fileDTO) {
+        String fileName = dbFileStorageService.storeFile(file);
+        long projMemSeq= fileDTO.getProjmember_seq();
+        long taskSeq = fileDTO.getTask_seq();
+        fileDTO = new FileDTO(-1, fileName, fileName, null,file.getSize(), file.getContentType(),null,projMemSeq,taskSeq);
+        dbFileStorageService.saveFile(fileDTO);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/downloadFile/")
                 .path(fileName)
                 .toUriString();
-
-
         log.info("#fileDownloadUri"+fileDownloadUri);
 
         return new UploadFileResponse(fileName, fileDownloadUri,
                 file.getContentType(), file.getSize());
     }
 
-    @PostMapping("/uploadMultipleFiles")
-    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+    @PostMapping("/ajax/uploadMulti")
+    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files, FileDTO fileDTO) {
         return Arrays.asList(files)
                 .stream()
-                .map(file -> uploadFile(file))
+                .map(file -> uploadFile(file, fileDTO))
                 .collect(Collectors.toList());
     }
 
