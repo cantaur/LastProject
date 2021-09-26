@@ -28,7 +28,10 @@ const seqColorTrans = (seq) => {
 }
 const pages = [
   'calender',
-  'todo'
+  'todo',
+  'mileStone',
+  'mileStoneView',
+  'task'
 ]
 
 const host = 'http://localhost:8000';
