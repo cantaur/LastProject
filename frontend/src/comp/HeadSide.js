@@ -20,6 +20,17 @@ function pagePath(page){
   }
 }
 
+//멤버 설정 모달 상태
+const [memberModal, memberModal]
+//멤버 설정 모달_바깥클릭시 닫기 이벤트 핸들러
+let memberModalClose =useCallback((e)=>{
+  if(!e.target.closest('.memberModalWrap') ){
+    setTimeout(()=>{
+      window.removeEventListener('click', memberModalClose)
+    })
+  }
+},[])
+
 function HeadSide(p){
   let [searchModal, searchModalCng] = useState(false);
   const pagePathNum = pagePath(p.pageInfo);
@@ -112,7 +123,11 @@ function HeadSide(p){
 
 
         <div className="memberIconWrap">
-          <div className={"memberIcon tipRightBox "}>
+          <div className={"memberIcon tipRightBox "} onClick={()=>{
+            setTimeout(()=>{
+              window.addEventListener('click', memberModalClose)
+            })
+          }}>
             <p className="tipRight r45">멤버 설정</p>
             <i class="fas fa-users" style={{color:p.prjColor}}></i>            
           </div>
@@ -132,7 +147,7 @@ function HeadSide(p){
             <i class="fas fa-paper-plane" style={{color:p.prjColor}}></i>
           </div>
 
-          
+          <p className="memberCnt">참여중인 멤버 <b style={{color:p.prjColor}}>10</b></p>
           <div className="memberListWrap">
 
             <div className="memberList">
@@ -140,20 +155,55 @@ function HeadSide(p){
                 <img src="/img/defaultProfile.svg"/>
               </div>
               <div className="profileName">
-                <p className="name">&#x1F451; 긴 이르으으으으으으으으으으음</p>
+                <p className="name">&#x1F451; 대화명1</p>
                 <p className="email">test@gmail.com</p>
 
               </div>
             </div>
-
             <div className="memberList">
               <div className="profileImg">
                 <img src="/img/defaultProfile.svg"/>
               </div>
               <div className="profileName">
-                <p className="name">&#x1F451; 긴 이르으으으으으으으으으으음</p>
+                <p className="name">대화명222</p>
                 <p className="email">test@gmail.com</p>
 
+              </div>
+            </div>
+            <div className="memberList">
+              <div className="profileImg">
+                <img src="/img/defaultProfile.svg"/>
+              </div>
+              <div className="profileName">
+                <p className="name"></p>
+                <p className="email">test@gmail.com</p>
+
+              </div>
+            </div>
+            <div className="memberList">
+              <div className="profileImg">
+                <img src="/img/defaultProfile.svg"/>
+              </div>
+              <div className="profileName">
+                <p className="name"></p>
+                <p className="email">test@gmail.com</p>
+
+              </div>
+            </div>
+
+            <div className="memberList on">
+              <div className="profileImg">
+                <img src="/img/defaultProfile.svg"/>
+              </div>
+              <div className="profileName">
+                <p className="name">아이디아이디</p>
+                <p className="email">test@gmail.com</p>
+
+              </div>
+              <div className="memberBtnWrap">
+                <p className="admin">관리자로</p>
+                <p className="except">제외</p>
+                
               </div>
             </div>
           </div>

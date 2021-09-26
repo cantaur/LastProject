@@ -5,10 +5,14 @@ $c1:#2B4C9F;
 $c1d:#213b7a;
 $c2:#FFDF39;
 $c2d:#dbbf31;
+$cRed: #dc3545;
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 
 *{
   font-family: 'noto sans kr' ,sans-serif;
+}
+body{
+  overflow-x: hidden;
 }
 .outerWrap{
   width: 100vw;
@@ -786,7 +790,6 @@ $c2d:#dbbf31;
     z-index: 2;
 
     .memberModalWrap{
-      // width: 200px;
       background-color: #fff;
       position: fixed;
       bottom:145px;
@@ -794,18 +797,27 @@ $c2d:#dbbf31;
       left: 45px;
       border-radius: 10px 10px 10px 0px;
       border:1px solid #ccc;
-      opacity: 1;
+      opacity: 0;
       transition: .2s ease-in-out;
       transform-origin: 0% 100%;
-      transform: scale(1);
+      transform: scale(0);
       &.on{
         transform: scale(1);
         opacity: 1;
       }
+      .memberCnt{
+        padding:4px 10px;
+        margin:0;
+        font-size: .7rem;
+        font-weight: bold;
+        background-color: #fff;
+        
+      }
       .memberListWrap{
         height: max-content;
-        max-height: 100px;
+        max-height: 300px;
         overflow-y: auto;
+        padding:0px;
         &::-webkit-scrollbar {
           width: 3px;
           height: 3px;
@@ -825,27 +837,78 @@ $c2d:#dbbf31;
         .memberList{
           display: flex;
           align-items: center;
-          padding:0px 10px;
+
+          padding:10px;
+          &.on:hover{
+            background-color: #fafafa;
+            .memberBtnWrap{
+              transform: scale(1);
+              
+            }
+          }
           &+.memberList{
-            margin-top:10px;
-            padding-top:10px;
-            border-top:1px solid #ccc;
+            border-top:1px solid #ececec;
           }
           .profileImg{
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             overflow: hidden;
             border-radius: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
             background-color: #fff;
+            margin-right: 8px;
             img{
               height: 100%;
             }
           }
-          p{
-            margin:0
+          .profileName{
+            p{
+              margin:0;
+              cursor: default;
+            }
+            .email{
+              width: 100%;
+              text-align: right;
+              color:#888;
+              font-size: .7rem;
+            }
+            .name{
+              font-size: .8rem;
+              color:#000;
+              font-weight: bold;
+            }
+          }
+          .memberBtnWrap{
+            margin-left: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            transform: scale(0);
+            p{
+              margin:0;
+              font-size:.7rem;
+              background-color: #fff;
+              padding:2px 6px;
+              padding-top:1px;
+              border:1px solid #888;
+              border-radius: 4px;
+              text-align: center;
+              cursor: pointer;
+              &+p{
+                margin-left:4px;
+              }
+              
+            }
+            .except{
+              background-color:$cRed;
+              color:#fff;
+              border-color: $cRed;
+            }
+            .admin:hover{
+              background-color: #fafafa;
+            }
           }
         }
       }
@@ -855,13 +918,15 @@ $c2d:#dbbf31;
         position: relative;
         width: 100%;
         padding: 10px;
+        border-bottom:1px solid #ccc;
         input{
           width: 100%;
           font-size: .8rem;
           padding:8px 10px;
-          padding-right: 20px;
+          padding-right: 28px;
           border-radius: 10px;
           border:0;
+          min-width: 200px;
           background-color: #f2f2f2;
           &:focus{
             outline: none;

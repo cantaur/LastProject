@@ -16,7 +16,9 @@ function Test3(){
   const handleSubmit = e => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('file', profileData)
+    formData.append('projmember_name', profileData.projmember_name)
+    formData.append('projmember_image', profileData.projmember_image)
+    formData.append('project_seq', profileData.project_seq)
 
     axios({
       method:'post',
