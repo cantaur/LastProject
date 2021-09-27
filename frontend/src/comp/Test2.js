@@ -13,7 +13,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import bootstrapPlugin from '@fullcalendar/bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-import {Modal, Button} from 'react-bootstrap';
+import {Modal, Button, Form, FloatingLabel} from 'react-bootstrap';
 
 
 const pColorB = {
@@ -89,7 +89,6 @@ function Test2(p){
             locale='ko' //한국어로 설정
             events={events} //이벤트 객체 설정
             eventColor='eventColor'//이벤트 색상
-            // themeSystem={'bootstrap'}
         />
 
       </div>
@@ -105,14 +104,12 @@ function Test2(p){
 
        )
     }
-    function CreateDateModal(props){
-        const modalShow=props.modalShow
-        const setModalShow=props.setModalShow
-
+    function CreateDateModal(p){
         return(
             <Modal
                 key="fade"
-                animation="true"         show={modalShow}
+                animation="true"
+                show={modalShow}
                 onHide={() => setModalShow(false)}
                 dialogClassName={"modal-90w"}
                 aria-labelledby={"createDateModal"}
@@ -123,7 +120,46 @@ function Test2(p){
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                <Form.Group className="mb-2 piumInput" controlId="floatingInput">
+                    <FloatingLabel
+                        controlId="floatingInput"
+                        label="일정 제목"
+                    >
+                        <Form.Control type="text" placeholder="일정 제목" name="project_title" value={p.calendar_title} spellCheck="false" onChange={p.prjInfoChange}/>
+                    </FloatingLabel>
+                </Form.Group>
+                <Form.Group className=" piumInput" controlId="floatingTextarea">
+                    <FloatingLabel controlId="floatingTextarea" label="설명">
+                        <Form.Control type="textarea" placeholder="설명" name="project_content" value={p.project_content} spellCheck="false" onChange={p.prjInfoChange}/>
+                    </FloatingLabel>
+                </Form.Group>
 
+                <div className="datePickerWrap">
+                    <DatePicker
+                        pickerStartDate={p.project_startdate}
+                        pickerEndDate={p.project_duedate}
+                        pickerDateCng={p.prjInfoCng}
+                        pickerDate={p.prjInfo}
+                        pickerStartKey={'project_startdate'}
+                        pickerEndKey={'project_duedate'}
+                    />
+                    <p className="dateBtn" onClick={
+                        ()=>{
+                            p.datePickerModalControll({type:'modalOn'})
+                            setTimeout(()=>{
+                                window.addEventListener('click', p.dateModalClose)
+                            })
+                        }
+                    }>
+                        <i class="far fa-calendar-check"></i> 일정선택
+                    </p>
+                    <p className="dateInfo">
+                        {p.project_startdate?(p.project_startdate + " ~ "):''}
+
+                        {p.project_duedate?p.project_duedate:''}
+
+                    </p>
+                </div>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant={"secondary"} onClick={()=>setModalShow(false)}>
