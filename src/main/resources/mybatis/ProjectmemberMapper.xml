@@ -33,41 +33,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <insert id="insertByPm" parameterType="ProjectmemberDTO">
-        insert into project_member(projmember_type, projmember_name, projmember_image, project_seq, member_seq)
-        values (#{projmember_type}, #{projmember_name}, null, #{project_seq}, #{member_seq})
-    </insert>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- 프로젝트 멤버 리스트 -->
-    <select id="selectAll" resultType="projectmemberDTO">
-        select * from project_member
-    </select>
     <!--  프로젝트 멤버번호로 리스트 받기-->
     <select id="selectByPmseq" resultType="ProjectmemberDTO" parameterType="long">
     select * from project_member where projmember_seq= #{projmember_seq}
@@ -90,14 +55,6 @@
         Delete from Project_member where projmember_seq= #{projmember}
     </delete>
 
-    <!-- 이름 바꾸기-->
-    <update id="updateByPmName" parameterType="ProjectmemberDTO">
-        update project_member set projmember_name = #{projmember_name} where projmember_seq= #{projmember_seq}
-    </update>
-    <!-- 이미지 바꾸기-->
-    <update id="updateByPmImg" parameterType="ProjectmemberDTO">
-        update project_member set projmember_image = #{projmember_image} where projmember_seq= #{projmember_seq}
-    </update>
 
     <!-- 관리자 권한 획득 -->
     <update id="updateByPmTypeUp" parameterType="long">
