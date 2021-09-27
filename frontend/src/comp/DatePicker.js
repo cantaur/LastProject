@@ -48,7 +48,19 @@ function DatePicker(p) {
         onFocusChange={onFocusChange}
         numberOfMonths={2}
       />
-      <p className="datePickerComplete">완료</p>
+      {
+        p.completeKey 
+        ?
+          <div className="datePickerComplete">
+            <p className="alertMsg">일정을 선택해주세요.</p>
+            일정적용
+          </div>
+        :
+          <div className="datePickerComplete" style={{'padding':'4px 10px'}} onClick={p.dateModalClose}>
+            <i class="fas fa-times"></i>
+          </div>
+
+      }
     </div>
   );
 }

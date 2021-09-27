@@ -57,7 +57,7 @@ function MileStone(p){
     {
       milestone_seq : '1',
       milestone_title : '마일스톤1 제목',
-      milestone_content : '마일스톤1 설명',
+      milestone_content : '',
       milestone_status : 0,
       milestone_isdelete : 0,
       milestone_startdate : '2020-11-11',
@@ -233,6 +233,7 @@ function MileStoneCreateModal(p) {
             pickerDate={p.mileStoneInfo}
             pickerStartKey={'milestone_startdate'}
             pickerEndKey={'milestone_duedate'}
+            dateModalClose={p.dateModalClose}
           />
           <p className="dateBtn" onClick={
             ()=>{

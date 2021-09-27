@@ -47,7 +47,7 @@ function StoneList(p){
     {  
       p.isView &&
       <div className="stoneListbtnWrap">
-        <i class="fas fa-check toolTipTopBox"> 완료처리
+        <i class="far fa-check-circle toolTipTopBox"> 완료처리
         </i>
         <i class="far fa-trash-alt toolTipTopBox delete"> 삭제
         </i>
@@ -79,7 +79,6 @@ function StoneList(p){
               ?
               <>
                 <i class="fas fa-check updateBtn" onClick={()=>{
-                  
                   titleModifyCng(false)
                 }}></i>
                 <i class="fas fa-times updateBtn" onClick={()=>{
@@ -107,7 +106,11 @@ function StoneList(p){
                   milestone_content:e.target.value
                 })
               }}/>
-              :infoDummy.milestone_content
+              :
+                infoDummy.milestone_content
+                ?
+                infoDummy.milestone_content
+                : '마일스톤 설명이 없습니다.'
             }
           </p>
           {

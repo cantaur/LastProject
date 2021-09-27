@@ -12,9 +12,19 @@ import NonePage from "../NonePage.js";
 
 
 function MileStoneView(p){
+  const params = useParams();
+  const mileStoneSeq = params.pageSeq;
+  //마일스톤 수정하기 정보
+  const [mileStoneInfo, mileStoneInfoCng] = useState({
+    milestone_seq:'',
+    milestone_title:'',
+    milestone_content:'',
+    milestone_startdate:'',
+    milestone_duedate:''
+  });
   
   useEffect(()=>{
-    // console.log(p.prjColor)
+    p.dispatch({type:'modalOn'})
   },[])
   
 
@@ -25,18 +35,28 @@ function MileStoneView(p){
       <div className="stoneListWrap">
         <StoneList 
           prjSeq={p.prjSeq}
-          seq={2}
-          title={'마일스톤 제목'}
-          sub={'마일스톤 설명'}
+          milestone_seq={1}
+          milestone_title={'마일스톤 제목'}
+          milestone_content={''}
           color={seqColorTrans(2)} 
           
           completeTaskCnt={1}
           taskCnt={2}
           dispatch={p.dispatch}
-          // stDate={'2020-11-11'}
-          // edDate={'2020-12-22'}
+          milestone_startdate={''}
+          milestone_duedate={''}
           isView={true}
         />
+        <div className="datePickerWrap">
+          <DatePicker
+            pickerDateCng={p.mileStoneInfoCng}
+            pickerDate={p.mileStoneInfo}
+            pickerStartKey={'milestone_startdate'}
+            pickerEndKey={'milestone_duedate'}
+            completeKey={true}
+          />
+        </div>
+        
 
       
 
