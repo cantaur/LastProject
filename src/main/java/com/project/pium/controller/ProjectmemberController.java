@@ -1,13 +1,11 @@
 package com.project.pium.controller;
 
 
-import com.project.pium.domain.ProjectDTO;
+
 import com.project.pium.domain.ProjectmemberDTO;
-import com.project.pium.file.payload.UploadFileResponse;
 import com.project.pium.service.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
-import java.util.List;
-import java.util.Map;
 
 @Log
 @RestController

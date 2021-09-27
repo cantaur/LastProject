@@ -1,60 +1,78 @@
 package com.project.pium.controller;
 
 import com.project.pium.domain.MilestoneDTO;
+import com.project.pium.service.MemberService;
 import com.project.pium.service.MilestoneService;
+import com.project.pium.service.ProjectmemberService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 
 @Log
 @RestController
-@RequestMapping("mile")
 @AllArgsConstructor
+@ResponseBody
 public class MilestoneController {
 
     private MilestoneService milestoneService;
+    private MemberService memberService;
+    private ProjectmemberService projectmemberService;
 
-    @PostMapping("create")
-    public void createMile(@RequestBody MilestoneDTO milestoneDTO){
-        log.info("member create() : "+milestoneDTO);
+    //현재 로그인한 유저의 세션값 얻어오는 로직 모듈화
+    public String currentUserName(Principal principal){
+        if(principal ==null){
+            return "false";
+        }else{
+            String sessionEmail = principal.getName();
+            return sessionEmail;
+        }
+    }
+
+    //마일스톤 생성하기
+    @PostMapping("/ajax/createMileStone")
+    public String createMile(@RequestBody MilestoneDTO milestoneDTO, Principal principal){
+        log.info("#milestoneDTO : "+milestoneDTO);
+        long projSeq= milestoneDTO.getProject_seq();
+
+        //1. 접속한 유저 이메일로 memberSeq 찾음
+        String email= currentUserName(principal);
+        long sessionSeq = memberService.findUserNo(email);
+
+        //2. projectSeq와 memberSeq로 project_member seq 찾음
+        long projMemberSeq = projectmemberService.findProjMemberSeq(projSeq,sessionSeq);
+        milestoneDTO.setProjmember_seq(projMemberSeq);
         milestoneService.createMile(milestoneDTO);
+        return "success";
     }
+    
 
-    /*
-     at Talend API Tester
-     method : post
-     http://localhost:8000/mile/create
-     {
-    	"milestone_title": "마일스톤테스트",
-    	"milestone_content": "입니다요",
-    	"milestone_startdate" : 20210910,
-    	"milestone_duedate" : 20210914,
-    	"milestone_enddate" : 20210912,
-    	"projmember_seq": "1",
-    	"project_seq": "1"}
-     Response 200 코드 확인 완료
-     */
-
-    @GetMapping("msList/{proSeq}")
-    public List<MilestoneDTO> msList(@PathVariable long proSeq){
-        List<MilestoneDTO> list = milestoneService.msListBySeq(proSeq);
-        log.info("list" + list);
-        return list;
+    //해당 프로젝트에서 생성된 전체 마일스톤 리스트 보여주기
+    @GetMapping("/ajax/{projSeq}/milestonelist")
+    public List<MilestoneDTO> msList(@PathVariable long projSeq){
+        List<MilestoneDTO> milestoneList = milestoneService.msListBySeq(projSeq);
+        log.info("list" + milestoneList);
+        return milestoneList;
     }
-
-    //http://localhost:8000/mile/msList/1 호출 성공
-
-
-    @GetMapping("msListDesc/{mileSeq}")
+    
+    //마일스톤 눌러서 들어갔을 때 나오는 마일스톤 상세정보 보여주기
+    @GetMapping("/ajax/milestone/{mileSeq}")
     public List<MilestoneDTO> msListDesc(@PathVariable long mileSeq){
         List<MilestoneDTO> listBy = milestoneService.selectByMsSeq(mileSeq);
         log.info("listBy" + listBy);
         return listBy;
     }
     //http://localhost:8000/mile/msListDesc/1 호출 성공
+
+
+
+
+
+
+
 
     @GetMapping(value="proMname/{prjMSeq}")
     public String proMnameByMseq(@PathVariable long prjMSeq){
