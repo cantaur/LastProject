@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("mile")
 @AllArgsConstructor
-public class MileController {
+public class MilestoneController {
 
     private MilestoneService milestoneService;
 
