@@ -47,15 +47,7 @@ function MileStoneView(p){
           milestone_duedate={''}
           isView={true}
         />
-        <div className="datePickerWrap">
-          <DatePicker
-            pickerDateCng={p.mileStoneInfoCng}
-            pickerDate={p.mileStoneInfo}
-            pickerStartKey={'milestone_startdate'}
-            pickerEndKey={'milestone_duedate'}
-            completeKey={true}
-          />
-        </div>
+        
         
 
       

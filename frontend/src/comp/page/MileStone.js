@@ -22,7 +22,8 @@ function MileStone(p){
     milestone_title:'',
     milestone_content:'',
     milestone_startdate:'',
-    milestone_duedate:''
+    milestone_duedate:'',
+    project_seq:p.prjSeq,
   });
 
   //마일스톤 생성시 상태 업데이트
@@ -142,7 +143,8 @@ function MileStone(p){
             milestone_title:'',
             milestone_content:'',
             milestone_startdate:'',
-            milestone_duedate:''
+            milestone_duedate:'',
+            project_seq:p.prjSeq,
           })
           alertCng(false)
         }}
@@ -255,7 +257,7 @@ function MileStoneCreateModal(p) {
       <Modal.Footer className="modalBtnWrap">
         <Button className="modalBtn" onClick={()=>{
           
-          if(p.mileStoneInfo.milestone_startdate != ''){
+          if(p.mileStoneInfo.milestone_title != ''){
             p.dispatch({type:'loadingOn'})
             axios.post(host+'/ajax/createMileStone', p.mileStoneInfo)
             .then(r=>{
@@ -271,7 +273,7 @@ function MileStoneCreateModal(p) {
           } else {
             p.alertCng(true)
           }
-          console.log('aa')
+          // console.log('aa')
         }}>만들기</Button>
 
         

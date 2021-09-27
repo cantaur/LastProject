@@ -160,7 +160,7 @@ body{
     .alertMsg{
       position: absolute;
       width: max-content;
-      background-color: rgba(0,0,0,.7);
+      background-color: rgba(0,0,0,.8);
       color:#fff;
       font-size: .8rem;
       padding:2px 6px;
@@ -168,6 +168,7 @@ body{
       right: -20px;
       top:-30px;
       transition: .5s ease-in-out;
+      opacity: 0;
     }
   }
   .dateInfo{
@@ -1203,6 +1204,7 @@ body{
       font-weight: bold;
     }
   }
+  
 
   .stoneListWrap{
     .stoneListbtnWrap{
@@ -1370,16 +1372,27 @@ body{
           background-color: #ffffff80;
           border-radius: 100px;
           margin-bottom:14px;
+          position: relative;
           i{
             margin-right: 4px;
           }
           &.on{
             cursor: pointer;
           }
+          .datePickerWrap{
+            position: absolute;
+            right: 308px;
+            top:32px;
+            z-index: 1;
+            .App{
+              transform-origin: 100% 0%;
+            }
+          }
         }
       }
       
     }
+    
   }
 }
 

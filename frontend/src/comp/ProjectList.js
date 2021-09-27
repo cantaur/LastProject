@@ -514,6 +514,7 @@ function ProjectCreateModal(p) {
             pickerDate={p.prjInfo}
             pickerStartKey={'project_startdate'}
             pickerEndKey={'project_duedate'}
+            dateModalClose={p.dateModalClose}
           />
           <p className="dateBtn" onClick={
             ()=>{

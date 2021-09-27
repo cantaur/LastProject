@@ -51,7 +51,7 @@ function DatePicker(p) {
       {
         p.completeKey 
         ?
-          <div className="datePickerComplete">
+          <div className="datePickerComplete" onClick={p.dateModalClose}>
             <p className="alertMsg">일정을 선택해주세요.</p>
             일정적용
           </div>

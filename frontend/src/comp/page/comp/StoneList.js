@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react"
+import DatePicker from '../../DatePicker.js'
 
 import {pub, host, colors, pages, seqColorTrans} from '../../Helper.js'
 import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstrap'
@@ -149,11 +150,22 @@ function StoneList(p){
                 <i class="far fa-clock"></i>
                 {infoDummy.milestone_startdate} ~ {infoDummy.milestone_duedate}
               </div>
-            : <div className="date on"><i class="far fa-clock"></i> 마일스톤 일정 추가하기</div>
+            : <div className="date on">
+                <i class="far fa-clock"></i> 마일스톤 일정 추가하기
+                <div className="datePickerWrap">
+                  <DatePicker
+                    pickerDateCng={p.mileStoneInfoCng}
+                    pickerDate={p.mileStoneInfo}
+                    pickerStartKey={'milestone_startdate'}
+                    pickerEndKey={'milestone_duedate'}
+                    completeKey={true}
+                  />
+                </div>
+              </div>
           :
             p.milestone_startdate  
             ?
-            <div className="date on">
+            <div className="date">
               <i class="far fa-clock"></i>
               {p.milestone_startdate} ~ {p.milestone_duedate}
             </div>
@@ -161,7 +173,7 @@ function StoneList(p){
         }
         
         <div className="progressBar toolTipTopBox">
-          <div className="toolTip" style={{marginLeft:'-200px', left:'100%'}}>
+          <div className="toolTip" style={{marginLeft:'0px', left:'0%'}}>
             전체 업무 : {p.taskCnt}, 완료된 업무 : {p.completeTaskCnt}, 완료율 : {Math.round((p.completeTaskCnt/p.taskCnt)*100)}%
           </div>
           <div className="bar" style={{backgroundColor:p.color,width:Math.round((p.completeTaskCnt/p.taskCnt)*100)+'%'}}></div>
