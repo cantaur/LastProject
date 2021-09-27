@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 
 @Log
@@ -65,7 +66,57 @@ public class MilestoneController {
         log.info("listBy" + listBy);
         return listBy;
     }
-    //http://localhost:8000/mile/msListDesc/1 호출 성공
+
+    //마일스톤 수정(제목,설명,달력)
+    @PostMapping("/ajax/updateMileStone")
+    public void updateMileStone(@RequestBody MilestoneDTO milestoneDTO, Principal principal){
+        log.info("#milestoneDTO : "+milestoneDTO);
+        //구현중..
+    }
+
+    // 마일스톤 완료상태로 전환
+    @ResponseBody
+    @PostMapping("/ajax/closeMileStone")
+    public void closeMileStone(@RequestBody Map<String,Integer> param){
+        Long mileSeq= Long.valueOf(param.get("milestone_seq"));
+    }
+
+    // 마일스톤 오픈상태로 전환
+    @ResponseBody
+    @PostMapping("/ajax/openMileStone")
+    public void openMileStone(@RequestBody Map<String,Integer> param){
+        Long mileSeq= Long.valueOf(param.get("milestone_seq"));
+    }
+
+
+    // 마일스톤 삭제상태로 전환
+    @ResponseBody
+    @PostMapping("/ajax/deleteMileStone")
+    public void deleteMileStone(@RequestBody Map<String,Integer> param){
+        Long mileSeq= Long.valueOf(param.get("milestone_seq"));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -89,16 +140,7 @@ public class MilestoneController {
 
     //http://localhost:8000/mile/delete/11
 
-    // 상태 변경
-    @PutMapping("upMsStatus")
-    public void upMsStatus(@RequestBody MilestoneDTO milestoneDTO){
-        milestoneService.upMsStatus(milestoneDTO);
-    }
-    /*at Talend API Tester
-      method : put
-      url : http://localhost:8000/mile/upStatus
-      {"milestone_status":"1","milestone_seq":7}
-    */
+
 
     //  제목 변경
     @PutMapping("upMsName")
