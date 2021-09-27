@@ -3,22 +3,34 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.TodoMapper">
-    <!--상태 10의 노트 조회-->
-    <select id="selectNoteToDo" resultType="TodoDTO" >
-        SELECT * FROM todo WHERE todo_status = '10'
-        UNION
-        SELECT * FROM todo WHERE todo_status = '20'
-        UNION
-        SELECT * FROM todo WHERE todo_status = '30'
+    <!--Todo_seq에 따른 조회-->
+    <select id="selectByTodo" resultType="TodoDTO" parameterType="long">
+        select * from todo where todo_seq=#{seq}
     </select>
-<!--    &lt;!&ndash;상태 20의 노트 조회&ndash;&gt;-->
-<!--    <select id="selectNoteProg" resultType="TodoDTO" >-->
-<!--        SELECT * FROM odo WHERE todo_status = '20'-->
-<!--    </select>-->
-<!--    &lt;!&ndash;상태 30의 노트 조회&ndash;&gt;-->
-<!--    <select id="selectNoteDone" resultType="TodoDTO" >-->
-<!--        SELECT * FROM odo WHERE todo_status = '30'-->
-<!--    </select>-->
+    <!--status에 따른 조회-->
+    <select id="selectBySeq" resultType="TodoDTO" parameterType="long">
+        select * from todo where projmember_seq=#{seq} and todo_status = '10'
+    </select>
+    <select id="progressBySeq" resultType="TodoDTO" parameterType="long">
+        select * from todo where projmember_seq=#{seq} and todo_status = '20'
+    </select>
+    <select id="doneBySeq" resultType="TodoDTO" parameterType="long">
+        select * from todo where projmember_seq=#{seq} and todo_status = '30'
+    </select>
+    <!--COUNT -->
+    <select id="countTodoStatus" resultType="long" parameterType="long">
+        SELECT COUNT(*) FROM todo WHERE projmember_seq=#{seq} AND todo_status='10';
+    </select>
+    <select id="countProgressStatus" resultType="long" parameterType="long">
+        SELECT COUNT(*) FROM todo WHERE projmember_seq=#{seq} AND todo_status='20';
+    </select>
+    <select id="countDoneStatus" resultType="long" parameterType="long">
+        SELECT COUNT(*) FROM todo WHERE projmember_seq=#{seq} AND todo_status='30';
+    </select>
+    <!--선택지용 조회-->
+    <select id="showTask" resultType="String" parameterType="long">
+        SELECT distinct task_content FROM todo NATURAL JOIN task WHERE projmember_seq=#{seq};
+    </select>
     <!--노트 생성 초기위치 to-do-->
     <insert id="insertNote" parameterType="TodoDTO">
         insert into todo(
@@ -40,11 +52,11 @@
     </insert>
     <!--노트 수정-->
     <update id="updateNote" parameterType="TodoDTO">
-        UPDATE todo SET todo_name=#{todo_name}, todo_content=#{todo_content}, todo_date=NOW() WHERE todo_seq=5
+        UPDATE todo SET todo_content=#{todo_content}, todo_date=NOW() WHERE todo_seq=#{todo_seq}
     </update>
     <!--노트 상태이동-->
     <update id="updateNoteStatus" parameterType="TodoDTO">
-        UPDATE todo SET todo_status=#{todo_status} WHERE todo_seq=#{todo_seq}
+        UPDATE todo SET todo_status=#{todo_status} WHERE where todo_seq=#{todo_seq}
     </update>
     <!--노트 삭제-->
     <delete id="deleteNote" parameterType="long">
