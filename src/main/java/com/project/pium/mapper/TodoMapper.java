@@ -1,5 +1,6 @@
 package com.project.pium.mapper;
 
+import com.project.pium.domain.TaskDTO;
 import com.project.pium.domain.TodoDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -9,13 +10,25 @@ import java.util.List;
 @Mapper
 @Repository
 public interface TodoMapper {
+    TodoDTO selectByTodo(long seq);
+    /*조회*/
+    List<TodoDTO>selectBySeq(long seq);
+    List<TodoDTO>progressBySeq(long seq);
+    List<TodoDTO>doneBySeq(long seq);
+    /*갯수카운트*/
+    Long countTodoStatus(long seq);
+    Long countProgressStatus(long seq);
+    Long countDoneStatus(long seq);
+    /*선택지*/
+    List<String> showTask(long seq);
+
     List<TodoDTO>selectNoteToDo(); // 메모 상태 10 조회
     List<TodoDTO>selectNoteProg(); // 메모 상태 20 조회
     List<TodoDTO>selectNoteDone(); // 메모 상태 30 조회
     void insertNote(TodoDTO todo); // 메모 생성
     void updateNote(TodoDTO todo); // 메모 수정
     void updateNoteStatus(TodoDTO todo); // 메모 상태이동
-    void deleteNote(long seq); // 메모 삭제
+    void deleteNote(long todo_seq); // 메모 삭제
 //    List<TodoDTO>selectAssign(); //배정된 업무 조회
 //    List<TodoDTO>selectWork(); // 진행중인 업무
 //    List<TodoDTO>selectDone(); // 완료된 업무

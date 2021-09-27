@@ -20,7 +20,8 @@ header {
     display: flex;
     flex: 1;
     width: 100%;
-    overflow-x: scroll;
+    /*overflow-x: scroll;*/
+    justify-content: center;
 }
 
 .lists .list {
@@ -37,7 +38,9 @@ header {
     background-color: rgba(0, 0, 0, 0.1);
     margin: 0 15px;
     /*padding: 8px;*/
+    align-content: center;
     transition: all 0.2s linear;
+    position:relative;
 }
 .lists .list .list-label {
     background-color: white;
@@ -46,9 +49,29 @@ header {
     font-size: medium;
 }
 .lists .list .list-item {
+    border: 1px solid;
+    border-color: black;
     background-color: white;
-    border-radius: 2px;
+    border-radius: 5px;
     padding: 15px 20px;
-    text-align: center;
+    text-align: left;
     margin: 4px 8px;
+}
+.lists .list .list-add {
+    bottom: 5px;
+    margin: auto;
+    left: 50%;
+    position:absolute;
+}
+table{
+    width: 100%;
+}
+tr{
+    width: 100%;
+}
+td{
+    width: 100%;
+}
+select{
+    width: 100%;
 }
