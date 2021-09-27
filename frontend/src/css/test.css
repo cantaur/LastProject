@@ -63,7 +63,7 @@ header {
     left: 50%;
     position:absolute;
 }
-table{
+/* table{
     width: 100%;
 }
 tr{
@@ -71,7 +71,7 @@ tr{
 }
 td{
     width: 100%;
-}
+} */
 select{
     width: 100%;
 }
