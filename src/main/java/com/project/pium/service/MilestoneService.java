@@ -10,22 +10,19 @@ public interface MilestoneService {
     List<MilestoneDTO>msListBySeq(long proSeq);
     MilestoneDTO findMilestoneByMileSeq(long mileSeq);
     void updateMilestone(MilestoneDTO milestoneDTO);
-
-
-
-
-
-
-
-
-
-
-    String projMnameByMseq(long mileName);
-    void delMile(long mileSeq);
-    //마감상태변경
-    void upMsStatus(MilestoneDTO milestoneDTO);
-
+    int closeMilestone(long mileSeq);
+    //마감상태(재오픈) 변경
+    int openMilestone(long mileSeq);
     //isdel
-    void upMsIsdel(MilestoneDTO milestoneDTO);
+    int delMilestone(long mileSeq);
+
+
+
+
+
+
+
+
+
 }
 

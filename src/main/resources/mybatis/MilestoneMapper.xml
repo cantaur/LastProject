@@ -33,52 +33,34 @@
 
 
 
+    <!-- UPDATE -->
+    <!-- 마감 상태 변경 (=업무 진행상태) -->
+    <update id="closeMilestone" parameterType="long">
+        update milestone set milestone_status="1" where milestone_seq=#{milestone_seq};
+    </update>
 
-
-
-
-<!-- 마일스톤을 만든 사람 이름을 뽑고 싶을때-->
-    <select id="projMnameByMseq" resultType="String" parameterType="long">
-        SELECT projmember_name
-        FROM project_member
-        WHERE projmember_seq=(SELECT projmember_seq FROM milestone WHERE milestone_seq=#{milestone_seq})
-    </select>
-
-
-
-    <delete id="delMile" parameterType="long">
--- id = method name from MilestoneMapper.java
-        DELETE FROM milestone
-        WHERE milestone_seq = #{milestone_seq}
-    </delete>
-
-
-<!-- UPDATE -->
-<!-- 마감 상태 변경 (=업무 진행상태) -->
-    <update id="upMsStatus" parameterType="MilestoneDTO">
+    <!-- UPDATE -->
+    <!-- 진행상태로 변경 -->
+    <update id="openMilestone" parameterType="long">
         update milestone
-        set milestone_status=#{milestone_status}
+        set milestone_status="0"
         where milestone_seq=#{milestone_seq}
     </update>
 
-<!-- 업무상태 (Reopen) -> 진행중  -->
-<!--  제목 변경 -->
-    <update id ="upMsName" parameterType="MilestoneDTO">
+    <!-- UPDATE -->
+    <!-- 삭제상태로 변경 -->
+    <update id="delMilestone" parameterType="long">
         update milestone
-        set milestone_title = #{milestone_title}
-        where milestone_seq = #{milestone_seq}
-    </update>
-    <!-- 내용 변경 -->
-    <update id ="upMsContent" parameterType="MilestoneDTO">
-        update milestone
-        set milestone_content = #{milestone_content}
+        set milestone_isdelete = "1"
         where milestone_seq = #{milestone_seq}
     </update>
 
-    <!--isdel-->
-    <update id ="upMsIsdel" parameterType="MilestoneDTO">
-        update milestone
-        set milestone_isdelete = #{milestone_isdelete}
-        where milestone_seq = #{milestone_seq}
-    </update>
+
+
+
+
+
+
+
+
 </mapper>

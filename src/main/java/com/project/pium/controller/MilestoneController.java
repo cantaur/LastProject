@@ -74,11 +74,13 @@ public class MilestoneController {
         milestoneService.updateMilestone(milestoneDTO);
     }
 
+
     // 마일스톤 완료상태로 전환
     @ResponseBody
     @PostMapping("/ajax/closeMileStone")
     public void closeMileStone(@RequestBody Map<String,Integer> param){
         Long mileSeq= Long.valueOf(param.get("milestone_seq"));
+        milestoneService.closeMilestone(mileSeq);
     }
 
     // 마일스톤 오픈상태로 전환
@@ -86,6 +88,7 @@ public class MilestoneController {
     @PostMapping("/ajax/openMileStone")
     public void openMileStone(@RequestBody Map<String,Integer> param){
         Long mileSeq= Long.valueOf(param.get("milestone_seq"));
+        milestoneService.openMilestone(mileSeq);
     }
 
 
@@ -94,6 +97,7 @@ public class MilestoneController {
     @PostMapping("/ajax/deleteMileStone")
     public void deleteMileStone(@RequestBody Map<String,Integer> param){
         Long mileSeq= Long.valueOf(param.get("milestone_seq"));
+        milestoneService.delMilestone(mileSeq);
     }
 
 
@@ -122,37 +126,5 @@ public class MilestoneController {
 
 
 
-
-
-
-    @GetMapping(value="proMname/{prjMSeq}")
-    public String proMnameByMseq(@PathVariable long prjMSeq){
-        String pMname = milestoneService.projMnameByMseq(prjMSeq);
-        log.info("pMname" + pMname);
-        return  pMname;
-    }
-    //http://localhost:8000/mile/proMname/1 호출 성공
-
-    @DeleteMapping("delete/{mileSeq}")
-    public void delMile(@PathVariable long mileSeq){
-        milestoneService.delMile(mileSeq);
-    }
-
-    //http://localhost:8000/mile/delete/11
-
-
-
-
-
-    //isdel
-    @PutMapping("upMsIsdel")
-    public void upMsIsdel(@RequestBody MilestoneDTO milestoneDTO){
-        milestoneService.upMsIsdel(milestoneDTO);
-    }
-     /*at Talend API Tester
-      method : put
-      url : http://localhost:8000/mile/upMsIsdel
-      {"milestone_isdelete":1,"milestone_seq":1}
-    */
 }
 

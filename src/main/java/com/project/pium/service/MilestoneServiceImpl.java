@@ -35,34 +35,20 @@ public class MilestoneServiceImpl implements MilestoneService {
         milestoneMapper.updateMilestone(milestoneDTO);
     }
 
-
-
-
-
-
-
-
     @Override
-    public String projMnameByMseq(long mileName) {
-        return milestoneMapper.projMnameByMseq(mileName);
+    public int closeMilestone(long mileSeq) {
+        return milestoneMapper.closeMilestone(mileSeq);
     }
 
     @Override
-    public void delMile(long mileSeq) {
-        milestoneMapper.delMile(mileSeq);
+    public int openMilestone(long mileSeq) {
+        return milestoneMapper.openMilestone(mileSeq);
     }
-
-    //마감상태 변경
-    @Override
-    public void upMsStatus(MilestoneDTO milestoneDTO) {
-        milestoneMapper.upMsStatus(milestoneDTO);
-    }
-
-
 
     @Override
-    public void upMsIsdel(MilestoneDTO milestoneDTO) {
-        milestoneMapper.upMsIsdel(milestoneDTO);
+    public int delMilestone(long mileSeq) {
+        return milestoneMapper.delMilestone(mileSeq);
     }
+
 
 }
