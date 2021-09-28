@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState, useRef, useCallback } from "react"
-import {pub, colors} from './Helper.js'
+import {pub, colors, host} from './Helper.js'
 import DatePicker from './DatePicker.js'
 import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstrap'
 import { Link, useParams, withRouter, useHistory, useLocation } from "react-router-dom";
@@ -47,6 +47,14 @@ function HeadSide(p){
     }
   },[])
 
+  //초대할 이메일
+  const [inviteEmail, inviteEmailCng] = useState();
+  const inviteEmailHandler = e =>inviteEmailCng(e.target.value)
+  const inviteEmailClear =() => inviteEmailCng('')
+
+  const [inviteAlert, inviteAlertCng] = useState(true);
+
+
   const [memberList, memeberListCng] = useState();
 
 
@@ -54,21 +62,22 @@ function HeadSide(p){
     p.dispatch({type:'loadingOn'})
     axios.get('/ajax/allProjMembers/'+p.prjSeq)
     .then(r=>{
-      console.log(r.data)
-      imgCng(r.data[0].projmember_data)
+      memeberListCng(r.data)
       p.dispatch({type:'loadingOff'})
     })
     .catch(e=>{
       console.log(e)
       p.dispatch({type:'loadingOff'})
     })
-  },{})
+  },[])
+  console.log(memberList)
+
 
   return(
     <>
       {/* 헤더 */}
       <div className="viewHead" style={{backgroundColor:p.prjColor+'07'}}>
-        <img src={'data:image;base64,'+img}/>
+        {/* <img src={'data:image;base64,'+img}/> */}
         <div className="pathWrap">
           <Form.Select size="sm">
             <option>테스트 프로젝트 1</option>
@@ -178,53 +187,66 @@ function HeadSide(p){
         </div>
         <div className={"memberModalWrap " + (memberModal?'on':'')}>
           <div className="inviteWrap">
-            <input type="text" placeholder="초대할 이메일"/>
+            <input type="text" placeholder="초대할 이메일" onChange={inviteEmailHandler} onKeyPress={e=>{
+              if(e.key == 'Enter'){
+                p.dispatch({type:'loadingOn'})
+                axios.post(host+'/ajax/inviteProject',{
+                  project_seq:p.prjSeq,
+                  member_email:inviteEmail
+                })
+                .then(r=>{
+                  console.log(r.data)
+                  // if(r.data == 'fail'){
+
+                  // }
+                  p.dispatch({type:'loadingOff'})
+
+                })
+                .catch(e=>{
+                  console.log(e)
+                })
+              }
+            }}/>
             <i class="fas fa-paper-plane" style={{color:p.prjColor}}></i>
           </div>
 
-          <p className="memberCnt">참여중인 멤버 <b style={{color:p.prjColor}}>10</b></p>
+          <p className="memberCnt">참여중인 멤버
+            <b style={{color:p.prjColor}}>
+              {
+                memberList &&
+                  ' '+memberList.length
+              }
+            </b>
+          </p>
           <div className="memberListWrap">
-
-            <div className="memberList">
-              <div className="profileImg">
-                <img src="/img/defaultProfile.svg"/>
-              </div>
-              <div className="profileName">
-                <p className="name">&#x1F451; 대화명1</p>
-                <p className="email">test@gmail.com</p>
-
-              </div>
-            </div>
-            <div className="memberList">
-              <div className="profileImg">
-                <img src="/img/defaultProfile.svg"/>
-              </div>
-              <div className="profileName">
-                <p className="name">대화명222</p>
-                <p className="email">test@gmail.com</p>
-
-              </div>
-            </div>
-            <div className="memberList">
-              <div className="profileImg">
-                <img src="/img/defaultProfile.svg"/>
-              </div>
-              <div className="profileName">
-                <p className="name"></p>
-                <p className="email">test@gmail.com</p>
-
-              </div>
-            </div>
-            <div className="memberList">
-              <div className="profileImg">
-                <img src="/img/defaultProfile.svg"/>
-              </div>
-              <div className="profileName">
-                <p className="name"></p>
-                <p className="email">test@gmail.com</p>
-
-              </div>
-            </div>
+            {
+              memberList &&
+                memberList.map((r, i)=>{
+                  let src = r.projmember_data?'data:image;base64,'+r.projmember_data:'/img/defaultProfile.svg'
+                  let name = r.projmember_name?r.projmember_name:'#'+r.member_seq
+                  let isManager = r.projmember_type==0?true:false;
+                  return(
+                    <div className="memberList">
+                      <div className="profileImg">
+                        <img src={src}/>
+                      </div>
+                      <div className="profileName">
+                        {
+                          isManager
+                          ?<p className="name">&#x1F451; {name}</p>
+                          :<p className="name">{name}</p>
+                        }
+                        <p className="email">{r.member_email}</p>
+                      </div>
+                        <div className="memberBtnWrap">
+                          <p className="admin">관리자로</p>
+                          <p className="except">제외</p>
+                        </div>
+                    </div>
+                  )
+                  
+                })
+            }
 
             <div className="memberList on">
               <div className="profileImg">
@@ -238,7 +260,6 @@ function HeadSide(p){
               <div className="memberBtnWrap">
                 <p className="admin">관리자로</p>
                 <p className="except">제외</p>
-                
               </div>
             </div>
           </div>
