@@ -1,6 +1,7 @@
 package com.project.pium.controller;
 
 import com.project.pium.domain.TaskDTO;
+import com.project.pium.service.MemberService;
 import com.project.pium.service.TaskService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
@@ -15,6 +16,7 @@ import java.util.List;
 @ResponseBody
 public class TaskController {
     private TaskService service;
+    private MemberService memberService;
 
     //현재 로그인한 유저의 세션값 얻어오는 로직 모듈화
     public String currentUserName(Principal principal){
@@ -26,9 +28,17 @@ public class TaskController {
         }
     }
 
+    //새 업무 생성
     @PostMapping("/ajax/createTask")
-    public void insertTask(@RequestBody TaskDTO taskDTO, Principal principal){
+    public void createTask(@RequestBody TaskDTO taskDTO, Principal principal){
         log.info("#TaskController insert() : "+taskDTO);
+        String email= currentUserName(principal);
+        long sessionSeq = memberService.findUserNo(email);
+
+        //
+
+
+
         service.insertS(taskDTO);
     }
 
