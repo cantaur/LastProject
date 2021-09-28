@@ -138,12 +138,9 @@ public class ProjectmemberController {
     //이메일 있으면 해당 프로젝트에 멤버로 추가되어 있는지 확인해서 있으면 duplicated 반환, 없으면 insert 진행
     @PostMapping("/ajax/inviteProject")
     public String inviteProject(@RequestBody Map<String,Object> param){
-        Object temp1= param.get("project_seq");
-        long projSeq = (long)temp1;
-
-
-        //Long projSeq= Long.valueOf(param.get("project_seq"));
-        String email = String.valueOf(param.get("email"));
+        String temp= (String)param.get("project_seq");
+        long projSeq = Long.parseLong(temp);
+        String email = String.valueOf(param.get("member_email"));
         log.info("projSeq : "+projSeq+", email : "+email);
         long memSeq = memberService.findUserNo(email);
         if(memSeq != 0L){

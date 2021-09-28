@@ -70,8 +70,8 @@ public class ProjectmemberServiceImpl implements ProjectmemberService  {
     @Override
     public String insertMember(long projSeq, long memSeq) {
         List<ProjectmemberDTO> list = findProjMember(projSeq,memSeq);
-        if(list == null){ //프로젝트멤버 insert 진행
-            projectmemberMapper.insertMember(projSeq,memSeq);
+        if(list.size()==0){ //프로젝트멤버 insert 진행
+            int temp = projectmemberMapper.insertMember(projSeq,memSeq);
             return "success";
         }else{
             return "duplicated";
