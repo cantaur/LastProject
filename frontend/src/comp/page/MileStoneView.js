@@ -21,6 +21,7 @@ function MileStoneView(p){
 
   let dateModalClose =useCallback((e)=>{
     if(!e.target.closest('.DayPicker_1') ){
+      
       p.dispatch({type:'modalOff'})
       setTimeout(()=>{
         window.removeEventListener('click', dateModalClose)
@@ -36,13 +37,16 @@ function MileStoneView(p){
       axios.get(host+'/ajax/milestone/'+mileStoneSeq)
       .then(r=>{
         // console.log(r.data)
+        
         mileStoneInfoCng(r.data)
+        
         p.dispatch({type:'loadingOff'})
       })
       .catch(e=>{
         console.log(e)
         p.dispatch({type:'loadingOff'})
       })
+
     })
     .catch(e=>{
       console.log(e)
@@ -50,6 +54,30 @@ function MileStoneView(p){
     })
   }
 
+  const mileStoneDateNull = () =>{
+    p.dispatch({type:'loadingOn'})
+
+    axios.get(host+'/ajax/setDateEmpty/'+mileStoneSeq)
+    .then(r=>{
+      axios.get(host+'/ajax/milestone/'+mileStoneSeq)
+      .then(r=>{
+        // console.log(r.data)
+        
+        mileStoneInfoCng(r.data)
+        
+        p.dispatch({type:'loadingOff'})
+      })
+      .catch(e=>{
+        console.log(e)
+        p.dispatch({type:'loadingOff'})
+      })
+
+    })
+    .catch(e=>{
+      console.log(e)
+      p.dispatch({type:'loadingOff'})
+    })
+  }
 
   const mileSample = {
     milestone_seq:2,
@@ -75,6 +103,8 @@ function MileStoneView(p){
   },[])
   
 
+  
+
   return(
     <div className="pageContentWrap mileStoneWrap">
       
@@ -98,6 +128,7 @@ function MileStoneView(p){
             mileStoneInfoCng={mileStoneInfoCng}
             mileStoneInfo={mileStoneInfo}
             mileStoneUpdate={mileStoneUpdate}
+            mileStoneDateNull={mileStoneDateNull}
           />
         }
         

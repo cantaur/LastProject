@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState, useCallback } from "react"
+import React, { useEffect, useState, useCallback, useRef } from "react"
 import {pub, colors, pages, seqColorTrans,host} from '../Helper.js'
 import StoneList from "./comp/StoneList.js";
 import DatePicker from '../DatePicker.js'
@@ -16,6 +16,10 @@ function MileStone(p){
 
   //마일스톤 만들기 모달 상태
   const [createModal, createModalCng] = useState(false)
+
+  //마일스톤 만들기 제목 인풋
+  const titleInput = useRef();
+
 
   //마일스톤 만들기 정보
   const [mileStoneInfo, mileStoneInfoCng] = useState({
@@ -56,7 +60,7 @@ function MileStone(p){
   const completeMileStoneCnt = (list) =>{
     let cnt = 0;
     list.map((r, i)=>{
-      if(r.milestone_status ==1){
+      if(r.milestone_status ==1 && r.milestone_isdelete == 0){
         cnt++;
       }
     })
@@ -234,6 +238,9 @@ function MileStone(p){
         <div className="toolTipTopBox">
           <p className="createBtn" style={{backgroundColor:p.prjColor}} onClick={()=>{
             createModalCng(true)
+            setTimeout(()=>{
+              titleInput.current.focus();
+            })
           }}>+ 마일스톤 만들기</p>
         </div>
       </div>
@@ -262,6 +269,7 @@ function MileStone(p){
         alertCng={alertCng}
         listCng={listCng}
         prjSeq={p.prjSeq}
+        titleInput={titleInput}
       />
 
       <div className="stoneListWrap">
@@ -373,7 +381,7 @@ function MileStoneCreateModal(p) {
             controlId="floatingInput"
             label="마일스톤 제목"
           >
-            <Form.Control type="text" placeholder="마일스톤 제목" name="milestone_title" spellCheck="false" onChange={p.mileStoneInfoChange}/>
+            <Form.Control type="text" placeholder="마일스톤 제목" name="milestone_title" spellCheck="false" onChange={p.mileStoneInfoChange} ref={p.titleInput}/>
           </FloatingLabel>
         </Form.Group>
         

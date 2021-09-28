@@ -47,10 +47,28 @@ function HeadSide(p){
     }
   },[])
 
+  const [memberList, memeberListCng] = useState();
+
+
+  useEffect(()=>{
+    p.dispatch({type:'loadingOn'})
+    axios.get('/ajax/allProjMembers/'+p.prjSeq)
+    .then(r=>{
+      console.log(r.data)
+      imgCng(r.data[0].projmember_data)
+      p.dispatch({type:'loadingOff'})
+    })
+    .catch(e=>{
+      console.log(e)
+      p.dispatch({type:'loadingOff'})
+    })
+  },{})
+
   return(
     <>
       {/* 헤더 */}
       <div className="viewHead" style={{backgroundColor:p.prjColor+'07'}}>
+        <img src={'data:image;base64,'+img}/>
         <div className="pathWrap">
           <Form.Select size="sm">
             <option>테스트 프로젝트 1</option>

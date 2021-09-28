@@ -26,21 +26,107 @@ function StoneList(p){
   const [infoDummy, infoDummyCng] =useState();
 
 
+  const [alertModal, alertModalCng] = useState(false)
+  const alertClose =()=> alertModalCng(false);
+  const alertOpen =()=> alertModalCng(true);
+
   useEffect(()=>{
-    // p.mileStoneInfoCng(info)
     infoDummyCng(p.mileStoneInfo)
   },[])
   return(
     <>
     {  
-      p.isView &&
-      <div className="stoneListbtnWrap">
-        <i class="far fa-check-circle toolTipTopBox"> 완료처리
-        </i>
-        <i class="far fa-trash-alt toolTipTopBox delete"> 삭제
-        </i>
-      </div>
+      p.isView
+      ?
+        p.mileStoneInfo.milestone_status == 1
+        ?
+        <div className="stoneListbtnWrap">
+          <i class="far fa-play-circle toolTipTopBox" onClick={()=>{
+            p.dispatch({type:'loadingOn'})
+            axios.post(host+'/ajax/openMileStone',{
+              milestone_seq:p.mileStoneInfo.milestone_seq
+            })
+            .then(e=>{
+              axios.get(host+'/ajax/milestone/'+p.mileStoneInfo.milestone_seq)
+              .then(r=>{
+                
+                p.mileStoneInfoCng(r.data)
+                
+                p.dispatch({type:'loadingOff'})
+              })
+              .catch(e=>{
+                console.log(e)
+                p.dispatch({type:'loadingOff'})
+              })
+            })
+            .catch(e=>{
+              console.log(e)
+              p.dispatch({type:'loadingOff'})
+            })
+          }}> 활성화 하기
+          </i>
+          <i class="far fa-trash-alt toolTipTopBox delete" onClick={alertOpen}> 삭제
+          </i>
+        </div>
+        :
+        <div className="stoneListbtnWrap">
+          <i class="far fa-stop-circle toolTipTopBox" onClick={()=>{
+            p.dispatch({type:'loadingOn'})
+            axios.post(host+'/ajax/closeMileStone',{
+              milestone_seq:p.mileStoneInfo.milestone_seq
+            })
+            .then(e=>{
+              axios.get(host+'/ajax/milestone/'+p.mileStoneInfo.milestone_seq)
+              .then(r=>{
+                // console.log(r.data)
+                
+                p.mileStoneInfoCng(r.data)
+                
+                p.dispatch({type:'loadingOff'})
+              })
+              .catch(e=>{
+                console.log(e)
+                p.dispatch({type:'loadingOff'})
+              })
+            })
+            .catch(e=>{
+              console.log(e)
+              p.dispatch({type:'loadingOff'})
+            })
+          }}> 완료 처리
+          </i>
+        </div>
+      
+      :null
+      
     }
+    <Modal show={alertModal} onHide={alertClose} className="modalWrap">
+      <Modal.Header style={{borderBottom:0}}>
+        <Modal.Title className="modalTitle" >정말 마일스톤을 삭제할까요? &#x1f625;</Modal.Title>
+      </Modal.Header>
+      <Modal.Footer style={{borderTop:0}}>
+        <Button variant="secondary" onClick={alertClose} style={{fontSize:'.8rem'}}>
+          취소
+        </Button>
+        <Button variant="danger" onClick={()=>{
+          p.dispatch({type:'loadingOn'})
+          axios.post(host+'/ajax/deleteMileStone',{
+            milestone_seq:p.mileStoneInfo.milestone_seq
+          })
+          .then(e=>{
+            window.location.href = '/project/'+p.prjSeq+'/mileStone'
+            p.dispatch({type:'loadingOff'})
+
+          })
+          .catch(e=>{
+            console.log(e)
+            p.dispatch({type:'loadingOff'})
+          })
+        }} style={{fontSize:'.8rem'}}>
+          삭제
+        </Button>
+      </Modal.Footer>
+    </Modal>
     {
       p.mileStoneInfo
       ?
@@ -63,15 +149,10 @@ function StoneList(p){
                       ...infoDummy,
                       milestone_title:e.target.value
                     })
-                    console.log(infoDummy)
                   }}
                   onKeyPress={e=>{
                     if(e.key === "Enter"){
-                      p.mileStoneInfoCng({
-                        ...p.mileStoneInfo,
-                        milestone_title:infoDummy.milestone_title
-                      })
-                      p.mileStoneUpdate(p.mileStoneInfo)
+                      p.mileStoneUpdate(infoDummy)
                       titleModifyCng(false)
                     }
                   }
@@ -86,15 +167,8 @@ function StoneList(p){
                 ?
                 <>
                   <i class="fas fa-check updateBtn" onClick={()=>{
-                    p.mileStoneInfoCng({
-                      ...p.mileStoneInfo,
-                      milestone_title:infoDummy.milestone_title
-                    })
-                    console.log(p.mileStoneInfo)
-                    console.log('zxzz')
-                    p.mileStoneUpdate(p.mileStoneInfo)
+                    p.mileStoneUpdate(infoDummy)
                     titleModifyCng(false)
-
                   }}></i>
                   <i class="fas fa-times updateBtn" onClick={()=>{
                     infoDummyCng({
@@ -108,7 +182,7 @@ function StoneList(p){
                   titleModifyCng(true)
                   setTimeout(()=>{
                     titModify.current.focus();
-                  },200)
+                  })
                 }}></i>
               :null
               
@@ -118,11 +192,18 @@ function StoneList(p){
             <p className="sub">
               {
                 subModify
-                ? <input type="text" className="subModify" ref={subModifyRef} value={p.mileStoneInfo.milestone_content} placeholder="마일스톤 설명을 입력하세요." spellcheck="false" onChange={(e)=>{
-                  p.mileStoneInfoCng({
-                    ...p.mileStoneInfo,
+                ? <input type="text" className="subModify" ref={subModifyRef} value={infoDummy.milestone_content} placeholder="마일스톤 설명을 입력하세요." spellcheck="false" 
+                onChange={(e)=>{
+                  infoDummyCng({
+                    ...infoDummy,
                     milestone_content:e.target.value
                   })
+                }}
+                onKeyPress={e=>{
+                  if(e.key === "Enter"){
+                    p.mileStoneUpdate(infoDummy)
+                    subModifyCng(false)
+                  }
                 }}/>
                 :
                   p.milestone_content
@@ -138,10 +219,13 @@ function StoneList(p){
                 ?
                 <>
                   <i class="fas fa-check updateBtn" onClick={()=>{
-                    
                     subModifyCng(false)
+                    p.mileStoneUpdate(infoDummy)
                   }}></i>
                   <i class="fas fa-times updateBtn" onClick={()=>{
+                    infoDummyCng({
+                      milestone_content:p.mileStoneInfo.milestone_content
+                    })
                     subModifyCng(false)
                   }}></i>
                 </>
@@ -151,7 +235,7 @@ function StoneList(p){
                   setTimeout(()=>{
                     subModifyRef.current.focus();
 
-                  },200)
+                  })
                 }}></i>
               : null
             }
@@ -180,6 +264,7 @@ function StoneList(p){
                       completeKey={true}
                       dateModalClose={p.dateModalClose}
                       dateUpdate={p.mileStoneUpdate}
+                      dateEmpty={p.mileStoneDateNull}
                     />
                   </div>
                 </div>
@@ -200,6 +285,7 @@ function StoneList(p){
                       completeKey={true}
                       dateModalClose={p.dateModalClose}
                       dateUpdate={p.mileStoneUpdate}
+                      dateEmpty={p.mileStoneDateNull}
                     />
                   </div>
                 </div>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState, useCallback } from "react"
+import React, { useEffect, useState, useCallback ,useRef} from "react"
 import {pub, colors,host,seqColorTrans} from './Helper.js'
 import DatePicker from './DatePicker.js'
 import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstrap'
@@ -20,6 +20,8 @@ function ProjectList(p){
 
   //프로젝트 생성, 수정_모달 상태
   let [modalShow, setModalShow] = useState(false);
+  //프로젝트 만들기 제목 인풋
+  const titleInput = useRef();
 
   //프로젝트 생성, 수정_정보
   const [prjInfo, prjInfoCng] = useState({
@@ -207,6 +209,9 @@ function ProjectList(p){
               
               <Dropdown.Item onClick={()=>{
                 setModalShow(true)
+                setTimeout(()=>{
+                  titleInput.current.focus();
+                })
               }}style={{'fontSize':'.8rem'}}>프로젝트 만들기</Dropdown.Item>
               <Dropdown.Item href="sign/login" style={{'fontSize':'.8rem'}} onClick={()=>{
                 window.location.href = host+'/logout'
@@ -249,7 +254,12 @@ function ProjectList(p){
                 }
               })
             }
-            <AddProject show={()=>setModalShow(true)}/>
+            <AddProject show={()=>{
+              setModalShow(true)
+              setTimeout(()=>{
+                titleInput.current.focus();
+              })
+            }}/>
           </div>
           <h4 className="inActive">완료된 프로젝트 &#x1F648;</h4>
           <div className="cardWrap">
@@ -320,6 +330,7 @@ function ProjectList(p){
         alert={alert}
         alertCng={alertCng}
         listCng={listCng}
+        titleInput={titleInput}
       />
       
     </>
@@ -494,7 +505,7 @@ function ProjectCreateModal(p) {
             controlId="floatingInput"
             label="프로젝트 제목"
           >
-            <Form.Control type="text" placeholder="프로젝트 제목" name="project_title" value={p.project_title} spellCheck="false" onChange={p.prjInfoChange}/>
+            <Form.Control type="text" placeholder="프로젝트 제목" name="project_title" value={p.project_title} spellCheck="false" onChange={p.prjInfoChange} ref={p.titleInput}/>
           </FloatingLabel>
         </Form.Group>
         
