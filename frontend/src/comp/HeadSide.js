@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState, useRef, useCallback } from "react"
-import {pub, colors, host} from './Helper.js'
+import {pub, colors, host,axiosHelper} from './Helper.js'
 import DatePicker from './DatePicker.js'
-import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstrap'
+import {FloatingLabel, Form, Button, Dropdown, Alert, Modal, Row} from 'react-bootstrap'
 import { Link, useParams, withRouter, useHistory, useLocation } from "react-router-dom";
 import {CSSTransition} from 'react-transition-group';
 import {connect} from 'react-redux';
@@ -29,6 +29,9 @@ function pagePath(page){
 
 function HeadSide(p){
   const history = useHistory();
+
+  
+
   //검색 모달 상태
   let [searchModal, searchModalCng] = useState(false);
 
@@ -39,8 +42,11 @@ function HeadSide(p){
 
   // 멤버 설정 모달_바깥클릭시 닫기 이벤트 핸들러
   let memberModalClose =useCallback((e)=>{
-    if(!e.target.closest('.memberModalWrap') ){
+    if(!e.target.closest('.memberModalWrap') && !e.target.closest('.modalWrap')){
       memberModalCng(false)
+      inviteEmailCng('');
+      inviteAlertCng(false)
+      inviteAlert2Cng(false)
       setTimeout(()=>{
         window.removeEventListener('click', memberModalClose)
       })
@@ -52,14 +58,26 @@ function HeadSide(p){
   const inviteEmailHandler = e =>inviteEmailCng(e.target.value)
   const inviteEmailClear =() => inviteEmailCng('')
 
-  const [inviteAlert, inviteAlertCng] = useState(true);
+  const [inviteAlert, inviteAlertCng] = useState(false);
+  const [inviteAlert2, inviteAlert2Cng] = useState(false);
 
+
+  //제외할 계정
+  const [outMember, outMemberCng]=useState();
+  
+  const [outAlertModal, outAlertModalCng] = useState(false)
+  const outAlertClose =()=>{ 
+    outMemberCng('');
+    outAlertModalCng(false)
+  };
 
   const [memberList, memeberListCng] = useState();
 
 
   useEffect(()=>{
     p.dispatch({type:'loadingOn'})
+
+    //멤버정보 가져옴
     axios.get('/ajax/allProjMembers/'+p.prjSeq)
     .then(r=>{
       memeberListCng(r.data)
@@ -69,9 +87,15 @@ function HeadSide(p){
       console.log(e)
       p.dispatch({type:'loadingOff'})
     })
-  },[])
-  console.log(memberList)
 
+    
+    
+
+    
+    outMemberCng('');
+    inviteAlertCng(false)
+    inviteAlert2Cng(false)
+  },[])
 
   return(
     <>
@@ -79,9 +103,21 @@ function HeadSide(p){
       <div className="viewHead" style={{backgroundColor:p.prjColor+'07'}}>
         {/* <img src={'data:image;base64,'+img}/> */}
         <div className="pathWrap">
-          <Form.Select size="sm">
-            <option>테스트 프로젝트 1</option>
-            <option>샘플 프로젝트</option>
+          <Form.Select size="sm" onChange={(e)=>{
+            history.push('/project/'+e.target.value+'/todo')
+            p.dispatch({type:'pagePush', val:'todo'})
+          }}>
+            {
+              p.prjList &&
+                p.prjList.map((r, i)=>{
+                  if(r.isdelete != 0){
+                    return(
+                      <option value={r.project_seq}>{r.project_title}</option>
+                    )
+                  }
+
+                })
+            }
           </Form.Select>
         </div>
         <div className="rightWrap">
@@ -186,28 +222,91 @@ function HeadSide(p){
 
         </div>
         <div className={"memberModalWrap " + (memberModal?'on':'')}>
+          {
+            inviteAlert &&
+              <div className="noneEmailAlert">가입되지 않은 이메일입니다.</div>
+          }
+          {
+            inviteAlert2 &&
+              <div className="noneEmailAlert">이미 참여중인 이메일입니다.</div>
+          }
           <div className="inviteWrap">
-            <input type="text" placeholder="초대할 이메일" onChange={inviteEmailHandler} onKeyPress={e=>{
-              if(e.key == 'Enter'){
+            <input type="text" placeholder="초대할 이메일" onChange={(e)=>{
+              inviteEmailCng(e.target.value)
+              inviteAlertCng(false)
+              inviteAlert2Cng(false)
+            }} onKeyPress={e=>{
+              if(e.key == 'Enter' && inviteEmail != ''){
                 p.dispatch({type:'loadingOn'})
                 axios.post(host+'/ajax/inviteProject',{
                   project_seq:p.prjSeq,
                   member_email:inviteEmail
                 })
                 .then(r=>{
-                  console.log(r.data)
-                  // if(r.data == 'fail'){
+                  if(r.data == 'fail'){
+                    inviteAlert2Cng(false)
+                    inviteAlertCng(true)
+                    p.dispatch({type:'loadingOff'})
 
-                  // }
-                  p.dispatch({type:'loadingOff'})
+                  }else if(r.data == 'duplicated'){
+                    inviteAlert2Cng(true)
+                    inviteAlertCng(false)
+                    p.dispatch({type:'loadingOff'})
 
+                  }else {
+                    axios.get('/ajax/allProjMembers/'+p.prjSeq)
+                    .then(r=>{
+                      memeberListCng(r.data)
+                      p.dispatch({type:'loadingOff'})
+                    })
+                    .catch(e=>{
+                      console.log(e)
+                      p.dispatch({type:'loadingOff'})
+                    })
+                  }
                 })
                 .catch(e=>{
                   console.log(e)
+                  p.dispatch({type:'loadingOff'})
                 })
               }
             }}/>
-            <i class="fas fa-paper-plane" style={{color:p.prjColor}}></i>
+            <i class="fas fa-paper-plane" style={{color:p.prjColor}} onClick={()=>{
+              if(inviteEmail != ''){
+                p.dispatch({type:'loadingOn'})
+                axios.post(host+'/ajax/inviteProject',{
+                  project_seq:p.prjSeq,
+                  member_email:inviteEmail
+                })
+                .then(r=>{
+                  if(r.data == 'fail'){
+                    inviteAlert2Cng(false)
+                    inviteAlertCng(true)
+                    p.dispatch({type:'loadingOff'})
+
+                  }else if(r.data == 'duplicated'){
+                    inviteAlert2Cng(true)
+                    inviteAlertCng(false)
+                    p.dispatch({type:'loadingOff'})
+
+                  }else {
+                    axios.get('/ajax/allProjMembers/'+p.prjSeq)
+                    .then(r=>{
+                      memeberListCng(r.data)
+                      p.dispatch({type:'loadingOff'})
+                    })
+                    .catch(e=>{
+                      console.log(e)
+                      p.dispatch({type:'loadingOff'})
+                    })
+                  }
+                })
+                .catch(e=>{
+                  console.log(e)
+                  p.dispatch({type:'loadingOff'})
+                })
+              }
+            }}></i>
           </div>
 
           <p className="memberCnt">참여중인 멤버
@@ -226,7 +325,7 @@ function HeadSide(p){
                   let name = r.projmember_name?r.projmember_name:'#'+r.member_seq
                   let isManager = r.projmember_type==0?true:false;
                   return(
-                    <div className="memberList">
+                    <div className="memberList on">
                       <div className="profileImg">
                         <img src={src}/>
                       </div>
@@ -238,34 +337,85 @@ function HeadSide(p){
                         }
                         <p className="email">{r.member_email}</p>
                       </div>
-                        <div className="memberBtnWrap">
-                          <p className="admin">관리자로</p>
-                          <p className="except">제외</p>
-                        </div>
+                      <div className="memberBtnWrap">
+                        {
+                          !isManager &&
+                            <p className="admin" onClick={()=>{
+                              p.dispatch({type:'loadingOn'})
+                              axios.post('/ajax/masterUpdate',{
+                                project_seq:p.prjSeq,
+                                projmember_seq:r.projmember_seq
+                              })
+                              .then(r => {
+                                axios.get('/ajax/allProjMembers/'+p.prjSeq)
+                                .then(r=>{
+                                  memeberListCng(r.data)
+                                  p.dispatch({type:'loadingOff'})
+                                })
+                                .catch(e=>{
+                                  console.log(e)
+                                  p.dispatch({type:'loadingOff'})
+                                })
+                              })
+                              .catch(e => {
+                                console.log(e)
+                                p.dispatch({type:'loadingOff'})
+                              })
+                            }}>관리자로</p>
+                        }
+                        <p className="except" onClick={()=>{
+                          outMemberCng({
+                            email:r.member_email,
+                            seq:r.projmember_seq
+                          })
+                          outAlertModalCng(true)
+                        }}>제외</p>
+                      </div>
                     </div>
                   )
                   
                 })
             }
 
-            <div className="memberList on">
-              <div className="profileImg">
-                <img src="/img/defaultProfile.svg"/>
-              </div>
-              <div className="profileName">
-                <p className="name">아이디아이디</p>
-                <p className="email">test@gmail.com</p>
-
-              </div>
-              <div className="memberBtnWrap">
-                <p className="admin">관리자로</p>
-                <p className="except">제외</p>
-              </div>
-            </div>
           </div>
-          
-          
         </div>
+        {
+          outMember &&
+            <Modal show={outAlertModal} onHide={outAlertClose} className="modalWrap">
+              <Modal.Header style={{borderBottom:0}}>
+                <Modal.Title className="modalTitle" >정말 {outMember.email}님을 제외하시겠어요? &#x1f625;</Modal.Title>
+              </Modal.Header>
+              <Modal.Footer style={{borderTop:0}}>
+                <Button variant="secondary" onClick={outAlertClose} style={{fontSize:'.8rem'}}>
+                  취소
+                </Button>
+                <Button variant="danger" onClick={()=>{
+                  p.dispatch({type:'loadingOn'})
+                  axios.post(host+'/ajax/projectout',{
+                    project_seq:p.prjSeq,
+                    projmember_seq:outMember.seq
+                  })
+                  .then(r => {
+                    axios.get('/ajax/allProjMembers/'+p.prjSeq)
+                    .then(r=>{
+                      memeberListCng(r.data)
+                      p.dispatch({type:'loadingOff'})
+                    })
+                    .catch(e=>{
+                      console.log(e)
+                      p.dispatch({type:'loadingOff'})
+                    })
+                  })
+                  .catch(e => {
+                    console.log(e)
+                    p.dispatch({type:'loadingOff'})
+                  })
+                }} style={{fontSize:'.8rem'}}>
+                  삭제
+                </Button>
+              </Modal.Footer>
+            </Modal>
+        }
         
       </div>
     </>

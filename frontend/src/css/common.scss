@@ -6,6 +6,7 @@ $c1h:#86a8ff;
 $c1d:#213b7a;
 $c2:#FFDF39;
 $c2d:#dbbf31;
+$cRedf:rgb(252, 225, 228);
 $cRed: #dc3545;
 $cRedd: #bb2938;
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
@@ -768,14 +769,15 @@ body{
   z-index: 0;
   .viewInnerWrap{
     position: fixed;
-    left: 50px;
+    left: 0px;
     top:40px;
     background-color: #fff;
-    width: calc(100vw - 50px);
+    width: 100vw;
     height: calc(100vh - 40px);
     overflow-y: auto;
     overflow-x: hidden;
     padding:20px;
+    padding-left: 70px;
     padding-bottom:40px;
     display: flex;
     justify-content: center;
@@ -884,6 +886,16 @@ body{
       &.on{
         transform: scale(1);
         opacity: 1;
+      }
+      .noneEmailAlert{
+        margin:10px;
+        background-color: $cRedf;
+        margin-bottom:0px;
+        border-radius: 5px;
+        padding:10px;
+        font-size: .7rem;
+        color:$cRedd;
+
       }
       .memberCnt{
         padding:4px 10px;

@@ -24,17 +24,11 @@ function ProjectList(p){
   const prjColor = seqColorTrans(seq);
 
 
-  const [prjDefaultInfo, prjDefaultInfoCng] = useState();
+  //프로젝트리스트 (셀렉트)
+  const [prjList, prjListCng] = useState();
 
-
-  let prjDefaultInfoSample = {
-
-  }
-
-
-
-
-
+  //현재 프로젝트 제목, 상태
+  const [prjInfo, prjInfoCng] = useState();
 
 
   useEffect(()=>{
@@ -45,6 +39,46 @@ function ProjectList(p){
       p.dispatch({type:"pagePush", val:isPage})
     }
 
+
+    //프로젝트 정보 가져옴
+    // axios.get(host+'/ajax/myproject')
+    // .then(r=>{
+    //   prjListCng(r.data);
+    //   p.dispatch({type:'loadingOff'})
+    // })
+    // .catch(e=>{
+    //   console.log(e)
+    //   p.dispatch({type:'loadingOff'})
+    // })
+
+    //프론트 작업용샘플
+    prjListCng([
+      {
+        member_seq: 4,
+        project_content: "내용입니다아1",
+        project_duedate: "2021-11-25",
+        project_enddate: "",
+        project_isdelete: 0,
+        project_seq: 1,
+        project_startdate: "2021-09-25",
+        project_status: 1,
+        project_title: "진행중프로젝트1",
+        projmember_type: 0
+      },
+      {
+        member_seq: 4,
+        project_content: "내용입니다아2",
+        project_duedate: "2022-11-25",
+        project_enddate: "",
+        project_isdelete: "0",
+        project_seq: 4,
+        project_startdate: "2021-09-25",
+        project_status: 0,
+        project_title: "진행중프로젝트2",
+        projmember_type: 0
+      },
+    ])
+
     
   },[])
   
@@ -52,7 +86,7 @@ function ProjectList(p){
 
   return(
     <div className="viewOutWrap">
-      <HeadSide prjColor={prjColor} prjSeq={seq}/>
+      <HeadSide prjColor={prjColor} prjSeq={seq} prjList={prjList} prjInfo={prjInfo}/>
       <div className="viewInnerWrap">
         {
           p.pageInfo == 'todo' &&

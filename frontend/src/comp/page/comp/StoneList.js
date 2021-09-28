@@ -114,7 +114,9 @@ function StoneList(p){
             milestone_seq:p.mileStoneInfo.milestone_seq
           })
           .then(e=>{
-            window.location.href = '/project/'+p.prjSeq+'/mileStone'
+            history.push('/project/'+p.prjSeq+'/mileStone')
+            p.dispatch({type:'pagePush', val:'mileStone'})
+
             p.dispatch({type:'loadingOff'})
 
           })
