@@ -36,7 +36,7 @@ public class MilestoneController {
     //마일스톤 생성하기
     @PostMapping("/ajax/createMileStone")
     public String createMile(@RequestBody MilestoneDTO milestoneDTO, Principal principal){
-        log.info("#milestoneDTO : "+milestoneDTO);
+        log.info("#milestoneDTO 생성: "+milestoneDTO);
         long projSeq= milestoneDTO.getProject_seq();
 
         //1. 접속한 유저 이메일로 memberSeq 찾음
@@ -70,7 +70,7 @@ public class MilestoneController {
     //마일스톤 수정(제목,설명,달력)
     @PostMapping("/ajax/updateMileStone")
     public void updateMileStone(@RequestBody MilestoneDTO milestoneDTO, Principal principal){
-        log.info("#milestoneDTO : "+milestoneDTO);
+        log.info("#milestoneDTO 수정: "+milestoneDTO);
         milestoneService.updateMilestone(milestoneDTO);
     }
 

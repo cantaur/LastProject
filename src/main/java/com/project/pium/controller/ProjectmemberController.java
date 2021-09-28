@@ -105,33 +105,28 @@ public class ProjectmemberController {
 
     //관리자 권한 주기
     @PostMapping("/ajax/masterUpdate")
-    public void masterget(@RequestBody Map<String, Integer> param, Principal principal){
-        String email = currentUserName(principal);
-        long member_seq = memberService.findUserNo(email);
+    public void masterget(@RequestBody Map<String, Integer> param){
         Long project_seq = Long.valueOf(param.get("project_seq"));
-        long projmember_seq = projectmemberService.findProjMemberSeq(project_seq, member_seq);
-     projectmemberService.mastergetS(projmember_seq);
-    }
+        Long projmember_seq = Long.valueOf(param.get("projmember_seq"));
+        projectmemberService.mastergetS(projmember_seq, project_seq);
+    } //테스트 안됨
+
 
     //프로젝트 멤버 강퇴
     @DeleteMapping("/ajax/projectout")
-    public void projectout(@RequestBody Map<String, Integer> param, Principal principal){
-        String email = currentUserName(principal);
-        long member_seq = memberService.findUserNo(email);
-        Long project_seq = Long.valueOf(param.get("project_seq"));
-        long projmember_seq = projectmemberService.findProjMemberSeq(project_seq, member_seq);
+    public void projectout(@RequestParam long project_seq,
+                           @RequestParam long projmember_seq){
         projectmemberService.projectoutS(project_seq, projmember_seq);
-    }
+    } //Postman으로 테스트 완료
 
     //프로젝트 나가기
     @DeleteMapping("/ajax/projectexit")
-    public void projectexit(@RequestBody Map<String, Integer> param, Principal principal){
+    public void projectexit(@RequestParam long project_seq, Principal principal){
         String email = currentUserName(principal);
         long member_seq = memberService.findUserNo(email);
-        Long project_seq = Long.valueOf(param.get("project_seq"));
         long projmember_seq = projectmemberService.findProjMemberSeq(project_seq, member_seq);
         projectmemberService.projectexitS(project_seq, projmember_seq);
-    }
+    } //테스트 안됨
 
 
 

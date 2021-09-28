@@ -39,8 +39,8 @@ public class ProjectmemberServiceImpl implements ProjectmemberService  {
     }
 
     @Override
-    public void mastergetS(long projmember_seq) {
-        projectmemberMapper.masterget(projmember_seq);
+    public void mastergetS(long projmember_seq, long project_seq) {
+        projectmemberMapper.masterget(projmember_seq, project_seq);
     }
 
     @Override

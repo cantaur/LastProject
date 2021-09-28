@@ -15,7 +15,7 @@ public interface ProjectmemberService {
     //해당 프로젝트의 멤버 리스트
     List<ProjectmemberDTO> allProjMembers(@Param("project_seq") long projSeq);
 
-    void mastergetS(long projmember_seq);
+    void mastergetS(long projmember_seq, long project_seq);
     void projectoutS(long project_seq, long projmember_seq);
     void projectexitS(long project_seq, long projmember_seq);
 

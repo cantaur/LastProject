@@ -29,7 +29,7 @@
     <update id="masterget" parameterType="long">
         update project_member
         set projmember_type = "0"
-        where projmember_seq = #{projmember_seq}
+        where projmember_seq = #{projmember_seq} and project_seq = #{project_seq}
     </update>
 
     <!-- 프로젝트 강퇴 -->

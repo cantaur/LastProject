@@ -5,6 +5,8 @@ import com.project.pium.service.TaskService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 import java.util.List;
 
 @Log
@@ -14,19 +16,12 @@ import java.util.List;
 public class TaskController {
     private TaskService service;
 
-    @PostMapping("insert")//http://localhost:8000/task/insert
-    public void insertTask(@RequestBody TaskDTO task){
-        log.info("#TaskController insert() : "+task);
-        service.insertS(task);
+    @PostMapping("/ajax/createTask")
+    public void insertTask(@RequestBody TaskDTO taskDTO, Principal principal){
+        log.info("#TaskController insert() : "+taskDTO);
+        service.insertS(taskDTO);
     }
-//{"task_title":"테스크콘트롤러테스트",
-// "task_content":"테스트내용",
-// "task_status":1,
-// "task_isdelete":1,
-// "task_startdate":null,
-// "task_duedate":null,
-// "milestone_seq":1
-//}OK
+
     @GetMapping("select") //모든업무 OK
     public List<TaskDTO> selectAll(){
         List<TaskDTO> list = service.selectAllS();
