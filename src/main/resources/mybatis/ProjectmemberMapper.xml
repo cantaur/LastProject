@@ -26,6 +26,15 @@
     </select>
 
 
+<!--    <insert id="invitation" parameterType="Project_memberDTO">-->
+<!--        insert into project_member(projmember_Type, project_seq, member_seq)-->
+<!--        values ("1", #{project_eq})-->
+<!--    </insert>-->
+
+    <update id="masterget" parameterType="long">
+
+    </update>
+
 
 
 
