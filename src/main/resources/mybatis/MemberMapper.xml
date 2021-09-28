@@ -4,8 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.MemberMapper">
 
-    <select id="selectAll" resultType="MemberDTO">
-        select * from member
+    <select id="findUserEmail" resultType="String" parameterType="String">
+        select member_email from member where member_email=#{member_email}
+    </select>
+
+    <select id="selectAllByEmail" resultType="MemberDTO" parameterType="String">
+        select * from member where member_email=#{member_email}
     </select>
 
     <select id="findUserNo" resultType="long" parameterType="String">
@@ -18,44 +22,5 @@
 
 
 
-
-
-
-
-
-
-
-
-    <select id="findUserEmail" resultType="String" parameterType="String">
-        select member_email from member where member_email=#{member_email}
-    </select>
-
-    <select id="selectAllByEmail" resultType="MemberDTO" parameterType="String">
-        select * from member where member_email=#{member_email}
-    </select>
-
-    <select id="selectAllByMseq" resultType="MemberDTO" parameterType="long">
-        select * from member where member_seq=#{member_seq}
-    </select>
-
-    <select id="selectAllByMpw" resultType="MemberDTO" parameterType="long">
-        select * from member where member_seq=#{member_seq}
-    </select>
-
-    <select id="selectAllByMplatform" resultType="MemberDTO" parameterType="long">
-        select * from member where member_seq=#{member_seq}
-    </select>
-
-
-
-
-
-    <delete id="deleteUser" parameterType="long">
-        delete from member where member_seq =#{member_seq}
-    </delete>
-
-<!--    <update id="member_update" parameterType="long">-->
-<!--        update member set member_pw = #{member_pw} where member_seq = #{member_seq}-->
-<!--    </update>-->
 
 </mapper>

@@ -9,22 +9,11 @@ import java.util.List;
 @Repository
 @Mapper
 public interface MemberMapper {
-    List<MemberDTO> selectAll();
+
+    List<MemberDTO> selectAllByEmail(String mEmail);
+    String findUserEmail(String mEmail);
     long findUserNo(String mEmail);
     String chkUser(String mEmail);
 
-
-
-
-
-
-    String findUserEmail(String mEmail);
-    List<MemberDTO> selectAllByEmail(String mEmail);
-    List<MemberDTO> selectAllByMseq(long mSEQ);
-
-
-
-
-    void deleteUser(long mSEQ);
 
 }
