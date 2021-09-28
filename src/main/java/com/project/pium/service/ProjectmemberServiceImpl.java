@@ -33,5 +33,10 @@ public class ProjectmemberServiceImpl implements ProjectmemberService  {
         return projectmemberMapper.showImage(projmember_seq);
     }
 
+    @Override
+    public List<ProjectmemberDTO> allProjMembers(long projSeq) {
+        return projectmemberMapper.allProjMembers(projSeq);
+    }
+
 
 }

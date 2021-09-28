@@ -9,8 +9,8 @@ import java.util.List;
 
 @Log
 @RestController
-@RequestMapping("task")
 @AllArgsConstructor
+@ResponseBody
 public class TaskController {
     private TaskService service;
 

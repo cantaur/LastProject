@@ -13,7 +13,7 @@
 <!--해당 프로젝트에서 생성된 전체 마일스톤 리스트-->
     <select id="msListBySeq" resultType="MilestoneDTO" parameterType="long">
         select * from milestone
-        where project_seq=#{project_seq}
+        where project_seq=#{project_seq} order by milestone_seq desc
     </select>
 
 <!--    마일스톤 상세페이지-->

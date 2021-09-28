@@ -16,5 +16,6 @@ public class ProjectmemberDTO {
     private byte[] projmember_data;
     private long project_seq;
     private long member_seq;
+    private String member_email;
 
 }

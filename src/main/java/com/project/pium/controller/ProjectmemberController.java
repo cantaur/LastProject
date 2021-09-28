@@ -2,6 +2,7 @@ package com.project.pium.controller;
 
 
 
+import com.project.pium.domain.ProjectDTO;
 import com.project.pium.domain.ProjectmemberDTO;
 import com.project.pium.service.*;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.List;
 
 @Log
 @RestController
@@ -85,6 +87,19 @@ public class ProjectmemberController {
         headers.add("Content-Length", String.valueOf(projectmemberDTO.getProjmember_data().length));
 
         return new ResponseEntity<byte[]>(projectmemberDTO.getProjmember_data(), headers, HttpStatus.OK);
+    }
+    
+    
+//추가, 겹치지않게 백업해두셈
+
+
+    //이 프로젝트에 참여한 모든 멤버의 정보
+    //projmember_type, projmember_name, projmember_data, member_email
+    @GetMapping("/ajax/allProjMembers/{project_seq}")
+    public List<ProjectmemberDTO> projMembers(@PathVariable long project_seq){
+        List<ProjectmemberDTO> memList = projectmemberService.allProjMembers(project_seq);
+
+        return memList;
     }
 
 

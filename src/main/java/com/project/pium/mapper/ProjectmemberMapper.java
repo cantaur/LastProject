@@ -16,6 +16,8 @@ public interface ProjectmemberMapper {
     //프로젝트seq와 멤버seq로 프로젝트멤버 seq 찾기
     long findProjMemberSeq(@Param("project_seq") long projSeq, @Param("member_seq")long memSeq);
     ProjectmemberDTO showImage(long projmember_seq);
+    //해당 프로젝트의 멤버 리스트
+    List<ProjectmemberDTO> allProjMembers(@Param("project_seq") long projSeq);
 
 
 
