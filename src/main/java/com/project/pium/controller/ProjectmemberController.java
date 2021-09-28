@@ -99,7 +99,6 @@ public class ProjectmemberController {
     @GetMapping("/ajax/allProjMembers/{project_seq}")
     public List<ProjectmemberDTO> projMembers(@PathVariable long project_seq){
         List<ProjectmemberDTO> memList = projectmemberService.allProjMembers(project_seq);
-
         return memList;
     }
 

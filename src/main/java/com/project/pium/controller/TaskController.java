@@ -29,13 +29,13 @@ public class TaskController {
     }
 
     //새 업무 생성
+    //task 테이블에 추가하면서 task_member(task_seq,projmember_seq) 테이블에도 추가
     @PostMapping("/ajax/createTask")
     public void createTask(@RequestBody TaskDTO taskDTO, Principal principal){
         log.info("#TaskController insert() : "+taskDTO);
         String email= currentUserName(principal);
         long sessionSeq = memberService.findUserNo(email);
 
-        //
 
 
 
