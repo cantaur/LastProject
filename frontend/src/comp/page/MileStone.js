@@ -53,6 +53,18 @@ function MileStone(p){
   //마일스톤 목록
   let [list, listCng] = useState();
 
+  //배열에서 완료된 마일스톤 갯수 찾기
+  const completeMileStoneCnt = (list) =>{
+    let cnt = 0;
+    list.map((r, i)=>{
+      if(r.milestone_status ==1){
+        cnt++;
+      }
+    })
+    return cnt;
+  }
+
+
   //프론트 작업용 샘플
   let listSample = [
     {
@@ -102,22 +114,106 @@ function MileStone(p){
       projmember_seq : '',
       project_seq: ''
     },
+    {
+      milestone_seq : '4',
+      milestone_title : '마일스톤4 제목',
+      milestone_content : '마일스톤4 설명',
+      milestone_status : 1,
+      milestone_isdelete : 0,
+      milestone_startdate : '',
+      milestone_startdate : '2020-11-11',
+      milestone_duedate : '2020-12-11',
+      projmember_seq : '',
+      project_seq: ''
+    },
+    {
+      milestone_seq : '4',
+      milestone_title : '마일스톤4 제목',
+      milestone_content : '마일스톤4 설명',
+      milestone_status : 1,
+      milestone_isdelete : 0,
+      milestone_startdate : '',
+      milestone_startdate : '2020-11-11',
+      milestone_duedate : '2020-12-11',
+      projmember_seq : '',
+      project_seq: ''
+    },
+    {
+      milestone_seq : '4',
+      milestone_title : '마일스톤4 제목',
+      milestone_content : '마일스톤4 설명',
+      milestone_status : 1,
+      milestone_isdelete : 0,
+      milestone_startdate : '',
+      milestone_startdate : '2020-11-11',
+      milestone_duedate : '2020-12-11',
+      projmember_seq : '',
+      project_seq: ''
+    },
+    {
+      milestone_seq : '4',
+      milestone_title : '마일스톤4 제목',
+      milestone_content : '마일스톤4 설명',
+      milestone_status : 1,
+      milestone_isdelete : 0,
+      milestone_startdate : '',
+      milestone_startdate : '2020-11-11',
+      milestone_duedate : '2020-12-11',
+      projmember_seq : '',
+      project_seq: ''
+    },
+    {
+      milestone_seq : '4',
+      milestone_title : '마일스톤4 제목',
+      milestone_content : '마일스톤4 설명',
+      milestone_status : 1,
+      milestone_isdelete : 0,
+      milestone_startdate : '',
+      milestone_startdate : '2020-11-11',
+      milestone_duedate : '2020-12-11',
+      projmember_seq : '',
+      project_seq: ''
+    },
+    {
+      milestone_seq : '4',
+      milestone_title : '마일스톤4 제목',
+      milestone_content : '마일스톤4 설명',
+      milestone_status : 1,
+      milestone_isdelete : 0,
+      milestone_startdate : '',
+      milestone_startdate : '2020-11-11',
+      milestone_duedate : '2020-12-11',
+      projmember_seq : '',
+      project_seq: ''
+    },
+    {
+      milestone_seq : '4',
+      milestone_title : '마일스톤4 제목',
+      milestone_content : '마일스톤4 설명',
+      milestone_status : 1,
+      milestone_isdelete : 0,
+      milestone_startdate : '',
+      milestone_startdate : '2020-11-11',
+      milestone_duedate : '2020-12-11',
+      projmember_seq : '',
+      project_seq: ''
+    },
   ]
 
   useEffect(()=>{
-    p.dispatch({type:'loadingOn'})
-    axios.get(host+'/ajax/'+p.prjSeq+'/milestonelist')
-    .then(r=>{
-      console.log(r.data)
-      listCng(r.data);
-      p.dispatch({type:'loadingOff'})
-    })
-    .catch(e=>{
-      console.log(e)
-      p.dispatch({type:'loadingOff'})
-    })
+    // p.dispatch({type:'loadingOn'})
+    // axios.get(host+'/ajax/'+p.prjSeq+'/milestonelist')
+    // .then(r=>{
+    //   console.log(r.data)
+    //   listCng(r.data);
+    //   p.dispatch({type:'loadingOff'})
+    // })
+    // .catch(e=>{
+    //   console.log(e)
+    //   p.dispatch({type:'loadingOff'})
+    // })
   
-    // listCng(listSample)
+    listCng(listSample)
   },[])
 
   return(
@@ -155,6 +251,7 @@ function MileStone(p){
         alert={alert}
         alertCng={alertCng}
         listCng={listCng}
+        prjSeq={p.prjSeq}
       />
 
       <div className="stoneListWrap">
@@ -181,11 +278,45 @@ function MileStone(p){
           :null
         }
       </div>
-      {
-        // list
-        // ?
-        //   list.find
-      }
+      <div className="stoneListWrap">
+        {
+          list
+          ?
+            completeMileStoneCnt(list) > 0
+            ?
+            <p className="completeHead">&#x231B; 완료된 마일스톤</p>
+            :null
+          :null
+        }
+        {
+          list
+          ?
+            completeMileStoneCnt(list) > 0
+            ? 
+              list.map((row, i)=>{
+                if(row.milestone_status==1 && row.milestone_isdelete == 0){
+                return(
+                    <StoneList 
+                      prjSeq={p.prjSeq}
+                      milestone_seq={row.milestone_seq}
+                      milestone_title={row.milestone_title}
+                      milestone_content={row.milestone_content}
+                      color={"#555555"} 
+                      completeTaskCnt={1}
+                      taskCnt={2}
+                      milestone_startdate={row.milestone_startdate}
+                      milestone_duedate={row.milestone_duedate}
+                      milestone_status={row.milestone_status}
+                      isComplete={true}
+                    />
+                  )
+                }
+              })
+            :null
+          :null
+        }
+      </div>
+      
 
     </div>
   )

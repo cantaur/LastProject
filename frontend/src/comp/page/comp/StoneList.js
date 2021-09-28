@@ -54,7 +54,7 @@ function StoneList(p){
         </i>
       </div>
     }
-    <div className={"stoneList " + (p.isView?'view':'')} style={{backgroundColor:p.color+'20'}}>
+    <div className={"stoneList " + (p.isView?'view ':'') + (p.isComplete?'completed ':'')} style={{backgroundColor:p.color+'20'}}>
       
       <p className="titleWrap">
         <p className={"title " + (p.isView?'view':'')}  onClick={()=>{

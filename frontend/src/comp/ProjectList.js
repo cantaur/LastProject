@@ -36,7 +36,7 @@ function ProjectList(p){
     const {value, name} = e.target;
     prjInfoCng({
       ...prjInfo,
-      [name]: value
+      [name]: value.trim()
     })
   }
 

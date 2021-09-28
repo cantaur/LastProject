@@ -1185,8 +1185,8 @@ body{
   .header{
     display: flex;
     justify-content: space-between;
-    align-items:flex-end;
-    margin-bottom:20px;
+    align-items:center;
+    margin-bottom:10px;
     .title{
       font-size: 1.6rem;
       font-weight: bold;
@@ -1207,6 +1207,11 @@ body{
   
 
   .stoneListWrap{
+    .completeHead{
+      margin-top: 40px;
+      margin-bottom:10px;
+      font-weight: bold;
+    }
     .stoneListbtnWrap{
       display: flex;
       justify-content: flex-end;
@@ -1244,6 +1249,9 @@ body{
       
       &.view{
         padding: 30px 20px;
+      }
+      &.completed {
+        opacity: .8;
       }
       .titleWrap{
         width: 100%;
