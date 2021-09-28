@@ -10,6 +10,11 @@
         values(#{task_title}, #{task_content}, #{task_startdate}, #{task_duedate}, #{milestone_seq})
     </insert>
 
+    <!--task_member에 추가하기-->
+    <insert id="insertTaskMember" parameterType="TaskmemberDTO">
+        insert into task_member(task_seq, projmember_seq) values(#{task_seq}, #{projmember_seq})
+    </insert>
+
 
 
 
