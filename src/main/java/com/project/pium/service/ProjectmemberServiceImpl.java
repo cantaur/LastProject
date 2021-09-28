@@ -1,13 +1,18 @@
 package com.project.pium.service;
 
 import com.project.pium.domain.ProjectmemberDTO;
+import com.project.pium.email.EmailSenderService;
 import com.project.pium.mapper.ProjectMapper;
 import com.project.pium.mapper.ProjectmemberMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 @Log
 @AllArgsConstructor
@@ -15,6 +20,8 @@ import java.util.List;
 
 public class ProjectmemberServiceImpl implements ProjectmemberService  {
     private ProjectmemberMapper projectmemberMapper;
+    @Autowired
+    private EmailSenderService emailSenderService;
 
     //프로필 수정
     @Override
@@ -56,7 +63,24 @@ public class ProjectmemberServiceImpl implements ProjectmemberService  {
     //프로젝트 나가기
     @Override
     public void projectexitS(long project_seq, long projmember_seq) {
-    projectmemberMapper.projectexit(project_seq, projmember_seq);
+        projectmemberMapper.projectexit(project_seq, projmember_seq);
     }
 
+    //해당 프로젝트에 멤버 추가하기
+    @Override
+    public String insertMember(long projSeq, long memSeq) {
+        List<ProjectmemberDTO> list = findProjMember(projSeq,memSeq);
+        if(list == null){ //프로젝트멤버 insert 진행
+            projectmemberMapper.insertMember(projSeq,memSeq);
+            return "success";
+        }else{
+            return "duplicated";
+        }
+    }
+
+    //memberSeq로 이 유저가 이 프로젝트에 포함되어 있는지를 찾는다
+    @Override
+    public List<ProjectmemberDTO> findProjMember(long projSeq, long memSeq) {
+        return projectmemberMapper.findProjMember(projSeq,memSeq);
+    }
 }

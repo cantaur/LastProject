@@ -48,11 +48,25 @@
 
 
 
+
+
     <!--    가은 추가-->
     <!--   해당 프로젝트의 멤버 찾기-->
     <select id="allProjMembers" parameterType="long" resultType="projectmemberDTO">
         SELECT a.member_email, b.projmember_seq, b.projmember_name, b.projmember_type, b.projmember_data
         FROM member AS a LEFT JOIN project_member AS b ON a.member_seq = b.member_seq WHERE project_seq=#{project_seq};
+    </select>
+
+<!--    해당 프로젝트에 초대하여 멤버 type으로 추가하기-->
+    <insert id="insertMember" parameterType="long">
+        INSERT INTO project_member (projmember_type, project_seq, member_seq)
+        VALUES("1",#{project_seq},#{member_seq})
+    </insert>
+
+
+    <!--memberSeq 찾기-->
+    <select id="findProjMember" parameterType="long" resultType="projectmemberDTO">
+        select * from project_member where member_seq=#{member_seq} and project_seq=#{project_seq}
     </select>
 
 

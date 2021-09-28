@@ -134,7 +134,8 @@ public class ProjectmemberController {
 
 
     //프로젝트에 새 멤버 초대
-    //이상한 이메일 들어오거나 멤버테이블에 없으면 클라이언트쪽에 fail 보내고, 이메일 있으면 메일 보내서 누름과 동시에 프로젝트멤버에 추가
+    //이상한 이메일 들어오거나 멤버테이블에 없으면 클라이언트쪽에 fail 보내고
+    //이메일 있으면 해당 프로젝트에 멤버로 추가되어 있는지 확인해서 있으면 duplicated 반환, 없으면 insert 진행
     @PostMapping("/ajax/inviteProject")
     public String inviteProject(@RequestBody Map<String,Integer> param){
         Long projSeq= Long.valueOf(param.get("project_seq"));
@@ -144,15 +145,15 @@ public class ProjectmemberController {
         if(memSeq != 0L){
             //이미 유저인 경우에는 메일로 초대장을 발송한다
             //해당 프로젝트에 이미 중복된 회원이 있을 경우 duplicated을 반환한다
-
-
-
+            String msg= projectmemberService.insertMember(projSeq,memSeq);
+            if(msg=="success"){
+                return "success";
+            }else{
+                return "duplicated";
+            }
         }else{
             return "fail";
         }
-
-
-        return "success";
     }
 
 
