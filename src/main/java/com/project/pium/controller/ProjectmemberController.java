@@ -139,7 +139,7 @@ public class ProjectmemberController {
     @PostMapping("/ajax/inviteProject")
     public String inviteProject(@RequestBody Map<String,Object> param){
         Object temp1= param.get("project_seq");
-        Long projSeq = (Long)temp1;
+        long projSeq = (long)temp1;
 
 
         //Long projSeq= Long.valueOf(param.get("project_seq"));
