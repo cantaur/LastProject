@@ -112,9 +112,10 @@ public class ProjectmemberController {
 
 
     //프로젝트 멤버 강퇴
-    @DeleteMapping("/ajax/projectout")
-    public void projectout(@RequestParam long project_seq,
-                           @RequestParam long projmember_seq){
+    @PostMapping("/ajax/projectout")
+    public void projectout(@RequestBody Map<String, Integer> param){
+        Long project_seq = Long.valueOf(param.get("project_seq"));
+        Long projmember_seq = Long.valueOf(param.get("projmember_seq"));
         projectmemberService.projectoutS(project_seq, projmember_seq);
     } //Postman으로 테스트 완료
 
