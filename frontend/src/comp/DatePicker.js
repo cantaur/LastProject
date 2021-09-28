@@ -37,7 +37,9 @@ function DatePicker(p) {
     })
     handleDatesChange(dates)
   }
+  const [alertMsg, alertMsgCng] = useState(false)
 
+  console.log(p.pickerDate)
   return (
     <div className={'App '+ (p.datePickerModal?' on':'')}>
       <DayPickerRangeController
@@ -51,11 +53,28 @@ function DatePicker(p) {
       {
         p.completeKey 
         ?
-          <div className="datePickerComplete" onClick={p.dateModalClose} onClick={()=>{
-            console.log('ddd')
-          }}>
-            일정적용
-          </div>
+          <>
+            <div className="datePickerEmptyDate" onClick={p.dateModalClose} onClick={()=>{
+              setTimeout(()=>{
+                p.pickerDateCng({
+                  ...p.pickerDate, 
+                  [p.pickerStartKey]:null, 
+                  [p.pickerEndKey]:null
+                })
+                p.dateUpdate(p.pickerDate)
+              },300)
+            }}>
+              일정비우기
+            </div>
+            <div className="datePickerComplete" onClick={p.dateModalClose} onClick={()=>{
+              setTimeout(()=>{
+                p.dateUpdate(p.pickerDate)
+              },300)
+            }}>
+              일정적용
+              <p className={"alertMsg " + (alertMsg?' on':'')}>종료일을 선택해주세요.</p>
+            </div>
+          </>
         :
           <div className="datePickerComplete" style={{'padding':'4px 10px'}} onClick={p.dateModalClose}>
             <i class="fas fa-times"></i>

@@ -24,6 +24,19 @@ function ProjectList(p){
   const prjColor = seqColorTrans(seq);
 
 
+  const [prjDefaultInfo, prjDefaultInfoCng] = useState();
+
+
+  let prjDefaultInfoSample = {
+
+  }
+
+
+
+
+
+
+
   useEffect(()=>{
     const isPage = pages.find(e=> e === page)
     if(isPage == undefined){
@@ -31,6 +44,8 @@ function ProjectList(p){
     } else {
       p.dispatch({type:"pagePush", val:isPage})
     }
+
+    
   },[])
   
 

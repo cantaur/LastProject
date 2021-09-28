@@ -33,7 +33,6 @@ function MileStone(p){
       ...mileStoneInfo,
       [name]: value
     })
-    console.log(mileStoneInfo)
   }
 
   //날짜선택 이중모달 컨트롤
@@ -215,7 +214,7 @@ function MileStone(p){
     p.dispatch({type:'loadingOn'})
     axios.get(host+'/ajax/'+p.prjSeq+'/milestonelist')
     .then(r=>{
-      console.log(r.data)
+      // console.log(r.data)
       listCng(r.data);
       p.dispatch({type:'loadingOff'})
     })
@@ -223,8 +222,8 @@ function MileStone(p){
       console.log(e)
       p.dispatch({type:'loadingOff'})
     })
-  
     // listCng(listSample)
+    
   },[])
 
   return(
@@ -267,7 +266,7 @@ function MileStone(p){
 
       <div className="stoneListWrap">
         {
-          list 
+          list
           ?
             list.map((row, i)=>{
               if(row.milestone_status==0 && row.milestone_isdelete == 0){
@@ -282,6 +281,8 @@ function MileStone(p){
                     taskCnt={2}
                     milestone_startdate={row.milestone_startdate}
                     milestone_duedate={row.milestone_duedate}
+                    mileStoneInfo={mileStoneInfo}
+                    mileStoneInfoCng={mileStoneInfoCng}
                   />
                 )
               }
@@ -321,11 +322,13 @@ function MileStone(p){
                       milestone_title={row.milestone_title}
                       milestone_content={row.milestone_content}
                       color={"#555555"} 
-                      completeTaskCnt={1}
+                      completeTaskCnt={0}
                       taskCnt={2}
                       milestone_startdate={row.milestone_startdate}
                       milestone_duedate={row.milestone_duedate}
                       milestone_status={row.milestone_status}
+                      mileStoneInfo={mileStoneInfo}
+                      mileStoneInfoCng={mileStoneInfoCng}
                       isComplete={true}
                     />
                   )
