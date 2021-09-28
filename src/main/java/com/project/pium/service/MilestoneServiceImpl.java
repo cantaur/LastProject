@@ -36,6 +36,11 @@ public class MilestoneServiceImpl implements MilestoneService {
     }
 
     @Override
+    public void setDateEmpty(long mileSeq) {
+        milestoneMapper.setDateEmpty(mileSeq);
+    }
+
+    @Override
     public int closeMilestone(long mileSeq) {
         return milestoneMapper.closeMilestone(mileSeq);
     }

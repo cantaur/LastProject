@@ -16,11 +16,49 @@ import java.util.List;
 public class TaskController {
     private TaskService service;
 
+    //현재 로그인한 유저의 세션값 얻어오는 로직 모듈화
+    public String currentUserName(Principal principal){
+        if(principal ==null){
+            return "false";
+        }else{
+            String sessionEmail = principal.getName();
+            return sessionEmail;
+        }
+    }
+
     @PostMapping("/ajax/createTask")
     public void insertTask(@RequestBody TaskDTO taskDTO, Principal principal){
         log.info("#TaskController insert() : "+taskDTO);
         service.insertS(taskDTO);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @GetMapping("select") //모든업무 OK
     public List<TaskDTO> selectAll(){

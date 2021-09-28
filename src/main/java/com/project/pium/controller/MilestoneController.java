@@ -74,6 +74,14 @@ public class MilestoneController {
         milestoneService.updateMilestone(milestoneDTO);
     }
 
+    //마일스톤 캘린더 비우기(get으로 milestone_seq 주면 date에 null 셋팅)
+    @GetMapping("/ajax/setDateEmpty/{mileSeq}")
+    public void setDateEmpty(@PathVariable long mileSeq){
+        milestoneService.setDateEmpty(mileSeq);
+    }
+
+
+
 
     // 마일스톤 완료상태로 전환
     @ResponseBody

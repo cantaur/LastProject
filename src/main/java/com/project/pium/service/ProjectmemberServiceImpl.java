@@ -16,6 +16,7 @@ import java.util.List;
 public class ProjectmemberServiceImpl implements ProjectmemberService  {
     private ProjectmemberMapper projectmemberMapper;
 
+    //프로필 수정
     @Override
     public void updateProfileS(ProjectmemberDTO projectmemberDTO){
         log.info("#projectmemberDTO : "+projectmemberDTO);
@@ -23,6 +24,7 @@ public class ProjectmemberServiceImpl implements ProjectmemberService  {
         projectmemberMapper.updateProfile(projectmemberDTO);
     }
 
+    //프로젝트seq와 멤버seq로 프로젝트멤버 seq 찾기
     @Override
     public long findProjMemberSeq(long projSeq, long memSeq) {
         return projectmemberMapper.findProjMemberSeq(projSeq,memSeq);
@@ -33,21 +35,25 @@ public class ProjectmemberServiceImpl implements ProjectmemberService  {
         return projectmemberMapper.showImage(projmember_seq);
     }
 
+    //해당 프로젝트의 멤버 리스트
     @Override
     public List<ProjectmemberDTO> allProjMembers(long projSeq) {
         return projectmemberMapper.allProjMembers(projSeq);
     }
 
+    //프로젝트 관리자 권한 주기
     @Override
     public void mastergetS(long projmember_seq, long project_seq) {
         projectmemberMapper.masterget(projmember_seq, project_seq);
     }
 
+    //프로젝트 강퇴
     @Override
     public void projectoutS(long project_seq, long projmember_seq) {
         projectmemberMapper.projectout(project_seq, projmember_seq);
     }
 
+    //프로젝트 나가기
     @Override
     public void projectexitS(long project_seq, long projmember_seq) {
     projectmemberMapper.projectexit(project_seq, projmember_seq);

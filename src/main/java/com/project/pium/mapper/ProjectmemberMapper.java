@@ -34,11 +34,6 @@ public interface ProjectmemberMapper {
 //    List<ProjectmemberDTO> selectByMseq(long member_seq);//멤버 번호로 조회
 //    List<ProjectmemberDTO> selectByPmname(String projmember_name);//이름으로 조회
 //    String selectByBoss(String projmember_type);// 관리자 이름 찾기
-//
-//
-//    void deleteByPm(long projmember_seq);//삭제
-//    void updateByPmTypeUp(long projmember_seq);//관리자 권환 획득
-//    void updateByPmTypeDown(long projmember_seq);//관리자 권환 상실
 
 
 

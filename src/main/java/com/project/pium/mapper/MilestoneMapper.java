@@ -19,6 +19,8 @@ public interface MilestoneMapper {
     MilestoneDTO findMilestoneByMileSeq(long mileSeq);
     //마일스톤 전체 수정
     void updateMilestone(MilestoneDTO milestoneDTO);
+    //마일스톤 date들 null로 셋팅
+    void setDateEmpty(long mileSeq);
     //마감상태(완료) 변경
     int closeMilestone(long mileSeq);
     //마감상태(재오픈) 변경

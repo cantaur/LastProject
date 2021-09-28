@@ -89,28 +89,10 @@ public class ProjectController {
     public void updateProject(@RequestBody ProjectDTO projectDTO){
         projectService.updateProject(projectDTO);
     }
+
+
     
-    //프로젝트에 새 멤버 초대
-    //이상한 이메일 들어오거나 멤버테이블에 없으면 클라이언트쪽에 fail 보내고, 이메일 있으면 메일 보내서 누름과 동시에 프로젝트멤버에 추가
-    @PostMapping("/ajax/inviteProject")
-    public String inviteProject(@RequestBody Map<String,Integer> param){
-        Long projSeq= Long.valueOf(param.get("project_seq"));
-        String email = String.valueOf(param.get("email"));
-        log.info("projSeq : "+projSeq+", email : "+email);
-        long memSeq = memberService.findUserNo(email);
-        if(memSeq != 0L){
-            //이미 유저인 경우에는 메일로 초대장을 발송한다
-            //해당 프로젝트에 이미 중복된 회원이 있을 경우 duplicated을 반환한다
 
-
-
-        }else{
-            return "fail";
-        }
-
-
-        return "success";
-    }
 
 
 
