@@ -64,6 +64,17 @@ function MileStone(p){
     return cnt;
   }
 
+  //배열에서 진행중인 마일스톤 갯수 찾기
+  const ingMileStoneCnt = (list) =>{
+    let cnt = 0;
+    list.map((r,i)=>{
+      if(r.milestone_status == 0 && r.milestone_isdelete == 0){
+        cnt++;
+      }
+    })
+    return cnt;
+  }
+
 
   //프론트 작업용 샘플
   let listSample = [
@@ -277,6 +288,14 @@ function MileStone(p){
             })
           :null
         }
+        {
+          list
+          ?
+            ingMileStoneCnt(list) == 0
+            ?<div className="noMileStoneMsg">진행중인 마일스톤이 없습니다. &#x1F602;</div>
+            :null
+          : <div className="noMileStoneMsg">진행중인 마일스톤이 없습니다. &#x1F602;</div>
+        }
       </div>
       <div className="stoneListWrap">
         {
@@ -394,7 +413,7 @@ function MileStoneCreateModal(p) {
             p.dispatch({type:'loadingOn'})
             axios.post(host+'/ajax/createMileStone', p.mileStoneInfo)
             .then(r=>{
-              console.log(r)
+              console.log(r.data)
               p.onHide();
 
               //목록새로고침

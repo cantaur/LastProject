@@ -174,7 +174,7 @@ function del(param){
     })
     // axios.post('/todo/deleteTodo',{param})
     .then(r=>{
-        console.log(r)
+        console.log(r.data)
     })
 }
 function DoneList({ dones }) {
@@ -301,10 +301,10 @@ function MyVerticallyCenteredModal2(props) {
     const [memberSeq, setMemberSeq] = useState([]);
     // axios.post(host+'어쩌구링크', props.updateInfo)
     //     .then(r=>{
-    //         console.log(r)
+    //         console.log(r.data)
     //         axios.get(host+'/test')
     //             .then(r=>{
-    //                 console.log(r)
+    //                 console.log(r.data)
     //             })
     //     })
     useEffect(()=>{

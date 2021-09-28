@@ -27,7 +27,7 @@ function Test3(){
       headers: {"Content-Type": "multipart/form-data"}
     })
     .then(r=>{
-      console.log(r)
+      console.log(r.data)
       console.log('업로드성공')
     })
     .catch(e=>{

@@ -36,7 +36,7 @@ function ProjectList(p){
     const {value, name} = e.target;
     prjInfoCng({
       ...prjInfo,
-      [name]: value.trim()
+      [name]: value
     })
   }
 
@@ -142,7 +142,7 @@ function ProjectList(p){
     p.dispatch({type:'loadingOn'})
     axios.get(host+'/ajax/myproject')
     .then(r=>{
-      console.log(r)
+      console.log(r.data)
       listCng(r.data);
       p.dispatch({type:'loadingOff'})
 
@@ -172,10 +172,10 @@ function ProjectList(p){
               project_seq:deleteSeq
             })
             .then(r=>{
-              console.log(r)
+              console.log(r.data)
               axios.get(host+'/ajax/myproject')
               .then(r=>{
-                console.log(r)
+                console.log(r.data)
                 listCng(r.data);
                 p.dispatch({type:'loadingOff'})
               })
@@ -345,7 +345,7 @@ function ProjectCard(p){
                 //목록 새로고침
                 axios.get(host+'/ajax/myproject')
                 .then(r=>{
-                  console.log(r)
+                  console.log(r.data)
                   p.listCng(r.data);
                   p.dispatch({type:'loadingOff'})
                 })
@@ -353,7 +353,7 @@ function ProjectCard(p){
                   console.log(e)
                   p.dispatch({type:'loadingOff'})
                 })                
-                console.log(r)
+                console.log(r.data)
               })
               .catch(e=>{
                 console.log(e)
@@ -386,11 +386,11 @@ function ProjectCard(p){
                 project_seq:p.seq
               })
               .then(r=>{
-                console.log(r)
+                console.log(r.data)
                 //목록 새로고침
                 axios.get(host+'/ajax/myproject')
                 .then(r=>{
-                  console.log(r)
+                  console.log(r.data)
                   p.listCng(r.data);
                   p.dispatch({type:'loadingOff'})
                 })
@@ -541,12 +541,12 @@ function ProjectCreateModal(p) {
             if(p.prjInfo.project_seq) {
               axios.post(host+'/ajax/updateProject',p.prjInfo)
               .then(r=>{
-                console.log(r)
+                console.log(r.data)
                 p.onHide();
                 //목록 새로고침
                 axios.get(host+'/ajax/myproject')
                 .then(r=>{
-                  console.log(r)
+                  console.log(r.data)
                   p.listCng(r.data);
                   p.dispatch({type:'loadingOff'})
                 })
@@ -562,11 +562,11 @@ function ProjectCreateModal(p) {
             }else {
               axios.post(host+'/ajax/createProject',p.prjInfo)
               .then(r=>{
-                console.log(r)
+                console.log(r.data)
                 //생성하고 한번더 리스트 새로고침함
                 axios.get(host+'/ajax/myproject')
                 .then(r=>{
-                  console.log(r)
+                  console.log(r.data)
                   p.listCng(r.data);
                   p.onHide()
                   p.dispatch({type:'loadingOff'})

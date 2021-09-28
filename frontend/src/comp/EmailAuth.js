@@ -40,7 +40,7 @@ function EmailAuth(p){
           'authKey' : authKey,
         })
         .then((r)=>{
-          console.log(r)
+          console.log(r.data)
           console.log(email+', '+authKey)
 
           emailLoadingCng(true)

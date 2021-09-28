@@ -39,7 +39,7 @@ function Sign(p){
   }
 
   const onSuccessKakao = async(r) => {
-    console.log(r)
+    console.log(r.data)
   }
 
 
