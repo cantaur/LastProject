@@ -3,6 +3,29 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.TaskMapper">
+
+    <!--새 업무 셋팅(파일, 멤버배정 외)-->
+    <insert id="createTask" parameterType="TaskDTO">
+        insert into task(task_title, task_content, task_startdate, task_duedate, milestone_seq)
+        values(#{task_title}, #{task_content}, #{task_startdate}, #{task_duedate}, #{milestone_seq})
+    </insert>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <!--전체-->
     <select id="selectAll" resultType="TaskDTO">
         select * from task
@@ -20,12 +43,7 @@
         select * from task where priority_code=#{priority}
     </select>
 
-    <!--새 업무 셋팅(파일, 멤버배정 외)-->
-    <insert id="insert" parameterType="TaskDTO">
-        <!--insert into ADDRESS(NAME, ADDR, RDATE) values(#{name}, #{addr}, now())-->
-        insert into task(task_title, task_content, task_startdate, task_duedate, milestone_seq)
-        values(#{task_title}, #{task_content}, #{task_startdate}, #{task_duedate}, #{milestone_seq})
-    </insert>
+
 
     <!--업무 isdelete변경-->
     <update id="delete" parameterType="long">
