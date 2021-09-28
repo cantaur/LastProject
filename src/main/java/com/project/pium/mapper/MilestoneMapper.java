@@ -11,11 +11,23 @@ import java.util.List;
 @Mapper
 @Repository
 public interface MilestoneMapper {
+    //마일스톤 생성
     void createMile(MilestoneDTO milestoneDTO);
-
+    //해당 프로젝트에서 생성된 전체 마일스톤 리스트
     List<MilestoneDTO> msListBySeq(long proSeq);
+    //마일스톤 상세페이지
+    MilestoneDTO findMilestoneByMileSeq(long mileSeq);
+    //마일스톤 전체 수정
+    void updateMilestone(MilestoneDTO milestoneDTO);
 
-    List<MilestoneDTO> selectByMsSeq(long mileSeq);
+
+
+
+
+
+
+
+
 
     String projMnameByMseq(long mileName);
 
@@ -25,11 +37,7 @@ public interface MilestoneMapper {
     //마감상태 변경
     void upMsStatus(MilestoneDTO milestoneDTO);
 
-    //  제목 변경
-    void upMsName(MilestoneDTO milestoneDTO);
 
-    //내용 변경
-    void upMsContent(MilestoneDTO milestoneDTO);
 
     //isdel
     void upMsIsdel(MilestoneDTO milestoneDTO);

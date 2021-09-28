@@ -25,24 +25,22 @@ public class MilestoneServiceImpl implements MilestoneService {
         return milestoneMapper.msListBySeq(proSeq);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @Override
+    public MilestoneDTO findMilestoneByMileSeq(long mileSeq){
+        return milestoneMapper.findMilestoneByMileSeq(mileSeq);
+    }
 
     @Override
-    public List<MilestoneDTO> selectByMsSeq(long mileSeq){
-        return milestoneMapper.selectByMsSeq(mileSeq);
+    public void updateMilestone(MilestoneDTO milestoneDTO) {
+        milestoneMapper.updateMilestone(milestoneDTO);
     }
+
+
+
+
+
+
+
 
     @Override
     public String projMnameByMseq(long mileName) {
@@ -59,16 +57,8 @@ public class MilestoneServiceImpl implements MilestoneService {
     public void upMsStatus(MilestoneDTO milestoneDTO) {
         milestoneMapper.upMsStatus(milestoneDTO);
     }
-    //  제목 변경
-    @Override
-    public void upMsName(MilestoneDTO milestoneDTO) {
-        milestoneMapper.upMsName(milestoneDTO);
-    }
 
-    @Override
-    public void upMsContent(MilestoneDTO milestoneDTO) {
-        milestoneMapper.upMsContent(milestoneDTO);
-    }
+
 
     @Override
     public void upMsIsdel(MilestoneDTO milestoneDTO) {

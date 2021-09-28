@@ -4,26 +4,38 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.MilestoneMapper">
 
+<!--    마일스톤 생성-->
     <insert id="createMile" parameterType="MilestoneDTO">
         insert into milestone(milestone_title, milestone_content, milestone_startdate, milestone_duedate,projmember_seq,project_seq)
         values(#{milestone_title},#{milestone_content},#{milestone_startdate},#{milestone_duedate},#{projmember_seq},#{project_seq})
     </insert>
 
-
+<!--해당 프로젝트에서 생성된 전체 마일스톤 리스트-->
     <select id="msListBySeq" resultType="MilestoneDTO" parameterType="long">
         select * from milestone
         where project_seq=#{project_seq}
     </select>
 
-
-
-
-
-
-    <select id="selectByMsSeq" resultType="MilestoneDTO" parameterType="long">
+<!--    마일스톤 상세페이지-->
+    <select id="findMilestoneByMileSeq" resultType="MilestoneDTO" parameterType="long">
         select * from milestone
         where milestone_seq=#{milestone_seq}
     </select>
+
+<!--    마일스톤 전체 업데이트-->
+    <update id="updateMilestone" parameterType="MilestoneDTO">
+        update milestone set milestone_title=#{milestone_title},
+                             milestone_content=#{milestone_content},
+                             milestone_startdate=#{milestone_startdate},
+                             milestone_duedate=#{milestone_duedate}
+        where milestone_seq=#{milestone_seq}
+</update>
+
+
+
+
+
+
 
 <!-- 마일스톤을 만든 사람 이름을 뽑고 싶을때-->
     <select id="projMnameByMseq" resultType="String" parameterType="long">

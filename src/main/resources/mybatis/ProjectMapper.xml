@@ -54,7 +54,7 @@
     WHERE project_seq = #{project_seq}
 </update>
 
-<!--프로젝트 삭제상태 업데이트(iddelete=1)-->
+<!--프로젝트 삭제상태 업데이트(isdelete=1)-->
 <update id="updateIsdelete" parameterType="ProjectDTO">
     UPDATE project
     SET project_isdelete = "1"

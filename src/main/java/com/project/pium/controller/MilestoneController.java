@@ -61,8 +61,8 @@ public class MilestoneController {
     
     //마일스톤 눌러서 들어갔을 때 나오는 마일스톤 상세정보 보여주기
     @GetMapping("/ajax/milestone/{mileSeq}")
-    public List<MilestoneDTO> msListDesc(@PathVariable long mileSeq){
-        List<MilestoneDTO> listBy = milestoneService.selectByMsSeq(mileSeq);
+    public MilestoneDTO msListDesc(@PathVariable long mileSeq){
+        MilestoneDTO listBy = milestoneService.findMilestoneByMileSeq(mileSeq);
         log.info("listBy" + listBy);
         return listBy;
     }
@@ -71,7 +71,7 @@ public class MilestoneController {
     @PostMapping("/ajax/updateMileStone")
     public void updateMileStone(@RequestBody MilestoneDTO milestoneDTO, Principal principal){
         log.info("#milestoneDTO : "+milestoneDTO);
-        //구현중..
+        milestoneService.updateMilestone(milestoneDTO);
     }
 
     // 마일스톤 완료상태로 전환
@@ -142,27 +142,7 @@ public class MilestoneController {
 
 
 
-    //  제목 변경
-    @PutMapping("upMsName")
-    public void upMsName(@RequestBody MilestoneDTO milestoneDTO){
-        milestoneService.upMsName(milestoneDTO);
-    }
-    /*at Talend API Tester
-      method : put
-      url : http://localhost:8000/mile/upMsName
-      {"milestone_title":"마일스톤 RE1","milestone_seq":1}
-    */
 
-    //내용 변경
-    @PutMapping("upMsContent")
-    public void upMsContent(@RequestBody MilestoneDTO milestoneDTO){
-        milestoneService.upMsContent(milestoneDTO);
-    }
-     /*at Talend API Tester
-      method : put
-      url : http://localhost:8000/mile/upMsContent
-      {"milestone_content":"RE 마일스톤 1 내용","milestone_seq":1}
-    */
 
     //isdel
     @PutMapping("upMsIsdel")

@@ -86,10 +86,7 @@ public class ProjectController {
 
     //프로젝트 수정 버튼 눌렀을 때 수행되는 메소드
     @PostMapping("/ajax/updateProject")
-    public void updateProject(@RequestBody ProjectDTO projectDTO, Principal principal){
-        log.info("여기 들어오나??");
-        String email= currentUserName(principal);
-        long sessionSeq = memberService.findUserNo(email);
+    public void updateProject(@RequestBody ProjectDTO projectDTO){
         projectService.updateProject(projectDTO);
     }
 
