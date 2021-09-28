@@ -19,6 +19,13 @@ public interface ProjectmemberMapper {
     //해당 프로젝트의 멤버 리스트
     List<ProjectmemberDTO> allProjMembers(@Param("project_seq") long projSeq);
 
+    //프로젝트 관리자 권한 주기
+    void masterget(long projmember_seq);
+    //프로젝트 강퇴
+    void projectout(long project_seq, long projmember_seq);
+    //프로젝트 나가기
+    void projectexit(long project_seq, long projmember_seq);
+
 
 
 
@@ -32,7 +39,7 @@ public interface ProjectmemberMapper {
 //    void deleteByPm(long projmember_seq);//삭제
 //    void updateByPmTypeUp(long projmember_seq);//관리자 권환 획득
 //    void updateByPmTypeDown(long projmember_seq);//관리자 권환 상실
-    
+
 
 
 }

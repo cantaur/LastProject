@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @Log
 @RestController
@@ -100,6 +101,36 @@ public class ProjectmemberController {
         List<ProjectmemberDTO> memList = projectmemberService.allProjMembers(project_seq);
 
         return memList;
+    }
+
+    //관리자 권한 주기
+    @PostMapping("/ajax/masterUpdate")
+    public void masterget(@RequestBody Map<String, Integer> param, Principal principal){
+        String email = currentUserName(principal);
+        long member_seq = memberService.findUserNo(email);
+        Long project_seq = Long.valueOf(param.get("project_seq"));
+        long projmember_seq = projectmemberService.findProjMemberSeq(project_seq, member_seq);
+     projectmemberService.mastergetS(projmember_seq);
+    }
+
+    //프로젝트 멤버 강퇴
+    @DeleteMapping("/ajax/projectout")
+    public void projectout(@RequestBody Map<String, Integer> param, Principal principal){
+        String email = currentUserName(principal);
+        long member_seq = memberService.findUserNo(email);
+        Long project_seq = Long.valueOf(param.get("project_seq"));
+        long projmember_seq = projectmemberService.findProjMemberSeq(project_seq, member_seq);
+        projectmemberService.projectoutS(project_seq, projmember_seq);
+    }
+
+    //프로젝트 나가기
+    @DeleteMapping("/ajax/projectexit")
+    public void projectexit(@RequestBody Map<String, Integer> param, Principal principal){
+        String email = currentUserName(principal);
+        long member_seq = memberService.findUserNo(email);
+        Long project_seq = Long.valueOf(param.get("project_seq"));
+        long projmember_seq = projectmemberService.findProjMemberSeq(project_seq, member_seq);
+        projectmemberService.projectexitS(project_seq, projmember_seq);
     }
 
 

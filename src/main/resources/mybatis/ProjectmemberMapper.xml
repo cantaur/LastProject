@@ -25,16 +25,24 @@
         select * from project_member where projmember_seq=#{projmember_seq};
     </select>
 
-
-<!--    <insert id="invitation" parameterType="Project_memberDTO">-->
-<!--        insert into project_member(projmember_Type, project_seq, member_seq)-->
-<!--        values ("1", #{project_eq})-->
-<!--    </insert>-->
-
+    <!-- 프로젝트 관리자 권한 주기 -->
     <update id="masterget" parameterType="long">
-
+        update project_member
+        set projmember_type = "0"
+        where projmember_seq = #{projmember_seq}
     </update>
 
+    <!-- 프로젝트 강퇴 -->
+    <delete id="projectout" parameterType="long">
+        DELETE from project_member
+        where project_seq= #{project_seq} And projmember_seq= #{projmember_seq}
+    </delete>
+
+    <!-- 프로젝트 나가기 -->
+    <delete id="projectexit" parameterType="long">
+        Delete from Project_member
+        where project_seq= #{project_seq} And projmember_seq= #{projmember_seq}
+    </delete>
 
 
 
@@ -46,6 +54,7 @@
         SELECT a.member_email, b.projmember_seq, b.projmember_name, b.projmember_type, b.projmember_data
         FROM member AS a LEFT JOIN project_member AS b ON a.member_seq = b.member_seq WHERE project_seq=#{project_seq};
     </select>
+
 
 
 

@@ -38,5 +38,19 @@ public class ProjectmemberServiceImpl implements ProjectmemberService  {
         return projectmemberMapper.allProjMembers(projSeq);
     }
 
+    @Override
+    public void mastergetS(long projmember_seq) {
+        projectmemberMapper.masterget(projmember_seq);
+    }
+
+    @Override
+    public void projectoutS(long project_seq, long projmember_seq) {
+        projectmemberMapper.projectout(project_seq, projmember_seq);
+    }
+
+    @Override
+    public void projectexitS(long project_seq, long projmember_seq) {
+    projectmemberMapper.projectexit(project_seq, projmember_seq);
+    }
 
 }
