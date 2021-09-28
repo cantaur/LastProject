@@ -50,7 +50,7 @@ function HeadSide(p){
   return(
     <>
       {/* 헤더 */}
-      <div className="viewHead" style={{backgroundColor:"#fafafa"}}>
+      <div className="viewHead" style={{backgroundColor:p.prjColor+'07'}}>
         <div className="pathWrap">
           <Form.Select size="sm">
             <option>테스트 프로젝트 1</option>

@@ -146,11 +146,16 @@ function StoneList(p){
           p.isView
           ?
             p.milestone_startdate
-            ? <div className="date on">
+            ? <div className="date on" onClick={()=>{p.dispatch({type:'modalOn'})}}>
                 <i class="far fa-clock"></i>
                 {infoDummy.milestone_startdate} ~ {infoDummy.milestone_duedate}
               </div>
-            : <div className="date on">
+            : <div className="date on" onClick={()=>{
+                p.dispatch({type:'modalOn'})
+                setTimeout(()=>{
+                  window.addEventListener('click', p.dateModalClose)
+                })
+              }}>
                 <i class="far fa-clock"></i> 마일스톤 일정 추가하기
                 <div className="datePickerWrap">
                   <DatePicker
@@ -159,6 +164,7 @@ function StoneList(p){
                     pickerStartKey={'milestone_startdate'}
                     pickerEndKey={'milestone_duedate'}
                     completeKey={true}
+                    dateModalClose={p.dateModalClose}
                   />
                 </div>
               </div>

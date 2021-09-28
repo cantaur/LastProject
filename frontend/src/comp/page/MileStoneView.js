@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState,useCallback } from "react"
 import {pub, colors, pages, seqColorTrans} from '../Helper.js'
 import DatePicker from '../DatePicker.js'
 import StoneList from "./comp/StoneList.js";
@@ -14,6 +14,7 @@ import NonePage from "../NonePage.js";
 function MileStoneView(p){
   const params = useParams();
   const mileStoneSeq = params.pageSeq;
+
   //마일스톤 수정하기 정보
   const [mileStoneInfo, mileStoneInfoCng] = useState({
     milestone_seq:'',
@@ -22,9 +23,18 @@ function MileStoneView(p){
     milestone_startdate:'',
     milestone_duedate:''
   });
+
+  let dateModalClose =useCallback((e)=>{
+    if(!e.target.closest('.DayPicker_1') ){
+      p.dispatch({type:'modalOff'})
+      setTimeout(()=>{
+        window.removeEventListener('click', dateModalClose)
+      })
+    }
+  },[])
   
   useEffect(()=>{
-    p.dispatch({type:'modalOn'})
+    // p.dispatch({type:'modalOn'})
   },[])
   
 
@@ -42,10 +52,10 @@ function MileStoneView(p){
           
           completeTaskCnt={1}
           taskCnt={2}
-          dispatch={p.dispatch}
           milestone_startdate={''}
           milestone_duedate={''}
           isView={true}
+          dateModalClose={dateModalClose}
         />
         
         

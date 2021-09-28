@@ -105,20 +105,19 @@ function MileStone(p){
   ]
 
   useEffect(()=>{
-    // p.dispatch({type:'loadingOn'})
-    // axios.get(host+'/ajax/myMileStone')
-    // .then(r=>{
-    //   console.log(r)
-    //   listCng(r.data);
-    //   p.dispatch({type:'loadingOff'})
-
-    // })
-    // .catch(e=>{
-    //   console.log(e)
-    //   p.dispatch({type:'loadingOff'})
-    // })
+    p.dispatch({type:'loadingOn'})
+    axios.get(host+'/ajax/'+p.prjSeq+'/milestonelist')
+    .then(r=>{
+      console.log(r.data)
+      listCng(r.data);
+      p.dispatch({type:'loadingOff'})
+    })
+    .catch(e=>{
+      console.log(e)
+      p.dispatch({type:'loadingOff'})
+    })
   
-    listCng(listSample)
+    // listCng(listSample)
   },[])
 
   return(
@@ -155,6 +154,7 @@ function MileStone(p){
         dateModalClose={dateModalClose}
         alert={alert}
         alertCng={alertCng}
+        listCng={listCng}
       />
 
       <div className="stoneListWrap">
@@ -169,11 +169,9 @@ function MileStone(p){
                     milestone_seq={row.milestone_seq}
                     milestone_title={row.milestone_title}
                     milestone_content={row.milestone_content}
-                    color={seqColorTrans(2)} 
-                    
+                    color={seqColorTrans(row.milestone_seq)} 
                     completeTaskCnt={1}
                     taskCnt={2}
-                    dispatch={p.dispatch}
                     milestone_startdate={row.milestone_startdate}
                     milestone_duedate={row.milestone_duedate}
                   />
@@ -182,8 +180,12 @@ function MileStone(p){
             })
           :null
         }
-
       </div>
+      {
+        // list
+        // ?
+        //   list.find
+      }
 
     </div>
   )
@@ -264,10 +266,21 @@ function MileStoneCreateModal(p) {
               console.log(r)
               p.onHide();
 
-              //목록새로고침 넣어야함
+              //목록새로고침
+              axios.get(host+'/ajax/'+p.prjSeq+'/milestonelist')
+              .then(r=>{
+                console.log(r.data)
+                p.listCng(r.data);
+                p.dispatch({type:'loadingOff'})
+              })
+              .catch(e=>{
+                console.log(e)
+                p.dispatch({type:'loadingOff'})
+              })
             })
             .catch(e=>{
               console.log(e)
+              p.onHide();
               p.dispatch({type:'loadingOff'})
             })
           } else {

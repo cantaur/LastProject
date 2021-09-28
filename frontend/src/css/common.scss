@@ -1277,7 +1277,7 @@ body{
               outline: none;
               font-weight: bold;
               padding:4px 8px;
-              width: 500px;
+              width: 300px;
               display: block;
             }
           }
@@ -1319,7 +1319,7 @@ body{
             border:0;
             outline: none;
             padding:4px 8px;
-            width: 500px;
+            width: 300px;
             display: block;
           }
         }
@@ -1386,6 +1386,9 @@ body{
             z-index: 1;
             .App{
               transform-origin: 100% 0%;
+            }
+            .CalendarMonth_table{
+              margin-top:6px;
             }
           }
         }
