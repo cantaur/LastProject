@@ -11,6 +11,7 @@ import java.util.List;
 public interface MemberMapper {
     List<MemberDTO> selectAll();
     long findUserNo(String mEmail);
+    String chkUser(String mEmail);
 
 
 

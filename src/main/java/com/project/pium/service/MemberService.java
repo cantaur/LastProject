@@ -6,6 +6,7 @@ import java.util.List;
 public interface MemberService {
     List<MemberDTO> selectAll();
     long findUserNo(String mEmail);
+    String chkUser(String mEmail);
 
 
 

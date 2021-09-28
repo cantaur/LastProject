@@ -141,10 +141,9 @@ public class ProjectmemberController {
         long projSeq = Long.parseLong(temp);
         String email = String.valueOf(param.get("member_email"));
         log.info("projSeq : "+projSeq+", email : "+email);
-        long memSeq = memberService.findUserNo(email);
-        if(memSeq != 0L){
-            //이미 유저인 경우에는 메일로 초대장을 발송한다
-            //해당 프로젝트에 이미 중복된 회원이 있을 경우 duplicated을 반환한다
+        String flag = memberService.chkUser(email);
+        if(flag!=null){
+            long memSeq = memberService.findUserNo(email);
             String msg= projectmemberService.insertMember(projSeq,memSeq);
             if(msg=="success"){
                 return "success";

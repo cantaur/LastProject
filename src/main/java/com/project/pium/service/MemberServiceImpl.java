@@ -23,6 +23,12 @@ public class MemberServiceImpl implements MemberService {
         return memberMapper.findUserNo(mEmail);
     }
 
+    @Override
+    public String chkUser(String mEmail) {
+        String flag= memberMapper.chkUser(mEmail);
+        return flag;
+    }
+
 
 
 

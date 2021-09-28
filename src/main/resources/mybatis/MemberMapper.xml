@@ -12,6 +12,11 @@
         SELECT member_seq FROM member WHERE member_email = #{member_email}
     </select>
 
+    <select id="chkUser" resultType="String" parameterType="String">
+        SELECT member_seq FROM member WHERE member_email = #{member_email}
+    </select>
+
+
 
 
 
