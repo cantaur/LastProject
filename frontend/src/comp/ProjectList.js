@@ -36,7 +36,7 @@ function ProjectList(p){
     const {value, name} = e.target;
     prjInfoCng({
       ...prjInfo,
-      [name]: value
+      [name]: value.trim()
     })
   }
 
@@ -70,7 +70,6 @@ function ProjectList(p){
 
   //수정일때 모달 조작
   const prjUpdateFn = (type, title, content, startDate, dueDate, seq) => {
-    p.dispatch({type:'login', email:'test@gmail.com', seq:4})
     if(type == 0){
       prjInfoCng({
         project_seq:seq,
