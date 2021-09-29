@@ -25,9 +25,16 @@ const pColor = {
 color: '#038D7F',
 }
 
-function Test2(p){
-    const [modalShow, setModalShow] = useState(false);
 
+function Test2(p){
+    const calendarInfo = useState({
+        calendar_seq:'',
+        calendar_title:'',
+        calendar_content:'',
+        calendar_startdate:'',
+        calendar_date:''
+    });
+    const {calendar_title, calendar_content, calendar_startdate, calendar_date} = calendarInfo;
     const events = [
         {
             id: 1,
@@ -60,6 +67,7 @@ function Test2(p){
 
 
     ]
+    const [modalShow, setModalShow] = useState(false);
   return(
     <div className="viewOutWrap">
         <CreateDateModal
@@ -73,7 +81,7 @@ function Test2(p){
             plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin, bootstrapPlugin ]}
             initialView="dayGridMonth" //초기 달력모양 설정값
             eventContent= {renderEventContent } // 이벤트 내용
-            dateClick={()=>setModalShow(true)} // 데이트를 클릭 시 이벤트 발생o
+            dateClick={()=>setModalShow(true)} // 데이트를 클릭 시 이벤트 발생 o
             eventClick={content}
             weekends={true} //주말 보이게하려면 = true
             headerToolbar={{        //캘린더 헤더툴바 내용
@@ -138,11 +146,14 @@ function Test2(p){
 
                 <Form.Group className="form-floating">
                     <p className="schedule-div">
-                    <i className="far fa-calendar-check"></i> 스케줄  <SelectDate type="text" />
+                        <i className="far fa-calendar-check"></i> 스케줄  <SelectDate/>
                     </p>
                 </Form.Group>
             </Modal.Body>
             <Modal.Footer>
+                <Button variant={"outline-primary"} onClick={()=>setModalShow(false)}>
+                    확인
+                </Button>
                 <Button variant={"secondary"} onClick={()=>setModalShow(false)}>
                     닫기
                 </Button>
@@ -160,12 +171,12 @@ function Test2(p){
         )
     }
 
-    function SelectDate(){ //날짜선택창
+    function SelectDate(p){ //날짜선택창
         const [startDate, setStartDate] = useState(null);
         const [endDate, setEndDate] = useState(null);
         registerLocale("ko", ko);
         return (
-            <>
+            <div>
             <DatePicker
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}
@@ -173,12 +184,11 @@ function Test2(p){
                 showTimeInput
                 startDate={startDate}
                 endDate={endDate}
-                isClearable={true} //날짜 선택 시 x 버튼 생성
-                dateFormat="yyyy MM d h:mm aa"
-                placeholderText="스케줄 시작일"
+                isClearable={startDate==''? false:true} //날짜 선택 시 x(초기화) 버튼 생성
+                dateFormat="yyyy년 MM월 dd일 h:mm aa"
+                placeholderText="시작일"
                 selectsStart
                 className="startDate-input"
-                monthNamesShort={'1월, 2월, 3월, 4월,5월, 6월, 7월, 8월, 9월, 10월, 11월, 12월'}
                 locale="ko"
             />
             <DatePicker
@@ -188,15 +198,15 @@ function Test2(p){
                 showTimeInput
                 startDate={startDate}
                 endDate={endDate}
-                isClearable={false} //날짜 선택 시 x 버튼 생성
-                dateFormat="yyyy MM d h:mm aa"
-                placeholderText="스케줄 종료일"
+                isClearable={endDate==""? false:true} //날짜 선택 시 x(초기화) 버튼 생성
+                dateFormat="yyyy년 MM월 dd일 h:mm aa"
+                placeholderText="종료일"
                 selectsEnd
-                minDate={startDate}
+                minDate={startDate} //과거 날짜는 선택 불가
                 className="endDate-input"
                 locale="ko"
             />
-            </>
+            </div>
         );
     }
 }
