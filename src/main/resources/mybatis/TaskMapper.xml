@@ -25,67 +25,50 @@
         SELECT COUNT(task_status) FROM task WHERE milestone_seq = #{milestone_seq} AND task_status = 1
     </select>
 
+<!-- 해당 마일스톤에서 생성된 전체 업무리스트 -->
+    <select id="taskListByMile" parameterType="long" resultType="TaskDTO">
+        SELECT * FROM task WHERE milestone_seq = #{milestone_seq}
+    </select>
 
-
-
-
-
-
-
-    <!--task_member에 추가하기-->
+<!-- 업무를 클릭하였을 때 업무 상세보기 -->
+    <select id="showTaskByTaskseq" parameterType="long" resultType="TaskDTO">
+        SELECT * FROM task WHERE task_seq = #{task_seq}
+    </select>
+<!--title update -->
+    <update id="updateTitle" parameterType="TaskDTO">
+        UPDATE task SET task_title=#{task_title} WHERE task_seq=#{task_seq}
+    </update>
+<!--content update -->
+    <update id="updateContent" parameterType="TaskDTO">
+        UPDATE task SET task_content=#{task_content} WHERE task_seq=#{task_seq}
+    </update>
+<!--마일스톤 변경하기-->
+    <update id="updateMilestone" parameterType="TaskDTO">
+        UPDATE task Set milestone_seq=#{milestone_seq} Where task_seq=#{task_seq}
+    </update>
+<!--업무상태 마감으로 변경-->
+    <update id="updateStatusFinish" parameterType="long">
+        UPDATE task Set task_status='1' Where task_seq=#{task_seq}
+    </update>
+<!-- 업무상태 다시 활성화 시키기 -->
+    <update id="updateStatusDefault" parameterType="long">
+        UPDATE task Set task_status='0' Where task_seq=#{task_seq}
+    </update>
+<!-- 업무상태 종료로 변경 -->
+    <update id="updateIsdelete" parameterType="long">
+        UPDATE task SET task_isdelete='1' WHERE task_seq=#{task_seq}
+    </update>
+<!-- task_member에 추가하기 -->
     <insert id="insertTaskMember" parameterType="TaskmemberDTO">
         insert into task_member(task_seq, projmember_seq) values(#{task_seq}, #{projmember_seq})
     </insert>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--전체-->
-    <select id="selectAll" resultType="TaskDTO">
-        select * from task
-    </select>
-    <!--마일스톤시퀀스에 따른 필터링-->
-    <select id="selectByMilestone" resultType="TaskDTO" parameterType="long">
-        select * from task where milestone_seq=#{seq}
-    </select>
-    <!--진행중 임무, 종료된 임무 필터링-->
-    <select id="selectByStatus" resultType="TaskDTO" parameterType="String">
-        select * from task where task_status=#{status}
-    </select>
-    <!--중요도에 따른 필터링-->
-    <select id="selectByPriority" resultType="TaskDTO" parameterType="String">
-        select * from task where priority_code=#{priority}
-    </select>
-
-
-
-    <!--업무 isdelete변경-->
-    <update id="delete" parameterType="long">
-         <!--delete from task where task_seq=#{seq}-->
-        update task set task_isdelete="1" where task_seq=#{seq}
+<!-- 업무 중요도 셋팅하기 -->
+    <update id="updatePriority" parameterType="TaskDTO">
+        UPDATE task SET priority_code=#{priority_code} WHERE task_seq=#{task_seq}
     </update>
-    <!--status 수정-->
-    <update id="updateForStatus" parameterType="long">
-        update task set task_status="1" where task_seq=#{seq}
+<!-- 날짜 업데이트 -->
+    <update id="updateDate" parameterType="TaskDTO">
+        UPDATE task SET task_startdate=#{task_startdate}, task_duedate=#{task_duedate} where task_seq=#{task_seq}
     </update>
-    <update id="updateForStatusZero" parameterType="long">
-        update task set task_status="0" where task_seq=#{seq}
-    </update>
-    <!--업무 수정(status와 isdelete는 포함되어있지 않은 상태)-->
-    <update id="updateAll" parameterType="TaskDTO">
-        update task set task_title=#{task_title}, task_content=#{task_content}, task_startdate=#{task_startdate}, task_duedate=#{task_duedate}, milestone_seq=#{milestone_seq}, priority_code=#{priority_code}, label_seq=#{label_seq} where task_seq=#{task_seq}
-    </update>
+
 </mapper>

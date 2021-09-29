@@ -1,6 +1,7 @@
 package com.project.pium.controller;
 
 import com.project.pium.domain.TaskDTO;
+import com.project.pium.domain.TaskmemberDTO;
 import com.project.pium.service.MemberService;
 import com.project.pium.service.TaskService;
 import lombok.AllArgsConstructor;
@@ -41,107 +42,49 @@ public class TaskController {
         return taskService.taskList(projSeq);
     }
     
-    //해당 마일스톤에서 생성된 전체 업무리스트
-    
-    //업무를 클릭하였을때 나오는 업무 상세보기
-    
-    //업무에 멤버 배정
+    //해당 마일스톤에서 생성된 전체 업무리스트(검증X)
+    @GetMapping("/ajax/task/{mileSeq}")
+    public List<TaskDTO> taskListByMile(@PathVariable long mileSeq){return taskService.taskListByMile(mileSeq);}
+
+    //업무를 클릭하였을때 나오는 업무 상세보기(검증X)
+    @GetMapping("")//임시이름
+    public TaskDTO showTaskByTaskseq(@PathVariable long taskSeq){return taskService.showTaskByTaskseq(taskSeq);}
 
     //title update
-    
+    @PostMapping("/ajax/updateTaskTitle")
+    public void updateTitle(@RequestBody TaskDTO task){taskService.updateTitle(task);}
+
     //content update
-    
-    //날짜 업데이트
-    
-    //업무에 중요도 셋팅하기
-    
+    @PostMapping("/ajax/updateTaskCont")
+    public void updateContent(@RequestBody TaskDTO task){taskService.updateContent(task);}
+
     //마일스톤 변경하기
-    
+    @PostMapping("/ajax/changeMile")
+    public void updateMilestone(@RequestBody TaskDTO task){taskService.updateMilestone(task);}
+
     //업무 상태 마감으로 변경
-    
+    @PostMapping("/ajax/closeTask")
+    public void updateStatusFinish(@RequestParam long taskSeq){taskService.updateStatusFinish(taskSeq);}
+
     //업무 다시 활성화 시키기
-    
+    @PostMapping("/ajax/openTask")
+    public void updateStatusDefault(@RequestParam long taskSeq){taskService.updateStatusDefault(taskSeq);}
+
     //업무 삭제상태로 변경
+    @PostMapping("/ajax/deleteTask")
+    public void updateIsdelete(@RequestParam long taskSeq){taskService.updateIsdelete(taskSeq);}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @GetMapping("select") //모든업무 OK
-    public List<TaskDTO> selectAll(){
-        List<TaskDTO> list = taskService.selectAllS();
-        return list;
-    }//http://127.0.0.1:8000/task/select
-
-    @GetMapping("select/{seq}") //마일스톤 필터링 OK
-    public List<TaskDTO> selectByMilestone(@PathVariable long seq){
-        List<TaskDTO> list = taskService.selectByMilestoneS(seq);
-        return list;
-    }//http://127.0.0.1:8000/task/select/1
-
-    @GetMapping(value="select", params = {"status"}) //상태 필터링 OK
-    public List<TaskDTO> selectByStatus(@RequestParam("status") String status){
-        List<TaskDTO> list = taskService.selectByStatusS(status);
-        return list;
-    }//http://127.0.0.1:8000/task/select?status=0
-
-    @GetMapping(value="select", params = {"priority"}) //중요도 필터링 OK
-    public List<TaskDTO> selectByPriority(@RequestParam("priority") String priority){
-        List<TaskDTO> list = taskService.selectByPriorityS(priority);
-        return list;
-    }//http://127.0.0.1:8000/task/select?priority=40
-
-    @PatchMapping("delete/{seq}") //http://127.0.0.1:8000/task/delete/10
-    public void delete(@PathVariable long seq) {
-        taskService.deleteS(seq);
-    }//OK
-    @PatchMapping("update/{seq}") //http://127.0.0.1:8000/task/update/11
-    public void updateForStatus(@PathVariable long seq) {
-        taskService.updateForStatusS(seq);
-    }//1로 만듦
-//    @PatchMapping("update/{seq}") //http://127.0.0.1:8000/task/update/11
-//    public void updateForStatusZero(@PathVariable long seq) {
-//        service.updateForStatusZeroS(seq);
-//    }//0으로 만듦
-    @PatchMapping("updateAll") //http://127.0.0.1:8000/task/updateAll/1
-    public void updateAll(@RequestBody TaskDTO task) {
-        taskService.updateAllS(task);
+    //업무에 멤버 배정
+    @PostMapping("/ajax/addMember")
+    public void createTaskmember(@RequestBody TaskmemberDTO taskmember){
+        log.info("#TaskController createTaskmember() : "+taskmember);
+        taskService.insertTaskMember(taskmember);
     }
-//    {"task_seq":"1",
-//            "task_title":"제목수정",
-//            "task_content":"내용수정",
-//            "milestone_seq":1,
-//            "label_seq":1
-//    }
-//제약조건문제로 milestoneSeq, labelSeq 값이 있어야만 함...
+    //업무에 중요도 셋팅하기
+    @PostMapping("/ajax/updatePriority")
+    public void updatePriority(@RequestBody TaskDTO task){taskService.updatePriority(task);}
+
+    //날짜 업데이트
+    @PostMapping("/ajax/updateTaskDate")
+    public void updateDate(@RequestBody TaskDTO task){taskService.updateDate(task);}
 }
