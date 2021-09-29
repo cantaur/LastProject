@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react"
 import {pub, colors} from './Helper.js'
-import DatePicker from './DatePicker.js'
 import HeadSide from './HeadSide.js'
 import { Link, useParams, withRouter, useHistory } from "react-router-dom";
 import {CSSTransition} from 'react-transition-group';
@@ -14,7 +13,9 @@ import bootstrapPlugin from '@fullcalendar/bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import {Modal, Button, Form, FloatingLabel} from 'react-bootstrap';
-
+import DatePicker, { registerLocale } from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import ko from 'date-fns/locale/ko';
 
 const pColorB = {
   backgroundColor: '#038D7F',
@@ -25,9 +26,6 @@ color: '#038D7F',
 }
 
 function Test2(p){
-    const eventColor = {
-        color: '#038D7F1F'
-    }
     const [modalShow, setModalShow] = useState(false);
 
     const events = [
@@ -64,7 +62,10 @@ function Test2(p){
     ]
   return(
     <div className="viewOutWrap">
-        <CreateDateModal modalShow={modalShow} setModalShow={setModalShow} />
+        <CreateDateModal
+            modalShow={modalShow}
+            setModalShow={setModalShow}
+        />
       <HeadSide/>
       <div style={{padding:"80px"}}>
 
@@ -88,7 +89,7 @@ function Test2(p){
             dayMaxEvents={2}
             locale='ko' //한국어로 설정
             events={events} //이벤트 객체 설정
-            eventColor='eventColor'//이벤트 색상
+            eventColor='#038D7F'//이벤트 색상
         />
 
       </div>
@@ -104,6 +105,7 @@ function Test2(p){
 
        )
     }
+
     function CreateDateModal(p){
         return(
             <Modal
@@ -125,53 +127,29 @@ function Test2(p){
                         controlId="floatingInput"
                         label="일정 제목"
                     >
-                        <Form.Control type="text" placeholder="일정 제목" name="project_title" value={p.calendar_title} spellCheck="false" onChange={p.prjInfoChange}/>
+                        <Form.Control type="text" placeholder="일정 제목" name="project_title" value={p.calendar_title} spellCheck="false" />
                     </FloatingLabel>
                 </Form.Group>
-                <Form.Group className=" piumInput" controlId="floatingTextarea">
+                <Form.Group className="piumInput" controlId="floatingTextarea">
                     <FloatingLabel controlId="floatingTextarea" label="설명">
-                        <Form.Control type="textarea" placeholder="설명" name="project_content" value={p.project_content} spellCheck="false" onChange={p.prjInfoChange}/>
+                        <Form.Control type="textarea" placeholder="설명" name="project_content" value={p.calendar_content} spellCheck="false" />
                     </FloatingLabel>
                 </Form.Group>
 
-                <div className="datePickerWrap">
-                    <DatePicker
-                        pickerStartDate={p.project_startdate}
-                        pickerEndDate={p.project_duedate}
-                        pickerDateCng={p.prjInfoCng}
-                        pickerDate={p.prjInfo}
-                        pickerStartKey={'project_startdate'}
-                        pickerEndKey={'project_duedate'}
-                    />
-                    <p className="dateBtn" onClick={
-                        ()=>{
-                            p.datePickerModalControll({type:'modalOn'})
-                            setTimeout(()=>{
-                                window.addEventListener('click', p.dateModalClose)
-                            })
-                        }
-                    }>
-                        <i class="far fa-calendar-check"></i> 일정선택
+                <Form.Group className="form-floating">
+                    <p className="schedule-div">
+                    <i className="far fa-calendar-check"></i> 스케줄  <SelectDate type="text" />
                     </p>
-                    <p className="dateInfo">
-                        {p.project_startdate?(p.project_startdate + " ~ "):''}
-
-                        {p.project_duedate?p.project_duedate:''}
-
-                    </p>
-                </div>
+                </Form.Group>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant={"secondary"} onClick={()=>setModalShow(false)}>
                     닫기
                 </Button>
-                        
+
             </Modal.Footer>
             </Modal>
         )
-    }
-    function handleDateClick (arg){
-        alert("선택한 날짜는 "+ arg.dateStr + " 입니다.")
     }
     function renderEventContent(eventInfo) {
         return (
@@ -180,6 +158,46 @@ function Test2(p){
                 <i>{eventInfo.event.title}</i>
             </div>
         )
+    }
+
+    function SelectDate(){ //날짜선택창
+        const [startDate, setStartDate] = useState(null);
+        const [endDate, setEndDate] = useState(null);
+        registerLocale("ko", ko);
+        return (
+            <>
+            <DatePicker
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+                timeInputLabel="시간 :"
+                showTimeInput
+                startDate={startDate}
+                endDate={endDate}
+                isClearable={true} //날짜 선택 시 x 버튼 생성
+                dateFormat="yyyy MM d h:mm aa"
+                placeholderText="스케줄 시작일"
+                selectsStart
+                className="startDate-input"
+                monthNamesShort={'1월, 2월, 3월, 4월,5월, 6월, 7월, 8월, 9월, 10월, 11월, 12월'}
+                locale="ko"
+            />
+            <DatePicker
+                selected={endDate}
+                onChange={(date) => setEndDate(date)}
+                timeInputLabel="시간 :"
+                showTimeInput
+                startDate={startDate}
+                endDate={endDate}
+                isClearable={false} //날짜 선택 시 x 버튼 생성
+                dateFormat="yyyy MM d h:mm aa"
+                placeholderText="스케줄 종료일"
+                selectsEnd
+                minDate={startDate}
+                className="endDate-input"
+                locale="ko"
+            />
+            </>
+        );
     }
 }
 
