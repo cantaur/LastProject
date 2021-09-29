@@ -702,6 +702,7 @@ body{
 
 
 //view (headside)
+
 .searchBox{
   .modal-header{
     padding:0px;
@@ -761,12 +762,165 @@ body{
     }
   }
 }
+.profileModalWrap{
+  &.on{
+    .profileModalCon{
+      margin-left: -140px;
+      &:first-child{
+        opacity: 0;
+      }
+
+    }
+  }
+  .modal-dialog{
+    width: 280px;
+    .modal-content{
+      background-color: #fff;
+      height: 290px;
+      border:0;
+      display: flex;
+      overflow: hidden;
+      flex-wrap: nowrap;
+      flex-direction:unset;
+      
+      .profileModalCon{
+        width: 100%;
+        flex-shrink: 0;
+        transition: .3s ease-in-out;
+        padding:20px;
+        position: relative;
+        overflow: hidden;
+        background-color: #fff;
+        &:nth-child(2){
+          z-index: 2;
+          display: flex;
+          align-content: flex-start;
+          justify-content: center;
+          flex-wrap: wrap;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+          .profileSetTitle{
+            width: 100%;
+            flex-shrink: 0;
+            font-weight: bold;
+            text-align: left;
+            text-align: center;
+            margin-bottom:16px;
+            b{
+              font-size: 1.2rem;
+              margin-left: -10px;
+              display: inline-block;
+            }
+          }
+          .piumInput{
+            width: 220px;
+            margin-top:0px;
+          }
+          .imgBtn{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 100px;
+            background-color: #fff;
+            overflow: hidden;
+            cursor: pointer;
+            border:1px solid #ccc;
+            width: 100px;
+            height: 100px;
+            margin-bottom:10px;
+            img{
+              width: 100%;
+              height: auto;
+            }
+  
+          }
+          .btnWrap{
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-top:16px;
+          }
+        }
+        
+        .btnWrap{
+          position: relative;
+          z-index: 1;
+          .cancleBtn{
+            margin-right: 4px;
+            border-radius: 5px;
+            cursor: pointer;
+            border:0;
+            padding:6px 8px;
+            color:#fff;
+            width: max-content;
+            background-color: #ccc;
+            font-size: .9rem;
+            &:hover{
+              background-color: #888;
+            }
+            i{
+              margin-left: 4px;
+            }
+          }
+          .submitBtn{
+            border-radius: 5px;
+            cursor: pointer;
+            border:0;
+            padding:6px 8px;
+            color:#fff;
+            width: max-content;
+            background-color: $c1;
+            font-size: .9rem;
+            &:hover{
+              background-color: $c1d;
+            }
+            i{
+              margin-left: 4px;
+            }
+          }
+          
+        }
+        
+        .msg{
+          margin-top:60px;
+          margin-bottom:30px;
+          position: relative;
+          z-index: 1;
+        }
+        .prjIcon{
+          width: 24px;
+          height: 24px;
+          font-weight: bold;
+          text-align: center;
+          line-height: 22px;
+          color: #fff;
+          border-radius: 5px;
+          display: inline-block;
+          margin-right: 4px;
+          font-size: .9rem;
+        }
+        img.welcomeImg{
+          width: 400px;
+          opacity: .2;
+          position: absolute;
+          top:80px;
+
+          right: -120px;
+          z-index: 0;
+        }
+      }
+    }
+  }
+  
+}
 .viewOutWrap{
   width: 100vw;
   height: 100vh;
   overflow: hidden;
   position: relative;
   z-index: 0;
+  
   .viewInnerWrap{
     position: fixed;
     left: 0px;
@@ -812,6 +966,13 @@ body{
     padding:10px;
     z-index: 1;
     align-items: center;
+    .isCompleted{
+      background-color: #f2f2f2;
+      font-size: .7rem;
+      padding:2px 4px;
+      border-radius: 4px;
+      margin-left: 4px;
+    }
     .pathWrap{
       display: flex;
       align-items: center;
