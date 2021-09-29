@@ -13,6 +13,7 @@ import NonePage from "../NonePage.js";
 
 function MileStoneView(p){
   const params = useParams();
+  const history = useHistory();
   const mileStoneSeq = params.pageSeq;
 
   //마일스톤 정보
@@ -79,14 +80,6 @@ function MileStoneView(p){
     })
   }
 
-  const mileSample = {
-    milestone_seq:2,
-    milestone_title:'안녕하세요 제목',
-    milestone_content:'설명',
-    milestone_startdate:'2020-11-11',
-    milestone_duedate:'2020-12-12'
-  }
-  
   useEffect(()=>{
     p.dispatch({type:'loadingOn'})
     axios.get(host+'/ajax/milestone/'+mileStoneSeq)
@@ -99,11 +92,7 @@ function MileStoneView(p){
       console.log(e)
       p.dispatch({type:'loadingOff'})
     })
-    // mileStoneInfoCng(mileSample)
   },[])
-  
-
-  
 
   return(
     <div className="pageContentWrap mileStoneWrap">

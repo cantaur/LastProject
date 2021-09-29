@@ -30,10 +30,9 @@ function pagePath(page){
 function HeadSide(p){
   const history = useHistory();
 
-  
-
   //검색 모달 상태
   let [searchModal, searchModalCng] = useState(false);
+  const searchInput = useRef();
 
   const pagePathNum = pagePath(p.pageInfo);
 
@@ -88,20 +87,35 @@ function HeadSide(p){
       p.dispatch({type:'loadingOff'})
     })
 
-    
-    
-
-    
     outMemberCng('');
     inviteAlertCng(false)
     inviteAlert2Cng(false)
   },[])
 
+  useEffect(()=>{
+
+    //내가 현재 프로젝트의 관리자인지 + 내 멤버정보
+    if(memberList){
+      memberList.map((r,i)=>{
+        //실제
+        // if(r.member_seq == p.loginUser.seq){ 
+
+        //프론트용
+        if(r.member_seq == 6){ 
+          if(r.projmember_type == 0){
+            p.isMasterCng(true)
+          }
+          p.myMemberInfoCng(r)
+        }
+      })
+    }
+
+  },[memberList, p.pageInfo])
+
   return(
     <>
       {/* 헤더 */}
       <div className="viewHead" style={{backgroundColor:p.prjColor+'07'}}>
-        {/* <img src={'data:image;base64,'+img}/> */}
         <div className="pathWrap">
           <Form.Select size="sm" onChange={(e)=>{
             history.push('/project/'+e.target.value+'/todo')
@@ -110,25 +124,36 @@ function HeadSide(p){
             {
               p.prjList &&
                 p.prjList.map((r, i)=>{
-                  if(r.isdelete != 0){
+                  if(r.project_isdelete != '1'){
                     return(
-                      <option value={r.project_seq}>{r.project_title}</option>
+                      <option value={r.project_seq} selected={r.project_seq==p.prjSeq?true:false}>
+                        {r.project_title}
+                      </option>
                     )
                   }
 
                 })
             }
           </Form.Select>
+          {
+            p.prjInfo.project_status == '1' &&
+              <p className="isCompleted">완료된 프로젝트</p>
+          }
         </div>
         <div className="rightWrap">
           <i class="fas fa-search searchBtn" onClick={()=>{
             searchModalCng(true)
+            setTimeout(()=>{
+              searchInput.current.focus()
+
+            })
+
           }}></i>
 
           <Modal className="searchBox" show={searchModal} onHide={()=>{searchModalCng(false)}}>
             <Modal.Header>
               <i class="fas fa-search" style={{color:p.prjColor}}></i>
-              <Form.Control type="text" placeholder="검색어를 입력해주세요." className="searchInput"/>
+              <Form.Control type="text" placeholder="검색어를 입력해주세요." className="searchInput" ref={searchInput}/>
             </Modal.Header>
             <Modal.Body>
               <div className="result">
@@ -163,7 +188,7 @@ function HeadSide(p){
         <div className="prjIcon tipRightBox" style={{backgroundColor:p.prjColor}} onClick={()=>{
           history.push('/project')
         }}>
-          프
+          {p.prjInfo.project_title.trim().substring(0,1)}
           <p className="tipRight r35">프로젝트 목록으로</p>
         </div>
 
@@ -424,7 +449,8 @@ function HeadSide(p){
 function transReducer(state){
   return {
     datePickerModal : state.datePickerModal,
-    pageInfo : state.pageInfo
+    pageInfo : state.pageInfo,
+    loginUser : state.loginUser
   }
 }
 

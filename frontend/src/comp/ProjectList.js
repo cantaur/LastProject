@@ -108,7 +108,7 @@ function ProjectList(p){
 
 
 
-  //프론트 작업용 샘플
+  //프론트 작업용
   let listSample = [
     {
       member_seq: 4,
@@ -447,7 +447,7 @@ function ProjectCard(p){
         ?<div className="date"><i class="far fa-clock"></i> {p.startDate} ~ {p.dueDate}</div>
         :null
       }
-      <div className={'icon '} style={{backgroundColor:p.color}}>{p.title.substring(0,1)}</div>
+      <div className={'icon '} style={{backgroundColor:p.color}}>{p.title.trim().substring(0,1)}</div>
     </div>
   )
 }

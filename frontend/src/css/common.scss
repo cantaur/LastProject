@@ -833,6 +833,26 @@ body{
               width: 100%;
               height: auto;
             }
+            &:hover{
+              .imgBtnBack{
+                opacity: 1;
+              }
+            }
+            .imgBtnBack{
+              position: absolute;
+              border-radius: 100px;
+              width: 100px;
+              height: 100px;
+              background-color: rgba(0,0,0,.4);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              opacity: 0;
+              i{
+                font-size: 1.4rem;
+                color:#fff;
+              }
+            }
   
           }
           .btnWrap{

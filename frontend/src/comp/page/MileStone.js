@@ -79,141 +79,6 @@ function MileStone(p){
   }
 
 
-  //프론트 작업용 샘플
-  let listSample = [
-    {
-      milestone_seq : '1',
-      milestone_title : '마일스톤1 제목',
-      milestone_content : '',
-      milestone_status : 0,
-      milestone_isdelete : 0,
-      milestone_startdate : '2020-11-11',
-      milestone_duedate : '2020-12-11',
-      milestone_enddate : '',
-      project_seq: ''
-    },
-    {
-      milestone_seq : '2',
-      milestone_title : '마일스톤2 제목',
-      milestone_content : '마일스톤2 설명',
-      milestone_status : 0,
-      milestone_isdelete : 0,
-      milestone_startdate : '2020-11-11',
-      milestone_duedate : '2020-12-11',
-      milestone_enddate : '',
-      projmember_seq : '',
-      project_seq: ''
-    },
-    {
-      milestone_seq : '3',
-      milestone_title : '마일스톤3 제목',
-      milestone_content : '마일스톤3 설명',
-      milestone_status : 1,
-      milestone_isdelete : 1,
-      milestone_startdate : '',
-      milestone_startdate : '2020-11-11',
-      milestone_duedate : '2020-12-11',
-      projmember_seq : '',
-      project_seq: ''
-    },
-    {
-      milestone_seq : '4',
-      milestone_title : '마일스톤4 제목',
-      milestone_content : '마일스톤4 설명',
-      milestone_status : 1,
-      milestone_isdelete : 0,
-      milestone_startdate : '',
-      milestone_startdate : '2020-11-11',
-      milestone_duedate : '2020-12-11',
-      projmember_seq : '',
-      project_seq: ''
-    },
-    {
-      milestone_seq : '4',
-      milestone_title : '마일스톤4 제목',
-      milestone_content : '마일스톤4 설명',
-      milestone_status : 1,
-      milestone_isdelete : 0,
-      milestone_startdate : '',
-      milestone_startdate : '2020-11-11',
-      milestone_duedate : '2020-12-11',
-      projmember_seq : '',
-      project_seq: ''
-    },
-    {
-      milestone_seq : '4',
-      milestone_title : '마일스톤4 제목',
-      milestone_content : '마일스톤4 설명',
-      milestone_status : 1,
-      milestone_isdelete : 0,
-      milestone_startdate : '',
-      milestone_startdate : '2020-11-11',
-      milestone_duedate : '2020-12-11',
-      projmember_seq : '',
-      project_seq: ''
-    },
-    {
-      milestone_seq : '4',
-      milestone_title : '마일스톤4 제목',
-      milestone_content : '마일스톤4 설명',
-      milestone_status : 1,
-      milestone_isdelete : 0,
-      milestone_startdate : '',
-      milestone_startdate : '2020-11-11',
-      milestone_duedate : '2020-12-11',
-      projmember_seq : '',
-      project_seq: ''
-    },
-    {
-      milestone_seq : '4',
-      milestone_title : '마일스톤4 제목',
-      milestone_content : '마일스톤4 설명',
-      milestone_status : 1,
-      milestone_isdelete : 0,
-      milestone_startdate : '',
-      milestone_startdate : '2020-11-11',
-      milestone_duedate : '2020-12-11',
-      projmember_seq : '',
-      project_seq: ''
-    },
-    {
-      milestone_seq : '4',
-      milestone_title : '마일스톤4 제목',
-      milestone_content : '마일스톤4 설명',
-      milestone_status : 1,
-      milestone_isdelete : 0,
-      milestone_startdate : '',
-      milestone_startdate : '2020-11-11',
-      milestone_duedate : '2020-12-11',
-      projmember_seq : '',
-      project_seq: ''
-    },
-    {
-      milestone_seq : '4',
-      milestone_title : '마일스톤4 제목',
-      milestone_content : '마일스톤4 설명',
-      milestone_status : 1,
-      milestone_isdelete : 0,
-      milestone_startdate : '',
-      milestone_startdate : '2020-11-11',
-      milestone_duedate : '2020-12-11',
-      projmember_seq : '',
-      project_seq: ''
-    },
-    {
-      milestone_seq : '4',
-      milestone_title : '마일스톤4 제목',
-      milestone_content : '마일스톤4 설명',
-      milestone_status : 1,
-      milestone_isdelete : 0,
-      milestone_startdate : '',
-      milestone_startdate : '2020-11-11',
-      milestone_duedate : '2020-12-11',
-      projmember_seq : '',
-      project_seq: ''
-    },
-  ]
-
   useEffect(()=>{
     p.dispatch({type:'loadingOn'})
     axios.get(host+'/ajax/'+p.prjSeq+'/milestonelist')
@@ -227,51 +92,63 @@ function MileStone(p){
       p.dispatch({type:'loadingOff'})
     })
     // listCng(listSample)
-    
   },[])
+
 
   return(
     <div className="pageContentWrap mileStoneWrap">
       
       <div className="header">
         <p className="title">&#x1F6A9; 마일스톤</p>
-        <div className="toolTipTopBox">
-          <p className="createBtn" style={{backgroundColor:p.prjColor}} onClick={()=>{
-            createModalCng(true)
-            setTimeout(()=>{
-              titleInput.current.focus();
-            })
-          }}>+ 마일스톤 만들기</p>
-        </div>
+        {
+          p.isMaster 
+          ? 
+            p.prjInfo.project_status != "1"
+            ?
+            <>
+              <div className="toolTipTopBox">
+                <p className="createBtn" style={{backgroundColor:p.prjColor}} onClick={()=>{
+                  createModalCng(true)
+                  setTimeout(()=>{
+                    titleInput.current.focus();
+                  })
+                }}>+ 마일스톤 만들기</p>
+              </div>
+              <MileStoneCreateModal
+                show={createModal}
+                onHide={() => {
+                  createModalCng(false);
+                  p.dispatch({type:'modalOff'})
+                  window.removeEventListener('click', dateModalClose)
+                  mileStoneInfoCng({
+                    milestone_title:'',
+                    milestone_content:'',
+                    milestone_startdate:'',
+                    milestone_duedate:'',
+                    project_seq:p.prjSeq,
+                  })
+                  alertCng(false)
+                }}
+                dispatch={p.dispatch}
+                mileStoneInfo={mileStoneInfo}
+                mileStoneInfoCng={mileStoneInfoCng}
+                mileStoneInfoChange={mileStoneInfoChange}
+                dateModalClose={dateModalClose}
+                alert={alert}
+                alertCng={alertCng}
+                listCng={listCng}
+                prjSeq={p.prjSeq}
+                titleInput={titleInput}
+              />
+
+            </>
+            :null
+          :null
+        }
+        
       </div>
 
-      <MileStoneCreateModal
-        show={createModal}
-        onHide={() => {
-          createModalCng(false);
-          p.dispatch({type:'modalOff'})
-          window.removeEventListener('click', dateModalClose)
-          mileStoneInfoCng({
-            milestone_title:'',
-            milestone_content:'',
-            milestone_startdate:'',
-            milestone_duedate:'',
-            project_seq:p.prjSeq,
-          })
-          alertCng(false)
-        }}
-        dispatch={p.dispatch}
-        mileStoneInfo={mileStoneInfo}
-        mileStoneInfoCng={mileStoneInfoCng}
-        mileStoneInfoChange={mileStoneInfoChange}
-        dateModalClose={dateModalClose}
-        alert={alert}
-        alertCng={alertCng}
-        listCng={listCng}
-        prjSeq={p.prjSeq}
-        titleInput={titleInput}
-      />
-
+      
       <div className="stoneListWrap">
         {
           list
