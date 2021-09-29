@@ -40,6 +40,28 @@ public class TaskController {
     public List<TaskDTO> taskList(@PathVariable long projSeq){
         return taskService.taskList(projSeq);
     }
+    
+    //해당 마일스톤에서 생성된 전체 업무리스트
+    
+    //업무를 클릭하였을때 나오는 업무 상세보기
+    
+    //업무에 멤버 배정
+
+    //title update
+    
+    //content update
+    
+    //날짜 업데이트
+    
+    //업무에 중요도 셋팅하기
+    
+    //마일스톤 변경하기
+    
+    //업무 상태 마감으로 변경
+    
+    //업무 다시 활성화 시키기
+    
+    //업무 삭제상태로 변경
 
 
 
