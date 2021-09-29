@@ -104,7 +104,7 @@ body{
     }
     div {
       transition: .3s ease-in-out;
-  
+
     }
     .form-control{
       font-size: .8rem;
@@ -153,7 +153,7 @@ body{
     padding-top:3px;
     border-radius: 5px;
     color:#fff;
-    
+
     &:hover{
       background-color: #666;
     }
@@ -168,7 +168,7 @@ body{
     padding-top:3px;
     border-radius: 5px;
     color:#fff;
-    
+
     &:hover{
       background-color: $c1d;
     }
@@ -903,7 +903,7 @@ body{
         font-size: .7rem;
         font-weight: bold;
         background-color: #fff;
-        
+
       }
       .memberListWrap{
         height: max-content;
@@ -918,7 +918,7 @@ body{
         &::-webkit-scrollbar-thumb {
           border-radius: 3.5px;
           background-color: #888;
-    
+
           &:hover {
             background-color: #888;
           }
@@ -935,7 +935,7 @@ body{
             background-color: #fafafa;
             .memberBtnWrap{
               transform: scale(1);
-              
+
             }
           }
           &+.memberList{
@@ -994,7 +994,7 @@ body{
               &+p{
                 margin-left:4px;
               }
-              
+
             }
             .except{
               background-color:$cRed;
@@ -1007,7 +1007,7 @@ body{
           }
         }
       }
-      
+
 
       .inviteWrap {
         position: relative;
@@ -1105,7 +1105,7 @@ body{
       right: 0px;
       bottom:50px;
       width: 100%;
-      
+
       .memberIcon {
         margin-bottom:20px;
         cursor: pointer;
@@ -1225,7 +1225,7 @@ body{
     .title{
       font-size: 1.6rem;
       font-weight: bold;
-      
+
     }
     .createBtn{
       font-size: .8rem;
@@ -1239,7 +1239,7 @@ body{
       font-weight: bold;
     }
   }
-  
+
 
   .stoneListWrap{
     .noMileStoneMsg{
@@ -1286,7 +1286,7 @@ body{
       width: 100%;
       display: flex;
       position: relative;
-      
+
       &.view{
         padding: 30px 20px;
       }
@@ -1346,7 +1346,7 @@ body{
             }
           }
         }
-        
+
       }
       .subWrap{
         display: flex;
@@ -1388,7 +1388,7 @@ body{
           }
         }
       }
-    
+
       .infoWrap{
         width: 300px;
         display: flex;
@@ -1401,7 +1401,7 @@ body{
           width: 100%;
           height: 12px;
           flex-shrink: 0;
-  
+
           background-color: #ffffff80;
           border-radius: 100px;
           margin-bottom:3px;
@@ -1441,9 +1441,9 @@ body{
           }
         }
       }
-      
+
     }
-    
+
   }
 }
 
@@ -1458,4 +1458,26 @@ body{
 .fc-col-header-cell-cushion {
   color: black;
   text-decoration: none;
+}
+
+//Calendar (캘린더)
+.schedule-div{
+  width: 50%;
+  margin-top: 8px;
+}
+.startDate-input{
+  font-size: .8rem;
+  height: 0.5rem;
+  padding: 1rem .65rem;
+  transition: .3s ease-in-out;
+  margin-top: 5px;
+  width: 102%;
+}
+.endDate-input{
+  font-size: .8rem;
+  height: 1rem;
+  padding: 1rem .65rem;
+  transition: .3s ease-in-out;
+  margin-top: 5px;
+  width: 102%;
 }
