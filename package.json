@@ -1,5 +1,8 @@
 {
   "dependencies": {
-    "moment": "^2.29.1"
+    "@szhsin/react-menu": "^2.0.1",
+    "moment": "^2.29.1",
+    "react-contextmenu": "^2.14.0",
+    "rsuite": "^5.0.0"
   }
 }

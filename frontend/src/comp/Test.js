@@ -78,7 +78,7 @@ function Test(){
                                 <div className="toolTip" style={{'marginLeft': '-47.33px'}}>새 Todo 생성</div>
                             </i>
                             <MyVerticallyCenteredModal
-                                setStatus='10'//상태값 전달
+                                setStatus='10'//상태값 전달인데 왜 30으로 들어가냐..
                                 show={modalShow}
                                 onHide={() => setModalShow(false)}
                             />
@@ -240,18 +240,12 @@ function CountDone({ cntDone }){
 }
 function MyVerticallyCenteredModal(props) {
     const [tasks, setTasks] = useState([]);
-    const [tasknSeq, setTasknSeq] = useState({
-        task_title:'',
-        task_seq:''
-    });
     const [todoInfo, setTodoInfo] = useState({
-        // projmember_seq:'',
         task_seq:'1',//얘도 어케 받아오지..?
-        todo_content:'2',
-        todo_name:'3',
-        todo_status:'30'
+        todo_content:'',
+        todo_name:'',
+        todo_status:''
     });
-    const pjmem = props.setPjmem
     const status = props.setStatus;
     const list = tasks;
     const [Selected, setSelected] = useState("");
@@ -259,31 +253,28 @@ function MyVerticallyCenteredModal(props) {
     const handleSelect =(e) =>{
         setSelected(e.target.value);
     };
-
     const handleOnChange = (e) => {//입력데이터관리핸들러
         setTodoInfo({
             todo_status:status,
             todo_name: Selected,
             todo_content : e.target.value,
-            // projmember_seq: pjmem
+            //task_seq : 'something'
         })
         console.log("#입력핸들러 동작중");
         console.log("#todoInfo status: "+todoInfo.todo_status);
         console.log("#todoInfo name: "+todoInfo.todo_name);
         console.log("#todoInfo content: "+todoInfo.todo_content);
-        // console.log("#todoInfo projmember_seq: "+todoInfo.projmember_seq);
+        // console.log("#todoInfo task_seq: "+todoInfo.task_seq);
     };
 
     useEffect(()=>{
         axios
             .all([
                 axios.get(host+'/ajax/showTask'), //task_name, task_seq도 받아와야함...
-                axios.get(host+'/ajax/showTasknSeq')
             ])
             .then(
                 axios.spread((r1,r2)=>{
                     setTasks(r1.data);
-                    setTasks(r2.data);
                 })
             )
             .catch(e=>{
@@ -332,9 +323,8 @@ function MyVerticallyCenteredModal(props) {
                     props.onHide();
                 }} className="modalBtn danger">취소</Button>
                 <Button onClick={()=>{
-                    console.log("#Insert test:"+todoInfo.todo_content);//임시 값 들어감 확인
+                    console.log("#Insert test:"+todoInfo.todo_content);
                     console.log("#Insert test:"+todoInfo.todo_name);
-                    console.log("#Insert test:"+todoInfo.projmember_seq);
                     console.log("#Insert test:"+todoInfo.todo_status);
                     // axios.post(host+"/ajax/createTodo",todoInfo)
                     //     .then(r=>{
@@ -430,8 +420,6 @@ function MyVerticallyCenteredModal2(props) {
             <Modal.Footer className="modalBtnWrap">
                 <Button onClick={props.onHide} className="modalBtn danger">취소</Button>
                 <Button onClick={()=>{
-                    // console.log("#test:"+inputs.todo_content);//핸들러 test...
-                    // console.log("#test:"+inputs.todo_seq);
                     axios.post(host+"/ajax/updateTodo",inputs)
                         .then(r=>{
                             console.log(r)
