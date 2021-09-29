@@ -1,7 +1,9 @@
 package com.project.pium.service;
 
 import com.project.pium.domain.TaskDTO;
+import com.project.pium.domain.TaskmemberDTO;
 import com.project.pium.mapper.TaskMapper;
+import javafx.concurrent.Task;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
@@ -35,25 +37,35 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskDTO> selectAllS() {return taskMapper.selectAll();}
-    @Override
-    public List<TaskDTO> selectByMilestoneS(long seq) {return taskMapper.selectByMilestone(seq);}
-    @Override
-    public List<TaskDTO> selectByStatusS(String status) {
-        return taskMapper.selectByStatus(status);
-    }
-    @Override
-    public List<TaskDTO> selectByPriorityS(String priority) {
-        return taskMapper.selectByPriority(priority);
-    }
-
+    public List<TaskDTO> taskListByMile(long mileSeq){return taskMapper.taskListByMile(mileSeq);}
 
     @Override
-    public void deleteS(long seq) {taskMapper.delete(seq);}
+    public TaskDTO showTaskByTaskseq(long taskSeq){return taskMapper.showTaskByTaskseq(taskSeq);}
+
     @Override
-    public void updateForStatusS(long seq) {taskMapper.updateForStatus(seq);}
+    public void updateTitle(TaskDTO task){taskMapper.updateTitle(task);}
+
     @Override
-    public void updateForStatusZeroS(long seq) {taskMapper.updateForStatusZero(seq);}
+    public void updateContent(TaskDTO task){taskMapper.updateContent(task);}
+
     @Override
-    public void updateAllS(TaskDTO task) {taskMapper.updateAll(task);}
+    public void updateMilestone(TaskDTO task){taskMapper.updateMilestone(task);}
+
+    @Override
+    public void updateStatusFinish(long taskSeq){taskMapper.updateStatusFinish(taskSeq);}
+
+    @Override
+    public void updateStatusDefault(long taskSeq){taskMapper.updateStatusDefault(taskSeq);}
+
+    @Override
+    public void updateIsdelete(long taskSeq){taskMapper.updateIsdelete(taskSeq);}
+
+    @Override
+    public void insertTaskMember(TaskmemberDTO taskmember){taskMapper.insertTaskMember(taskmember);}
+
+    @Override
+    public void updatePriority(TaskDTO task){taskMapper.updatePriority(task);}
+
+    @Override
+    public void updateDate(TaskDTO task){taskMapper.updateDate(task);}
 }

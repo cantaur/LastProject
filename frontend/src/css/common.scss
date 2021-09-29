@@ -1623,8 +1623,9 @@ body{
 
 //Calendar (캘린더)
 .schedule-div{
-  width: 50%;
+  width: 48%;
   margin-top: 8px;
+  float: left;
 }
 .startDate-input{
   font-size: .8rem;

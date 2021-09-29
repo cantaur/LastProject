@@ -1,6 +1,7 @@
 package com.project.pium.service;
 
 import com.project.pium.domain.TaskDTO;
+import com.project.pium.domain.TaskmemberDTO;
 
 import java.util.List;
 
@@ -13,16 +14,26 @@ public interface TaskService {
     int countTask(long mileSeq);
     //해당 마일스톤에서 완료된 업무의 갯수
     int countClosedTask(long mileSeq);
-
-
-
-    List<TaskDTO> selectAllS(); //전체조회
-    List<TaskDTO> selectByMilestoneS(long seq); //마일스톤으로 조회
-    List<TaskDTO> selectByStatusS(String status); //상태로 조회
-    List<TaskDTO> selectByPriorityS(String priority); //중요도로 조회
-
-    void deleteS(long seq);
-    void updateForStatusS(long seq);
-    void updateForStatusZeroS(long seq);
-    void updateAllS(TaskDTO task);
+    //해당 마일스톤에서 생성된 전체 업무리스트
+    List<TaskDTO> taskListByMile(long mileSeq);
+    //업무를 클릭하였을 때 업무 상세보기
+    TaskDTO showTaskByTaskseq(long taskSeq);
+    //title update
+    void updateTitle(TaskDTO task);
+    //content update
+    void updateContent(TaskDTO task);
+    //마일스톤 변경하기
+    void updateMilestone(TaskDTO task);
+    //업무상태 마감으로 변경
+    void updateStatusFinish(long taskSeq);
+    //업무상태 다시 활성화 시키기
+    void updateStatusDefault(long taskSeq);
+    //업무상태 종료로 변경
+    void updateIsdelete(long taskSeq);
+    //task_member에 추가하기
+    void insertTaskMember(TaskmemberDTO taskmember);
+    //업무 중요도 셋팅하기
+    void updatePriority(TaskDTO task);
+    //날짜 업데이트
+    void updateDate(TaskDTO task);
 }
