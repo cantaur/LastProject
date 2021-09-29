@@ -82,6 +82,15 @@ public class ProjectController {
         return myProject;
     }
 
+    //로그인한 유저가 참여 중인 모든 프로젝트 리스트
+    @GetMapping ("/ajax/myprojectTest/{memberSeq}")
+    public List<ProjectDTO> myProjectTest(@PathVariable long memberSeq){
+
+        List<ProjectDTO> myProject = projectService.myProject(memberSeq);
+        log.info("#myProject"+myProject);
+        return myProject;
+    }
+
 
 
     //프로젝트 수정 버튼 눌렀을 때 수행되는 메소드
