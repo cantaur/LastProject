@@ -4,11 +4,33 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.TaskMapper">
 
-    <!--새 업무 셋팅(파일, 멤버배정 외)-->
+    <!--새 업무 셋팅-->
     <insert id="createTask" parameterType="TaskDTO">
-        insert into task(task_title, task_content, task_startdate, task_duedate, milestone_seq)
-        values(#{task_title}, #{task_content}, #{task_startdate}, #{task_duedate}, #{milestone_seq})
+        insert into task(task_title, task_content, task_startdate, task_duedate, milestone_seq,project_seq)
+        values(#{task_title}, #{task_content}, #{task_startdate}, #{task_duedate}, #{milestone_seq},#{project_seq})
     </insert>
+
+    <!--해당 프로젝트에서 생성된 업무 리스트-->
+    <select id="taskList" parameterType="long" resultType="TaskDTO">
+        SELECT * FROM task WHERE project_seq = #{project_seq}
+    </select>
+
+<!--    해당 마일스톤에서 생성된 업무 갯수-->
+    <select id="countTask" parameterType="long" resultType="int">
+        SELECT COUNT(task_seq) FROM task WHERE milestone_seq = #{milestone_seq}
+    </select>
+
+<!--    해당 마일스톤에서 완료된 업무의 갯수-->
+    <select id="countClosedTask" parameterType="long" resultType="int">
+        SELECT COUNT(task_status) FROM task WHERE milestone_seq = #{milestone_seq} AND task_status = 1
+    </select>
+
+
+
+
+
+
+
 
     <!--task_member에 추가하기-->
     <insert id="insertTaskMember" parameterType="TaskmemberDTO">

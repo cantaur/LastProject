@@ -12,30 +12,48 @@ import java.util.List;
 @AllArgsConstructor
 @Service
 public class TaskServiceImpl implements TaskService {
-    private TaskMapper mapper;
+    private TaskMapper taskMapper;
 
     @Override
-    public List<TaskDTO> selectAllS() {return mapper.selectAll();}
+    public void createTask(TaskDTO taskDTO) {
+        taskMapper.createTask(taskDTO);
+    }
+
     @Override
-    public List<TaskDTO> selectByMilestoneS(long seq) {return mapper.selectByMilestone(seq);}
+    public List<TaskDTO> taskList(long projSeq) {
+        return taskMapper.taskList(projSeq);
+    }
+
+    @Override
+    public int countTask(long mileSeq) {
+        return taskMapper.countTask(mileSeq);
+    }
+
+    @Override
+    public int countClosedTask(long mileSeq) {
+        return taskMapper.countClosedTask(mileSeq);
+    }
+
+    @Override
+    public List<TaskDTO> selectAllS() {return taskMapper.selectAll();}
+    @Override
+    public List<TaskDTO> selectByMilestoneS(long seq) {return taskMapper.selectByMilestone(seq);}
     @Override
     public List<TaskDTO> selectByStatusS(String status) {
-        return mapper.selectByStatus(status);
+        return taskMapper.selectByStatus(status);
     }
     @Override
     public List<TaskDTO> selectByPriorityS(String priority) {
-        return mapper.selectByPriority(priority);
+        return taskMapper.selectByPriority(priority);
     }
 
-    @Override
-    public void insertS(TaskDTO task) {mapper.insert(task);}
 
     @Override
-    public void deleteS(long seq) {mapper.delete(seq);}
+    public void deleteS(long seq) {taskMapper.delete(seq);}
     @Override
-    public void updateForStatusS(long seq) {mapper.updateForStatus(seq);}
+    public void updateForStatusS(long seq) {taskMapper.updateForStatus(seq);}
     @Override
-    public void updateForStatusZeroS(long seq) {mapper.updateForStatusZero(seq);}
+    public void updateForStatusZeroS(long seq) {taskMapper.updateForStatusZero(seq);}
     @Override
-    public void updateAllS(TaskDTO task) {mapper.updateAll(task);}
+    public void updateAllS(TaskDTO task) {taskMapper.updateAll(task);}
 }

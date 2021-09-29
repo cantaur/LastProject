@@ -4,6 +4,7 @@ import com.project.pium.domain.MilestoneDTO;
 import com.project.pium.service.MemberService;
 import com.project.pium.service.MilestoneService;
 import com.project.pium.service.ProjectmemberService;
+import com.project.pium.service.TaskService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ public class MilestoneController {
     private MilestoneService milestoneService;
     private MemberService memberService;
     private ProjectmemberService projectmemberService;
+    private TaskService taskService;
 
     //현재 로그인한 유저의 세션값 얻어오는 로직 모듈화
     public String currentUserName(Principal principal){
@@ -52,10 +54,19 @@ public class MilestoneController {
     
 
     //해당 프로젝트에서 생성된 전체 마일스톤 리스트 보여주기
+    //업무 갯수 뽑아오는 로직 구현중
     @GetMapping("/ajax/{projSeq}/milestonelist")
     public List<MilestoneDTO> msList(@PathVariable long projSeq){
+        MilestoneDTO milestoneDTO = null;
         List<MilestoneDTO> milestoneList = milestoneService.msListBySeq(projSeq);
         log.info("list" + milestoneList);
+        for (int i=0; i<milestoneList.size(); i++) {
+            milestoneDTO = milestoneList.get(i);
+        }
+        long mileSeq = milestoneDTO.getMilestone_seq();
+
+
+        int countTask = taskService.countTask(mileSeq);
         return milestoneList;
     }
     

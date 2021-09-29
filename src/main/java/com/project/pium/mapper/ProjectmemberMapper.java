@@ -21,6 +21,8 @@ public interface ProjectmemberMapper {
 
     //프로젝트 관리자 권한 주기
     void masterget(long projmember_seq, long project_seq);
+    //프로젝트 관리자 권한 상실
+    void excludMaster(long projmember_seq, long project_seq);
     //프로젝트 강퇴
     void projectout(long project_seq, long projmember_seq);
     //프로젝트 나가기
@@ -31,17 +33,6 @@ public interface ProjectmemberMapper {
     
     //memberSeq로 이 유저가 이 프로젝트에 포함되어 있는지를 찾는다
     List<ProjectmemberDTO> findProjMember(@Param("project_seq") long projSeq, @Param("member_seq")long memSeq);
-
-
-
-
-
-
-
-//    List<ProjectmemberDTO> selectByPmseq(long projmember_seq);//플젝멤버번호로 조회
-//    List<ProjectmemberDTO> selectByMseq(long member_seq);//멤버 번호로 조회
-//    List<ProjectmemberDTO> selectByPmname(String projmember_name);//이름으로 조회
-//    String selectByBoss(String projmember_type);// 관리자 이름 찾기
 
 
 

@@ -32,6 +32,15 @@
         where projmember_seq = #{projmember_seq} and project_seq = #{project_seq}
     </update>
 
+    <!-- 관리자 권한 상실 -->
+    <update id="excludMaster" parameterType="long">
+        update project_member
+        set projmember_type="1"
+        where projmember_seq= #{projmember_seq} and project_seq = #{project_seq}
+    </update>
+
+
+
     <!-- 프로젝트 강퇴 -->
     <delete id="projectout" parameterType="long">
         DELETE from project_member
@@ -43,6 +52,9 @@
         Delete from Project_member
         where project_seq= #{project_seq} And projmember_seq= #{projmember_seq}
     </delete>
+
+
+
 
 
 
@@ -106,10 +118,7 @@
     <update id="updateByPmTypeUp" parameterType="long">
         update project_member set projmember_type="0" where projmember_seq= #{projmember_seq}
     </update>
-    <!-- 관리자 권한 상실 -->
-    <update id="updateByPmTypeDown" parameterType="long">
-        update project_member set projmember_type="1" where projmember_seq= #{projmember_seq}
-    </update>
+
 
 
 </mapper>

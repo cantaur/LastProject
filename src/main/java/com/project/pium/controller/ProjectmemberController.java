@@ -28,9 +28,6 @@ public class ProjectmemberController {
     private FileStorageService fileStorageService;
 
 
-
-
-
     //현재 로그인한 유저의 세션값 얻어오는 로직 모듈화
     public String currentUserName(Principal principal){
         if(principal ==null){
@@ -51,13 +48,6 @@ public class ProjectmemberController {
         //1. 접속한 유저 이메일로 memberSeq 찾음
         String email= currentUserName(principal);
         long sessionSeq = memberService.findUserNo(email);
-
-        
-
-        log.info("업로드된 파일이 있는가? : "+file);
-        log.info("뭘찍냐?"+projSeq+","+name);
-        log.info("#file.getBytes()"+file.getBytes());
-
 
 
         //3. projectSeq와 memberSeq로 project_member seq 찾음
@@ -80,8 +70,6 @@ public class ProjectmemberController {
     public ResponseEntity<byte[]> findOne(@PathVariable long id) {
         ProjectmemberDTO projectmemberDTO = projectmemberService.showImage(id);
         log.info("마임타입이 뭐냐고"+projectmemberDTO.getProjmember_filetype());
-
-
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", projectmemberDTO.getProjmember_filetype());
@@ -108,7 +96,15 @@ public class ProjectmemberController {
         Long project_seq = Long.valueOf(param.get("project_seq"));
         Long projmember_seq = Long.valueOf(param.get("projmember_seq"));
         projectmemberService.mastergetS(projmember_seq, project_seq);
-    } //테스트 안됨
+    }
+
+    //관리자 권한 상실
+    @PostMapping("/ajax/masterExclude")
+    public void masterExclude(@RequestBody Map<String, Integer> param){
+        Long project_seq = Long.valueOf(param.get("project_seq"));
+        Long projmember_seq = Long.valueOf(param.get("projmember_seq"));
+        projectmemberService.excludMaster(projmember_seq, project_seq);
+    }
 
 
     //프로젝트 멤버 강퇴
@@ -126,10 +122,7 @@ public class ProjectmemberController {
         long member_seq = memberService.findUserNo(email);
         long projmember_seq = projectmemberService.findProjMemberSeq(project_seq, member_seq);
         projectmemberService.projectexitS(project_seq, projmember_seq);
-    } //테스트 안됨
-
-
-
+    }
 
 
 
@@ -142,6 +135,7 @@ public class ProjectmemberController {
         long projSeq = Long.parseLong(temp);
         String email = String.valueOf(param.get("member_email"));
         log.info("projSeq : "+projSeq+", email : "+email);
+        //이미 가입한 이메일이 있는지부터 확인
         String flag = memberService.chkUser(email);
         if(flag!=null){
             long memSeq = memberService.findUserNo(email);

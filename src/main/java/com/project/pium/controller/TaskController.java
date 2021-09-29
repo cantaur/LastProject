@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @ResponseBody
 public class TaskController {
-    private TaskService service;
+    private TaskService taskService;
     private MemberService memberService;
 
     //현재 로그인한 유저의 세션값 얻어오는 로직 모듈화
@@ -29,18 +29,23 @@ public class TaskController {
     }
 
     //새 업무 생성
-    //task 테이블에 추가하면서 task_member(task_seq,projmember_seq) 테이블에도 추가
     @PostMapping("/ajax/createTask")
-    public void createTask(@RequestBody TaskDTO taskDTO, Principal principal){
+    public void createTask(@RequestBody TaskDTO taskDTO){
         log.info("#TaskController insert() : "+taskDTO);
-        String email= currentUserName(principal);
-        long sessionSeq = memberService.findUserNo(email);
-
-
-
-
-        service.insertS(taskDTO);
+        taskService.createTask(taskDTO);
     }
+
+    //해당 프로젝트에서 생성된 모든 업무 리스트
+    @GetMapping("/ajax/{projSeq}/tasklist")
+    public List<TaskDTO> taskList(@PathVariable long projSeq){
+        return taskService.taskList(projSeq);
+    }
+
+
+
+
+
+
 
 
 
@@ -72,35 +77,35 @@ public class TaskController {
 
     @GetMapping("select") //모든업무 OK
     public List<TaskDTO> selectAll(){
-        List<TaskDTO> list = service.selectAllS();
+        List<TaskDTO> list = taskService.selectAllS();
         return list;
     }//http://127.0.0.1:8000/task/select
 
     @GetMapping("select/{seq}") //마일스톤 필터링 OK
     public List<TaskDTO> selectByMilestone(@PathVariable long seq){
-        List<TaskDTO> list = service.selectByMilestoneS(seq);
+        List<TaskDTO> list = taskService.selectByMilestoneS(seq);
         return list;
     }//http://127.0.0.1:8000/task/select/1
 
     @GetMapping(value="select", params = {"status"}) //상태 필터링 OK
     public List<TaskDTO> selectByStatus(@RequestParam("status") String status){
-        List<TaskDTO> list = service.selectByStatusS(status);
+        List<TaskDTO> list = taskService.selectByStatusS(status);
         return list;
     }//http://127.0.0.1:8000/task/select?status=0
 
     @GetMapping(value="select", params = {"priority"}) //중요도 필터링 OK
     public List<TaskDTO> selectByPriority(@RequestParam("priority") String priority){
-        List<TaskDTO> list = service.selectByPriorityS(priority);
+        List<TaskDTO> list = taskService.selectByPriorityS(priority);
         return list;
     }//http://127.0.0.1:8000/task/select?priority=40
 
     @PatchMapping("delete/{seq}") //http://127.0.0.1:8000/task/delete/10
     public void delete(@PathVariable long seq) {
-        service.deleteS(seq);
+        taskService.deleteS(seq);
     }//OK
     @PatchMapping("update/{seq}") //http://127.0.0.1:8000/task/update/11
     public void updateForStatus(@PathVariable long seq) {
-        service.updateForStatusS(seq);
+        taskService.updateForStatusS(seq);
     }//1로 만듦
 //    @PatchMapping("update/{seq}") //http://127.0.0.1:8000/task/update/11
 //    public void updateForStatusZero(@PathVariable long seq) {
@@ -108,7 +113,7 @@ public class TaskController {
 //    }//0으로 만듦
     @PatchMapping("updateAll") //http://127.0.0.1:8000/task/updateAll/1
     public void updateAll(@RequestBody TaskDTO task) {
-        service.updateAllS(task);
+        taskService.updateAllS(task);
     }
 //    {"task_seq":"1",
 //            "task_title":"제목수정",

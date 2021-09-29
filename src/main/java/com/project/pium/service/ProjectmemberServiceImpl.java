@@ -54,6 +54,12 @@ public class ProjectmemberServiceImpl implements ProjectmemberService  {
         projectmemberMapper.masterget(projmember_seq, project_seq);
     }
 
+    //프로젝트 관리자 권한 상실
+    @Override
+    public void excludMaster(long projmember_seq, long project_seq) {
+        projectmemberMapper.excludMaster(projmember_seq, project_seq);
+    }
+
     //프로젝트 강퇴
     @Override
     public void projectoutS(long project_seq, long projmember_seq) {

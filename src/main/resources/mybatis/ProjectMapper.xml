@@ -47,30 +47,30 @@
         WHERE project_seq = #{project_seq}
     </update>
 
-<!--프로젝트를 진행상태로 전환-->
-<update id="openProject" parameterType="long">
-    UPDATE project
-    SET project_status = "0"
-    WHERE project_seq = #{project_seq}
-</update>
+    <!--프로젝트를 진행상태로 전환-->
+    <update id="openProject" parameterType="long">
+        UPDATE project
+        SET project_status = "0"
+        WHERE project_seq = #{project_seq}
+    </update>
 
-<!--프로젝트 삭제상태 업데이트(isdelete=1)-->
-<update id="updateIsdelete" parameterType="ProjectDTO">
-    UPDATE project
-    SET project_isdelete = "1"
-    WHERE project_seq = #{project_seq}
-</update>
+    <!--프로젝트 삭제상태 업데이트(isdelete=1)-->
+    <update id="updateIsdelete" parameterType="ProjectDTO">
+        UPDATE project
+        SET project_isdelete = "1"
+        WHERE project_seq = #{project_seq}
+    </update>
 
 
-<!--프로젝트 전체 업데이트(enddate제외)-->
-<update id="updateProject" parameterType="ProjectDTO">
-    UPDATE project
-    SET project_title = #{project_title},
-        project_content = #{project_content},
-        project_startdate = #{project_startdate},
-        project_duedate = #{project_duedate}
-    WHERE project_seq = #{project_seq}
-</update>
+    <!--프로젝트 전체 업데이트(enddate제외)-->
+    <update id="updateProject" parameterType="ProjectDTO">
+        UPDATE project
+        SET project_title = #{project_title},
+            project_content = #{project_content},
+            project_startdate = #{project_startdate},
+            project_duedate = #{project_duedate}
+        WHERE project_seq = #{project_seq}
+    </update>
 
 <!--프로젝트에 멤버 초대-->
 <!--프로젝트 관리자 이전-->

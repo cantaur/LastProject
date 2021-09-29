@@ -16,6 +16,7 @@ public interface ProjectmemberService {
     List<ProjectmemberDTO> allProjMembers(@Param("project_seq") long projSeq);
 
     void mastergetS(long projmember_seq, long project_seq);
+    void excludMaster(long projmember_seq, long project_seq);
     void projectoutS(long project_seq, long projmember_seq);
     void projectexitS(long project_seq, long projmember_seq);
     //해당 프로젝트에 멤버 추가하기
