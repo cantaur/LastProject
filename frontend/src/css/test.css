@@ -66,12 +66,14 @@ header {
 /* table{
     width: 100%;
 }
+
 tr{
     width: 100%;
 }
+ */
 td{
     width: 100%;
-} */
+}
 select{
     width: 100%;
 }

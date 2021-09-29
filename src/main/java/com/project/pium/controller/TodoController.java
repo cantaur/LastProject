@@ -1,13 +1,12 @@
 package com.project.pium.controller;
 
-
+import com.project.pium.domain.TaskDTO;
 import com.project.pium.domain.TodoDTO;
 import com.project.pium.service.MemberService;
 import com.project.pium.service.TaskService;
 import com.project.pium.service.TodoService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
@@ -53,6 +52,13 @@ public class TodoController {
         List<String> list = service.showTaskS(seq);
         return list;
     }
+    @GetMapping("/ajax/showTasknSeq")
+    public List<TaskDTO> showTasknSeq(Principal principal){
+        String email = projcontroller.currentUserName(principal);
+        long seq = memberservice.findUserNo(email);
+        List<TaskDTO> list = service.showTaskNSeqS(seq);
+        return list;
+    }
     @GetMapping("/ajax/countTodo")
     public Long countTodo(Principal principal){
         String email = projcontroller.currentUserName(principal);
@@ -74,7 +80,7 @@ public class TodoController {
         long cnt = service.countDoneStatusS(seq);
         return cnt;
     }
-    @GetMapping("/ajax/todoData/")
+    @GetMapping("/ajax/todoData")
     public TodoDTO todoData(@RequestParam String seq){
         try {
             seq.trim();
@@ -86,28 +92,23 @@ public class TodoController {
         }
         return null;
     }
-//    @ResponseBody
-//    @GetMapping("/todo/deleteTodo")
-//    public void deleteNote(@RequestBody long param){
-//        service.deleteNoteS(param);
-//    }//405 error
-
-//    @GetMapping("ajax/showTodo")
-//    public TodoDTO showTodo(){
-//        return null;
-//    }
-//    @ResponseBody
-//    @PostMapping("/todo/createTodo")
-//    public void insertNote(@RequestBody TodoDTO todo){
-//        log.info("TodoInsert(): "+todo);
-//        service.insertNoteS(todo);
-//    }
-
-//    @PatchMapping("updateNote/{seq}")
-//    public void updateNote(@RequestBody TodoDTO todo){
-//        log.info("updateNote: " + todo);
-//        service.updateNoteS(todo);
-//    }
+    @PostMapping("/ajax/updateTodo")
+    public void updateNote(@RequestBody TodoDTO todo){
+        log.info("#updateTodo: " + todo);
+        service.updateNoteS(todo);
+    }
+    @ResponseBody
+    @PostMapping("/ajax/deleteTodo")
+    public void deleteNote(@RequestBody Map<String,Integer> param){
+        long lseq = Long.valueOf(param.get("seq"));
+        service.deleteNoteS(lseq);
+    }
+    @ResponseBody
+    @PostMapping("/ajax/createTodo")
+    public void insertNote(@RequestBody TodoDTO todo){
+        log.info("TodoInsert(): "+todo);
+        service.insertNoteS(todo);
+    }
 //    @PatchMapping("updateStatus/{seq}")
 //    public void updateNoteStatus(@RequestBody TodoDTO todo){
 //        log.info("updateStatus: "+todo);

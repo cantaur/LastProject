@@ -31,6 +31,9 @@
     <select id="showTask" resultType="String" parameterType="long">
         SELECT distinct task_content FROM todo NATURAL JOIN task WHERE projmember_seq=#{seq};
     </select>
+    <select id="showTaskNSeq" resultType="TaskDTO" parameterType="long">
+        SELECT distinct task_seq, task_content FROM todo NATURAL JOIN task WHERE projmember_seq=#{seq};
+    </select>
     <!--노트 생성 초기위치 to-do-->
     <insert id="insertNote" parameterType="TodoDTO">
         insert into todo(
@@ -45,7 +48,7 @@
             #{todo_name},
             #{todo_content},
             NOW(),
-            '20',
+            #{todo_status},
             #{task_seq},
             #{projmember_seq}
         )

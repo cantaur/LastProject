@@ -21,6 +21,7 @@ public interface TodoMapper {
     Long countDoneStatus(long seq);
     /*선택지*/
     List<String> showTask(long seq);
+    List<TaskDTO> showTaskNSeq(long seq);
 
     List<TodoDTO>selectNoteToDo(); // 메모 상태 10 조회
     List<TodoDTO>selectNoteProg(); // 메모 상태 20 조회
