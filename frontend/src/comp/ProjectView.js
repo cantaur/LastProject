@@ -75,7 +75,7 @@ function ProjectList(p){
     }
 
     // 프로젝트 정보 가져옴 (프론트용 샘플, myproject로 보내면댐)
-    axios.get(host+'/ajax/myprojectTest/6')
+    axios.get(host+'/ajax/myproject')
     .then(r=>{
       prjListCng(r.data);
       p.dispatch({type:'loadingOff'})
@@ -84,7 +84,7 @@ function ProjectList(p){
       console.log(e)
       p.dispatch({type:'loadingOff'})
     })
-    
+
   },[])
 
   useEffect(()=>{
