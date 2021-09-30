@@ -1,11 +1,15 @@
 package com.project.pium.controller;
 
 import com.project.pium.domain.CalendarDTO;
+import com.project.pium.domain.ProjectDTO;
 import com.project.pium.service.CalendarService;
+import com.project.pium.service.MemberService;
+import com.project.pium.service.ProjectService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Log
@@ -15,6 +19,53 @@ import java.util.List;
 public class CalendarController {
 
     private CalendarService calendarService;
+    private ProjectService projectService;
+    private MemberService memberService;
+
+    //현재 로그인한 유저의 세션값 얻어오는 로직 모듈화
+    public String currentUserName(Principal principal){
+        if(principal ==null){
+            return "false";
+        }else{
+            String sessionEmail = principal.getName();
+            return sessionEmail;
+        }
+    }
+
+    //새 달력 MEMO 만들기
+    @PostMapping("/ajax/test5")
+    public List<CalendarDTO> insertCalMemo (@RequestBody CalendarDTO calendarDTO, Principal principal) {
+        String email = currentUserName(principal);
+        long sessionSeq = memberService.findUserNo(email);
+        calendarDTO.setCalendar_seq(sessionSeq);
+
+        List<CalendarDTO> msg = calendarService.insertCalMemo(calendarDTO);
+        log.info("#: " + msg);
+        return msg;
+
+    }
+
+
+    // 새 달력 MEMO 수정하기
+
+
+    // 새 달력 MEMO 삭제하기
+
+    // 로그인한 유저가 참여 중인 모든 프로젝트 리스트 찍기
+    @GetMapping("/ajax/LoginProjectAll")
+    public List<ProjectDTO> myProject(Principal principal){
+        String  email = currentUserName(principal);
+        long sessionSeq=memberService.findUserNo(email);
+        List<ProjectDTO> myProject = projectService.myProject(sessionSeq);
+        log.info("#myProject"+myProject);
+        return myProject;
+    }
+
+    //http://127.0.0.1:8000/project/ajax/LoginProjectAll
+
+   // 로그인한 유저가 선택한 프로젝트 리스트 찍기
+    @GetMapping("/ajax/")
+
     //달력 입력
     @PostMapping("createCal")
     public void createCal(@RequestBody CalendarDTO calendarDTO) {
@@ -26,14 +77,7 @@ public class CalendarController {
      at Talend API Tester
      method : post
      http://localhost:8000/calendar/createCal
-     {
-    	"calendar_title": "달력 TEST",
-    	"calendar_content": "달력 TEST 내용",
-    	"calendar_date" : "2021-09-15 T07:25:15.130+00:00",
-    	"calendar_startdate" : "2021-09-15 T07:25:15.130+00:00",
-    	"calendar_enddate" : "2021-09-15 T07:25:15.130+00:00",
-    	"projmember_seq": "1"
-    	}
+     d
      Response 200 코드 확인 완료
      */
 

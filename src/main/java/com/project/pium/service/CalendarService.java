@@ -6,6 +6,15 @@ import java.util.List;
 
 public interface CalendarService {
 
+    //달력 멤버 리스트 뽑기 (달력에 포함되는거로 추후에)
+    //달력 메모 입력
+    List<CalendarDTO> insertCalMemo(CalendarDTO calendarDTO);
+    //달력 메모 수정
+    void updateCalMemo(CalendarDTO calendarDTO);
+    //달력 메모 삭제
+    void DelCalMemo(long calMemoSeq);
+
+
     void creatCal(CalendarDTO calendarDTO);
     List<CalendarDTO> calList();
     List<CalendarDTO> calListBySeq (long calSeq);
