@@ -54,8 +54,6 @@ function HeadSide(p){
 
   //초대할 이메일
   const [inviteEmail, inviteEmailCng] = useState();
-  const inviteEmailHandler = e =>inviteEmailCng(e.target.value)
-  const inviteEmailClear =() => inviteEmailCng('')
 
   const [inviteAlert, inviteAlertCng] = useState(false);
   const [inviteAlert2, inviteAlert2Cng] = useState(false);
@@ -70,47 +68,18 @@ function HeadSide(p){
     outAlertModalCng(false)
   };
 
-  const [memberList, memeberListCng] = useState();
-
+  //멤버목록 state
+  const [memberList, memberListCng] = useState();
 
   useEffect(()=>{
-    p.dispatch({type:'loadingOn'})
-
-    //멤버정보 가져옴
-    axios.get('/ajax/allProjMembers/'+p.prjSeq)
-    .then(r=>{
-      memeberListCng(r.data)
-      p.dispatch({type:'loadingOff'})
-    })
-    .catch(e=>{
-      console.log(e)
-      p.dispatch({type:'loadingOff'})
-    })
-
     outMemberCng('');
     inviteAlertCng(false)
     inviteAlert2Cng(false)
-  },[])
+  },[inviteEmail, p.memberList])
 
   useEffect(()=>{
-
-    //내가 현재 프로젝트의 관리자인지 + 내 멤버정보
-    if(memberList){
-      memberList.map((r,i)=>{
-        //실제
-        // if(r.member_seq == p.loginUser.seq){ 
-
-        //프론트용
-        if(r.member_seq == 6){ 
-          if(r.projmember_type == 0){
-            p.isMasterCng(true)
-          }
-          p.myMemberInfoCng(r)
-        }
-      })
-    }
-
-  },[memberList, p.pageInfo])
+    memberListCng(p.memberList)
+  },[p.memberList])
 
   return(
     <>
@@ -122,21 +91,19 @@ function HeadSide(p){
             p.dispatch({type:'pagePush', val:'todo'})
           }}>
             {
-              p.prjList &&
-                p.prjList.map((r, i)=>{
-                  if(r.project_isdelete != '1'){
-                    return(
-                      <option value={r.project_seq} selected={r.project_seq==p.prjSeq?true:false}>
-                        {r.project_title}
-                      </option>
-                    )
-                  }
-
-                })
+              p.projectList.map((r, i)=>{
+                if(r.project_isdelete != '1'){
+                  return(
+                    <option value={r.project_seq} selected={r.project_seq==p.prjSeq?true:false}>
+                      {r.project_title}
+                    </option>
+                  )
+                }
+              })
             }
           </Form.Select>
           {
-            p.prjInfo.project_status == '1' &&
+            p.projectInfo.project_status == '1' &&
               <p className="isCompleted">완료된 프로젝트</p>
           }
         </div>
@@ -188,7 +155,7 @@ function HeadSide(p){
         <div className="prjIcon tipRightBox" style={{backgroundColor:p.prjColor}} onClick={()=>{
           history.push('/project')
         }}>
-          {p.prjInfo.project_title.trim().substring(0,1)}
+          {p.projectInfo.project_title.trim().substring(0,1)}
           <p className="tipRight r35">프로젝트 목록으로</p>
         </div>
 
@@ -238,10 +205,19 @@ function HeadSide(p){
           </div>
 
 
-          <div className="profile tipRightBox">
+          <div className="profile tipRightBox" onClick={()=>{
+            p.profileMsgCng(false)
+            p.profileModalCng(true)
+          }}>
             <p className="tipRight r45">프로필 설정</p>
             <div className="profileIcon">
-              <img src={pub.img+'defaultProfile.svg'}/>
+              {
+                p.myMemberInfo?
+                  p.myMemberInfo.projmember_data?
+                  <img src={'data:image;base64,'+p.myMemberInfo.projmember_data}/>
+                  :<img src={pub.img+'defaultProfile.svg'}/>
+                :<img src={pub.img+'defaultProfile.svg'}/>
+              }
             </div>
         </div>
 
@@ -281,7 +257,7 @@ function HeadSide(p){
                   }else {
                     axios.get('/ajax/allProjMembers/'+p.prjSeq)
                     .then(r=>{
-                      memeberListCng(r.data)
+                      memberListCng(r.data)
                       p.dispatch({type:'loadingOff'})
                     })
                     .catch(e=>{
@@ -317,7 +293,7 @@ function HeadSide(p){
                   }else {
                     axios.get('/ajax/allProjMembers/'+p.prjSeq)
                     .then(r=>{
-                      memeberListCng(r.data)
+                      memberListCng(r.data)
                       p.dispatch({type:'loadingOff'})
                     })
                     .catch(e=>{
@@ -337,69 +313,69 @@ function HeadSide(p){
           <p className="memberCnt">참여중인 멤버
             <b style={{color:p.prjColor}}>
               {
-                memberList &&
-                  ' '+memberList.length
+                memberList&&
+                ' '+memberList.length
               }
             </b>
           </p>
           <div className="memberListWrap">
             {
-              memberList &&
-                memberList.map((r, i)=>{
-                  let src = r.projmember_data?'data:image;base64,'+r.projmember_data:'/img/defaultProfile.svg'
-                  let name = r.projmember_name?r.projmember_name:'#'+r.member_seq
-                  let isManager = r.projmember_type==0?true:false;
-                  return(
-                    <div className="memberList on">
-                      <div className="profileImg">
-                        <img src={src}/>
-                      </div>
-                      <div className="profileName">
-                        {
-                          isManager
-                          ?<p className="name">&#x1F451; {name}</p>
-                          :<p className="name">{name}</p>
-                        }
-                        <p className="email">{r.member_email}</p>
-                      </div>
-                      <div className="memberBtnWrap">
-                        {
-                          !isManager &&
-                            <p className="admin" onClick={()=>{
-                              p.dispatch({type:'loadingOn'})
-                              axios.post('/ajax/masterUpdate',{
-                                project_seq:p.prjSeq,
-                                projmember_seq:r.projmember_seq
+              memberList&&
+              memberList.map((r, i)=>{
+                let src = r.projmember_data?'data:image;base64,'+r.projmember_data:'/img/defaultProfile.svg'
+                let name = r.projmember_name?r.projmember_name:'#'+r.member_seq
+                let isManager = r.projmember_type==0?true:false;
+                return(
+                  <div className="memberList on">
+                    <div className="profileImg">
+                      <img src={src}/>
+                    </div>
+                    <div className="profileName">
+                      {
+                        isManager
+                        ?<p className="name">&#x1F451; {name}</p>
+                        :<p className="name">{name}</p>
+                      }
+                      <p className="email">{r.member_email}</p>
+                    </div>
+                    <div className="memberBtnWrap">
+                      {
+                        !isManager &&
+                          <p className="admin" onClick={()=>{
+                            p.dispatch({type:'loadingOn'})
+                            axios.post('/ajax/masterUpdate',{
+                              project_seq:p.prjSeq,
+                              projmember_seq:r.projmember_seq
+                            })
+                            .then(r => {
+                              axios.get('/ajax/allProjMembers/'+p.prjSeq)
+                              .then(r=>{
+                                memberListCng(r.data)
+                                p.dispatch({type:'loadingOff'})
                               })
-                              .then(r => {
-                                axios.get('/ajax/allProjMembers/'+p.prjSeq)
-                                .then(r=>{
-                                  memeberListCng(r.data)
-                                  p.dispatch({type:'loadingOff'})
-                                })
-                                .catch(e=>{
-                                  console.log(e)
-                                  p.dispatch({type:'loadingOff'})
-                                })
-                              })
-                              .catch(e => {
+                              .catch(e=>{
                                 console.log(e)
                                 p.dispatch({type:'loadingOff'})
                               })
-                            }}>관리자로</p>
-                        }
-                        <p className="except" onClick={()=>{
-                          outMemberCng({
-                            email:r.member_email,
-                            seq:r.projmember_seq
-                          })
-                          outAlertModalCng(true)
-                        }}>제외</p>
-                      </div>
+                            })
+                            .catch(e => {
+                              console.log(e)
+                              p.dispatch({type:'loadingOff'})
+                            })
+                          }}>관리자로</p>
+                      }
+                      <p className="except" onClick={()=>{
+                        outMemberCng({
+                          email:r.member_email,
+                          seq:r.projmember_seq
+                        })
+                        outAlertModalCng(true)
+                      }}>제외</p>
                     </div>
-                  )
-                  
-                })
+                  </div>
+                )
+                
+              })
             }
 
           </div>
@@ -423,8 +399,9 @@ function HeadSide(p){
                   .then(r => {
                     axios.get('/ajax/allProjMembers/'+p.prjSeq)
                     .then(r=>{
-                      memeberListCng(r.data)
+                      memberListCng(r.data)
                       p.dispatch({type:'loadingOff'})
+                      outAlertModalCng(false)
                     })
                     .catch(e=>{
                       console.log(e)
@@ -448,9 +425,13 @@ function HeadSide(p){
 }
 function transReducer(state){
   return {
-    datePickerModal : state.datePickerModal,
-    pageInfo : state.pageInfo,
-    loginUser : state.loginUser
+    pageInfo:state.pageInfo,
+    projectList:state.projectList,
+    projectInfo:state.projectInfo,
+    memberList:state.memberList,
+    myMemberInfo:state.myMemberInfo,
+    isMaster:state.isMaster,
+    isProfileEmpty:state.isProfileEmpty
   }
 }
 

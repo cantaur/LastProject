@@ -15,30 +15,20 @@ import {connect} from 'react-redux';
 
 
 
-function ProjectList(p){
+function ProjectView(p){
   const history = useHistory();
   const params = useParams();
   const page = params.page;
-  const seq = params.seq;
+  const prjSeq = params.seq;
+  const prjColor = seqColorTrans(prjSeq);
 
-  const prjColor = seqColorTrans(seq);
-
-
-  //프로젝트리스트 (셀렉트)
-  const [prjList, prjListCng] = useState();
-
-  //현재 프로젝트 제목, 상태
-  const [prjInfo, prjInfoCng] = useState();
-
-  //내가 이 프로젝트의 관리자 인지
-  const [isMaster, isMasterCng]= useState(false);
 
   //이 프로젝트의 내정보
   const [myMemberInfo,myMemberInfoCng]=useState();
 
 
   //프로필변경 모달 상태
-  const [profileModal, profileModalCng] = useState(true);
+  const [profileModal, profileModalCng] = useState(false);
 
   const profileModalClose = () => {
     profileModalCng(false)
@@ -48,12 +38,14 @@ function ProjectList(p){
   };
 
   //프로필 변경인지 변경알림인지
-  const [profileMsg, profileMsgCng] = useState(true);
+  const [profileMsg, profileMsgCng] = useState(false);
   
   //프로필 변경 정보
   const [profileSetInfo,profileSetInfoCng] = useState({img:'',name:''});
+
   //프로필 변경 이미지 미리보기용
   const [profileImgPreview,profileImgPreviewCng] =useState();
+
   //File 객체 base64로 변환
   const toBase64 = file => {
     let reader = new FileReader()
@@ -65,8 +57,11 @@ function ProjectList(p){
   };
   
 
-
+  //페이지 최초 접속시
   useEffect(()=>{
+
+    //프론트용 샘플
+    // p.dispatch({type:'login', email:'sudosoon@gmail.com', seq:3})
     const isPage = pages.find(e=> e === page)
     if(isPage == undefined){
       history.push('/404')
@@ -74,30 +69,65 @@ function ProjectList(p){
       p.dispatch({type:"pagePush", val:isPage})
     }
 
-    // 프로젝트 정보 가져옴 (프론트용 샘플, myproject로 보내면댐)
+    // 프로젝트 리스트 가져옴 (프론트용 샘플, myproject로 보내면댐)
     axios.get(host+'/ajax/myproject')
     .then(r=>{
-      prjListCng(r.data);
-      p.dispatch({type:'loadingOff'})
+      p.dispatch({type:'projectListCng', val:r.data})
     })
     .catch(e=>{
       console.log(e)
-      p.dispatch({type:'loadingOff'})
     })
 
+    //멤버정보 가져옴
+    axios.get('/ajax/allProjMembers/'+prjSeq)
+    .then(r=>{
+      p.dispatch({type:'memberListCng', val:r.data})
+    })
+    .catch(e=>{
+      console.log(e)
+    })
+
+    //프로필이 없으면 모달띄움
+    if(myMemberInfo && myMemberInfo.projmember_name == '' && myMemberInfo.projmember_data == ''){
+      profileMsg(true)
+      profileModal(true)
+    }
   },[])
 
+  // 프로젝트 리스트를 가져온 후
   useEffect(()=>{
     //현재 프로젝트 정보 갱신
-    if(prjList){
-      prjList.map((r,i)=>{
-        if(seq == r.project_seq){
-          prjInfoCng(r)
+    if(p.projectList){
+      p.projectList.map((r,i)=>{
+        if(prjSeq == r.project_seq){
+          p.dispatch({type:'projectInfoCng', val:r})
         }
       })
     }
     
-  },[p.pageInfo,seq,prjList])
+  },[p.projectList])
+
+  //현재 프로젝트 정보 갱신한 후
+  useEffect(()=>{
+    //현재 프로젝트의 내 멤버 정보
+    if(p.memberList){
+      p.memberList.map((r,i)=>{
+        //실제
+        if(r.member_seq == p.loginUser.seq){ 
+
+        //프론트용 샘플
+        // if(r.member_seq == 3){ 
+          if(r.projmember_type == 0){
+            p.dispatch({type:'isMasterCng', val:true})
+          }
+          p.dispatch({type:'myMemberInfoCng', val:r})
+        }
+      })
+    }
+
+  },[p.memberList])
+
+
   useEffect(()=>{
     //프로필 수정용 데이터 입력
     if(myMemberInfo){
@@ -106,35 +136,40 @@ function ProjectList(p){
         name:myMemberInfo.projmember_name,
       })
     }
-    
   },[myMemberInfo])
 
   return(
     <>
     {
-      prjInfo ?
+      p.projectInfo ?
       <div className="viewOutWrap">
-        <HeadSide prjColor={prjColor} prjSeq={seq} prjList={prjList} prjInfo={prjInfo} isMasterCng={isMasterCng} isMaster={isMaster} myMemberInfoCng={myMemberInfoCng}/>
+        <HeadSide 
+          prjColor={prjColor} 
+          prjSeq={prjSeq} 
+          profileMsg={profileMsg} 
+          profileMsgCng={profileMsgCng} 
+          profileModalCng={profileModalCng}
+        />
         <div className="viewInnerWrap">
           {
             p.pageInfo == 'todo' &&
-            <Todo prjColor={prjColor} prjSeq={seq} prjInfo={prjInfo} isMaster={isMaster}/>
+            <Todo prjColor={prjColor} prjSeq={prjSeq} />
           }
           {
             p.pageInfo == 'calender' &&
-            <Calender prjColor={prjColor} prjSeq={seq}/>
+            <Calender prjColor={prjColor} prjSeq={prjSeq}/>
           }
           {
             p.pageInfo == 'mileStone' &&
-            <MileStone prjColor={prjColor} prjSeq={seq} prjInfo={prjInfo} isMaster={isMaster}/>
+            <MileStone prjColor={prjColor} prjSeq={prjSeq} />
           }
           {
             p.pageInfo == 'mileStoneView' &&
-            <MileStoneView prjColor={prjColor} prjSeq={seq} isMaster={isMaster}/>
+            <MileStoneView prjColor={prjColor} prjSeq={prjSeq} />
           }
           {
             p.pageInfo == 'task' &&
-            <Task prjColor={prjColor} prjSeq={seq}/>
+            <Task prjColor={prjColor} prjSeq={prjSeq}/>
           }
         </div>
         <Modal
@@ -147,7 +182,7 @@ function ProjectList(p){
           <div className="profileModalCon">
             <div className="msg">
               <b className="prjIcon" style={{backgroundColor:prjColor}}>
-                {prjInfo.project_title.trim().substring(0,1)}
+                {p.projectInfo.project_title.trim().substring(0,1)}
               </b>
               프로젝트에서 사용할<br/>
               <b>프로필 정보</b>를 완성해주세요. &#x1F603;
@@ -163,7 +198,7 @@ function ProjectList(p){
 
 
           <div className="profileModalCon">
-            <input type="file" id="profileImg" accept=".jpg, .jpeg, .png, .svg" style={{display:'none'}} onChange={(e)=>{
+            <input type="file" id="profileImg" accept=".jpg, .jpeg, .png" style={{display:'none'}} onChange={(e)=>{
               let file = e.target.files[0]
               profileSetInfoCng({
                 ...profileSetInfo,
@@ -200,6 +235,31 @@ function ProjectList(p){
                     ...profileSetInfo,
                     name:e.target.value,
                   })
+                }}
+                onKeyPress={(e)=>{
+                  if(e.key == 'Enter'){
+                    p.dispatch({type:'loadingOn'})
+                    e.preventDefault();
+                    const formData = new FormData();
+                    formData.append('projmember_name', profileSetInfo.name)
+                    formData.append('projmember_image', profileSetInfo.img)
+                    formData.append('project_seq', prjSeq)
+                
+                    axios({
+                      method:'post',
+                      url:host+'/ajax/updateProfile',
+                      data:formData,
+                      headers: {"Content-Type": "multipart/form-data"}
+                    })
+                    .then(r=>{
+                      p.dispatch({type:'loadingOff'})
+                    })
+                    .catch(e=>{
+                      console.log(e)
+                      p.dispatch({type:'loadingOff'})
+
+                    })
+                  }
                 }}/>
               </FloatingLabel>
             </Form.Group>
@@ -210,7 +270,7 @@ function ProjectList(p){
                 const formData = new FormData();
                 formData.append('projmember_name', profileSetInfo.name)
                 formData.append('projmember_image', profileSetInfo.img)
-                formData.append('project_seq', seq)
+                formData.append('project_seq', prjSeq)
             
                 axios({
                   method:'post',
@@ -244,9 +304,14 @@ function ProjectList(p){
 
 function transReducer(state){
   return {
-    datePickerModal : state.datePickerModal,
-    pageInfo : state.pageInfo
+    pageInfo : state.pageInfo,
+    projectList:state.projectList,
+    projectInfo:state.projectInfo,
+    memberList:state.memberList,
+    myMemberInfo:state.myMemberInfo,
+    isMaster:state.isMaster,
+    isProfileEmpty:state.isProfileEmpty
   }
 }
 
-export default connect(transReducer)(ProjectList);
+export default connect(transReducer)(ProjectView);

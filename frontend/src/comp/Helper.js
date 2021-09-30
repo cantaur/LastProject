@@ -37,4 +37,5 @@ const pages = [
 const host = 'http://localhost:8000';
 
 
+
 export {pub, colors, host, pages,seqColorTrans};

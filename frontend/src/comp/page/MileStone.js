@@ -7,6 +7,9 @@ import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstr
 import { Link, useParams, withRouter, useHistory } from "react-router-dom";
 import {connect} from 'react-redux';
 import NonePage from "../NonePage.js";
+import LinearProgress from '@mui/material/LinearProgress';
+import Box from '@mui/material/Box';
+
 
 
 
@@ -180,7 +183,7 @@ function MileStone(p){
             ingMileStoneCnt(list) == 0
             ?<div className="noMileStoneMsg">진행중인 마일스톤이 없습니다. &#x1F602;</div>
             :null
-          : <div className="noMileStoneMsg">진행중인 마일스톤이 없습니다. &#x1F602;</div>
+          : <Box sx={{ width: '100%' }}><LinearProgress /></Box>
         }
       </div>
       <div className="stoneListWrap">

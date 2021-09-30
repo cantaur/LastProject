@@ -101,24 +101,52 @@ function MileStoneView(p){
       <div className="stoneListWrap">
         {
           mileStoneInfo &&
-          <StoneList 
-            prjSeq={p.prjSeq}
-            milestone_seq={1}
-            milestone_title={mileStoneInfo.milestone_title}
-            milestone_content={mileStoneInfo.milestone_content}
-            color={seqColorTrans(mileStoneInfo.milestone_seq)} 
-            
-            completeTaskCnt={1}
-            taskCnt={2}
-            milestone_startdate={mileStoneInfo.milestone_startdate}
-            milestone_duedate={mileStoneInfo.milestone_duedate}
-            isView={true}
-            dateModalClose={dateModalClose}
-            mileStoneInfoCng={mileStoneInfoCng}
-            mileStoneInfo={mileStoneInfo}
-            mileStoneUpdate={mileStoneUpdate}
-            mileStoneDateNull={mileStoneDateNull}
-          />
+          <>
+            <StoneList 
+              prjSeq={p.prjSeq}
+              milestone_seq={1}
+              milestone_title={mileStoneInfo.milestone_title}
+              milestone_content={mileStoneInfo.milestone_content}
+              color={seqColorTrans(mileStoneInfo.milestone_seq)} 
+              
+              completeTaskCnt={1}
+              taskCnt={2}
+              milestone_startdate={mileStoneInfo.milestone_startdate}
+              milestone_duedate={mileStoneInfo.milestone_duedate}
+              isView={true}
+              dateModalClose={dateModalClose}
+              mileStoneInfoCng={mileStoneInfoCng}
+              mileStoneInfo={mileStoneInfo}
+              mileStoneUpdate={mileStoneUpdate}
+              mileStoneDateNull={mileStoneDateNull}
+            />
+            <div className="mileStoneTaskWrap">
+              <div className="taskHeader">
+                <div className="filter">
+                  <p className="on">전체</p>
+                  <p>진행중</p>
+                  <p>종료</p>
+                </div>
+                <div className="sort">
+                  <p className="sortBtn">담당자 <i class="fas fa-caret-down"></i></p>
+                  <p className="sortBtn">중요도 <i class="fas fa-caret-down"></i></p>
+                  <p className="sortBtn">라벨 <i class="fas fa-caret-down"></i></p>
+                  <p className="sortBtn">작성자 <i class="fas fa-caret-down"></i></p>
+                </div>
+              </div>
+
+              <div className="taskList">
+                <div className="taskRow">
+                  <p className="title"></p>
+                  <div className="infoWrap">
+                    <div className="profileWrap">
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
         }
         
         

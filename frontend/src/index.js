@@ -55,8 +55,81 @@ function datePickerModal(state=false, action){
       return state;
   }
 }
+function mileStoneList(state=false, action){
+  switch (action.type){
+    case 'mileStoneListCng':
+      return action.val;
+    default:
+      return state;
+  }
+}
+function projectList(state=false, action){
+  switch (action.type){
+    case 'projectListCng':
+      return action.val;
+    default:
+      return state;
+  }
+}
+function projectInfo(state=false, action){
+  switch (action.type){
+    case 'projectInfoCng':
+      return action.val;
+    default:
+      return state;
+  }
+}
 
-let store = createStore(combineReducers({datePickerModal, loading, pageInfo,loginUser}));
+function memberList(state=false, action){
+  switch (action.type){
+    case 'memberListCng':
+      return action.val;
+    default:
+      return state;
+  }
+}
+function myMemberInfo(state=false, action){
+  switch (action.type){
+    case 'myMemberInfoCng':
+      return action.val;
+    default:
+      return state;
+  }
+}
+
+function isMaster(state=false, action){
+  switch (action.type){
+    case 'isMasterCng':
+      return action.val;
+    default:
+      return state;
+  }
+}
+
+function isProfileEmpty(state=false, action){
+  switch (action.type){
+    case 'isProfileEmptyCng':
+      return action.val;
+    default:
+      return state;
+  }
+}
+
+let store = createStore(combineReducers(
+  {
+    datePickerModal,
+    loading,
+    pageInfo,
+    loginUser,
+    mileStoneList,
+    projectList,
+    projectInfo,
+    memberList,
+    myMemberInfo,
+    isMaster,
+    isProfileEmpty
+  }
+));
 
 
 axios.get(host+'/ajax/loginUser')
