@@ -11,62 +11,65 @@ import java.util.List;
 @AllArgsConstructor
 @Service
 public class TodoServiceImpl implements TodoService {
-    private TodoMapper mapper;
-
-    @Override
-    public TodoDTO selectByTodoS(long seq){return  mapper.selectByTodo(seq);}
-    @Override
-    public List<TodoDTO> selectBySeqS(long seq) {return mapper.selectBySeq(seq);}
-    @Override
-    public List<TodoDTO>progressBySeqS(long seq){
-        return mapper.progressBySeq(seq);
-    }
-    @Override
-    public List<TodoDTO>doneBySeqS(long seq){
-        return mapper.doneBySeq(seq);
-    }
-    @Override
-    public Long countDoneStatusS(long seq) {
-        return mapper.countDoneStatus(seq);
-    }
-    @Override
-    public Long countTodoStatusS(long seq){return mapper.countTodoStatus(seq);}
-    @Override
-    public Long countProgressStatusS(long seq){
-        return mapper.countProgressStatus(seq);
-    }
-    @Override
-    public List<String> showTaskS(long seq){
-        return mapper.showTask(seq);
-    }
-    @Override
-    public List<TaskDTO> showTaskNSeqS(long seq){return mapper.showTaskNSeq(seq);}
-    @Override
-    public List<TodoDTO> selectNoteToDoS() {
-        return mapper.selectNoteToDo();
-    }
-    @Override
-    public List<TodoDTO> selectNoteProgS() {
-        return mapper.selectNoteProg();
-    }
-    @Override
-    public List<TodoDTO> selectNoteDoneS() {
-        return mapper.selectNoteDone();
-    }
-    @Override
-    public void updateNoteS(TodoDTO todo) {
-        mapper.updateNote(todo);
-    }
-    @Override
-    public void deleteNoteS(long todo_seq) {
-        mapper.deleteNote(todo_seq);
-    }
+    private TodoMapper todoMapper;
 
     @Override
     public void insertNoteS(TodoDTO todo) {
-        mapper.insertNote(todo);
+        todoMapper.insertNote(todo);
+    }
+
+
+
+
+
+    @Override
+    public TodoDTO selectByTodoS(long seq){return  todoMapper.selectByTodo(seq);}
+    @Override
+    public List<TodoDTO> selectBySeqS(long seq) {return todoMapper.selectBySeq(seq);}
+    @Override
+    public List<TodoDTO>progressBySeqS(long seq){
+        return todoMapper.progressBySeq(seq);
     }
     @Override
-    public void updateNoteStatusS(TodoDTO todo) { mapper.updateNoteStatus(todo);
+    public List<TodoDTO>doneBySeqS(long seq){
+        return todoMapper.doneBySeq(seq);
+    }
+    @Override
+    public Long countDoneStatusS(long seq) {
+        return todoMapper.countDoneStatus(seq);
+    }
+    @Override
+    public Long countTodoStatusS(long seq){return todoMapper.countTodoStatus(seq);}
+    @Override
+    public Long countProgressStatusS(long seq){
+        return todoMapper.countProgressStatus(seq);
+    }
+
+    @Override
+    public List<TaskDTO> showTaskNSeqS(long seq){return todoMapper.showTaskNSeq(seq);}
+    @Override
+    public List<TodoDTO> selectNoteToDoS() {
+        return todoMapper.selectNoteToDo();
+    }
+    @Override
+    public List<TodoDTO> selectNoteProgS() {
+        return todoMapper.selectNoteProg();
+    }
+    @Override
+    public List<TodoDTO> selectNoteDoneS() {
+        return todoMapper.selectNoteDone();
+    }
+    @Override
+    public void updateNoteS(TodoDTO todo) {
+        todoMapper.updateNote(todo);
+    }
+    @Override
+    public void deleteNoteS(long todo_seq) {
+        todoMapper.deleteNote(todo_seq);
+    }
+
+
+    @Override
+    public void updateNoteStatusS(TodoDTO todo) { todoMapper.updateNoteStatus(todo);
     }
 }

@@ -14,78 +14,83 @@ import java.util.Map;
 
 @Log
 @RestController
-//@RequestMapping("todo")
 @AllArgsConstructor
 @ResponseBody
 public class TodoController {
     private ProjectController projcontroller;
     private MemberService memberservice;
     private TaskService taskservice;
-    private TodoService service;
+    private TodoService todoService;
 
-    @ResponseBody
-    @GetMapping("/ajax/mytodo")
-    public List<TodoDTO> selectBySeq(Principal principal){
-        String email= projcontroller.currentUserName(principal);
-        long seq = memberservice.findUserNo(email);
-        List<TodoDTO> list = service.selectBySeqS(seq);
+
+    //간단한 메모 입력하기
+    @PostMapping("/ajax/createTodo")
+    public void insertNote(@RequestBody TodoDTO todoDTO){
+        log.info("TodoInsert(): "+todoDTO);
+        todoService.insertNoteS(todoDTO);
+    }
+
+    //task 생성 시 드랍박스 안에 보여질 task 제목 등 정보 불러오기
+    @GetMapping("/ajax/showTasknSeq/{projMemberSeq}")
+    public List<TaskDTO> showTasknSeq(@PathVariable long projMemberSeq){
+        List<TaskDTO> list = todoService.showTaskNSeqS(projMemberSeq);
         return list;
     }
-    @GetMapping("/ajax/myprogress")
-    public List<TodoDTO> progressBySeq(Principal principal){
-        String email= projcontroller.currentUserName(principal);
-        long seq = memberservice.findUserNo(email);
-        List<TodoDTO> list = service.progressBySeqS(seq);
+
+
+    //내가 생성한 to do list 불러오기. to do 상태
+    //projMemberSeq로 불러 올 수 있는지 봐야함
+    @GetMapping("/ajax/mytodo/{projMemberSeq}")
+    public List<TodoDTO> selectBySeq(@PathVariable long projMemberSeq){
+        log.info("절망적이다"+projMemberSeq);
+        List<TodoDTO> list = todoService.selectBySeqS(projMemberSeq);
+        log.info("절망적이라고"+list);
         return list;
     }
-    @GetMapping("/ajax/mydone")
-    public List<TodoDTO> doneBySeq(Principal principal){
-        String email= projcontroller.currentUserName(principal);
-        long seq = memberservice.findUserNo(email);
-        List<TodoDTO> list = service.doneBySeqS(seq);
+
+    //in progress 상태
+    @GetMapping("/ajax/myprogress/{projMemberSeq}")
+    public List<TodoDTO> progressBySeq(@PathVariable long projMemberSeq){
+        List<TodoDTO> list = todoService.progressBySeqS(projMemberSeq);
         return list;
     }
-    @GetMapping("/ajax/showTask")
-    public List<String> showTask(Principal principal){
-        String email= projcontroller.currentUserName(principal);
-        long seq = memberservice.findUserNo(email);
-        List<String> list = service.showTaskS(seq);
+
+    //done 상태
+    @GetMapping("/ajax/mydone/{projMemberSeq}")
+    public List<TodoDTO> doneBySeq(@PathVariable long projMemberSeq){
+        List<TodoDTO> list = todoService.doneBySeqS(projMemberSeq);
         return list;
     }
-    @GetMapping("/ajax/showTasknSeq")
-    public List<TaskDTO> showTasknSeq(Principal principal){
-        String email = projcontroller.currentUserName(principal);
-        long seq = memberservice.findUserNo(email);
-        List<TaskDTO> list = service.showTaskNSeqS(seq);
-        return list;
-    }
-    @GetMapping("/ajax/countTodo")
-    public Long countTodo(Principal principal){
-        String email = projcontroller.currentUserName(principal);
-        long seq = memberservice.findUserNo(email);
-        long cnt = service.countTodoStatusS(seq);
+
+
+
+
+    //각각 상태에 저장된 note들의 갯수 표현
+    @GetMapping("/ajax/countTodo/{projMemberSeq}")
+    public Long countTodo(@PathVariable long projMemberSeq){
+        long cnt = todoService.countTodoStatusS(projMemberSeq);
         return cnt;
     }
-    @GetMapping("/ajax/countProgress")
-    public Long countProgress(Principal principal){
-        String email = projcontroller.currentUserName(principal);
-        long seq = memberservice.findUserNo(email);
-        long cnt = service.countProgressStatusS(seq);
+    @GetMapping("/ajax/countProgress/{projMemberSeq}")
+    public Long countProgress(@PathVariable long projMemberSeq){
+        long cnt = todoService.countProgressStatusS(projMemberSeq);
         return cnt;
     }
-    @GetMapping("/ajax/countDone")
-    public Long countDone(Principal principal) {
-        String email = projcontroller.currentUserName(principal);
-        long seq = memberservice.findUserNo(email);
-        long cnt = service.countDoneStatusS(seq);
+    @GetMapping("/ajax/countDone/{projMemberSeq}")
+    public Long countDone(@PathVariable long projMemberSeq) {
+        long cnt = todoService.countDoneStatusS(projMemberSeq);
         return cnt;
     }
+
+
+
+
     @GetMapping("/ajax/todoData")
     public TodoDTO todoData(@RequestParam String seq){
         try {
             seq.trim();
             long lSeq = Long.parseLong(seq);
-            TodoDTO todo =service.selectByTodoS(lSeq);
+            TodoDTO todo =todoService.selectByTodoS(lSeq);
             return todo;
         }catch(Exception e){
             log.info("#todoData e: "+e);
@@ -95,20 +100,15 @@ public class TodoController {
     @PostMapping("/ajax/updateTodo")
     public void updateNote(@RequestBody TodoDTO todo){
         log.info("#updateTodo: " + todo);
-        service.updateNoteS(todo);
+        todoService.updateNoteS(todo);
     }
     @ResponseBody
     @PostMapping("/ajax/deleteTodo")
     public void deleteNote(@RequestBody Map<String,Integer> param){
         long lseq = Long.valueOf(param.get("seq"));
-        service.deleteNoteS(lseq);
+        todoService.deleteNoteS(lseq);
     }
-    @ResponseBody
-    @PostMapping("/ajax/createTodo")
-    public void insertNote(@RequestBody TodoDTO todo){
-        log.info("TodoInsert(): "+todo);
-        service.insertNoteS(todo);
-    }
+
 //    @PatchMapping("updateStatus/{seq}")
 //    public void updateNoteStatus(@RequestBody TodoDTO todo){
 //        log.info("updateStatus: "+todo);
