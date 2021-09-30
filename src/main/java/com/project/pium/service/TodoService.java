@@ -13,7 +13,6 @@ public interface TodoService {
     Long countTodoStatusS(long seq);
     Long countProgressStatusS(long seq);
     Long countDoneStatusS(long seq);
-    List<String> showTaskS(long seq);
     List<TaskDTO> showTaskNSeqS(long seq);
     List<TodoDTO>selectNoteToDoS(); // 메모 상태 10
     List<TodoDTO>selectNoteProgS(); // 메모 상태 20
