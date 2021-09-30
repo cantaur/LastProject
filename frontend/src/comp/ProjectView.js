@@ -87,11 +87,7 @@ function ProjectView(p){
       console.log(e)
     })
 
-    //프로필이 없으면 모달띄움
-    if(myMemberInfo && myMemberInfo.projmember_name == '' && myMemberInfo.projmember_data == ''){
-      profileMsg(true)
-      profileModal(true)
-    }
+
   },[])
 
   // 프로젝트 리스트를 가져온 후
@@ -304,6 +300,7 @@ function ProjectView(p){
 
 function transReducer(state){
   return {
+    loginUser:state.loginUser,
     pageInfo : state.pageInfo,
     projectList:state.projectList,
     projectInfo:state.projectInfo,

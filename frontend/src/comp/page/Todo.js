@@ -8,16 +8,11 @@ import {connect} from 'react-redux';
 
 
 
-function Kanban(p){
-  
-  useEffect(()=>{
-    
-  },[])
+function Todo(p){
 
   return(
     <div className="todoWrap pageContentWrap">
       <p>투두 페이지입니다.</p>
-      <p>{p.prjInfo.project_seq}</p>
     </div>
   )
 }
@@ -29,4 +24,4 @@ function transReducer(state){
   }
 }
 
-export default connect(transReducer)(Kanban);
+export default connect(transReducer)(Todo);

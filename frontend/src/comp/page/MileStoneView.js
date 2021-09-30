@@ -123,27 +123,167 @@ function MileStoneView(p){
             <div className="mileStoneTaskWrap">
               <div className="taskHeader">
                 <div className="filter">
-                  <p className="on">전체</p>
-                  <p>진행중</p>
-                  <p>종료</p>
+                  <p style={{backgroundColor:p.prjColor,color:'#fff'}}>전체</p>
+                  <p style={{color:p.prjColor}}>진행중</p>
+                  <p style={{color:p.prjColor}}>종료</p>
                 </div>
                 <div className="sort">
-                  <p className="sortBtn">담당자 <i class="fas fa-caret-down"></i></p>
-                  <p className="sortBtn">중요도 <i class="fas fa-caret-down"></i></p>
-                  <p className="sortBtn">라벨 <i class="fas fa-caret-down"></i></p>
-                  <p className="sortBtn">작성자 <i class="fas fa-caret-down"></i></p>
+                  <p className="sortBtn w120">담당자 <i class="fas fa-caret-down"></i></p>
+                  <p className="sortBtn w80">중요도 <i class="fas fa-caret-down"></i></p>
+                  <p className="sortBtn w120">라벨 <i class="fas fa-caret-down"></i></p>
+                  <p className="sortBtn w80">작성자 <i class="fas fa-caret-down"></i></p>
                 </div>
               </div>
 
               <div className="taskList">
                 <div className="taskRow">
-                  <p className="title"></p>
+                  <p className="title">업무의 제목이 들어감 업무의 제목이 들어감업무의 제목이 들어감업무의 제목이 들어감</p>
                   <div className="infoWrap">
-                    <div className="profileWrap">
+                    {/* 담당자 */}
+                    <div className="profileWrap w120">
+                      
+                      <div className="profileImg toolTipTopBox">
+                        <p className="toolTip">이름이들어감</p>
+                        <div>
+                          <img src={pub.img+'/defaultProfile.svg'}/>
+                        </div>
+                      </div>
+                      <div className="profileImg toolTipTopBox">
+                        <p className="toolTip">이름이들어감</p>
+                        <div>
+                          <img src={pub.img+'/defaultProfile.svg'}/>
+                        </div>
+                      </div>
+                      <div className="profileImg toolTipTopBox">
+                        <p className="toolTip">이름이들어감</p>
+                        <div>
+                          <img src={pub.img+'/defaultProfile.svg'}/>
+                        </div>
+                      </div>
                       
                     </div>
+                    {/* 중요도 */}
+                    <p className="type a w80">긴급</p>
+                    {/* 라벨 */}
+                    <div className="label w120">
+                      <b style={{backgroundColor:p.prjColor}}>라벨이 들어감라벨이 들어감라벨이 들어감라벨이 들어감</b>
+                    </div>
+                    {/* 작성자 */}
+                    <div className="profileImg writer toolTipTopBox">
+                        <p className="toolTip">이름이들어감</p>
+                        <div>
+                          <img src={pub.img+'/defaultProfile.svg'}/>
+                        </div>
+                      </div>
                   </div>
                 </div>
+                <div className="taskRow">
+                  <p className="title">업무의 제목이 들어감 업무의 제목이 들어감업무의 제목이 들어감업무의 제목이 들어감</p>
+                  <div className="infoWrap">
+                    {/* 담당자 */}
+                    <div className="profileWrap w120">
+                      
+                      <div className="profileImg toolTipTopBox">
+                        <p className="toolTip">이름이들어감</p>
+                        <div>
+                          <img src={pub.img+'/defaultProfile.svg'}/>
+                        </div>
+                      </div>
+                      <div className="profileImg toolTipTopBox">
+                        <p className="toolTip">이름이들어감</p>
+                        <div>
+                          <img src={pub.img+'/defaultProfile.svg'}/>
+                        </div>
+                      </div>
+                      <div className="profileImg toolTipTopBox">
+                        <p className="toolTip">이름이들어감</p>
+                        <div>
+                          <img src={pub.img+'/defaultProfile.svg'}/>
+                        </div>
+                      </div>
+                      
+                    </div>
+                    {/* 중요도 */}
+                    <p className="type a w80">긴급</p>
+                    {/* 라벨 */}
+                    <div className="label w120">
+                      <b style={{backgroundColor:p.prjColor}}>라벨이 들어감라벨이 들어감라벨이 들어감라벨이 들어감</b>
+                    </div>
+                    {/* 작성자 */}
+                    <div className="profileImg writer toolTipTopBox">
+                        <p className="toolTip">이름이들어감</p>
+                        <div>
+                          <img src={pub.img+'/defaultProfile.svg'}/>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                <div className="taskRow">
+                  <p className="title">업무의 제목이 들어감 업무의 제목이 들어감업무의 제목이 들어감업무의 제목이 들어감</p>
+                  <div className="infoWrap">
+                    {/* 담당자 */}
+                    <div className="profileWrap w120">
+                      
+                      <div className="profileImg toolTipTopBox">
+                        <p className="toolTip">이름이들어감</p>
+                        <div>
+                          <img src={pub.img+'/defaultProfile.svg'}/>
+                        </div>
+                      </div>
+                      <div className="profileImg toolTipTopBox">
+                        <p className="toolTip">이름이들어감</p>
+                        <div>
+                          <img src={pub.img+'/defaultProfile.svg'}/>
+                        </div>
+                      </div>
+                      <div className="profileImg toolTipTopBox">
+                        <p className="toolTip">이름이들어감</p>
+                        <div>
+                          <img src={pub.img+'/defaultProfile.svg'}/>
+                        </div>
+                      </div>
+                      <div className="profileImg toolTipTopBox">
+                        <p className="toolTip">이름이들어감</p>
+                        <div>
+                          <img src={pub.img+'/defaultProfile.svg'}/>
+                        </div>
+                      </div>
+                      <div className="profileImg toolTipTopBox">
+                        <p className="toolTip">이름이들어감</p>
+                        <div>
+                          <img src={pub.img+'/defaultProfile.svg'}/>
+                        </div>
+                      </div>
+                      <div className="profileImg toolTipTopBox">
+                        <p className="toolTip">이름이들어감</p>
+                        <div>
+                          <img src={pub.img+'/defaultProfile.svg'}/>
+                        </div>
+                      </div>
+                      <div className="profileImg toolTipTopBox">
+                        <p className="toolTip">이름이들어감</p>
+                        <div>
+                          <img src={pub.img+'/defaultProfile.svg'}/>
+                        </div>
+                      </div>
+                      
+                    </div>
+                    {/* 중요도 */}
+                    <p className="type a w80">긴급</p>
+                    {/* 라벨 */}
+                    <div className="label w120">
+                      <b style={{backgroundColor:p.prjColor}}>라벨이 들어감라벨이 들어감라벨이 들어감라벨이 들어감</b>
+                    </div>
+                    {/* 작성자 */}
+                    <div className="profileImg writer toolTipTopBox">
+                        <p className="toolTip">이름이들어감</p>
+                        <div>
+                          <img src={pub.img+'/defaultProfile.svg'}/>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+              
               </div>
             </div>
           </>
