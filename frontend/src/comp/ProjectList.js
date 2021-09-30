@@ -106,39 +106,6 @@ function ProjectList(p){
   //삭제확인용 seq state
   const [deleteSeq, deleteSeqCng] = useState();
 
-
-
-  //프론트 작업용
-  let listSample = [
-    {
-      member_seq: 4,
-      project_content: "내용입니다아1",
-      project_duedate: "2021-11-25",
-      project_enddate: "",
-      project_isdelete: 0,
-      project_seq: 1,
-      project_startdate: "2021-09-25",
-      project_status: 1,
-      project_title: "진행중프로젝트1",
-      projmember_type: 0
-    },
-    {
-      member_seq: 4,
-      project_content: "내용입니다아2",
-      project_duedate: "2022-11-25",
-      project_enddate: "",
-      project_isdelete: "0",
-      project_seq: 4,
-      project_startdate: "2021-09-25",
-      project_status: 0,
-      project_title: "진행중프로젝트2",
-      projmember_type: 0
-    },
-  ]
-
-
-
-
   useEffect(()=>{
     
     p.dispatch({type:'loadingOn'})

@@ -24,44 +24,6 @@ function ProjectList(p){
   const prjColor = seqColorTrans(seq);
 
 
-  const listSample = [
-    {
-      member_seq: 3,
-      project_content: "",
-      project_duedate: null,
-      project_enddate: null,
-      project_isdelete: "0",
-      project_seq: 10,
-      project_startdate: "2021-10-11",
-      project_status: "0",
-      project_title: "test",
-      projmember_type:"0"
-    },
-    {
-      member_seq: 3,
-      project_content: "test2",
-      project_duedate: null,
-      project_enddate: null,
-      project_isdelete: "1",
-      project_seq: 12,
-      project_startdate: null,
-      project_status: "1",
-      project_title: "test2",
-      projmember_type: "0",
-    },
-    {
-      member_seq: 3,
-      project_content: "",
-      project_duedate: null,
-      project_enddate: null,
-      project_isdelete: "0",
-      project_seq: 13,
-      project_startdate: null,
-      project_status: "1",
-      project_title: "test3(완)",
-      projmember_type: "0",
-    }
-  ]
   //프로젝트리스트 (셀렉트)
   const [prjList, prjListCng] = useState();
 
