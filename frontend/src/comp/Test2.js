@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react"
 import {pub, colors} from './Helper.js'
-import HeadSide from './HeadSide.js'
+// import HeadSide from './HeadSide.js'
 import { Link, useParams, withRouter, useHistory } from "react-router-dom";
 import {CSSTransition} from 'react-transition-group';
 import {connect} from 'react-redux';
@@ -74,7 +74,7 @@ function Test2(p){
             modalShow={modalShow}
             setModalShow={setModalShow}
         />
-      <HeadSide/>
+      {/* <HeadSide/> */}
       <div style={{padding:"80px"}}>
 
         <FullCalendar
