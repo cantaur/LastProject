@@ -58,18 +58,19 @@ public class MilestoneController {
     @GetMapping("/ajax/{projSeq}/milestonelist")
     public ArrayList<Object> msList(@PathVariable long projSeq){
         MilestoneDTO milestoneDTO = null;
-        LinkedHashMap<String, Object> tempMile = new LinkedHashMap<>(); //
+
         ArrayList<Object> mileInfo = new ArrayList<>();
 
 
         List<MilestoneDTO> milestoneList = milestoneService.msListBySeq(projSeq);
         for (int i=0; i<milestoneList.size(); i++) {
+            LinkedHashMap<String, Object> tempMile = new LinkedHashMap<>(); //
             milestoneDTO = milestoneList.get(i);
             long mileSeq = milestoneDTO.getMilestone_seq();
             int countTask = taskService.countTask(mileSeq);
-            int closedMile = taskService.countClosedTask(mileSeq);
+            int closedTask = taskService.countClosedTask(mileSeq);
             tempMile.put("countTask",countTask);
-            tempMile.put("closedMile",closedMile);
+            tempMile.put("closedTask",closedTask);
             tempMile.put("milestone_seq",mileSeq);
             tempMile.put("milestone_title",milestoneDTO.getMilestone_title());
             tempMile.put("milestone_content",milestoneDTO.getMilestone_content());
@@ -96,9 +97,9 @@ public class MilestoneController {
         MilestoneDTO milestoneDTO = milestoneService.findMilestoneByMileSeq(mileSeq);
 
         int countTask = taskService.countTask(mileSeq);
-        int closedMile = taskService.countClosedTask(mileSeq);
+        int closedTask = taskService.countClosedTask(mileSeq);
         mileDetail.put("countTask",countTask);
-        mileDetail.put("closedMile",closedMile);
+        mileDetail.put("closedTask",closedTask);
         mileDetail.put("milestone_seq",milestoneDTO.getMilestone_seq());
         mileDetail.put("milestone_title",milestoneDTO.getMilestone_title());
         mileDetail.put("milestone_content",milestoneDTO.getMilestone_content());
