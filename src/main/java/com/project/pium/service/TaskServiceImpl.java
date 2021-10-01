@@ -15,6 +15,26 @@ import java.util.List;
 public class TaskServiceImpl implements TaskService {
     private TaskMapper taskMapper;
 
+    //마일스톤 상세 페이지에서 milestone_seq=? 위치에 생성된 모든 업무 리스트 조회
+    @Override
+    public List<TaskDTO> taskListByMile(long mileSeq){
+        List<TaskDTO> tasks= taskMapper.taskListByMile(mileSeq);
+        log.info("#마일스톤=?에서 생성된 업무들"+tasks);
+
+        return tasks;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     @Override
     public void createTask(TaskDTO taskDTO) {
         taskMapper.createTask(taskDTO);
@@ -35,8 +55,7 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.countClosedTask(mileSeq);
     }
 
-    @Override
-    public List<TaskDTO> taskListByMile(long mileSeq){return taskMapper.taskListByMile(mileSeq);}
+
 
     @Override
     public TaskDTO showTaskByTaskseq(long taskSeq){return taskMapper.showTaskByTaskseq(taskSeq);}

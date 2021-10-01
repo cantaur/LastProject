@@ -2,10 +2,8 @@ package com.project.pium.controller;
 
 import com.project.pium.domain.MilestoneDTO;
 import com.project.pium.domain.TaskDTO;
-import com.project.pium.service.MemberService;
-import com.project.pium.service.MilestoneService;
-import com.project.pium.service.ProjectmemberService;
-import com.project.pium.service.TaskService;
+import com.project.pium.domain.TaskmemberDTO;
+import com.project.pium.service.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +22,7 @@ public class MilestoneController {
     private MemberService memberService;
     private ProjectmemberService projectmemberService;
     private TaskService taskService;
+    private TaskmemberService taskmemberService;
 
     //현재 로그인한 유저의 세션값 얻어오는 로직 모듈화
     public String currentUserName(Principal principal){
@@ -57,18 +56,21 @@ public class MilestoneController {
     //업무 갯수 뽑아오는 로직 구현중
     @GetMapping("/ajax/{projSeq}/milestonelist")
     public ArrayList<Object> msList(@PathVariable long projSeq){
-        MilestoneDTO milestoneDTO = null;
-
+        
+        List<MilestoneDTO> milestoneList = milestoneService.msListBySeq(projSeq);
+        
+        // MilestoneDTO 말고도 (종료된 업무갯수/생성된 업무갯수) 도 보내줘야 하기 때문에 
+        // for문을 돌려서 담은 Map 배열을 ArrayList에 넣어 반환한다
+        
+        MilestoneDTO milestoneDTO = null; //get메소드로 dto에 담긴 값을 받아오기 위해 초기화
         ArrayList<Object> mileInfo = new ArrayList<>();
 
-
-        List<MilestoneDTO> milestoneList = milestoneService.msListBySeq(projSeq);
         for (int i=0; i<milestoneList.size(); i++) {
             LinkedHashMap<String, Object> tempMile = new LinkedHashMap<>(); //
             milestoneDTO = milestoneList.get(i);
             long mileSeq = milestoneDTO.getMilestone_seq();
-            int countTask = taskService.countTask(mileSeq);
-            int closedTask = taskService.countClosedTask(mileSeq);
+            int countTask = taskService.countTask(mileSeq); //해당 마일스톤에서 생성된 업무의 갯수
+            int closedTask = taskService.countClosedTask(mileSeq); //종료된 업무의 갯수
             tempMile.put("countTask",countTask);
             tempMile.put("closedTask",closedTask);
             tempMile.put("milestone_seq",mileSeq);
@@ -82,7 +84,6 @@ public class MilestoneController {
             tempMile.put("projmember_seq",milestoneDTO.getProjmember_seq());
             tempMile.put("project_seq",milestoneDTO.getProject_seq());
             mileInfo.add(tempMile);
-
 
         }
         log.info("어떻게 나오는지 궁금해!"+mileInfo);
@@ -158,10 +159,43 @@ public class MilestoneController {
     
     //마일스톤 상세페이지>업무 리스트
     @GetMapping("/ajax/milestone/{mileSeq}/tasks")
-    public List<TaskDTO> taskInMilestone(@PathVariable long mileSeq){
+    public ArrayList<Object> taskInMilestone(@PathVariable long mileSeq){
         List<TaskDTO> tasks = taskService.taskListByMile(mileSeq);
-        return tasks;
+
+        ArrayList<Object> mileInfo = new ArrayList<>();
+        LinkedHashMap<String,Object> tempTask = new LinkedHashMap<>();
+
+
+        for(TaskDTO taskDTO1 : tasks){
+
+            List<TaskmemberDTO> taskmemberDTOS= taskmemberService.selectByTaskSeq(taskDTO1.getTask_seq());
+            log.info("#확인"+taskmemberDTOS);
+            tempTask.put("task",taskDTO1);
+            for(int i=0;i<tasks.size();i++){
+
+                tempTask.put("taskMembers",taskmemberDTOS);
+
+            }
+
+            mileInfo.add(tempTask);
+
+
+
+        }
+
+
+        return mileInfo;
     }
+
+    //마일스톤 상세페이지에서 업무당 배정된 담당자를 뽑아오고 싶다
+    @GetMapping("/ajax/milestone/{mileSeq}/tasks/{taskSeq}")
+    public String taskmemInMilestone(@PathVariable long taskSeq){
+
+
+        return null;
+    }
+
+
 
 
 

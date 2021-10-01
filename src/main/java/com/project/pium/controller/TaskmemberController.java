@@ -15,11 +15,7 @@ import java.util.List;
 public class TaskmemberController {
    private TaskmemberService service;
 
-    @GetMapping("TmAll")
-    public List<TaskmemberDTO> TmAll() { //전제 조회
-        List<TaskmemberDTO> list = service.selectAllS();
-        return list;
-    } //http://localhost:8000/Tm/TmAll  성공
+
 
     @GetMapping("selectByTm/{seq}")
     public List<TaskmemberDTO> selectTmS(@PathVariable("seq") long seq){ //업무멤버번호로 조회
@@ -27,11 +23,7 @@ public class TaskmemberController {
         return list;
     } //http://localhost:8000/Tm/selectByTm/2 성공
 
-    @GetMapping("selectByT/{seq}")
-    public List<TaskmemberDTO> selectByT(@PathVariable("seq") long seq){ //업무 번호로 조회
-        List<TaskmemberDTO> list =service.selectByTS(seq);
-        return list;
-    } // http://localhost:8000/Tm/selectByT/2 성공
+
 
     @GetMapping("selectByPm/{seq}")
     public List<TaskmemberDTO> selectByPm(@PathVariable("seq") long seq){

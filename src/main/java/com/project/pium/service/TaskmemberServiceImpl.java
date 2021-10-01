@@ -13,20 +13,20 @@ import java.util.List;
 public class TaskmemberServiceImpl implements TaskmemberService{
     private TaskmemberMapper mapper;
 
+    //업무 번호로 조회
     @Override
-    public List<TaskmemberDTO> selectAllS() { //전체 조회
-        return mapper.selectAll();
+    public List<TaskmemberDTO> selectByTaskSeq(long task_seq) {
+        return mapper.selectByTaskSeq(task_seq);
     }
+
+
 
     @Override
     public List<TaskmemberDTO> selectByTmS(long taskmember_seq) { // 업무멤버번호로 조회
         return mapper.selectByTm(taskmember_seq);
     }
 
-    @Override
-    public List<TaskmemberDTO> selectByTS(long task_seq) { //업무 번호로 조회
-        return mapper.selectByT(task_seq);
-    }
+
 
     @Override
     public List<TaskmemberDTO> selectByPmS(long projmember_seq) { //플젝멤버번호로 조회
