@@ -40,8 +40,8 @@ public class CalendarController {
     }
 */
     @PostMapping("/ajax/test5")
-    public List<CalendarDTO> insertCalMemo (@RequestBody CalendarDTO calendarDTO) {
-        return calendarService.insertCalMemo(calendarDTO);
+    public void insertCalMemo (@RequestBody CalendarDTO calendarDTO) {
+        calendarService.insertCalMemo(calendarDTO);
     }
 
 
