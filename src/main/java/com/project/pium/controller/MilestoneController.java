@@ -1,6 +1,7 @@
 package com.project.pium.controller;
 
 import com.project.pium.domain.MilestoneDTO;
+import com.project.pium.domain.TaskDTO;
 import com.project.pium.service.MemberService;
 import com.project.pium.service.MilestoneService;
 import com.project.pium.service.ProjectmemberService;
@@ -150,6 +151,14 @@ public class MilestoneController {
     public void deleteMileStone(@RequestBody Map<String,Integer> param){
         Long mileSeq= Long.valueOf(param.get("milestone_seq"));
         milestoneService.delMilestone(mileSeq);
+    }
+    
+    
+    //마일스톤 상세페이지>업무 리스트
+    @GetMapping("/ajax/milestone/{mileSeq}/tasks")
+    public List<TaskDTO> taskInMilestone(@PathVariable long mileSeq){
+        List<TaskDTO> tasks = taskService.taskListByMile(mileSeq);
+        return tasks;
     }
 
 

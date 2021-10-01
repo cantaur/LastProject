@@ -15,21 +15,10 @@ public class CalendarServiceImpl implements CalendarService {
 
     private CalendarMapper calendarMapper;
 
-    // 달력 MEMO 입력
+
     @Override
-    public List<CalendarDTO> insertCalMemo(CalendarDTO calendarDTO) {
+    public void insertCalMemo(CalendarDTO calendarDTO) {
         calendarMapper.insertCalMemo(calendarDTO);
-        return null;
-    }
-    // 달력 MEMO 수정
-    @Override
-    public void updateCalMemo(CalendarDTO calendarDTO) {
-        calendarMapper.updateCalMemo(calendarDTO);
-    }
-    // 달력 MEMO 삭제
-    @Override
-    public void DelCalMemo(long calMemoSeq) {
-        calendarMapper.DelCalMemo(calMemoSeq);
     }
 
     @Override

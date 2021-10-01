@@ -32,24 +32,18 @@ public class CalendarController {
         }
     }
 
-    //새 달력 MEMO 만들기
+    /*새 달력 MEMO 만들기
     @PostMapping("/ajax/test5")
-    public List<CalendarDTO> insertCalMemo (@RequestBody CalendarDTO calendarDTO, Principal principal) {
-        String email = currentUserName(principal);
-        long sessionSeq = memberService.findUserNo(email);
-        calendarDTO.setCalendar_seq(sessionSeq);
-
-        List<CalendarDTO> msg = calendarService.insertCalMemo(calendarDTO);
-        log.info("#: " + msg);
-        return msg;
-
+    public void createCal (@RequestBody CalendarDTO calendarDTO) {
+            log.info("calendar create() : " + calendarDTO);
+            calendarService.creatCal(calendarDTO);
+    }
+*/
+    @PostMapping("/ajax/test5")
+    public void insertCalMemo (@RequestBody CalendarDTO calendarDTO) {
+        calendarService.insertCalMemo(calendarDTO);
     }
 
-
-    // 새 달력 MEMO 수정하기
-
-
-    // 새 달력 MEMO 삭제하기
 
     // 로그인한 유저가 참여 중인 모든 프로젝트 리스트 찍기
     @GetMapping("/ajax/LoginProjectAll")
@@ -64,8 +58,8 @@ public class CalendarController {
     //http://127.0.0.1:8000/project/ajax/LoginProjectAll
 
    // 로그인한 유저가 선택한 프로젝트 리스트 찍기
+    /*
     @GetMapping("/ajax/")
-
     //달력 입력
     @PostMapping("createCal")
     public void createCal(@RequestBody CalendarDTO calendarDTO) {

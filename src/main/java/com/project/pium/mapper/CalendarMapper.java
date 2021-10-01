@@ -9,16 +9,10 @@ import java.util.List;
 @Mapper
 @Repository
 public interface CalendarMapper {
-    //---------------------------
-    //MEMO 생성
-    List<CalendarDTO> insertCalMemo(CalendarDTO calendarDTO);
-    //MEMO 수정
-    void updateCalMemo(CalendarDTO calendarDTO);
-    //MEMO 삭제
-    void DelCalMemo(long calMemoSeq);
 
-    //----------------------------
-    
+    //달력 MeMo 입력
+    void insertCalMemo(CalendarDTO calendarDTO);
+
     //달력 입력
     void createCal(CalendarDTO calendarDTO);
 

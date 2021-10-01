@@ -4,28 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.CalendarMapper">
 
-    <!--메모 생성-->
-    <insert id="insertCalMemo" parameterType="CalendarDTO">
-        INSERT INTO calendar (calendar_title, calendar_content, calendar_date, calendar_startdate, calendar_enddate,project_member_seq)
-        VALUES(#{calendar_title},#{calendar_content},#{calendar_date},#{calendar_startdate},#{calendar_enddate},#{project_member_seq})
-    </insert>
 
-    <!--메모 수정-->
-    <update id="updateCalMemo" parameterType="CalendarDTO">
-        UPDATE calendar
-        SET calendar_title = #{calendar_title},
-            calendar_content = #{calendar_content},
-            calendar_date = #{calendar_date},
-            calendar_startdate = #{calendar_startdate},
-            calendar_enddate = #{calendar_enddate},
-            project_member_seq = #{project_member_seq}
-        WHERE calendar_seq = calendar_seq}
-    </update>
-    <!--메모 삭제-->
-    <delete id = "DelCalMemo" parameterType="long">
-        DELETE FROM calendar
-        WHERE calendar_seq = #{calendar_seq}
-    </delete>
+    <!--Memo insert-->
+     <insert id="insertCalMemo" parameterType="CalendarDTO">
+        INSERT INTO calendar (calendar_title,calendar_content,calendar_date,calendar_startdate,calendar_enddate,projmember_seq)
+        VALUES(#{calendar_title},#{calendar_content},#{calendar_date},#{calendar_startdate},#{calendar_enddate},#{projmember_seq})
+    </insert>
 
     <!-- 달력 값 입력 -->
     <!-- front에서 입력 값 받기 전에 확인용으로 -->
