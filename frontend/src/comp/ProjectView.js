@@ -29,13 +29,13 @@ function ProjectView(p){
 
 
   //프로필변경 모달 상태
-  const [profileModal, profileModalCng] = useState(false);
+  const [profileSetModal, profileSetModalCng] = useState(false);
 
-  const profileModalClose = () => {
-    profileModalCng(false)
+  const profileSetModalClose = () => {
+    profileSetModalCng(false)
   };
-  const profileModalOpen = () => {
-    profileModalCng(true)
+  const profileSetModalOpen = () => {
+    profileSetModalCng(true)
   };
 
   //프로필 변경인지 변경알림인지
@@ -142,9 +142,8 @@ function ProjectView(p){
         <HeadSide 
           prjColor={prjColor} 
           prjSeq={prjSeq} 
-          profileMsg={profileMsg} 
           profileMsgCng={profileMsgCng} 
-          profileModalCng={profileModalCng}
+          profileSetModalCng={profileSetModalCng}
         />
         <div className="viewInnerWrap">
           {
@@ -171,11 +170,11 @@ function ProjectView(p){
         <Modal
           aria-labelledby="contained-modal-title-vcenter"
           centered
-          show={profileModal}
-          onHide={profileModalClose}
-          className={'profileModalWrap '+(profileMsg?'':'on')}
+          show={profileSetModal}
+          onHide={profileSetModalClose}
+          className={'profileSetModalWrap '+(profileMsg?'':'on')}
         >
-          <div className="profileModalCon">
+          <div className="profileSetModalCon">
             <div className="msg">
               <b className="prjIcon" style={{backgroundColor:prjColor}}>
                 {p.projectInfo.project_title.trim().substring(0,1)}
@@ -193,7 +192,7 @@ function ProjectView(p){
           </div>
 
 
-          <div className="profileModalCon">
+          <div className="profileSetModalCon">
             <input type="file" id="profileImg" accept=".jpg, .jpeg, .png" style={{display:'none'}} onChange={(e)=>{
               let file = e.target.files[0]
               profileSetInfoCng({
@@ -204,7 +203,7 @@ function ProjectView(p){
             
             }}/>
             <p className="profileSetTitle">
-              <b>&#x1F4DD;</b> 프로필설정
+              프로필 설정
             </p>
             <label htmlFor="profileImg" className="imgBtn">
               {
@@ -260,7 +259,7 @@ function ProjectView(p){
               </FloatingLabel>
             </Form.Group>
             <div className="btnWrap">
-              <button className="submitBtn" onClick={(e)=>{
+              <button className="submitBtn" style={{backgroundColor:prjColor}} onClick={(e)=>{
                 p.dispatch({type:'loadingOn'})
                 e.preventDefault();
                 const formData = new FormData();

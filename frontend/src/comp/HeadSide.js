@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef, useCallback } from "react"
 import {pub, colors, host,axiosHelper} from './Helper.js'
 import DatePicker from './DatePicker.js'
 import {FloatingLabel, Form, Button, Dropdown, Alert, Modal, Row} from 'react-bootstrap'
-import { Link, useParams, withRouter, useHistory, useLocation } from "react-router-dom";
+import { Link, useParams, withRouter, useHistory, useLocation, NavLink } from "react-router-dom";
 import {CSSTransition} from 'react-transition-group';
 import {connect} from 'react-redux';
 
@@ -52,9 +52,21 @@ function HeadSide(p){
     }
   },[])
 
+  //프로필 설정 모달
+  const [profileModal, profileModalCng] = useState(false);
+
+  //프로필 설정 모달_바깥클릭시 닫기 이벤트 핸들러
+  let profileModalClose =useCallback((e)=>{
+    if(!e.target.closest('.profileModalWrap') && !e.target.closest('.modalWrap')){
+      profileModalCng(false)
+      setTimeout(()=>{
+        window.removeEventListener('click', profileModalClose)
+      })
+    }
+  },[])
+
   //초대할 이메일
   const [inviteEmail, inviteEmailCng] = useState();
-
   const [inviteAlert, inviteAlertCng] = useState(false);
   const [inviteAlert2, inviteAlert2Cng] = useState(false);
 
@@ -66,6 +78,13 @@ function HeadSide(p){
   const outAlertClose =()=>{ 
     outMemberCng('');
     outAlertModalCng(false)
+  };
+  
+  //스스로 제외
+  const [outAlertModal2, outAlertModalCng2] = useState(false)
+  const outAlertClose2 =()=>{ 
+    outMemberCng('');
+    outAlertModalCng2(false)
   };
 
   //멤버목록 state
@@ -206,8 +225,12 @@ function HeadSide(p){
 
 
           <div className="profile tipRightBox" onClick={()=>{
-            p.profileMsgCng(false)
-            p.profileModalCng(true)
+            if(!profileModal){
+              setTimeout(()=>{
+                profileModalCng(true)
+                window.addEventListener('click', profileModalClose)
+              })
+            }
           }}>
             <p className="tipRight r45">프로필 설정</p>
             <div className="profileIcon">
@@ -325,60 +348,103 @@ function HeadSide(p){
                 let src = r.projmember_data?'data:image;base64,'+r.projmember_data:'/img/defaultProfile.svg'
                 let name = r.projmember_name?r.projmember_name:'#'+r.member_seq
                 let isManager = r.projmember_type==0?true:false;
+                
                 return(
-                  <div className="memberList on">
-                    <div className="profileImg">
-                      <img src={src}/>
-                    </div>
-                    <div className="profileName">
-                      {
-                        isManager
-                        ?<p className="name">&#x1F451; {name}</p>
-                        :<p className="name">{name}</p>
-                      }
-                      <p className="email">{r.member_email}</p>
-                    </div>
-                    <div className="memberBtnWrap">
-                      {
-                        !isManager &&
-                          <p className="admin" onClick={()=>{
-                            p.dispatch({type:'loadingOn'})
-                            axios.post('/ajax/masterUpdate',{
-                              project_seq:p.prjSeq,
-                              projmember_seq:r.projmember_seq
-                            })
-                            .then(r => {
-                              axios.get('/ajax/allProjMembers/'+p.prjSeq)
-                              .then(r=>{
-                                memberListCng(r.data)
-                                p.dispatch({type:'loadingOff'})
+                  <>
+                    <div className="memberList on">
+                      <div className="profileImg">
+                        <img src={src}/>
+                      </div>
+                      <div className="profileName">
+                        {
+                          isManager
+                          ?<p className="name">&#x1F451; {name}</p>
+                          :<p className="name">{name}</p>
+                        }
+                        <p className="email">{r.member_email}</p>
+                      </div>
+                      <div className="memberBtnWrap">
+                        {
+                          p.loginUser.seq != r.member_seq
+                          ?
+                            !isManager && p.isMaster
+                              ?
+                              <p className="admin" onClick={()=>{
+                                p.dispatch({type:'loadingOn'})
+                                axios.post('/ajax/masterUpdate',{
+                                  project_seq:p.prjSeq,
+                                  projmember_seq:r.projmember_seq
+                                })
+                                .then(r => {
+                                  axios.get('/ajax/allProjMembers/'+p.prjSeq)
+                                  .then(r=>{
+                                    memberListCng(r.data)
+                                    p.dispatch({type:'loadingOff'})
+                                  })
+                                  .catch(e=>{
+                                    console.log(e)
+                                    p.dispatch({type:'loadingOff'})
+                                  })
+                                })
+                                .catch(e => {
+                                  console.log(e)
+                                  p.dispatch({type:'loadingOff'})
+                                })
+                              }}>관리자로</p>
+                            :null
+                          :
+                            <p className="except" onClick={()=>{
+                              outMemberCng({
+                                email:r.member_email,
+                                seq:r.projmember_seq
                               })
-                              .catch(e=>{
-                                console.log(e)
-                                p.dispatch({type:'loadingOff'})
+                              outAlertModalCng2(true)
+                            }}>프로젝트에서 나가기</p>
+                        }
+                        {
+                          p.isMaster && p.loginUser.seq != r.member_seq
+                          ?
+                            <p className="except" onClick={()=>{
+                              outMemberCng({
+                                email:r.member_email,
+                                seq:r.projmember_seq
                               })
-                            })
-                            .catch(e => {
-                              console.log(e)
-                              p.dispatch({type:'loadingOff'})
-                            })
-                          }}>관리자로</p>
-                      }
-                      <p className="except" onClick={()=>{
-                        outMemberCng({
-                          email:r.member_email,
-                          seq:r.projmember_seq
-                        })
-                        outAlertModalCng(true)
-                      }}>제외</p>
+                              outAlertModalCng(true)
+                            }}>제외</p>
+                          :null
+                        }
+                      </div>
                     </div>
-                  </div>
+                  </>
                 )
                 
               })
             }
 
           </div>
+        </div>
+        
+        <div className={"profileModalWrap "+ (profileModal?"on":"")}>
+          <div className="infoWrap">
+            <div className="profileImg">
+              <img src={pub.img+'defaultProfile.svg'}/>
+            </div>
+            <div className="info">
+              <p className="name">순놈 <b>관리자</b></p>
+              <p className="email">tnssha@gmail.com</p>
+            </div>
+          </div>
+          <div className="btnWrap">
+            <p className="profileSetBtn" style={{backgroundColor:p.prjColor}} onClick={()=>{
+              p.profileSetModalCng(true)
+              setTimeout(()=>{
+                profileModalCng(false)
+                window.removeEventListener('click', profileModalClose)
+              })
+            }}>프로필 설정</p>
+            <a href={host+'/logout'} className='logoutBtn'>로그아웃</a>
+          </div>
+          
         </div>
         {
           outMember &&
@@ -418,6 +484,45 @@ function HeadSide(p){
               </Modal.Footer>
             </Modal>
         }
+        {
+          outMember &&
+            <Modal show={outAlertModal2} onHide={outAlertClose2} className="modalWrap">
+              <Modal.Header style={{borderBottom:0}}>
+                <Modal.Title className="modalTitle" >정말 {p.projectInfo.project_title} 프로젝트에서 나가시겠어요? &#x1f625;</Modal.Title>
+              </Modal.Header>
+              <Modal.Footer style={{borderTop:0}}>
+                <Button variant="secondary" onClick={outAlertClose2} style={{fontSize:'.8rem'}}>
+                  취소
+                </Button>
+                <Button variant="danger" onClick={()=>{
+                  p.dispatch({type:'loadingOn'})
+                  axios.post(host+'/ajax/projectout',{
+                    project_seq:p.prjSeq,
+                    projmember_seq:outMember.seq
+                  })
+                  .then(r => {
+                    axios.get('/ajax/allProjMembers/'+p.prjSeq)
+                    .then(r=>{
+                      memberListCng(r.data)
+                      outAlertModalCng(false)
+                      p.dispatch({type:'loadingOff'})
+                      history.push('/project')
+                    })
+                    .catch(e=>{
+                      console.log(e)
+                      p.dispatch({type:'loadingOff'})
+                    })
+                  })
+                  .catch(e => {
+                    console.log(e)
+                    p.dispatch({type:'loadingOff'})
+                  })
+                }} style={{fontSize:'.8rem'}}>
+                  삭제
+                </Button>
+              </Modal.Footer>
+            </Modal>
+        }
         
       </div>
     </>
@@ -425,6 +530,7 @@ function HeadSide(p){
 }
 function transReducer(state){
   return {
+    loginUser:state.loginUser,
     pageInfo:state.pageInfo,
     projectList:state.projectList,
     projectInfo:state.projectInfo,
