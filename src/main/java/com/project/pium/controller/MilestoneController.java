@@ -59,7 +59,7 @@ public class MilestoneController {
     //해당 프로젝트에서 생성된 전체 마일스톤 리스트 보여주기
     //업무 갯수 뽑아오는 로직 구현중
     @GetMapping("/ajax/{projSeq}/milestonelist")
-    public List<MilestoneDTO> msList(@PathVariable long projSeq){
+    public LinkedHashMap<String, Object> msList(@PathVariable long projSeq){
         MilestoneDTO milestoneDTO = null;
         LinkedHashMap<String, Object> mileInfo = new LinkedHashMap<>();
         List<MilestoneDTO> milestoneList = milestoneService.msListBySeq(projSeq);
@@ -82,17 +82,12 @@ public class MilestoneController {
             mileInfo.put("project_seq",milestoneDTO.getProject_seq());
             log.info("어떻게 나오는지 궁금해!"+mileInfo);
         }
-
-
-
-
-
-        return milestoneList;
+        return mileInfo;
     }
     
     //마일스톤 눌러서 들어갔을 때 나오는 마일스톤 상세정보 보여주기
     @GetMapping("/ajax/milestone/{mileSeq}")
-    public MilestoneDTO msListDesc(@PathVariable long mileSeq){
+    public LinkedHashMap<String, Object> msListDesc(@PathVariable long mileSeq){
         LinkedHashMap<String, Object> mileDetail = new LinkedHashMap<>();
         MilestoneDTO milestoneDTO = milestoneService.findMilestoneByMileSeq(mileSeq);
         int countTask = taskService.countTask(mileSeq);
@@ -109,7 +104,7 @@ public class MilestoneController {
 
 
         log.info("어떻게 나오는지 궁금해!"+mileDetail);
-        return milestoneDTO;
+        return mileDetail;
     }
 
     //마일스톤 수정(제목,설명,달력)
