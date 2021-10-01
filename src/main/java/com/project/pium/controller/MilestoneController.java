@@ -11,10 +11,7 @@ import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Log
@@ -59,30 +56,37 @@ public class MilestoneController {
     //해당 프로젝트에서 생성된 전체 마일스톤 리스트 보여주기
     //업무 갯수 뽑아오는 로직 구현중
     @GetMapping("/ajax/{projSeq}/milestonelist")
-    public LinkedHashMap<String, Object> msList(@PathVariable long projSeq){
+    public ArrayList<Object> msList(@PathVariable long projSeq){
         MilestoneDTO milestoneDTO = null;
-        LinkedHashMap<String, Object> mileInfo = new LinkedHashMap<>();
+        LinkedHashMap<String, Object> tempMile = new LinkedHashMap<>(); //
+        ArrayList<Object> mileInfo = new ArrayList<>();
+
+
         List<MilestoneDTO> milestoneList = milestoneService.msListBySeq(projSeq);
         for (int i=0; i<milestoneList.size(); i++) {
             milestoneDTO = milestoneList.get(i);
             long mileSeq = milestoneDTO.getMilestone_seq();
             int countTask = taskService.countTask(mileSeq);
             int closedMile = taskService.countClosedTask(mileSeq);
-            mileInfo.put("countTask",countTask);
-            mileInfo.put("closedMile",closedMile);
-            mileInfo.put("milestone_seq",mileSeq);
-            mileInfo.put("milestone_title",milestoneDTO.getMilestone_title());
-            mileInfo.put("milestone_content",milestoneDTO.getMilestone_content());
-            mileInfo.put("milestone_status",milestoneDTO.getMilestone_status());
-            mileInfo.put("milestone_isdelete",milestoneDTO.getMilestone_isdelete());
-            mileInfo.put("milestone_startdate",milestoneDTO.getMilestone_startdate());
-            mileInfo.put("milestone_duedate",milestoneDTO.getMilestone_duedate());
-            mileInfo.put("milestone_enddate",milestoneDTO.getMilestone_enddate());
-            mileInfo.put("projmember_seq",milestoneDTO.getProjmember_seq());
-            mileInfo.put("project_seq",milestoneDTO.getProject_seq());
-            log.info("어떻게 나오는지 궁금해!"+mileInfo);
+            tempMile.put("countTask",countTask);
+            tempMile.put("closedMile",closedMile);
+            tempMile.put("milestone_seq",mileSeq);
+            tempMile.put("milestone_title",milestoneDTO.getMilestone_title());
+            tempMile.put("milestone_content",milestoneDTO.getMilestone_content());
+            tempMile.put("milestone_status",milestoneDTO.getMilestone_status());
+            tempMile.put("milestone_isdelete",milestoneDTO.getMilestone_isdelete());
+            tempMile.put("milestone_startdate",milestoneDTO.getMilestone_startdate());
+            tempMile.put("milestone_duedate",milestoneDTO.getMilestone_duedate());
+            tempMile.put("milestone_enddate",milestoneDTO.getMilestone_enddate());
+            tempMile.put("projmember_seq",milestoneDTO.getProjmember_seq());
+            tempMile.put("project_seq",milestoneDTO.getProject_seq());
+            mileInfo.add(mileInfo);
+
+
         }
+        log.info("어떻게 나오는지 궁금해!"+mileInfo);
         return mileInfo;
+
     }
     
     //마일스톤 눌러서 들어갔을 때 나오는 마일스톤 상세정보 보여주기
@@ -90,6 +94,7 @@ public class MilestoneController {
     public LinkedHashMap<String, Object> msListDesc(@PathVariable long mileSeq){
         LinkedHashMap<String, Object> mileDetail = new LinkedHashMap<>();
         MilestoneDTO milestoneDTO = milestoneService.findMilestoneByMileSeq(mileSeq);
+
         int countTask = taskService.countTask(mileSeq);
         int closedMile = taskService.countClosedTask(mileSeq);
         mileDetail.put("countTask",countTask);
