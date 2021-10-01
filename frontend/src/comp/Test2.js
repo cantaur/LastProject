@@ -25,9 +25,8 @@ const pColor = {
 color: '#038D7F',
 }
 
-
 function Test2(p){
-    const calendarInfo = useState({
+    const [calendarInfo, setCalendarInfo] = useState({
         calendar_seq:'',
         calendar_title:'',
         calendar_content:'',
@@ -35,6 +34,7 @@ function Test2(p){
         calendar_date:''
     });
     const {calendar_title, calendar_content, calendar_startdate, calendar_date} = calendarInfo;
+
     const events = [
         {
             id: 1,
@@ -63,10 +63,25 @@ function Test2(p){
                 department: 'BioChemistry'
             },
             description: 'Lecture'
+        },
+        {
+            id: 6,
+            title: '백신맞은날',
+            start: '2021-09-30',
+            end: '2021-09-30',
+            description: '화이자맞음'
+        },
+        {
+            title: calendar_title,
+            description: calendar_content,
+            start: calendar_startdate,
+            end: calendar_date
         }
 
 
     ]
+
+
     const [modalShow, setModalShow] = useState(false);
   return(
     <div className="viewOutWrap">
@@ -80,8 +95,8 @@ function Test2(p){
         <FullCalendar
             plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin, bootstrapPlugin ]}
             initialView="dayGridMonth" //초기 달력모양 설정값
-            eventContent= {renderEventContent } // 이벤트 내용
-            dateClick={()=>setModalShow(true)} // 데이트를 클릭 시 이벤트 발생 o
+            eventContent= {RenderEventContent } // 이벤트 내용
+            dateClick={(p)=>setModalShow(true)} // 데이트를 클릭 시 이벤트 발생 o
             eventClick={content}
             weekends={true} //주말 보이게하려면 = true
             headerToolbar={{        //캘린더 헤더툴바 내용
@@ -105,7 +120,7 @@ function Test2(p){
   )
     function content(info){
        alert(
-           "Title ID : "+info.event.titleId+"\n"+
+           "ID : "+info.event.id+"\n"+
            "Title : "+info.event.title+"\n"+
            "StartDate : "+info.event.start+"\n"+
            "EndDate : "+info.event.end+"\n"+
@@ -115,6 +130,26 @@ function Test2(p){
     }
 
     function CreateDateModal(p){
+
+        function dateCreate(e){
+            e.preventDefault()
+          console.log(e.currentTarget.calendar_title.value)
+          console.log(e.currentTarget.calendar_content.value)
+          // console.log(e.currentTarget.startDate.value)
+          // console.log(e.currentTarget.endDate.value)
+        }
+        function createDate(e){
+          const {value, name} = e.target;
+            e.preventDefault()
+            setCalendarInfo({
+                ...setCalendarInfo,
+                [name]: value
+            });
+            console.log(name)
+            console.log(value)
+        }
+
+
         return(
             <Modal
                 key="fade"
@@ -130,28 +165,30 @@ function Test2(p){
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                <Form id="create-form" onSubmit={dateCreate}>
                 <Form.Group className="mb-2 piumInput" controlId="floatingInput">
                     <FloatingLabel
                         controlId="floatingInput"
                         label="일정 제목"
                     >
-                        <Form.Control type="text" placeholder="일정 제목" name="project_title" value={p.calendar_title} spellCheck="false" />
+                        <Form.Control id="calendar_title" type="text" placeholder="일정 제목" name="calendar_title" defaultValue={calendar_title} spellCheck="false" />
                     </FloatingLabel>
                 </Form.Group>
                 <Form.Group className="piumInput" controlId="floatingTextarea">
                     <FloatingLabel controlId="floatingTextarea" label="설명">
-                        <Form.Control type="textarea" placeholder="설명" name="project_content" value={p.calendar_content} spellCheck="false" />
+                        <Form.Control type="textarea" placeholder="설명" name="calendar_content" defaultValue={calendar_content} spellCheck="false" />
                     </FloatingLabel>
                 </Form.Group>
 
                 <Form.Group className="form-floating">
                     <p className="schedule-div">
-                        <i className="far fa-calendar-check"></i> 스케줄  <SelectDate/>
+                        <i className="far fa-calendar-check"></i> 스케줄  <SelectDate />
                     </p>
                 </Form.Group>
+                </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant={"outline-primary"} onClick={()=>setModalShow(false)}>
+                <Button form="create-form" type="submit" variant={"outline-primary"} >
                     확인
                 </Button>
                 <Button variant={"secondary"} onClick={()=>setModalShow(false)}>
@@ -162,7 +199,10 @@ function Test2(p){
             </Modal>
         )
     }
-    function renderEventContent(eventInfo) {
+
+
+
+    function RenderEventContent(eventInfo) {
         return (
             <div>
                 <b>{eventInfo.timeText}</b>
