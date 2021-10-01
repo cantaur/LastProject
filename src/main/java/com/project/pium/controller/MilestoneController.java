@@ -124,6 +124,7 @@ public class MilestoneController {
         for(TaskDTO taskDTO1 : tasks){
             LinkedHashMap<String,Object> tempTask = new LinkedHashMap<>();
 
+            //결과로 나온 업무리스트의 label_seq를 뽑아서 업무에 있는 label_title을 뽑는다
             LabelDTO labelDTO = taskService.findLabelTitle(taskDTO1.getLabel_seq());
 
             //결과로 나온 업무리스트에서 task_seq를 뽑아서 업무당 배정된 멤버를 뽑아와서 새 배열에 넣는다.

@@ -6,14 +6,13 @@ import java.util.List;
 
 public interface TaskmemberService {
 
+    //마일스톤 페이지(지우면 안됨) : 업무당 배정된 멤버
     List<TaskmemberDTO> selectByTaskSeq(long task_seq); // 업무 번호로 조회
 
 
 
     List<TaskmemberDTO> selectByTmS(long taskmember_seq); //업무 멤버번호로 조회
-
     List<TaskmemberDTO> selectByPmS(long projmember_seq); //플젝멤버번호로 조회
-
     void insertByTmS(TaskmemberDTO DTO); //추가
     void deleteS(long Taskmember_seq); //삭제
 }

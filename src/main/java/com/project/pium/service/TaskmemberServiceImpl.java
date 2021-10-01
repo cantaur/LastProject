@@ -13,7 +13,7 @@ import java.util.List;
 public class TaskmemberServiceImpl implements TaskmemberService{
     private TaskmemberMapper mapper;
 
-    //업무 번호로 조회
+    //마일스톤 페이지(지우면 안됨) : 업무당 배정된 멤버
     @Override
     public List<TaskmemberDTO> selectByTaskSeq(long task_seq) {
         return mapper.selectByTaskSeq(task_seq);

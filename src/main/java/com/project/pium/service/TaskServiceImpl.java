@@ -19,26 +19,6 @@ public class TaskServiceImpl implements TaskService {
     private WorklabelMapper worklabelMapper;
 
 
-    //마일스톤 상세 페이지에서 milestone_seq=? 위치에 생성된 모든 업무 리스트 조회
-    @Override
-    public List<TaskDTO> taskListByMile(long mileSeq){
-        List<TaskDTO> tasks= taskMapper.taskListByMile(mileSeq);
-        log.info("#마일스톤=?에서 생성된 업무들"+tasks);
-
-        return tasks;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
     @Override
     public void createTask(TaskDTO taskDTO) {
         taskMapper.createTask(taskDTO);
@@ -49,15 +29,47 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.taskList(projSeq);
     }
 
+    //마일스톤 페이지(지우면 안됨) 해당 마일스톤에서 생성된 업무 갯수
     @Override
     public int countTask(long mileSeq) {
         return taskMapper.countTask(mileSeq);
     }
 
+    //마일스톤 페이지(지우면 안됨) 해당 마일스톤에서 완료된 업무의 갯수
     @Override
     public int countClosedTask(long mileSeq) {
         return taskMapper.countClosedTask(mileSeq);
     }
+
+    //마일스톤 상세 페이지에서 milestone_seq=? 위치에 생성된 모든 업무 리스트 조회
+    @Override
+    public List<TaskDTO> taskListByMile(long mileSeq){
+        List<TaskDTO> tasks= taskMapper.taskListByMile(mileSeq);
+        log.info("#마일스톤=?에서 생성된 업무들"+tasks);
+
+        return tasks;
+    }
+
+    //마일스톤 페이지(지우면 안됨) labelSeq로 라벨 이름 조회
+    @Override
+    public LabelDTO findLabelTitle(long labelSeq) {
+        return worklabelMapper.findLabelTitle(labelSeq);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -91,10 +103,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void updateDate(TaskDTO task){taskMapper.updateDate(task);}
 
-    @Override
-    public LabelDTO findLabelTitle(long labelSeq) {
-        return worklabelMapper.findLabelTitle(labelSeq);
-    }
+
 
 
 }
