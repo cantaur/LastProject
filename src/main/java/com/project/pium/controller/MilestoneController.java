@@ -94,6 +94,7 @@ public class MilestoneController {
         int closedMile = taskService.countClosedTask(mileSeq);
         mileDetail.put("countTask",countTask);
         mileDetail.put("closedMile",closedMile);
+        mileDetail.put("milestone_seq",milestoneDTO.getMilestone_seq());
         mileDetail.put("milestone_title",milestoneDTO.getMilestone_title());
         mileDetail.put("milestone_content",milestoneDTO.getMilestone_content());
         mileDetail.put("milestone_status",milestoneDTO.getMilestone_status());
