@@ -80,7 +80,7 @@ public class MilestoneController {
             tempMile.put("milestone_enddate",milestoneDTO.getMilestone_enddate());
             tempMile.put("projmember_seq",milestoneDTO.getProjmember_seq());
             tempMile.put("project_seq",milestoneDTO.getProject_seq());
-            mileInfo.add(mileInfo);
+            mileInfo.add(tempMile);
 
 
         }
