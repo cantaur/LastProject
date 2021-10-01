@@ -20,6 +20,12 @@ public interface TaskmemberMapper {
 
 
 
+
+
+
+
+
+
     List<TaskmemberDTO> selectByTm(long taskmember_seq); //업무 멤버번호로 조회
 
     List<TaskmemberDTO> selectByPm(long projmember_seq); //플젝멤버번호로 조회

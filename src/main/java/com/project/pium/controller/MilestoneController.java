@@ -1,5 +1,6 @@
 package com.project.pium.controller;
 
+import com.project.pium.domain.LabelDTO;
 import com.project.pium.domain.MilestoneDTO;
 import com.project.pium.domain.TaskDTO;
 import com.project.pium.domain.TaskmemberDTO;
@@ -37,7 +38,7 @@ public class MilestoneController {
     //마일스톤 생성하기
     @PostMapping("/ajax/createMileStone")
     public String createMile(@RequestBody MilestoneDTO milestoneDTO, Principal principal){
-        log.info("#milestoneDTO 생성: "+milestoneDTO);
+
         long projSeq= milestoneDTO.getProject_seq();
 
         //1. 접속한 유저 이메일로 memberSeq 찾음
@@ -53,7 +54,6 @@ public class MilestoneController {
     
 
     //해당 프로젝트에서 생성된 전체 마일스톤 리스트 보여주기
-    //업무 갯수 뽑아오는 로직 구현중
     @GetMapping("/ajax/{projSeq}/milestonelist")
     public ArrayList<Object> msList(@PathVariable long projSeq){
         
@@ -86,11 +86,11 @@ public class MilestoneController {
             mileInfo.add(tempMile);
 
         }
-        log.info("어떻게 나오는지 궁금해!"+mileInfo);
+
         return mileInfo;
 
     }
-    
+
     //마일스톤 눌러서 들어갔을 때 나오는 마일스톤 상세정보 보여주기
     @GetMapping("/ajax/milestone/{mileSeq}")
     public LinkedHashMap<String, Object> msListDesc(@PathVariable long mileSeq){
@@ -110,15 +110,40 @@ public class MilestoneController {
         mileDetail.put("milestone_enddate",milestoneDTO.getMilestone_enddate());
         mileDetail.put("projmember_seq",milestoneDTO.getProjmember_seq());
 
-
-        log.info("어떻게 나오는지 궁금해!"+mileDetail);
         return mileDetail;
     }
+
+    //마일스톤 상세페이지>업무 리스트
+    @GetMapping("/ajax/milestone/{mileSeq}/tasks")
+    public ArrayList<Object> taskInMilestone(@PathVariable long mileSeq){
+
+        //해당 마일스톤에서 생성된 업무 조회
+        List<TaskDTO> tasks = taskService.taskListByMile(mileSeq);
+        ArrayList<Object> mileInfo = new ArrayList<>();
+
+        for(TaskDTO taskDTO1 : tasks){
+            LinkedHashMap<String,Object> tempTask = new LinkedHashMap<>();
+
+            LabelDTO labelDTO = taskService.findLabelTitle(taskDTO1.getLabel_seq());
+
+            //결과로 나온 업무리스트에서 task_seq를 뽑아서 업무당 배정된 멤버를 뽑아와서 새 배열에 넣는다.
+            List<TaskmemberDTO> taskmemberDTOS= taskmemberService.selectByTaskSeq(taskDTO1.getTask_seq());
+
+            tempTask.put("task",taskDTO1);
+            tempTask.put("taskMembers",taskmemberDTOS);
+            tempTask.put("label", labelDTO);
+
+
+            mileInfo.add(tempTask);
+        }
+        return mileInfo;
+    }
+
+
 
     //마일스톤 수정(제목,설명,달력)
     @PostMapping("/ajax/updateMileStone")
     public void updateMileStone(@RequestBody MilestoneDTO milestoneDTO, Principal principal){
-        log.info("#milestoneDTO 수정: "+milestoneDTO);
         milestoneService.updateMilestone(milestoneDTO);
     }
 
@@ -127,8 +152,6 @@ public class MilestoneController {
     public void setDateEmpty(@PathVariable long mileSeq){
         milestoneService.setDateEmpty(mileSeq);
     }
-
-
 
 
     // 마일스톤 완료상태로 전환
@@ -155,72 +178,6 @@ public class MilestoneController {
         Long mileSeq= Long.valueOf(param.get("milestone_seq"));
         milestoneService.delMilestone(mileSeq);
     }
-    
-    
-    //마일스톤 상세페이지>업무 리스트
-    @GetMapping("/ajax/milestone/{mileSeq}/tasks")
-    public ArrayList<Object> taskInMilestone(@PathVariable long mileSeq){
-        List<TaskDTO> tasks = taskService.taskListByMile(mileSeq);
-
-        ArrayList<Object> mileInfo = new ArrayList<>();
-        LinkedHashMap<String,Object> tempTask = new LinkedHashMap<>();
-
-
-        for(TaskDTO taskDTO1 : tasks){
-
-            List<TaskmemberDTO> taskmemberDTOS= taskmemberService.selectByTaskSeq(taskDTO1.getTask_seq());
-            log.info("#확인"+taskmemberDTOS);
-            tempTask.put("task",taskDTO1);
-            for(int i=0;i<tasks.size();i++){
-
-                tempTask.put("taskMembers",taskmemberDTOS);
-
-            }
-
-            mileInfo.add(tempTask);
-
-
-
-        }
-
-
-        return mileInfo;
-    }
-
-    //마일스톤 상세페이지에서 업무당 배정된 담당자를 뽑아오고 싶다
-    @GetMapping("/ajax/milestone/{mileSeq}/tasks/{taskSeq}")
-    public String taskmemInMilestone(@PathVariable long taskSeq){
-
-
-        return null;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

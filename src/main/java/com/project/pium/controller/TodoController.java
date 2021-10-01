@@ -42,9 +42,9 @@ public class TodoController {
     //projMemberSeq로 불러 올 수 있는지 봐야함
     @GetMapping("/ajax/mytodo/{projMemberSeq}")
     public List<TodoDTO> selectBySeq(@PathVariable long projMemberSeq){
-        log.info("절망적이다"+projMemberSeq);
+
         List<TodoDTO> list = todoService.selectBySeqS(projMemberSeq);
-        log.info("절망적이라고"+list);
+        log.info("#내가 생성한 to do list"+list);
         return list;
     }
 

@@ -1,8 +1,10 @@
 package com.project.pium.service;
 
+import com.project.pium.domain.LabelDTO;
 import com.project.pium.domain.TaskDTO;
 import com.project.pium.domain.TaskmemberDTO;
 import com.project.pium.mapper.TaskMapper;
+import com.project.pium.mapper.WorklabelMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ import java.util.List;
 @Service
 public class TaskServiceImpl implements TaskService {
     private TaskMapper taskMapper;
+    private WorklabelMapper worklabelMapper;
+
 
     //마일스톤 상세 페이지에서 milestone_seq=? 위치에 생성된 모든 업무 리스트 조회
     @Override
@@ -86,4 +90,11 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void updateDate(TaskDTO task){taskMapper.updateDate(task);}
+
+    @Override
+    public LabelDTO findLabelTitle(long labelSeq) {
+        return worklabelMapper.findLabelTitle(labelSeq);
+    }
+
+
 }

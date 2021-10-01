@@ -111,7 +111,7 @@ public class SignController {
     //네이버 로그인 성공시 callback호출 메소드
     @RequestMapping(value = "/sign/naverlogin")
     public String callback(@RequestParam String code, @RequestParam String state, HttpSession session, HttpServletRequest request) throws Exception {
-        log.info("여기는 callback");
+
         OAuth2AccessToken oauthToken;
         oauthToken = naverLoginBO.getAccessToken(session, code, state);
         log.info("#session"+session);

@@ -1,5 +1,6 @@
 package com.project.pium.mapper;
 
+import com.project.pium.domain.LabelDTO;
 import com.project.pium.domain.TaskDTO;
 import com.project.pium.domain.TaskmemberDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -39,4 +40,7 @@ public interface TaskMapper {
     void updatePriority(TaskDTO task);
     //날짜 업데이트
     void updateDate(TaskDTO task);
+
+
+
 }

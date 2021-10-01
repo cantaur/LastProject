@@ -19,6 +19,7 @@ public class TaskDTO {
     private Date task_startdate;
     private Date task_duedate;
     private Date task_enddate;
+    private long projmember_seq;
     private long milestone_seq;
     private long project_seq;
     private String priority_code;

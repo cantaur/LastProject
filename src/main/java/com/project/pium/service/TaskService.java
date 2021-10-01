@@ -1,5 +1,6 @@
 package com.project.pium.service;
 
+import com.project.pium.domain.LabelDTO;
 import com.project.pium.domain.TaskDTO;
 import com.project.pium.domain.TaskmemberDTO;
 
@@ -36,4 +37,7 @@ public interface TaskService {
     void updatePriority(TaskDTO task);
     //날짜 업데이트
     void updateDate(TaskDTO task);
+
+    LabelDTO findLabelTitle(long labelSeq);
+
 }
