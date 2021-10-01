@@ -109,6 +109,7 @@ function MileStone(p){
     })
   },[location])
 
+  console.log(p.isMaster)
   return(
     <div className="pageContentWrap mileStoneWrap">
       

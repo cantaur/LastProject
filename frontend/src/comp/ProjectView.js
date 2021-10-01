@@ -60,8 +60,7 @@ function ProjectView(p){
 
   //페이지 최초 접속시
   useEffect(()=>{
-    //프론트용 샘플
-    // p.dispatch({type:'login', email:'sudosoon@gmail.com', seq:3})
+    
     const isPage = pages.find(e=> e === page)
     if(isPage == undefined){
       history.push('/404')
@@ -69,8 +68,8 @@ function ProjectView(p){
       p.dispatch({type:"pagePush", val:isPage})
     }
 
-    // 프로젝트 리스트 가져옴 (프론트용 샘플, myproject로 보내면댐)
-    axios.get(host+'/ajax/myproject')
+    // 프로젝트 리스트 가져옴
+    axios.get(host+'/ajax/myproject') //프론트용 샘플
     .then(r=>{
       p.dispatch({type:'projectListCng', val:r.data})
     })
@@ -92,6 +91,9 @@ function ProjectView(p){
 
   // 프로젝트 리스트를 가져온 후
   useEffect(()=>{
+    //프론트용 샘플
+    // p.dispatch({type:'login', email:'sudosoon@gmail.com', seq:3})
+
     //현재 프로젝트 정보 갱신
     if(p.projectList){
       p.projectList.map((r,i)=>{
@@ -105,14 +107,12 @@ function ProjectView(p){
 
   //현재 프로젝트 정보 갱신한 후
   useEffect(()=>{
+    console.log(p.loginUser.seq)
     //현재 프로젝트의 내 멤버 정보
     if(p.memberList){
       p.memberList.map((r,i)=>{
         //실제
-        if(r.member_seq == p.loginUser.seq){ 
-
-        //프론트용 샘플
-        // if(r.member_seq == 3){ 
+        if(r.member_seq == p.loginUser.seq){
           if(r.projmember_type == 0){
             p.dispatch({type:'isMasterCng', val:true})
           }
