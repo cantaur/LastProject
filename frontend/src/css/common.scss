@@ -1684,6 +1684,7 @@ body{
           .bar{
             height: 100%;
             border-radius: 100px;
+            min-width: 8px !important;
           }
         }
         .date {
@@ -1784,9 +1785,18 @@ body{
         .type{
           text-align: center;
           font-size: .8rem;
-          font-weight: bold;
-          &.a{
-            color:$cRedd
+          &.긴급{
+            color:$cRedd;
+            font-weight: bold;
+          }
+          &.높음{
+            color:$cRed;
+          }
+          &.보통{
+            color:$c1;
+          }
+          &.없음{
+            color:#555;
           }
         }
         .title{

@@ -303,9 +303,16 @@ function StoneList(p){
           
           <div className="progressBar toolTipTopBox">
             <div className="toolTip" style={{marginLeft:'0px', left:'0%'}}>
-              전체 업무 : {p.taskCnt}, 완료된 업무 : {p.completeTaskCnt}, 완료율 : {Math.round((p.completeTaskCnt/p.taskCnt)*100)}%
+              전체 업무 : {p.taskCnt}, 완료된 업무 : {p.completeTaskCnt}, 완료율 : {
+                p.completeTaskCnt != 0 
+                ?Math.round((p.completeTaskCnt/p.taskCnt)*100)
+                :0
+              }%
             </div>
-            <div className="bar" style={{backgroundColor:p.color,width:Math.round((p.completeTaskCnt/p.taskCnt)*100)+'%'}}></div>
+            <div className="bar" style={{backgroundColor:p.color,width:
+                p.completeTaskCnt != 0 
+                ?Math.round((p.completeTaskCnt/p.taskCnt)*100)
+                :0+'%'}}></div>
           </div>
         </div>      
       </div>

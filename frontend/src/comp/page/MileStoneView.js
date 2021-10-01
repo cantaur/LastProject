@@ -8,6 +8,10 @@ import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstr
 import { Link, useParams, withRouter, useHistory } from "react-router-dom";
 import {connect} from 'react-redux';
 import NonePage from "../NonePage.js";
+import LinearProgress from '@mui/material/LinearProgress';
+import Box from '@mui/material/Box';
+
+
 
 
 
@@ -19,6 +23,8 @@ function MileStoneView(p){
   //마일스톤 정보
   const [mileStoneInfo, mileStoneInfoCng] = useState();
 
+  //마일스톤의 업무 리스트
+  const [taskList, taskListCng] = useState();
 
   let dateModalClose =useCallback((e)=>{
     if(!e.target.closest('.DayPicker_1') ){
@@ -29,6 +35,29 @@ function MileStoneView(p){
       })
     }
   },[])
+
+  const memberInfoGetFunc = (seq) =>{
+    let info = {
+      name:'',
+      data:''
+    }
+    p.memberList.map(r=>{
+      if(r.projmember_seq == seq){
+        if(r.projmember_data){
+          info.data = 'data:image;base64,'+r.projmember_data;
+        }else{
+          info.data = pub.img+'defaultProfile.svg'
+        }
+        if(r.projmember_name){
+          info.name = r.projmember_name
+        }else {
+          info.name = '#'+r.member_seq
+        }
+      }
+    })
+    return info;
+  }
+
 
   const mileStoneUpdate = (info) =>{
     p.dispatch({type:'loadingOn'})
@@ -62,10 +91,7 @@ function MileStoneView(p){
     .then(r=>{
       axios.get(host+'/ajax/milestone/'+mileStoneSeq)
       .then(r=>{
-        // console.log(r.data)
-        
         mileStoneInfoCng(r.data)
-        
         p.dispatch({type:'loadingOff'})
       })
       .catch(e=>{
@@ -81,11 +107,24 @@ function MileStoneView(p){
   }
 
   useEffect(()=>{
+
+    //마일스톤 정보
     p.dispatch({type:'loadingOn'})
     axios.get(host+'/ajax/milestone/'+mileStoneSeq)
     .then(r=>{
-      // console.log(r.data)
       mileStoneInfoCng(r.data)
+      p.dispatch({type:'loadingOff'})
+
+    })
+    .catch(e=>{
+      console.log(e)
+      p.dispatch({type:'loadingOff'})
+    })
+
+    // 마일스톤 하위 업무 리스트
+    axios.get(host+'/ajax/milestone/'+mileStoneSeq+'/tasks')
+    .then(r=>{
+      taskListCng(r.data)
       p.dispatch({type:'loadingOff'})
     })
     .catch(e=>{
@@ -93,6 +132,9 @@ function MileStoneView(p){
       p.dispatch({type:'loadingOff'})
     })
   },[])
+
+  console.log(taskList)
+  console.log(p.memberList)
 
   return(
     <div className="pageContentWrap mileStoneWrap">
@@ -109,8 +151,8 @@ function MileStoneView(p){
               milestone_content={mileStoneInfo.milestone_content}
               color={seqColorTrans(mileStoneInfo.milestone_seq)} 
               
-              completeTaskCnt={1}
-              taskCnt={2}
+              completeTaskCnt={mileStoneInfo.closedTask}
+              taskCnt={mileStoneInfo.countTask}
               milestone_startdate={mileStoneInfo.milestone_startdate}
               milestone_duedate={mileStoneInfo.milestone_duedate}
               isView={true}
@@ -134,157 +176,81 @@ function MileStoneView(p){
                   <p className="sortBtn w80">작성자 <i class="fas fa-caret-down"></i></p>
                 </div>
               </div>
+            {
+              taskList
+              ?
+                taskList.length != 0
+                ? 
+                  taskList.map((r,i)=>{
+                    const typeArr = {
+                      '10':'긴급',
+                      '20':'높음',
+                      '30':'보통'
+                    }
+                    let writerInfo = memberInfoGetFunc(r.task.projmember_seq)
 
-              <div className="taskList">
-                <div className="taskRow">
-                  <p className="title">업무의 제목이 들어감 업무의 제목이 들어감업무의 제목이 들어감업무의 제목이 들어감</p>
-                  <div className="infoWrap">
-                    {/* 담당자 */}
-                    <div className="profileWrap w120">
-                      
-                      <div className="profileImg toolTipTopBox">
-                        <p className="toolTip">이름이들어감</p>
-                        <div>
-                          <img src={pub.img+'defaultProfile.svg'}/>
+                    return(
+                      r.task.task_isdelete != 1
+                      ?
+                        <div className="taskList">
+                        <div className="taskRow">
+                          <p className="title">{r.task.task_title}</p>
+                          <div className="infoWrap">
+                            {/* 담당자 */}
+                            <div className="profileWrap w120">
+
+                              {
+                                r.taskMembers
+                                ?
+                                  r.taskMembers.map(r=>{
+                                    let chargeInfo = memberInfoGetFunc(r.projmember_seq)
+                                    return(
+                                      <div className="profileImg toolTipTopBox">
+                                        <p className="toolTip">{chargeInfo.name}</p>
+                                        <div>
+                                          <img src={chargeInfo.data}/>
+                                        </div>
+                                      </div>
+                                    )
+                                  })
+                                :<b>없음</b>
+                              }
+                              
+
+
+                            </div>
+                            {/* 중요도 */}
+                            <p className={"type w80 " + (r.task.priority_code?typeArr[r.task.priority_code]:'없음')}>{r.task.priority_code?typeArr[r.task.priority_code]:'없음'}</p>
+                            {/* 라벨 */}
+                            <div className="label w120">
+                              {
+                                r.label 
+                                ?
+                                  <b style={{backgroundColor:seqColorTrans(r.label.label_seq)}}>
+                                    {r.label.label_title}
+                                  </b>
+                                : 
+                                  <b style={{backgroundColor:'#ccc',color:'#555'}}>
+                                    없음
+                                  </b>
+                              }
+                            </div>
+                            {/* 작성자 */}
+                            <div className="profileImg writer toolTipTopBox">
+                                <p className="toolTip">{writerInfo.name}</p>
+                                <div>
+                                  <img src={writerInfo.data}/>
+                                </div>
+                              </div>
+                          </div>
                         </div>
                       </div>
-                      <div className="profileImg toolTipTopBox">
-                        <p className="toolTip">이름이들어감</p>
-                        <div>
-                          <img src={pub.img+'defaultProfile.svg'}/>
-                        </div>
-                      </div>
-                      <div className="profileImg toolTipTopBox">
-                        <p className="toolTip">이름이들어감</p>
-                        <div>
-                          <img src={pub.img+'defaultProfile.svg'}/>
-                        </div>
-                      </div>
-                      
-                    </div>
-                    {/* 중요도 */}
-                    <p className="type a w80">긴급</p>
-                    {/* 라벨 */}
-                    <div className="label w120">
-                      <b style={{backgroundColor:p.prjColor}}>라벨이 들어감라벨이 들어감라벨이 들어감라벨이 들어감</b>
-                    </div>
-                    {/* 작성자 */}
-                    <div className="profileImg writer toolTipTopBox">
-                        <p className="toolTip">이름이들어감</p>
-                        <div>
-                          <img src={pub.img+'defaultProfile.svg'}/>
-                        </div>
-                      </div>
-                  </div>
-                </div>
-                <div className="taskRow">
-                  <p className="title">업무의 제목이 들어감 업무의 제목이 들어감업무의 제목이 들어감업무의 제목이 들어감</p>
-                  <div className="infoWrap">
-                    {/* 담당자 */}
-                    <div className="profileWrap w120">
-                      
-                      <div className="profileImg toolTipTopBox">
-                        <p className="toolTip">이름이들어감</p>
-                        <div>
-                          <img src={pub.img+'defaultProfile.svg'}/>
-                        </div>
-                      </div>
-                      <div className="profileImg toolTipTopBox">
-                        <p className="toolTip">이름이들어감</p>
-                        <div>
-                          <img src={pub.img+'defaultProfile.svg'}/>
-                        </div>
-                      </div>
-                      <div className="profileImg toolTipTopBox">
-                        <p className="toolTip">이름이들어감</p>
-                        <div>
-                          <img src={pub.img+'defaultProfile.svg'}/>
-                        </div>
-                      </div>
-                      
-                    </div>
-                    {/* 중요도 */}
-                    <p className="type a w80">긴급</p>
-                    {/* 라벨 */}
-                    <div className="label w120">
-                      <b style={{backgroundColor:p.prjColor}}>라벨이 들어감라벨이 들어감라벨이 들어감라벨이 들어감</b>
-                    </div>
-                    {/* 작성자 */}
-                    <div className="profileImg writer toolTipTopBox">
-                        <p className="toolTip">이름이들어감</p>
-                        <div>
-                          <img src={pub.img+'defaultProfile.svg'}/>
-                        </div>
-                      </div>
-                  </div>
-                </div>
-                <div className="taskRow">
-                  <p className="title">업무의 제목이 들어감 업무의 제목이 들어감업무의 제목이 들어감업무의 제목이 들어감</p>
-                  <div className="infoWrap">
-                    {/* 담당자 */}
-                    <div className="profileWrap w120">
-                      
-                      <div className="profileImg toolTipTopBox">
-                        <p className="toolTip">이름이들어감</p>
-                        <div>
-                          <img src={pub.img+'defaultProfile.svg'}/>
-                        </div>
-                      </div>
-                      <div className="profileImg toolTipTopBox">
-                        <p className="toolTip">이름이들어감</p>
-                        <div>
-                          <img src={pub.img+'defaultProfile.svg'}/>
-                        </div>
-                      </div>
-                      <div className="profileImg toolTipTopBox">
-                        <p className="toolTip">이름이들어감</p>
-                        <div>
-                          <img src={pub.img+'defaultProfile.svg'}/>
-                        </div>
-                      </div>
-                      <div className="profileImg toolTipTopBox">
-                        <p className="toolTip">이름이들어감</p>
-                        <div>
-                          <img src={pub.img+'defaultProfile.svg'}/>
-                        </div>
-                      </div>
-                      <div className="profileImg toolTipTopBox">
-                        <p className="toolTip">이름이들어감</p>
-                        <div>
-                          <img src={pub.img+'defaultProfile.svg'}/>
-                        </div>
-                      </div>
-                      <div className="profileImg toolTipTopBox">
-                        <p className="toolTip">이름이들어감</p>
-                        <div>
-                          <img src={pub.img+'defaultProfile.svg'}/>
-                        </div>
-                      </div>
-                      <div className="profileImg toolTipTopBox">
-                        <p className="toolTip">이름이들어감</p>
-                        <div>
-                          <img src={pub.img+'defaultProfile.svg'}/>
-                        </div>
-                      </div>
-                      
-                    </div>
-                    {/* 중요도 */}
-                    <p className="type a w80">긴급</p>
-                    {/* 라벨 */}
-                    <div className="label w120">
-                      <b style={{backgroundColor:p.prjColor}}>라벨이 들어감라벨이 들어감라벨이 들어감라벨이 들어감</b>
-                    </div>
-                    {/* 작성자 */}
-                    <div className="profileImg writer toolTipTopBox">
-                        <p className="toolTip">이름이들어감</p>
-                        <div>
-                          <img src={pub.img+'defaultProfile.svg'}/>
-                        </div>
-                      </div>
-                  </div>
-                </div>
-              
-              </div>
+                      :null
+                    )
+                  })
+                : <p className="noTaskMsg">업무가 없습니다.</p>
+              : <Box sx={{ width: '100%' }}><LinearProgress /></Box>
+            }
             </div>
           </>
         }
@@ -305,6 +271,7 @@ function MileStoneView(p){
 function transReducer(state){
   return {
     datePickerModal : state.datePickerModal,
+    memberList:state.memberList
   }
 }
 

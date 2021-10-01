@@ -24,9 +24,6 @@ function ProjectView(p){
   const prjColor = seqColorTrans(prjSeq);
 
 
-  //이 프로젝트의 내정보
-  const [myMemberInfo,myMemberInfoCng]=useState();
-
 
   //프로필변경 모달 상태
   const [profileSetModal, profileSetModalCng] = useState(false);
@@ -107,7 +104,6 @@ function ProjectView(p){
 
   //현재 프로젝트 정보 갱신한 후
   useEffect(()=>{
-    console.log(p.loginUser.seq)
     //현재 프로젝트의 내 멤버 정보
     if(p.memberList){
       p.memberList.map((r,i)=>{
@@ -126,13 +122,17 @@ function ProjectView(p){
 
   useEffect(()=>{
     //프로필 수정용 데이터 입력
-    if(myMemberInfo){
+    if(p.myMemberInfo){
       profileSetInfoCng({
         ...profileSetInfo,
-        name:myMemberInfo.projmember_name,
+        name:p.myMemberInfo.projmember_name,
       })
+      if(p.myMemberInfo.projmember_data == null && p.myMemberInfo.projmember_name == ""){
+        profileMsgCng(true)
+        profileSetModalCng(true)
+      }
     }
-  },[myMemberInfo])
+  },[p.myMemberInfo])
 
   return(
     <>
@@ -207,14 +207,14 @@ function ProjectView(p){
             </p>
             <label htmlFor="profileImg" className="imgBtn">
               {
-                myMemberInfo //여기는 나중에 없애셈..
+                p.myMemberInfo //여기는 나중에 없애셈..
                 ?
                   profileImgPreview
                   ?
                     <img src={profileImgPreview}/>
                   :
-                    myMemberInfo.projmember_data
-                    ? <img src={'data:image;base64,'+myMemberInfo.projmember_data}/>
+                    p.myMemberInfo.projmember_data
+                    ? <img src={'data:image;base64,'+p.myMemberInfo.projmember_data}/>
                     : <img src={pub.img+'defaultProfile.svg'}/>
                 :null
               }

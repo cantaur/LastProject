@@ -436,11 +436,12 @@ function HeadSide(p){
           </div>
           <div className="btnWrap">
             <p className="profileSetBtn" style={{backgroundColor:p.prjColor}} onClick={()=>{
-              p.profileSetModalCng(true)
+              p.profileMsgCng(false)
               setTimeout(()=>{
+                p.profileSetModalCng(true)
                 profileModalCng(false)
                 window.removeEventListener('click', profileModalClose)
-              })
+              },300)
             }}>프로필 설정</p>
             <a href={host+'/logout'} className='logoutBtn'>로그아웃</a>
           </div>

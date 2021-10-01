@@ -109,7 +109,6 @@ function MileStone(p){
     })
   },[location])
 
-  console.log(p.isMaster)
   return(
     <div className="pageContentWrap mileStoneWrap">
       
@@ -177,8 +176,8 @@ function MileStone(p){
                     milestone_title={row.milestone_title}
                     milestone_content={row.milestone_content}
                     color={seqColorTrans(row.milestone_seq)} 
-                    completeTaskCnt={1}
-                    taskCnt={2}
+                    completeTaskCnt={row.closedTask}
+                    taskCnt={row.countTask}
                     milestone_startdate={row.milestone_startdate}
                     milestone_duedate={row.milestone_duedate}
                     mileStoneInfo={mileStoneInfo}
@@ -222,8 +221,8 @@ function MileStone(p){
                       milestone_title={row.milestone_title}
                       milestone_content={row.milestone_content}
                       color={"#555555"} 
-                      completeTaskCnt={0}
-                      taskCnt={2}
+                      completeTaskCnt={row.closedTask}
+                      taskCnt={row.countTask}
                       milestone_startdate={row.milestone_startdate}
                       milestone_duedate={row.milestone_duedate}
                       milestone_status={row.milestone_status}
