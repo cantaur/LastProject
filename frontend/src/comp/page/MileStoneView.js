@@ -145,19 +145,19 @@ function MileStoneView(p){
                       <div className="profileImg toolTipTopBox">
                         <p className="toolTip">이름이들어감</p>
                         <div>
-                          <img src={pub.img+'/defaultProfile.svg'}/>
+                          <img src={pub.img+'defaultProfile.svg'}/>
                         </div>
                       </div>
                       <div className="profileImg toolTipTopBox">
                         <p className="toolTip">이름이들어감</p>
                         <div>
-                          <img src={pub.img+'/defaultProfile.svg'}/>
+                          <img src={pub.img+'defaultProfile.svg'}/>
                         </div>
                       </div>
                       <div className="profileImg toolTipTopBox">
                         <p className="toolTip">이름이들어감</p>
                         <div>
-                          <img src={pub.img+'/defaultProfile.svg'}/>
+                          <img src={pub.img+'defaultProfile.svg'}/>
                         </div>
                       </div>
                       
@@ -172,7 +172,7 @@ function MileStoneView(p){
                     <div className="profileImg writer toolTipTopBox">
                         <p className="toolTip">이름이들어감</p>
                         <div>
-                          <img src={pub.img+'/defaultProfile.svg'}/>
+                          <img src={pub.img+'defaultProfile.svg'}/>
                         </div>
                       </div>
                   </div>
@@ -186,19 +186,19 @@ function MileStoneView(p){
                       <div className="profileImg toolTipTopBox">
                         <p className="toolTip">이름이들어감</p>
                         <div>
-                          <img src={pub.img+'/defaultProfile.svg'}/>
+                          <img src={pub.img+'defaultProfile.svg'}/>
                         </div>
                       </div>
                       <div className="profileImg toolTipTopBox">
                         <p className="toolTip">이름이들어감</p>
                         <div>
-                          <img src={pub.img+'/defaultProfile.svg'}/>
+                          <img src={pub.img+'defaultProfile.svg'}/>
                         </div>
                       </div>
                       <div className="profileImg toolTipTopBox">
                         <p className="toolTip">이름이들어감</p>
                         <div>
-                          <img src={pub.img+'/defaultProfile.svg'}/>
+                          <img src={pub.img+'defaultProfile.svg'}/>
                         </div>
                       </div>
                       
@@ -213,7 +213,7 @@ function MileStoneView(p){
                     <div className="profileImg writer toolTipTopBox">
                         <p className="toolTip">이름이들어감</p>
                         <div>
-                          <img src={pub.img+'/defaultProfile.svg'}/>
+                          <img src={pub.img+'defaultProfile.svg'}/>
                         </div>
                       </div>
                   </div>
@@ -227,43 +227,43 @@ function MileStoneView(p){
                       <div className="profileImg toolTipTopBox">
                         <p className="toolTip">이름이들어감</p>
                         <div>
-                          <img src={pub.img+'/defaultProfile.svg'}/>
+                          <img src={pub.img+'defaultProfile.svg'}/>
                         </div>
                       </div>
                       <div className="profileImg toolTipTopBox">
                         <p className="toolTip">이름이들어감</p>
                         <div>
-                          <img src={pub.img+'/defaultProfile.svg'}/>
+                          <img src={pub.img+'defaultProfile.svg'}/>
                         </div>
                       </div>
                       <div className="profileImg toolTipTopBox">
                         <p className="toolTip">이름이들어감</p>
                         <div>
-                          <img src={pub.img+'/defaultProfile.svg'}/>
+                          <img src={pub.img+'defaultProfile.svg'}/>
                         </div>
                       </div>
                       <div className="profileImg toolTipTopBox">
                         <p className="toolTip">이름이들어감</p>
                         <div>
-                          <img src={pub.img+'/defaultProfile.svg'}/>
+                          <img src={pub.img+'defaultProfile.svg'}/>
                         </div>
                       </div>
                       <div className="profileImg toolTipTopBox">
                         <p className="toolTip">이름이들어감</p>
                         <div>
-                          <img src={pub.img+'/defaultProfile.svg'}/>
+                          <img src={pub.img+'defaultProfile.svg'}/>
                         </div>
                       </div>
                       <div className="profileImg toolTipTopBox">
                         <p className="toolTip">이름이들어감</p>
                         <div>
-                          <img src={pub.img+'/defaultProfile.svg'}/>
+                          <img src={pub.img+'defaultProfile.svg'}/>
                         </div>
                       </div>
                       <div className="profileImg toolTipTopBox">
                         <p className="toolTip">이름이들어감</p>
                         <div>
-                          <img src={pub.img+'/defaultProfile.svg'}/>
+                          <img src={pub.img+'defaultProfile.svg'}/>
                         </div>
                       </div>
                       
@@ -278,7 +278,7 @@ function MileStoneView(p){
                     <div className="profileImg writer toolTipTopBox">
                         <p className="toolTip">이름이들어감</p>
                         <div>
-                          <img src={pub.img+'/defaultProfile.svg'}/>
+                          <img src={pub.img+'defaultProfile.svg'}/>
                         </div>
                       </div>
                   </div>
