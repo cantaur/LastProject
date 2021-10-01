@@ -1692,11 +1692,11 @@ body{
       .taskRow{
         display: flex;
         background-color: #fff;
+        border:1px solid #ececec;
         padding:10px;
         align-items: center;
-        border-radius: 5px;
         &+.taskRow{
-          margin-top:4px;
+          margin-top:8px;
         }
         .type{
           text-align: center;
@@ -1714,6 +1714,8 @@ body{
           margin-right: 10px;
           white-space: nowrap;
           cursor: pointer;
+          font-size: .9rem;
+          margin-left: 4px;
           &:hover{
             text-decoration: underline;
           }

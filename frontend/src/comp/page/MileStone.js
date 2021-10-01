@@ -4,7 +4,7 @@ import {pub, colors, pages, seqColorTrans,host} from '../Helper.js'
 import StoneList from "./comp/StoneList.js";
 import DatePicker from '../DatePicker.js'
 import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstrap'
-import { Link, useParams, withRouter, useHistory } from "react-router-dom";
+import { Link, useParams, withRouter, useHistory, useLocation } from "react-router-dom";
 import {connect} from 'react-redux';
 import NonePage from "../NonePage.js";
 import LinearProgress from '@mui/material/LinearProgress';
@@ -16,6 +16,7 @@ import Box from '@mui/material/Box';
 function MileStone(p){
 
   const history = useHistory();
+  const location = useLocation();
 
   //마일스톤 만들기 모달 상태
   const [createModal, createModalCng] = useState(false)
@@ -86,7 +87,6 @@ function MileStone(p){
     p.dispatch({type:'loadingOn'})
     axios.get(host+'/ajax/'+p.prjSeq+'/milestonelist')
     .then(r=>{
-      // console.log(r.data)
       listCng(r.data);
       p.dispatch({type:'loadingOff'})
     })
@@ -94,10 +94,22 @@ function MileStone(p){
       console.log(e)
       p.dispatch({type:'loadingOff'})
     })
-    // listCng(listSample)
   },[])
 
+  useEffect(()=>{
+    p.dispatch({type:'loadingOn'})
+    axios.get(host+'/ajax/'+p.prjSeq+'/milestonelist')
+    .then(r=>{
+      listCng(r.data);
+      p.dispatch({type:'loadingOff'})
+    })
+    .catch(e=>{
+      console.log(e)
+      p.dispatch({type:'loadingOff'})
+    })
+  },[location])
 
+  console.log(p.isMaster)
   return(
     <div className="pageContentWrap mileStoneWrap">
       
@@ -106,7 +118,7 @@ function MileStone(p){
         {
           p.isMaster 
           ? 
-            p.prjInfo.project_status != "1"
+            p.projectInfo.project_status != "1"
             ?
             <>
               <div className="toolTipTopBox">
@@ -342,6 +354,8 @@ function MileStoneCreateModal(p) {
 function transReducer(state){
   return {
     datePickerModal : state.datePickerModal,
+    isMaster:state.isMaster,
+    projectInfo:state.projectInfo,
   }
 }
 

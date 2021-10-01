@@ -36,7 +36,7 @@ function StoneList(p){
   return(
     <>
     {  
-      p.isView
+      p.isView && p.isMaster
       ?
         p.mileStoneInfo.milestone_status == 1
         ?
@@ -163,7 +163,7 @@ function StoneList(p){
               }
             </p>
             {
-              p.isView
+              p.isView && p.isMaster
               ?
                 titleModify
                 ?
@@ -215,7 +215,7 @@ function StoneList(p){
               }
             </p>
             {
-              p.isView 
+              p.isView && p.isMaster
               ?
                 subModify
                 ?
@@ -246,7 +246,7 @@ function StoneList(p){
         
         <div className="infoWrap">
           {
-            p.isView
+            p.isView && p.isMaster
             ?
               p.milestone_startdate
               ? <div className="date on" onClick={()=>{
@@ -322,6 +322,7 @@ function StoneList(p){
 function transReducer(state){
   return {
     datePickerModal : state.datePickerModal,
+    isMaster:state.isMaster,
   }
 }
 
