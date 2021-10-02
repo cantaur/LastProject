@@ -55,34 +55,55 @@ function Todo(p){
 
   //할일 등록
   const myTodoInsert = status => {
-    p.dispatch({type:'loadingOn'})
-    const taskSeq = formData.task==''?null:formData.task;
-    console.log(formData)
-    console.log(status)
-    axios.post(host+'/ajax/createTodo',{
-      'todo_name':formData.title,
-      'todo_content':formData.content,
-      'todo_status':status,
-      'task_seq':taskSeq,
-      'projmember_seq':p.myMemberInfo.projmember_seq
-    })
-    .then(r=>{
-      formDataCng({
-        title:'',
-        content:'',
-        task:'',
+    if(formData.title == ''){
+      const inputList = document.querySelectorAll('.createTitle')
+      inputList.forEach(r=>{
+        r.classList.add('on')
       })
-      formShowCng({
-        'todo':false,
-        'prog':false,
-        'done':false,
+      setTimeout(() => {
+        inputList.forEach(r=>{
+          r.classList.remove('on')
+        })
+      }, 2000);
+    }else {
+      let data = {};
+      if(formData.task==''){
+        data={
+          'todo_name':formData.title,
+          'todo_content':formData.content,
+          'todo_status':status,
+          'projmember_seq':p.myMemberInfo.projmember_seq
+        }
+      }else {
+        data={
+          'todo_name':formData.title,
+          'todo_content':formData.content,
+          'todo_status':status,
+          'task_seq':formData.task,
+          'projmember_seq':p.myMemberInfo.projmember_seq
+        }
+      }
+      p.dispatch({type:'loadingOn'})
+      axios.post(host+'/ajax/createTodo',data)
+      .then(r=>{
+        formDataCng({
+          title:'',
+          content:'',
+          task:'',
+        })
+        formShowCng({
+          'todo':false,
+          'prog':false,
+          'done':false,
+        })
+        myTodoGet()
       })
-      myTodoGet()
-    })
-    .catch(e=>{
-      console.log(e)
-      p.dispatch({type:'loadingOff'})
-    })
+      .catch(e=>{
+        console.log(e)
+        p.dispatch({type:'loadingOff'})
+      })
+    }
+    
   }
 
   //할일 삭제 
@@ -109,6 +130,44 @@ function Todo(p){
     task_seq:'',
     projmember_seq:''
   });
+
+  //업데이트
+  const myTodoUpdate = () =>{
+    console.log(todoUpdateInfo)
+    if(todoUpdateInfo.title == ''){
+      const inputList = document.querySelectorAll('.editTitle')
+      inputList.forEach(r=>{
+        r.classList.add('on')
+      })
+      setTimeout(() => {
+        inputList.forEach(r=>{
+          r.classList.remove('on')
+        })
+      }, 2000);
+    }else {
+      p.dispatch({type:'loadingOn'})
+      axios.post(host+'/ajax/updateTodo', todoUpdateInfo)
+      .then(r=>{
+        todoUpdateInfoCng({
+          todo_name:'',
+          todo_content:'',
+          todo_seq:'',
+          todo_status:'',
+          task_seq:'',
+          projmember_seq:''
+        })
+        let wrap = document.querySelectorAll('.list-item')
+        wrap.forEach(r=>{
+          r.classList.remove('edit')
+        })
+        myTodoGet()
+      })
+      .catch(e=>{
+        console.log(e)
+        p.dispatch({type:'loadingOff'})
+      })
+    }
+  }
   
   //전체리스트 불러오기
   const myTodoGet = () =>{
@@ -258,7 +317,7 @@ function Todo(p){
                   </Form.Select>
               }
               
-              <input type="text" placeholder="제목" ref={todoTitleInput} name="title" onChange={formDataCngFunc}/>
+              <input type="text" placeholder="제목" className="createTitle" ref={todoTitleInput} name="title" onChange={formDataCngFunc}/>
               <textarea placeholder="내용" name="content" onChange={formDataCngFunc}/>
               <div className="btnWrap">
                 <p onClick={()=>{
@@ -280,7 +339,8 @@ function Todo(p){
             </div>
 
             <div className="list">
-              <List 
+              <List
+                myTodoUpdate={myTodoUpdate} 
                 taskList={taskList}
                 myMemberInfo={p.myMemberInfo} 
                 todoUpdateInfoCng={todoUpdateInfoCng} 
@@ -334,7 +394,7 @@ function Todo(p){
                     }
                   </Form.Select>
               }
-              <input type="text" placeholder="제목" ref={progTitleInput} name="title" onChange={formDataCngFunc}/>
+              <input type="text" placeholder="제목" className="createTitle" ref={progTitleInput} name="title" onChange={formDataCngFunc}/>
               <textarea placeholder="내용" name="content" onChange={formDataCngFunc}/>
               <div className="btnWrap">
                 <p onClick={()=>{
@@ -356,7 +416,8 @@ function Todo(p){
             </div>
 
             <div className="list">
-              <List 
+              <List
+                myTodoUpdate={myTodoUpdate} 
                 taskList={taskList}
                 myMemberInfo={p.myMemberInfo} 
                 todoUpdateInfoCng={todoUpdateInfoCng} 
@@ -406,7 +467,7 @@ function Todo(p){
                     }
                   </Form.Select>
               }
-              <input type="text" placeholder="제목" ref={doneTitleInput} name="title" onChange={formDataCngFunc}/>
+              <input type="text" placeholder="제목" className="createTitle" ref={doneTitleInput} name="title" onChange={formDataCngFunc}/>
               <textarea placeholder="내용" name="content" onChange={formDataCngFunc}/>
               <div className="btnWrap">
                 <p onClick={()=>{
@@ -428,7 +489,8 @@ function Todo(p){
             </div>
 
             <div className="list">
-              <List 
+              <List
+                myTodoUpdate={myTodoUpdate} 
                 taskList={taskList}
                 myMemberInfo={p.myMemberInfo} 
                 todoUpdateInfoCng={todoUpdateInfoCng} 
@@ -472,7 +534,7 @@ function List(p) {
                         todo_name:r.todo_name,
                         todo_content:r.todo_content,
                         todo_seq:r.todo_seq,
-                        todo_status:r.todo_status,
+                        todo_status:Number(r.todo_status),
                         task_seq:r.task_seq,
                         projmember_seq:p.myMemberInfo.projmember_seq
                       })
@@ -485,7 +547,7 @@ function List(p) {
                         <Form.Select size="sm" name="task" onChange={e=>{
                           p.todoUpdateInfoCng({
                             ...p.todoUpdateInfo,
-                            task_seq:e.target.value,
+                            task_seq:e.target.value==''?null:e.target.value,
                           });
                         }}>
                           <option value="">업무를 선택하세요.</option>
@@ -507,11 +569,27 @@ function List(p) {
                           }
                         </Form.Select>
                     }
-                    <input type="text" placeholder="제목" value={p.todoUpdateInfo.todo_name?p.todoUpdateInfo.todo_name:''} />
-                    <textarea placeholder="내용" value={p.todoUpdateInfo.todo_content?p.todoUpdateInfo.todo_content:''} />
+                    <input type="text" placeholder="제목" className="editTitle" value={p.todoUpdateInfo.todo_name?p.todoUpdateInfo.todo_name:''}
+                      onChange={e=>{
+                        p.todoUpdateInfoCng({
+                          ...p.todoUpdateInfo,
+                          todo_name:e.target.value,
+                        });
+                      }}
+                    />
+                    <textarea placeholder="내용" value={p.todoUpdateInfo.todo_content?p.todoUpdateInfo.todo_content:''}
+                      onChange={e=>{
+                        p.todoUpdateInfoCng({
+                          ...p.todoUpdateInfo,
+                          todo_content:e.target.value,
+                        });
+                      }}
+                    />
                     <div className="btnWrap">
                       <p onClick={()=>{
                         let thisWrap = document.getElementById('todo'+r.todo_seq)
+                        thisWrap.classList.remove('edit')
+
                         p.todoUpdateInfoCng({
                           todo_name:'',
                           todo_content:'',
@@ -520,9 +598,8 @@ function List(p) {
                           task_seq:'',
                           projmember_seq:''
                         });
-                        thisWrap.classList.remove('edit')
                       }}>취소</p>
-                      <button style={{backgroundColor:p.prjColor, color:'#fff'}}>작성완료</button>
+                      <button style={{backgroundColor:p.prjColor, color:'#fff'}} onClick={p.myTodoUpdate}>작성완료</button>
                     </div>
                   </div>
                   <div className="wrap">

@@ -1568,6 +1568,11 @@ body{
           height: calc(100vh - 395px);
         }
         input{
+          transition: .3s ease-in-out;
+          &.on{
+            border-color:$cRed;
+            background-color: $cRedf;
+          }
           padding:6px;
           font-size: .8rem;
           background-color: #fafafa;
@@ -1743,11 +1748,17 @@ body{
               border:1px solid #ccc;
               width: 80%;
               margin-bottom: 6px;
+              transition: .3s ease-in-out;
+              &.on{
+                border-color:$cRed;
+                background-color: $cRedf;
+              }
               &:focus{
                 outline: none;
                 border:1px solid #888;
                 background-color: #fff;
               }
+              
             }
             textarea{
               padding:6px;

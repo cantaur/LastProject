@@ -67,7 +67,7 @@ function ProjectView(p){
     }
 
     // 프로젝트 리스트 가져옴
-    axios.get(host+'/ajax/myproject') //프론트용 샘플
+    axios.get(host+'/ajax/myprojectTest/3') //프론트용 샘플
     .then(r=>{
       p.dispatch({type:'projectListCng', val:r.data})
     })
@@ -90,7 +90,7 @@ function ProjectView(p){
   // 프로젝트 리스트를 가져온 후
   useEffect(()=>{
     //프론트용 샘플
-    // p.dispatch({type:'login', email:'sudosoon@gmail.com', seq:3})
+    p.dispatch({type:'login', email:'sudosoon@gmail.com', seq:3})
 
     //현재 프로젝트 정보 갱신
     if(p.projectList){
