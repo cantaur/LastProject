@@ -74,8 +74,9 @@ public class TodoController {
     }
 
     //메모 삭제하기
-    @GetMapping("/ajax/deleteTodo/{todoSeq}")
-    public void deleteNote(@RequestParam long todoSeq){
+    @PostMapping("/ajax/deleteTodo")
+    public void deleteNote(@RequestBody Map<String, Integer> param){
+        Long todoSeq = Long.valueOf(param.get("todo_seq"));
         todoService.deleteNoteS(todoSeq);
     }
 

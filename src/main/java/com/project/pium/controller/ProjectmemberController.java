@@ -114,17 +114,6 @@ public class ProjectmemberController {
     } //Postman으로 테스트 완료
 
 
-    //프로젝트 나가기
-    @DeleteMapping("/ajax/projectexit")
-    public void projectexit(@RequestParam long project_seq, Principal principal){
-        String email = currentUserName(principal);
-        long member_seq = memberService.findUserNo(email);
-        long projmember_seq = projectmemberService.findProjMemberSeq(project_seq, member_seq);
-        projectmemberService.projectexitS(project_seq, projmember_seq);
-    }
-
-
-
     //프로젝트에 새 멤버 초대
     //이상한 이메일 들어오거나 멤버테이블에 없으면 클라이언트쪽에 fail 보내고
     //이메일 있으면 해당 프로젝트에 멤버로 추가되어 있는지 확인해서 있으면 duplicated 반환, 없으면 insert 진행
