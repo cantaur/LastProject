@@ -1438,7 +1438,7 @@ body{
 
 // 페이지 공통
 .pageContentWrap{
-  width: 900px;
+  width: 1080px;
   padding-top:30px;
   .toolTipTopBox{
     position: relative;
@@ -1473,10 +1473,393 @@ body{
     }
   }
 }
-
+//페이지 네비게이션 (전체)
+.pageBtnWrap{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom:10px;
+  padding-top:10px;
+  margin-bottom:15px;
+  margin-top:-40px;
+  background-color: #fff;
+  .pageBtn{
+    cursor: pointer;
+    color:#333;
+    font-size: 1.1rem;
+    text-decoration: none;
+    padding:0px;
+    height:26px;
+    line-height: 26px;
+    &:hover{
+      text-decoration: underline;
+    }
+    &.on{
+      border-bottom:2px solid;
+      font-weight: bold;
+    }
+    &.on:hover{
+      text-decoration: none;
+    }
+    &+.pageBtn{
+      margin-left: 20px;
+      
+    }
+  }
+}
 //Todo (내 업무 메인)
-.todoWrap{
 
+.todoWrap{
+  .app{
+    width: 100%;
+    .listWrap{
+      width: 100%;
+      max-width: 346.67px;
+      &+.listWrap{
+        margin-left: 20px;
+      }
+      .list-label{
+        background-color: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding:10px 10px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-bottom:0;
+        border-radius: 6px 6px 0px 0px;
+        .toolTipTopBox{
+          cursor: pointer;
+          margin-right: 2px;
+        }
+        .title{
+          font-weight: bold;
+          display: flex;
+          align-items: center;
+          .cnt{
+            margin-top:2px;
+            margin-right: 4px;
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            line-height: 19px;
+            color:#fff;
+            border-radius: 100px;
+            font-size: .7rem;
+            text-align: center;
+          }
+        }
+      }
+      .addListWrap{
+        padding:0px 10px;
+        overflow: hidden;
+        border: 1px solid #ccc;
+        border-top:0;
+        border-bottom:1px solid #ccc;
+        background-color: #fff;
+        transition: .2s ease-in-out;
+        height: 0px;
+        // opacity: 0;
+        &.on{
+          height: 188px;
+          // opacity: 1;
+        }
+        &.on+.list{
+          height: calc(100vh - 395px);
+        }
+        input{
+          padding:6px;
+          font-size: .8rem;
+          background-color: #fafafa;
+          border-radius: 4px;
+          border:1px solid #ccc;
+          width: 100%;
+          margin-bottom: 6px;
+          &:focus{
+            outline: none;
+            border:1px solid #888;
+            background-color: #fff;
+          }
+        }
+        textarea{
+          padding:6px;
+          font-size: .8rem;
+          resize: none;
+          background-color: #fafafa;
+          border-radius: 4px;
+          border:1px solid #ccc;
+          width: 100%;
+          margin-bottom:2px;
+          height: 64px;
+          &:focus{
+            outline: none;
+            border:1px solid #888;
+            background-color: #fff;
+          }
+          &::-webkit-scrollbar {
+            width: 3px;
+            height: 3px;
+            background:#f2f2f2;
+          }
+          &::-webkit-scrollbar-thumb {
+            border-radius: 3.5px;
+            background-color: #ccc;
+      
+            &:hover {
+              background-color: #ccc;
+            }
+          }
+          &::-webkit-scrollbar-track {
+            background: #f2f2f2;
+          }
+        }
+        select{
+          margin-top:6px;
+          width: 100%;
+          max-width: 100%;
+          font-size: .8rem;
+          padding-right: 24px;
+          background-position:right 3px center;
+          margin-bottom:6px;
+          border:1px solid #ccc;
+        }
+        .btnWrap{
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          margin-bottom:10px;
+          p, button{
+            background-color: #ececec;
+            padding:2px 6px;
+            font-size: .8rem;
+            font-weight: bold;
+            border-radius: 3px;
+            color: #555;
+            border:0;
+            cursor: pointer;
+            &:first-child{
+              font-weight: normal;
+            }
+            &+button{
+              margin-left: 4px;
+            }
+          }
+        }
+      }
+      .list{
+        margin:0;
+        height: calc(100vh - 208px);
+        max-height: none;
+        padding:0px 10px;
+        padding-bottom:10px;
+        border-radius: 0px 0px 6px 6px;
+        border:1px solid #ccc;
+        border-top:0;
+        background-color:#ececec;
+        overflow-y: auto;
+        transition: .2s ease-in-out;
+        
+  
+        &::-webkit-scrollbar {
+          width: 3px;
+          height: 3px;
+          background:#ccc;
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 10px;
+          background-color: #aaa;
+    
+          &:hover {
+            background-color: #aaa;
+          }
+        }
+        &::-webkit-scrollbar-track {
+          background: #ccc;
+        }
+
+        
+        .list-item{
+          margin:0px;
+          margin-bottom:0px;
+          margin-top:10px;
+          border:1px solid #ccc;
+          position: relative;
+          overflow: hidden;
+          padding:10px;
+          &:hover{
+            .editBtnWrap{
+              display: flex;
+            }
+          }
+          &.edit:hover{
+            .editBtnWrap{
+              display: none;
+            }
+          }
+          &.edit {
+            .editWrp{
+              display: block;
+            }
+            .wrap{
+              display: none;
+            }
+          }
+          .editBtnWrap{
+            border:1px solid #ccc;
+            border-top:0;
+            border-right: 0;
+            border-radius: 0px 0px 0px 4px;
+            position: absolute;
+            right: 0px;
+            top:0px;
+            display: flex;
+            display: none;
+            background-color: #fff;
+            width: max-content;
+            i{
+              width: 25px;
+              height: 25px;
+              color:#888;
+              font-size: .8rem;
+              line-height: 25px;
+              text-align: center;
+              cursor: pointer;
+              &:first-child{
+                border-radius: 0px 0px 0px 4px;
+              }
+              &:hover{
+                background-color: #f2f2f2;
+                color:#333;
+              }
+            }
+          }
+          .editWrp{
+            display: none;
+            input{
+              padding:6px;
+              font-size: .8rem;
+              background-color: #fafafa;
+              border-radius: 4px;
+              border:1px solid #ccc;
+              width: 80%;
+              margin-bottom: 6px;
+              &:focus{
+                outline: none;
+                border:1px solid #888;
+                background-color: #fff;
+              }
+            }
+            textarea{
+              padding:6px;
+              font-size: .8rem;
+              resize: none;
+              background-color: #fafafa;
+              border-radius: 4px;
+              border:1px solid #ccc;
+              width: 100%;
+              margin-bottom:2px;
+              height: 64px;
+              &:focus{
+                outline: none;
+                border:1px solid #888;
+                background-color: #fff;
+              }
+              &::-webkit-scrollbar {
+                width: 3px;
+                height: 3px;
+                background:#f2f2f2;
+              }
+              &::-webkit-scrollbar-thumb {
+                border-radius: 3.5px;
+                background-color: #ccc;
+          
+                &:hover {
+                  background-color: #ccc;
+                }
+              }
+              &::-webkit-scrollbar-track {
+                background: #f2f2f2;
+              }
+            }
+            select{
+              margin-top:0px;
+              width: 100%;
+              max-width: 80%;
+              font-size: .8rem;
+              padding-right: 24px;
+              background-position:right 3px center;
+              margin-bottom:6px;
+              border:1px solid #ccc;
+            }
+            .btnWrap{
+              display: flex;
+              align-items: center;
+              justify-content: flex-end;
+              margin-bottom:0px;
+              p, button{
+                background-color: #ececec;
+                padding:2px 6px;
+                font-size: .8rem;
+                font-weight: bold;
+                border-radius: 3px;
+                color: #555;
+                border:0;
+                cursor: pointer;
+                &:first-child{
+                  font-weight: normal;
+                }
+                &+button{
+                  margin-left: 4px;
+                }
+              }
+            }
+          }
+          .wrap{
+            .title{
+              font-size: 1rem;
+              font-weight: bold;
+              margin-bottom:6px;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
+            }
+            .content{
+              padding-top:6px;
+              font-size: .8rem;
+              border-top:1px solid #ececec;
+              white-space: pre-line;
+            }
+            .dateTask{
+              margin-top:8px;
+              display: flex;
+              justify-content: space-between;
+              font-size: .8rem;
+              align-items: flex-end;
+              .date{
+                color:#888;
+                flex-shrink: 0;
+                font-size: .7rem;
+              }
+              .task{
+                font-size: .7rem;
+                width: max-content;
+                max-width: 100%;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                padding:2px 4px;
+                background-color: #f2f2f2;
+                border-radius: 4px;
+                cursor: pointer;
+                white-space: nowrap;
+                margin-left: 10px;
+              }
+            }
+          }
+        }
+      }
+    }
+    
+  }
 }
 
 //Calender (프로젝트 메인)
@@ -1897,6 +2280,7 @@ body{
 
 //Task (업무)
 .taskWrap{
+  
 
 }
 .fc-daygrid-day-number {

@@ -4,6 +4,7 @@ import {pub, colors, pages, seqColorTrans,host} from './Helper.js'
 import DatePicker from './DatePicker.js'
 import HeadSide from './HeadSide.js'
 import Todo from './page/Todo.js'
+import Notice from './page/Notice.js'
 import Calender from './page/Calender.js'
 import MileStone from './page/MileStone.js'
 import MileStoneView from './page/MileStoneView.js'
@@ -66,7 +67,7 @@ function ProjectView(p){
     }
 
     // 프로젝트 리스트 가져옴
-    axios.get(host+'/ajax/myproject') //프론트용 샘플
+    axios.get(host+'/ajax/myprojectTest/3') //프론트용 샘플
     .then(r=>{
       p.dispatch({type:'projectListCng', val:r.data})
     })
@@ -89,7 +90,7 @@ function ProjectView(p){
   // 프로젝트 리스트를 가져온 후
   useEffect(()=>{
     //프론트용 샘플
-    // p.dispatch({type:'login', email:'sudosoon@gmail.com', seq:3})
+    p.dispatch({type:'login', email:'sudosoon@gmail.com', seq:3})
 
     //현재 프로젝트 정보 갱신
     if(p.projectList){
@@ -149,6 +150,10 @@ function ProjectView(p){
           {
             p.pageInfo == 'todo' &&
             <Todo prjColor={prjColor} prjSeq={prjSeq} />
+          }
+          {
+            p.pageInfo == 'notice' &&
+            <Notice prjColor={prjColor} prjSeq={prjSeq} />
           }
           {
             p.pageInfo == 'calender' &&

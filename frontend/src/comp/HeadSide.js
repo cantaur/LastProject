@@ -15,6 +15,8 @@ function pagePath(page){
   switch (page){
     case 'todo':
       return 0;
+    case 'notice':
+      return 0;
     case 'calender':
       return 1;
     case 'mileStone':
@@ -480,7 +482,7 @@ function HeadSide(p){
                     p.dispatch({type:'loadingOff'})
                   })
                 }} style={{fontSize:'.8rem'}}>
-                  삭제
+                  제외하기
                 </Button>
               </Modal.Footer>
             </Modal>
@@ -519,7 +521,7 @@ function HeadSide(p){
                     p.dispatch({type:'loadingOff'})
                   })
                 }} style={{fontSize:'.8rem'}}>
-                  삭제
+                  나가기
                 </Button>
               </Modal.Footer>
             </Modal>

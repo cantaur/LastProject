@@ -31,7 +31,8 @@ const pages = [
   'todo',
   'mileStone',
   'mileStoneView',
-  'task'
+  'task',
+  'notice'
 ]
 
 const host = 'http://localhost:8000';
