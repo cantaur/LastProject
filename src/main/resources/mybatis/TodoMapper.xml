@@ -4,12 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.TodoMapper">
 
-    <!--to do 위치에서 note 초기 생성-->
-    <insert id="insertNote" parameterType="TodoDTO">
-        insert into todo(todo_name, todo_content, todo_date, todo_status, task_seq, projmember_seq)
-        values(#{todo_name}, #{todo_content}, NOW(), "10", #{task_seq}, #{projmember_seq})
-    </insert>
-
     <!--status에 따른 조회, 노트에 표시-->
     <select id="todoBySeq" resultType="TodoDTO" parameterType="long">
         SELECT DISTINCT a.*, b.task_title
@@ -30,13 +24,6 @@
     </select>
 
 
-    <!--드롭박스에서 업무 선택할 수 있도록 업무 제목 꺼냄-->
-    <select id="showTaskByProjSeq" resultType="TaskDTO" parameterType="long">
-        SELECT * FROM task WHERE project_seq=#{project_seq};
-    </select>
-
-
-
 
     <!--COUNT -->
     <select id="countTodoStatus" resultType="long" parameterType="long">
@@ -49,34 +36,34 @@
         SELECT COUNT(*) FROM todo WHERE projmember_seq=#{projmember_seq} AND todo_status='30';
     </select>
 
-
-
-
-
-
-
-
-
-
-    <!--Todo_seq에 따른 조회-->
-    <select id="selectByTodo" resultType="TodoDTO" parameterType="long">
-        select * from todo where todo_seq=#{seq}
+    <!--드롭박스에서 업무 선택할 수 있도록 업무 제목 꺼냄-->
+    <select id="showTaskByProjSeq" resultType="TaskDTO" parameterType="long">
+        SELECT * FROM task WHERE project_seq=#{project_seq};
     </select>
 
 
 
+
+    <!--to do 위치에서 note 초기 생성-->
+    <insert id="insertNote" parameterType="TodoDTO">
+        insert into todo(todo_name, todo_content, todo_date, todo_status, task_seq, projmember_seq)
+        values(#{todo_name}, #{todo_content}, NOW(), "10", #{task_seq, jdbcType = INTEGER}, #{projmember_seq})
+    </insert>
     <!--노트 수정-->
     <update id="updateNote" parameterType="TodoDTO">
-        UPDATE todo SET todo_content=#{todo_content}, todo_date=NOW() WHERE todo_seq=#{todo_seq}
+        UPDATE todo
+        SET todo_name=#{todo_name}, todo_content=#{todo_content}, todo_date=NOW(), task_seq=#{task_seq}
+        WHERE todo_seq=#{todo_seq}
     </update>
-    <!--노트 상태이동-->
-    <update id="updateNoteStatus" parameterType="TodoDTO">
-        UPDATE todo SET todo_status=#{todo_status} WHERE where todo_seq=#{todo_seq}
-    </update>
+
     <!--노트 삭제-->
     <delete id="deleteNote" parameterType="long">
         DELETE FROM todo WHERE todo_seq = #{todo_seq}
     </delete>
+    <!--노트 상태이동-->
+    <update id="updateNoteStatus" parameterType="TodoDTO">
+        UPDATE todo SET todo_status=#{todo_status} WHERE where todo_seq=#{todo_seq}
+    </update>
 
 
 </mapper>

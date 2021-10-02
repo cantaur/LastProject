@@ -20,11 +20,30 @@ public class TodoController {
     private TodoService todoService;
 
 
-    //insert todo
+
     @PostMapping("/ajax/createTodo")
-    public void insertNote(@RequestBody TodoDTO todoDTO){
-        log.info("TodoInsert(): "+todoDTO);
-        todoService.insertNoteS(todoDTO);
+    public String insertNote(@RequestParam(value = "todo_name", required = false) String todo_name,
+                           @RequestParam(value = "todo_content", required = false) String todo_content,
+                           @RequestParam(value = "todo_status", required = false) String todo_status,
+                           @RequestParam(value = "task_seq", required = false) Object task_seq,
+                           @RequestParam(value = "projmember_seq", required = false) Object projmember_seq){
+        log.info("todo_name: "+todo_name);
+        log.info("todo_content: "+todo_content);
+        log.info("todo_status: "+todo_status);
+        log.info("task_seq: "+task_seq);
+        log.info("projmember_seq: "+projmember_seq);
+        return "success";
+//        TodoDTO todoDTO = null;
+//        todoDTO.setTodo_name(todo_name);
+//        todoDTO.setTodo_content(todo_content);
+//        todoDTO.setTodo_status(todo_status);
+//        todoDTO.setProjmember_seq(projmember_seq);
+//         if(task_seq != 0){
+//             todoDTO.setTask_seq(task_seq);
+//        }
+//        log.info("TodoInsert(): "+todoDTO);
+//
+//        todoService.insertNoteS(todoDTO);
     }
 
     //task 생성 시 드랍박스 안에 보여질 task 제목 등 정보 불러오기
@@ -88,32 +107,31 @@ public class TodoController {
     }
 
 
+    //메모의 상태 변경하기
+    @PostMapping("/ajax/changeTodoStatus")
+    public void changeTodoStatus(@RequestBody Map<String, Integer> param){
+        String todoStatus = String.valueOf(param.get("todo_status"));
+        Long todoSeq = Long.valueOf(param.get("todo_seq"));
+        log.info("메모상태변경하기 : "+todoStatus+todoSeq);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-    @GetMapping("/ajax/todoData")
-    public TodoDTO todoData(@RequestParam String seq){
-        try {
-            seq.trim();
-            long lSeq = Long.parseLong(seq);
-            TodoDTO todo =todoService.selectByTodoS(lSeq);
-            return todo;
-        }catch(Exception e){
-            log.info("#todoData e: "+e);
-        }
-        return null;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

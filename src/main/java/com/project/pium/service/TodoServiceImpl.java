@@ -13,17 +13,8 @@ import java.util.List;
 public class TodoServiceImpl implements TodoService {
     private TodoMapper todoMapper;
 
-    @Override
-    public void insertNoteS(TodoDTO todo) {
-        todoMapper.insertNote(todo);
-    }
 
 
-
-
-
-    @Override
-    public TodoDTO selectByTodoS(long seq){return  todoMapper.selectByTodo(seq);}
     @Override
     public List<TodoDTO> todoBySeqS(long seq) {return todoMapper.todoBySeq(seq);}
     @Override
@@ -34,6 +25,9 @@ public class TodoServiceImpl implements TodoService {
     public List<TodoDTO>doneBySeqS(long seq){
         return todoMapper.doneBySeq(seq);
     }
+
+
+
     @Override
     public Long countDoneStatusS(long seq) {
         return todoMapper.countDoneStatus(seq);
@@ -45,19 +39,15 @@ public class TodoServiceImpl implements TodoService {
         return todoMapper.countProgressStatus(seq);
     }
 
+
+
     @Override
     public List<TaskDTO> showTaskByProjSeqS(long seq){return todoMapper.showTaskByProjSeq(seq);}
+
+
     @Override
-    public List<TodoDTO> selectNoteToDoS() {
-        return todoMapper.selectNoteToDo();
-    }
-    @Override
-    public List<TodoDTO> selectNoteProgS() {
-        return todoMapper.selectNoteProg();
-    }
-    @Override
-    public List<TodoDTO> selectNoteDoneS() {
-        return todoMapper.selectNoteDone();
+    public void insertNoteS(TodoDTO todo) {
+        todoMapper.insertNote(todo);
     }
     @Override
     public void updateNoteS(TodoDTO todo) {
@@ -67,8 +57,6 @@ public class TodoServiceImpl implements TodoService {
     public void deleteNoteS(long todo_seq) {
         todoMapper.deleteNote(todo_seq);
     }
-
-
     @Override
     public void updateNoteStatusS(TodoDTO todo) { todoMapper.updateNoteStatus(todo);
     }
