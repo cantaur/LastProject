@@ -46,7 +46,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public List<TaskDTO> showTaskNSeqS(long seq){return todoMapper.showTaskNSeq(seq);}
+    public List<TaskDTO> showTaskByProjSeqS(long seq){return todoMapper.showTaskByProjSeq(seq);}
     @Override
     public List<TodoDTO> selectNoteToDoS() {
         return todoMapper.selectNoteToDo();

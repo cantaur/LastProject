@@ -20,7 +20,7 @@ public interface TodoMapper {
     Long countProgressStatus(long seq);
     Long countDoneStatus(long seq);
     /*선택지*/
-    List<TaskDTO> showTaskNSeq(long seq);
+    List<TaskDTO> showTaskByProjSeq(long seq);
 
     List<TodoDTO>selectNoteToDo(); // 메모 상태 10 조회
     List<TodoDTO>selectNoteProg(); // 메모 상태 20 조회

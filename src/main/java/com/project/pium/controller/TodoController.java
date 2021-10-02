@@ -28,9 +28,9 @@ public class TodoController {
     }
 
     //task 생성 시 드랍박스 안에 보여질 task 제목 등 정보 불러오기
-    @GetMapping("/ajax/showTasknSeq/{projMemberSeq}")
-    public List<TaskDTO> showTasknSeq(@PathVariable long projMemberSeq){
-        List<TaskDTO> list = todoService.showTaskNSeqS(projMemberSeq);
+    @GetMapping("/ajax/showTaskinTodo/{projectSeq}")
+    public List<TaskDTO> showTaskinTodo(@PathVariable long projectSeq){
+        List<TaskDTO> list = todoService.showTaskByProjSeqS(projectSeq);
         return list;
     }
 
@@ -53,34 +53,6 @@ public class TodoController {
         log.info("#내가 생성한 to do list"+todolistInfo);
         return todolistInfo;
     }
-
-    
-    
-
-    //내가 생성한 to do list 불러오기. to do 상태
-    //projMemberSeq로 불러 올 수 있는지 봐야함
-//    @GetMapping("/ajax/mytodo/{projMemberSeq}")
-//    public List<TodoDTO> selectBySeq(@PathVariable long projMemberSeq){
-//
-//        List<TodoDTO> list = todoService.selectBySeqS(projMemberSeq);
-//        log.info("#내가 생성한 to do list"+list);
-//        return list;
-//    }
-
-    //in progress 상태
-//    @GetMapping("/ajax/myprogress/{projMemberSeq}")
-//    public List<TodoDTO> progressBySeq(@PathVariable long projMemberSeq){
-//        List<TodoDTO> list = todoService.progressBySeqS(projMemberSeq);
-//        return list;
-//    }
-
-    //done 상태
-//    @GetMapping("/ajax/mydone/{projMemberSeq}")
-//    public List<TodoDTO> doneBySeq(@PathVariable long projMemberSeq){
-//        List<TodoDTO> list = todoService.doneBySeqS(projMemberSeq);
-//        return list;
-//    }
-
 
 
 
@@ -128,10 +100,5 @@ public class TodoController {
         todoService.deleteNoteS(lseq);
     }
 
-//    @PatchMapping("updateStatus/{seq}")
-//    public void updateNoteStatus(@RequestBody TodoDTO todo){
-//        log.info("updateStatus: "+todo);
-//
-//        service.updateNoteStatusS(todo);
-//    }
+
 }

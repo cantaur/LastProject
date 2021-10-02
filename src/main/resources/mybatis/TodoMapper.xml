@@ -31,8 +31,8 @@
 
 
     <!--드롭박스에서 업무 선택할 수 있도록 업무 제목 꺼냄-->
-    <select id="showTaskNSeq" resultType="TaskDTO" parameterType="long">
-        SELECT distinct task_seq, task_title FROM todo NATURAL JOIN task WHERE projmember_seq=#{projmember_seq};
+    <select id="showTaskByProjSeq" resultType="TaskDTO" parameterType="long">
+        SELECT * FROM task WHERE project_seq=#{project_seq};
     </select>
 
 
