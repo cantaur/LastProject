@@ -11,6 +11,7 @@ public interface TodoService {
     List<TodoDTO>todoBySeqS(long seq);
     List<TodoDTO>progressBySeqS(long seq);
     List<TodoDTO>doneBySeqS(long seq);
+
     /*갯수카운트*/
     Long countTodoStatusS(long seq);
     Long countProgressStatusS(long seq);

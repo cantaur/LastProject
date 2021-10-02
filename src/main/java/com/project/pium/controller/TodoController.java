@@ -37,17 +37,9 @@ public class TodoController {
         todoDTO.setProjmember_seq(projmember_seq);
         if(task_seq != null){
             todoDTO.setTask_seq(Long.valueOf(String.valueOf(task_seq)));
-            todoService.insertNoteS(todoDTO);
-        }else{
-            todoService.insertNoteS(todoDTO);
-            //todoService.noTaskInsert(todoDTO);
 
         }
-
-
-
-
-
+        todoService.insertNoteS(todoDTO);
         return "success";
     }
 

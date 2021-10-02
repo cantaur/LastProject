@@ -11,6 +11,7 @@
         where a.projmember_seq=#{projmember_seq} and todo_status = '10'
     </select>
 
+
     <select id="progressBySeq" resultType="TodoDTO" parameterType="long">
         SELECT DISTINCT a.*, b.task_title
         from todo as a join task as b on a.task_seq = b.task_seq
@@ -22,7 +23,6 @@
         from todo as a join task as b on a.task_seq = b.task_seq
         where a.projmember_seq=#{projmember_seq} and todo_status = '30'
     </select>
-
 
 
     <!--COUNT -->
