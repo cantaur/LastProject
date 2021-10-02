@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TodoService {
     TodoDTO selectByTodoS(long seq);
-    List<TodoDTO>selectBySeqS(long seq);
+    List<TodoDTO>todoBySeqS(long seq);
     List<TodoDTO>progressBySeqS(long seq);
     List<TodoDTO>doneBySeqS(long seq);
     Long countTodoStatusS(long seq);

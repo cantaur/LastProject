@@ -25,7 +25,7 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public TodoDTO selectByTodoS(long seq){return  todoMapper.selectByTodo(seq);}
     @Override
-    public List<TodoDTO> selectBySeqS(long seq) {return todoMapper.selectBySeq(seq);}
+    public List<TodoDTO> todoBySeqS(long seq) {return todoMapper.todoBySeq(seq);}
     @Override
     public List<TodoDTO>progressBySeqS(long seq){
         return todoMapper.progressBySeq(seq);

@@ -12,7 +12,7 @@ import java.util.List;
 public interface TodoMapper {
     TodoDTO selectByTodo(long seq);
     /*조회*/
-    List<TodoDTO>selectBySeq(long seq);
+    List<TodoDTO>todoBySeq(long seq);
     List<TodoDTO>progressBySeq(long seq);
     List<TodoDTO>doneBySeq(long seq);
     /*갯수카운트*/

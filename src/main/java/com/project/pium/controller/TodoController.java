@@ -2,13 +2,13 @@ package com.project.pium.controller;
 
 import com.project.pium.domain.TaskDTO;
 import com.project.pium.domain.TodoDTO;
-import com.project.pium.service.MemberService;
-import com.project.pium.service.TaskService;
 import com.project.pium.service.TodoService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
-import java.security.Principal;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,9 +17,6 @@ import java.util.Map;
 @AllArgsConstructor
 @ResponseBody
 public class TodoController {
-    private ProjectController projcontroller;
-    private MemberService memberservice;
-    private TaskService taskservice;
     private TodoService todoService;
 
 
@@ -37,30 +34,52 @@ public class TodoController {
         return list;
     }
 
+    //내가 생성한 to do list. 상태값별로 나누어서
+    @GetMapping("/ajax/mytodo/{projMemberSeq}")
+    public ArrayList<Object> todoListProjmem(@PathVariable long projMemberSeq){
+        ArrayList<Object> todolistInfo = new ArrayList<>();
+        LinkedHashMap<String,Object> tempTodo = new LinkedHashMap<>();
+
+        List<TodoDTO> todoList = todoService.todoBySeqS(projMemberSeq);
+        List<TodoDTO> progressList = todoService.progressBySeqS(projMemberSeq);
+        List<TodoDTO> doneList = todoService.doneBySeqS(projMemberSeq);
+
+        tempTodo.put("todoList", todoList);
+        tempTodo.put("progressList", progressList);
+        tempTodo.put("doneList", doneList);
+
+        todolistInfo.add(tempTodo);
+
+        log.info("#내가 생성한 to do list"+todolistInfo);
+        return todolistInfo;
+    }
+
+    
+    
 
     //내가 생성한 to do list 불러오기. to do 상태
     //projMemberSeq로 불러 올 수 있는지 봐야함
-    @GetMapping("/ajax/mytodo/{projMemberSeq}")
-    public List<TodoDTO> selectBySeq(@PathVariable long projMemberSeq){
-
-        List<TodoDTO> list = todoService.selectBySeqS(projMemberSeq);
-        log.info("#내가 생성한 to do list"+list);
-        return list;
-    }
+//    @GetMapping("/ajax/mytodo/{projMemberSeq}")
+//    public List<TodoDTO> selectBySeq(@PathVariable long projMemberSeq){
+//
+//        List<TodoDTO> list = todoService.selectBySeqS(projMemberSeq);
+//        log.info("#내가 생성한 to do list"+list);
+//        return list;
+//    }
 
     //in progress 상태
-    @GetMapping("/ajax/myprogress/{projMemberSeq}")
-    public List<TodoDTO> progressBySeq(@PathVariable long projMemberSeq){
-        List<TodoDTO> list = todoService.progressBySeqS(projMemberSeq);
-        return list;
-    }
+//    @GetMapping("/ajax/myprogress/{projMemberSeq}")
+//    public List<TodoDTO> progressBySeq(@PathVariable long projMemberSeq){
+//        List<TodoDTO> list = todoService.progressBySeqS(projMemberSeq);
+//        return list;
+//    }
 
     //done 상태
-    @GetMapping("/ajax/mydone/{projMemberSeq}")
-    public List<TodoDTO> doneBySeq(@PathVariable long projMemberSeq){
-        List<TodoDTO> list = todoService.doneBySeqS(projMemberSeq);
-        return list;
-    }
+//    @GetMapping("/ajax/mydone/{projMemberSeq}")
+//    public List<TodoDTO> doneBySeq(@PathVariable long projMemberSeq){
+//        List<TodoDTO> list = todoService.doneBySeqS(projMemberSeq);
+//        return list;
+//    }
 
 
 

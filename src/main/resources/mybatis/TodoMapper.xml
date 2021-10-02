@@ -11,7 +11,7 @@
     </insert>
 
     <!--status에 따른 조회, 노트에 표시-->
-    <select id="selectBySeq" resultType="TodoDTO" parameterType="long">
+    <select id="todoBySeq" resultType="TodoDTO" parameterType="long">
         select * from todo where projmember_seq=#{projmember_seq} and todo_status = '10'
     </select>
 
