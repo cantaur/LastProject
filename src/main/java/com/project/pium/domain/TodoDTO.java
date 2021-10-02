@@ -17,5 +17,6 @@ public class TodoDTO {
     private Date todo_date;
     private String todo_status;
     private long task_seq;
+    private String task_title;
     private long projmember_seq;
 }
