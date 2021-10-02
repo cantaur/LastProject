@@ -1,8 +1,6 @@
 package com.project.pium.controller;
 
 
-
-import com.project.pium.domain.ProjectDTO;
 import com.project.pium.domain.ProjectmemberDTO;
 import com.project.pium.service.*;
 import lombok.AllArgsConstructor;
@@ -114,6 +112,7 @@ public class ProjectmemberController {
         Long projmember_seq = Long.valueOf(param.get("projmember_seq"));
         projectmemberService.projectoutS(project_seq, projmember_seq);
     } //Postman으로 테스트 완료
+
 
     //프로젝트 나가기
     @DeleteMapping("/ajax/projectexit")

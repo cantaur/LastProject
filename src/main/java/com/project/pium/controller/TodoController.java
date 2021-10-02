@@ -20,7 +20,7 @@ public class TodoController {
     private TodoService todoService;
 
 
-    //간단한 메모 입력하기
+    //insert todo
     @PostMapping("/ajax/createTodo")
     public void insertNote(@RequestBody TodoDTO todoDTO){
         log.info("TodoInsert(): "+todoDTO);
@@ -73,6 +73,31 @@ public class TodoController {
         return cnt;
     }
 
+    //메모 삭제하기
+    @GetMapping("/ajax/deleteTodo/{todoSeq}")
+    public void deleteNote(@RequestParam long todoSeq){
+        todoService.deleteNoteS(todoSeq);
+    }
+
+    //메모 수정하기
+    @PostMapping("/ajax/updateTodo")
+    public void updateNote(@RequestBody TodoDTO todo){
+        log.info("#updateTodo: " + todo);
+        todoService.updateNoteS(todo);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -88,17 +113,9 @@ public class TodoController {
         }
         return null;
     }
-    @PostMapping("/ajax/updateTodo")
-    public void updateNote(@RequestBody TodoDTO todo){
-        log.info("#updateTodo: " + todo);
-        todoService.updateNoteS(todo);
-    }
-    @ResponseBody
-    @PostMapping("/ajax/deleteTodo")
-    public void deleteNote(@RequestBody Map<String,Integer> param){
-        long lseq = Long.valueOf(param.get("seq"));
-        todoService.deleteNoteS(lseq);
-    }
+
+
+
 
 
 }
