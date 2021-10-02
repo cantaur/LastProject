@@ -22,28 +22,26 @@ public class TodoController {
 
 
     @PostMapping("/ajax/createTodo")
-    public String insertNote(@RequestParam(value = "todo_name", required = false) String todo_name,
-                           @RequestParam(value = "todo_content", required = false) String todo_content,
-                           @RequestParam(value = "todo_status", required = false) String todo_status,
-                           @RequestParam(value = "task_seq", required = false) Object task_seq,
-                           @RequestParam(value = "projmember_seq", required = false) Object projmember_seq){
-        log.info("todo_name: "+todo_name);
-        log.info("todo_content: "+todo_content);
-        log.info("todo_status: "+todo_status);
-        log.info("task_seq: "+task_seq);
-        log.info("projmember_seq: "+projmember_seq);
+    public String insertNote(@RequestBody Map<String, Object> params){
+        String todo_name = String.valueOf(params.get("todo_name"));
+        String todo_content = String.valueOf(params.get("todo_content"));
+        String todo_status = String.valueOf(params.get("todo_status"));
+        String task_seq = String.valueOf(params.get("task_seq"));
+        Long projmember_seq = Long.valueOf(String.valueOf(params.get("projmember_seq")));
+
+        
+        TodoDTO todoDTO = new TodoDTO();
+        todoDTO.setTodo_name(todo_name);
+        todoDTO.setTodo_content(todo_content);
+        todoDTO.setTodo_status(todo_status);
+        todoDTO.setProjmember_seq(projmember_seq);
+        if(task_seq != null){
+          todoDTO.setTask_seq(Long.valueOf(task_seq));
+        }
+
+        todoService.insertNoteS(todoDTO);
+
         return "success";
-//        TodoDTO todoDTO = null;
-//        todoDTO.setTodo_name(todo_name);
-//        todoDTO.setTodo_content(todo_content);
-//        todoDTO.setTodo_status(todo_status);
-//        todoDTO.setProjmember_seq(projmember_seq);
-//         if(task_seq != 0){
-//             todoDTO.setTask_seq(task_seq);
-//        }
-//        log.info("TodoInsert(): "+todoDTO);
-//
-//        todoService.insertNoteS(todoDTO);
     }
 
     //task 생성 시 드랍박스 안에 보여질 task 제목 등 정보 불러오기

@@ -66,25 +66,16 @@ function Todo(p){
         })
       }, 2000);
     }else {
-      let data = {};
-      if(formData.task==''){
-        data={
-          'todo_name':formData.title,
-          'todo_content':formData.content,
-          'todo_status':status,
-          'projmember_seq':p.myMemberInfo.projmember_seq
-        }
-      }else {
-        data={
-          'todo_name':formData.title,
-          'todo_content':formData.content,
-          'todo_status':status,
-          'task_seq':formData.task,
-          'projmember_seq':p.myMemberInfo.projmember_seq
-        }
-      }
+      console.log(status)
+      const taskSeq = formData.task==''?null:formData.task;
       p.dispatch({type:'loadingOn'})
-      axios.post(host+'/ajax/createTodo',data)
+      axios.post(host+'/ajax/createTodo',{
+        'todo_name':formData.title,
+        'todo_content':formData.content,
+        'todo_status':status,
+        'task_seq':taskSeq,
+        'projmember_seq':p.myMemberInfo.projmember_seq
+      })
       .then(r=>{
         formDataCng({
           title:'',
@@ -333,7 +324,7 @@ function Todo(p){
                   })
                 }}>취소</p>
                 <button style={{backgroundColor:p.prjColor, color:'#fff'}} onClick={()=>{
-                  myTodoInsert(10)
+                  myTodoInsert('10')
                 }}>작성완료</button>
               </div>
             </div>
@@ -410,7 +401,7 @@ function Todo(p){
                   })
                 }}>취소</p>
                 <button style={{backgroundColor:p.prjColor, color:'#fff'}} onClick={()=>{
-                  myTodoInsert(20)
+                  myTodoInsert('20')
                 }}>작성완료</button>
               </div>
             </div>
@@ -483,7 +474,7 @@ function Todo(p){
                   })
                 }}>취소</p>
                 <button style={{backgroundColor:p.prjColor, color:'#fff'}} onClick={()=>{
-                  myTodoInsert(20)
+                  myTodoInsert('30')
                 }}>작성완료</button>
               </div>
             </div>
@@ -534,7 +525,7 @@ function List(p) {
                         todo_name:r.todo_name,
                         todo_content:r.todo_content,
                         todo_seq:r.todo_seq,
-                        todo_status:Number(r.todo_status),
+                        todo_status:r.todo_status,
                         task_seq:r.task_seq,
                         projmember_seq:p.myMemberInfo.projmember_seq
                       })
