@@ -25,6 +25,20 @@ public interface TaskService {
     //마일스톤 페이지(지우면 안됨) labelSeq로 라벨 이름 조회
     LabelDTO findLabelTitle(long labelSeq);
 
+    //해당 마일스톤에서 생성된 업무리스트 중 진행중 상태인거
+    List<TaskDTO> openTaskListByMile(long mileSeq);
+    //해당 마일스톤에서 생성된 업무리스트 중 마감된 상태인거
+    List<TaskDTO> closedTaskListByMile(long mileSeq);
+
+
+
+
+
+
+
+
+
+
     //업무를 클릭하였을 때 업무 상세보기
     TaskDTO showTaskByTaskseq(long taskSeq);
 

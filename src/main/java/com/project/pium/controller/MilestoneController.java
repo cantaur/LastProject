@@ -141,6 +141,58 @@ public class MilestoneController {
     }
 
 
+    //마일스톤 상세페이지>업무 리스트>진행중인 업무
+    @GetMapping("/ajax/milestone/{mileSeq}/taskOpend")
+    public ArrayList<Object> openTaskInMile(@PathVariable long mileSeq){
+
+        //해당 마일스톤에서 생성된 업무 조회
+        List<TaskDTO> tasks = taskService.openTaskListByMile(mileSeq);
+        ArrayList<Object> mileInfo = new ArrayList<>();
+
+        for(TaskDTO taskDTO1 : tasks){
+            LinkedHashMap<String,Object> tempTask = new LinkedHashMap<>();
+
+            //결과로 나온 업무리스트의 label_seq를 뽑아서 업무에 있는 label_title을 뽑는다
+            LabelDTO labelDTO = taskService.findLabelTitle(taskDTO1.getLabel_seq());
+
+            //결과로 나온 업무리스트에서 task_seq를 뽑아서 업무당 배정된 멤버를 뽑아와서 새 배열에 넣는다.
+            List<TaskmemberDTO> taskmemberDTOS= taskmemberService.selectByTaskSeq(taskDTO1.getTask_seq());
+
+            tempTask.put("task",taskDTO1);
+            tempTask.put("taskMembers",taskmemberDTOS);
+            tempTask.put("label", labelDTO);
+            mileInfo.add(tempTask);
+        }
+        return mileInfo;
+    }
+
+
+    //마일스톤 상세페이지>업무 리스트>마감된 업무
+    @GetMapping("/ajax/milestone/{mileSeq}/taskClosed")
+    public ArrayList<Object> closedTaskInMile(@PathVariable long mileSeq){
+
+        //해당 마일스톤에서 생성된 업무 조회
+        List<TaskDTO> tasks = taskService.closedTaskListByMile(mileSeq);
+        ArrayList<Object> mileInfo = new ArrayList<>();
+
+        for(TaskDTO taskDTO1 : tasks){
+            LinkedHashMap<String,Object> tempTask = new LinkedHashMap<>();
+
+            //결과로 나온 업무리스트의 label_seq를 뽑아서 업무에 있는 label_title을 뽑는다
+            LabelDTO labelDTO = taskService.findLabelTitle(taskDTO1.getLabel_seq());
+
+            //결과로 나온 업무리스트에서 task_seq를 뽑아서 업무당 배정된 멤버를 뽑아와서 새 배열에 넣는다.
+            List<TaskmemberDTO> taskmemberDTOS= taskmemberService.selectByTaskSeq(taskDTO1.getTask_seq());
+
+            tempTask.put("task",taskDTO1);
+            tempTask.put("taskMembers",taskmemberDTOS);
+            tempTask.put("label", labelDTO);
+            mileInfo.add(tempTask);
+        }
+        return mileInfo;
+    }
+
+
 
     //마일스톤 수정(제목,설명,달력)
     @PostMapping("/ajax/updateMileStone")
@@ -179,6 +231,8 @@ public class MilestoneController {
         Long mileSeq= Long.valueOf(param.get("milestone_seq"));
         milestoneService.delMilestone(mileSeq);
     }
+
+
 
 
 }

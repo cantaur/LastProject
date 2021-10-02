@@ -20,6 +20,15 @@ public interface TaskMapper {
     int countClosedTask(long mileSeq);
     //해당 마일스톤에서 생성된 전체 업무리스트
     List<TaskDTO> taskListByMile(long mileSeq);
+    //해당 마일스톤에서 생성된 업무리스트 중 진행중 상태인거
+    List<TaskDTO> openTaskListByMile(long mileSeq);
+    //해당 마일스톤에서 생성된 업무리스트 중 마감된 상태인거
+    List<TaskDTO> closedTaskListByMile(long mileSeq);
+
+
+
+
+
     //업무를 클릭하였을 때 업무 상세보기
     TaskDTO showTaskByTaskseq(long taskSeq);
     //title update

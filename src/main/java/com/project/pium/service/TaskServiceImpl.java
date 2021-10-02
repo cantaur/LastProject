@@ -56,21 +56,15 @@ public class TaskServiceImpl implements TaskService {
         return worklabelMapper.findLabelTitle(labelSeq);
     }
 
+    @Override
+    public List<TaskDTO> openTaskListByMile(long mileSeq) {
+        return taskMapper.openTaskListByMile(mileSeq);
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @Override
+    public List<TaskDTO> closedTaskListByMile(long mileSeq) {
+        return taskMapper.closedTaskListByMile(mileSeq);
+    }
 
 
     @Override
