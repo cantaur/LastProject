@@ -47,8 +47,19 @@
     <!--to do 위치에서 note 초기 생성-->
     <insert id="insertNote" parameterType="TodoDTO">
         insert into todo(todo_name, todo_content, todo_date, todo_status, task_seq, projmember_seq)
-        values(#{todo_name}, #{todo_content}, NOW(), "10", #{task_seq, jdbcType = INTEGER}, #{projmember_seq})
+        values(#{todo_name}, #{todo_content}, NOW(), #{todo_status}, #{task_seq, jdbcType = INTEGER}, #{projmember_seq})
     </insert>
+
+    <!--to do 위치에서 note 초기 생성, teskSeq가 널일 때^^-->
+    <insert id="noTaskInsert" parameterType="TodoDTO">
+        insert into todo(todo_name, todo_content, todo_date, todo_status, projmember_seq)
+        values(#{todo_name}, #{todo_content}, NOW(), #{todo_status}, #{projmember_seq})
+    </insert>
+
+
+
+
+
     <!--노트 수정-->
     <update id="updateNote" parameterType="TodoDTO">
         UPDATE todo

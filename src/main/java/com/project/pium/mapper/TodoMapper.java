@@ -25,6 +25,7 @@ public interface TodoMapper {
 
 
     void insertNote(TodoDTO todo); // 메모 생성
+    void noTaskInsert(TodoDTO todo); // 메모 생성(teskSeq 없을때^^)
     void updateNote(TodoDTO todo); // 메모 수정
     void updateNoteStatus(TodoDTO todo); // 메모 상태이동
     void deleteNote(long todo_seq); // 메모 삭제

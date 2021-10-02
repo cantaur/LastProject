@@ -19,6 +19,7 @@ public interface TodoService {
     List<TaskDTO> showTaskByProjSeqS(long seq);
 
     void insertNoteS(TodoDTO todo); // 메모 생성
+    void noTaskInsert(TodoDTO todo); // 메모 생성(teskSeq 없을때^^)
     void updateNoteS(TodoDTO todd); // 메모 수정
     void updateNoteStatusS(TodoDTO todo); // 메모 상태이동
     void deleteNoteS(long todo_seq); // 메모 삭제

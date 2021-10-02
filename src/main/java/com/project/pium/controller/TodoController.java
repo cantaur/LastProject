@@ -26,7 +26,7 @@ public class TodoController {
         String todo_name = String.valueOf(params.get("todo_name"));
         String todo_content = String.valueOf(params.get("todo_content"));
         String todo_status = String.valueOf(params.get("todo_status"));
-        String task_seq = String.valueOf(params.get("task_seq"));
+        Object task_seq = params.get("task_seq");
         Long projmember_seq = Long.valueOf(String.valueOf(params.get("projmember_seq")));
 
         
@@ -36,10 +36,17 @@ public class TodoController {
         todoDTO.setTodo_status(todo_status);
         todoDTO.setProjmember_seq(projmember_seq);
         if(task_seq != null){
-          todoDTO.setTask_seq(Long.valueOf(task_seq));
+            todoDTO.setTask_seq(Long.valueOf(String.valueOf(task_seq)));
+            todoService.insertNoteS(todoDTO);
+        }else{
+            todoService.insertNoteS(todoDTO);
+            //todoService.noTaskInsert(todoDTO);
+
         }
 
-        todoService.insertNoteS(todoDTO);
+
+
+
 
         return "success";
     }
