@@ -26,6 +26,52 @@ function MileStoneView(p){
   //마일스톤의 업무 리스트
   const [taskList, taskListCng] = useState();
 
+
+  //업무 필터 상태
+  const [taskFilter, taskFilterCng]=useState();
+
+
+  //업무 필터 적용
+  const taskFilterFunc = filter =>{
+    p.dispatch({type:'loadingOn'})
+    taskFilterCng(filter)
+    
+    if(filter == '전체'){
+      axios.get(host+'/ajax/milestone/'+mileStoneSeq+'/tasks')
+      .then(r=>{
+        console.log(r.data)
+        taskListCng(r.data)
+        p.dispatch({type:'loadingOff'})
+      })
+      .catch(e=>{
+        p.dispatch({type:'loadingOff'})
+      })
+    } else if(filter == '진행중'){
+
+      axios.get(host+'/ajax/milestone/'+mileStoneSeq+'/taskOpend')
+      .then(r=>{
+        console.log(r.data)
+        taskListCng(r.data)
+        p.dispatch({type:'loadingOff'})
+      })
+      .catch(e=>{
+        p.dispatch({type:'loadingOff'})
+      })
+    } else if(filter == '종료'){
+      axios.get(host+'/ajax/milestone/'+mileStoneSeq+'/taskClosed')
+      .then(r=>{
+        console.log(r.data)
+        taskListCng(r.data)
+        p.dispatch({type:'loadingOff'})
+      })
+      .catch(e=>{
+        p.dispatch({type:'loadingOff'})
+      })
+    }
+
+    
+  }
+
   let dateModalClose =useCallback((e)=>{
     if(!e.target.closest('.DayPicker_1') ){
       
@@ -66,7 +112,6 @@ function MileStoneView(p){
     .then(r=>{
       axios.get(host+'/ajax/milestone/'+mileStoneSeq)
       .then(r=>{
-        // console.log(r.data)
         
         mileStoneInfoCng(r.data)
         
@@ -131,10 +176,9 @@ function MileStoneView(p){
       console.log(e)
       p.dispatch({type:'loadingOff'})
     })
+    taskFilterCng('전체')
   },[])
 
-  console.log(taskList)
-  console.log(p.memberList)
 
   return(
     <div className="pageContentWrap mileStoneWrap">
@@ -165,15 +209,34 @@ function MileStoneView(p){
             <div className="mileStoneTaskWrap">
               <div className="taskHeader">
                 <div className="filter">
-                  <p style={{backgroundColor:p.prjColor,color:'#fff'}}>전체</p>
-                  <p style={{color:p.prjColor}}>진행중</p>
-                  <p style={{color:p.prjColor}}>종료</p>
+                  <p style={
+                    taskFilter == '전체'?
+                    {backgroundColor:p.prjColor,color:'#fff'}
+                    :{color:p.prjColor}
+                    } onClick={()=>{
+                      taskFilterFunc('전체')
+                      
+                    }}>전체</p>
+                  <p style={
+                    taskFilter == '진행중'?
+                    {backgroundColor:p.prjColor,color:'#fff'}
+                    :{color:p.prjColor}
+                  } onClick={()=>{
+                    taskFilterFunc('진행중')
+                  }}>진행중</p>
+                  <p style={
+                    taskFilter == '종료'?
+                    {backgroundColor:p.prjColor,color:'#fff'}
+                    :{color:p.prjColor}
+                  } onClick={()=>{
+                    taskFilterFunc('종료')
+                  }}>종료</p>
                 </div>
                 <div className="sort">
-                  <p className="sortBtn w120">담당자 <i class="fas fa-caret-down"></i></p>
-                  <p className="sortBtn w80">중요도 <i class="fas fa-caret-down"></i></p>
-                  <p className="sortBtn w120">라벨 <i class="fas fa-caret-down"></i></p>
-                  <p className="sortBtn w80">작성자 <i class="fas fa-caret-down"></i></p>
+                  <p className="sortBtn w120">담당자</p>
+                  <p className="sortBtn w80">중요도</p>
+                  <p className="sortBtn w120">라벨</p>
+                  <p className="sortBtn w80">작성자</p>
                 </div>
               </div>
             {

@@ -311,7 +311,7 @@ function StoneList(p){
             </div>
             <div className="bar" style={{backgroundColor:p.color,width:
                 p.completeTaskCnt != 0 
-                ?Math.round((p.completeTaskCnt/p.taskCnt)*100)
+                ?Math.round((p.completeTaskCnt/p.taskCnt)*100)+'%'
                 :0+'%'}}></div>
           </div>
         </div>      
