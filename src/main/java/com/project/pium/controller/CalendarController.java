@@ -2,25 +2,30 @@ package com.project.pium.controller;
 
 import com.project.pium.domain.CalendarDTO;
 import com.project.pium.domain.ProjectDTO;
+import com.project.pium.domain.TaskDTO;
 import com.project.pium.service.CalendarService;
 import com.project.pium.service.MemberService;
 import com.project.pium.service.ProjectService;
+import com.project.pium.service.TaskService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Log
 @RestController
-@RequestMapping("calendar")
 @AllArgsConstructor
+@ResponseBody
 public class CalendarController {
 
     private CalendarService calendarService;
     private ProjectService projectService;
     private MemberService memberService;
+    private TaskService taskService;
 
     //새 달력 MEMO 만들기
     @PostMapping("/ajax/createCal")
@@ -28,12 +33,22 @@ public class CalendarController {
         calendarService.insertCalMemo(calendarDTO);
     }
 
-    //이 프로젝트에서 생성한 모든 캘린더 리스트 조회하기
-    @GetMapping("calListPro/{projSeq}")
-    public List<CalendarDTO> calListPro(@PathVariable long projSeq){
-        List<CalendarDTO> calListPro = calendarService.calListByProjSeq(projSeq);
-        log.info("calListPro" + calListPro);
-        return calListPro;
+    //이 프로젝트에서 생성한 모든 캘린더 리스트 조회, 이 프로젝트의 모든 업무 조회
+    @GetMapping("/ajax/calList/{projSeq}")
+    public ArrayList<Object> calListPro(@PathVariable long projSeq){
+        ArrayList<Object> calList = new ArrayList<>();
+        LinkedHashMap<String,Object> tempCal = new LinkedHashMap<>();
+
+        List<CalendarDTO> calListProj = calendarService.calListByProjSeq(projSeq); //캘린더 리스트
+        List<TaskDTO> taskListProj = taskService.taskList(projSeq); //업무 리스트 조회
+
+        tempCal.put("calListProj", calListProj);
+        tempCal.put("taskListProj", taskListProj);
+
+        calList.add(tempCal);
+        log.info("#calList : "+calList);
+
+        return calList;
     }
 
 

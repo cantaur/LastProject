@@ -12,7 +12,6 @@ import java.sql.Timestamp;
 public class CalendarDTO {
     private long calendar_seq;
     private String calendar_title;
-    private String calendar_content;
     private Date calendar_date;
     private Date calendar_startdate;
     private Date calendar_enddate;
