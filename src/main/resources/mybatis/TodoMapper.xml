@@ -56,7 +56,7 @@
     <!--노트 수정-->
     <update id="updateNote" parameterType="TodoDTO">
         UPDATE todo
-        SET todo_name=#{todo_name}, todo_content=#{todo_content}, todo_date=NOW(), task_seq=#{task_seq}
+        SET todo_name=#{todo_name}, todo_content=#{todo_content}, todo_date=NOW(), task_seq=#{task_seq}, task_title=#{task_title}
         WHERE todo_seq=#{todo_seq}
     </update>
 
