@@ -99,7 +99,8 @@ public class TodoController {
     public void changeTodoStatus(@RequestBody Map<String, Integer> param){
         String todoStatus = String.valueOf(param.get("todo_status"));
         Long todoSeq = Long.valueOf(param.get("todo_seq"));
-        log.info("메모상태변경하기 : "+todoStatus+todoSeq);
+        log.info("메모상태변경하기 : "+todoStatus+", "+todoSeq);
+        todoService.updateNoteStatusS(todoStatus,todoSeq);
 
 
     }

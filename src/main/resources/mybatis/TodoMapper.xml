@@ -43,12 +43,6 @@
         values(#{todo_name}, #{todo_content}, NOW(), #{todo_status}, #{task_seq, jdbcType = INTEGER}, #{task_title},#{projmember_seq})
     </insert>
 
-    <!--to do 위치에서 note 초기 생성, teskSeq가 널일 때^^-->
-    <insert id="noTaskInsert" parameterType="TodoDTO">
-        insert into todo(todo_name, todo_content, todo_date, todo_status, projmember_seq)
-        values(#{todo_name}, #{todo_content}, NOW(), #{todo_status}, #{projmember_seq})
-    </insert>
-
 
 
 
@@ -56,7 +50,7 @@
     <!--노트 수정-->
     <update id="updateNote" parameterType="TodoDTO">
         UPDATE todo
-        SET todo_name=#{todo_name}, todo_content=#{todo_content}, todo_date=NOW(), task_seq=#{task_seq}, task_title=#{task_title}
+        SET todo_name=#{todo_name}, todo_content=#{todo_content}, todo_date=NOW(), task_seq=#{task_seq, jdbcType = INTEGER}, task_title=#{task_title}
         WHERE todo_seq=#{todo_seq}
     </update>
 
