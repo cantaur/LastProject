@@ -88,19 +88,19 @@ public class TodoController {
 
     //메모 수정하기
     @PostMapping("/ajax/updateTodo")
-    public void updateNote(@RequestBody TodoDTO todo){
-        log.info("#updateTodo: " + todo);
-        todoService.updateNoteS(todo);
+    public void updateNote(@RequestBody TodoDTO todoDTO){
+        log.info("#updateTodo: " + todoDTO);
+        todoService.updateNoteS(todoDTO);
     }
 
 
     //메모의 상태 변경하기
     @PostMapping("/ajax/changeTodoStatus")
     public void changeTodoStatus(@RequestBody Map<String, Integer> param){
-        String todoStatus = String.valueOf(param.get("todo_status"));
-        Long todoSeq = Long.valueOf(param.get("todo_seq"));
-        log.info("메모상태변경하기 : "+todoStatus+", "+todoSeq);
-        todoService.updateNoteStatusS(todoStatus,todoSeq);
+        String todo_status = String.valueOf(param.get("todo_status"));
+        Long todo_seq = Long.valueOf(param.get("todo_seq"));
+        log.info("메모상태변경하기 : "+todo_status+", "+todo_seq);
+        todoService.updateNoteStatusS(todo_status,todo_seq);
 
 
     }

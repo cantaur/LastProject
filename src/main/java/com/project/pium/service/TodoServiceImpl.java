@@ -46,19 +46,19 @@ public class TodoServiceImpl implements TodoService {
 
 
     @Override
-    public void insertNoteS(TodoDTO todo) {
-        todoMapper.insertNote(todo);
+    public void insertNoteS(TodoDTO todoDTO) {
+        todoMapper.insertNote(todoDTO);
     }
 
 
     @Override
-    public void updateNoteS(TodoDTO todo) {
-        todoMapper.updateNote(todo);
+    public void updateNoteS(TodoDTO todoDTO) {
+        todoMapper.updateNote(todoDTO);
     }
 
     @Override
-    public void updateNoteStatusS(String todoStatus, long todoSeq) {
-        todoMapper.updateNoteStatus(todoStatus,todoSeq);
+    public void updateNoteStatusS(String todo_status, long todo_seq) {
+        todoMapper.updateNoteStatus(todo_status,todo_seq);
 
     }
 
