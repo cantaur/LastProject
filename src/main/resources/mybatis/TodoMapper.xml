@@ -9,7 +9,6 @@
         SELECT * from todo where projmember_seq=#{projmember_seq} and todo_status = '10'
     </select>
 
-
     <select id="progressBySeq" resultType="TodoDTO" parameterType="long">
         SELECT * from todo where projmember_seq=#{projmember_seq} and todo_status = '20'
     </select>
@@ -40,8 +39,8 @@
 
     <!--to do 위치에서 note 초기 생성-->
     <insert id="insertNote" parameterType="TodoDTO">
-        insert into todo(todo_name, todo_content, todo_date, todo_status, task_seq, projmember_seq)
-        values(#{todo_name}, #{todo_content}, NOW(), #{todo_status}, #{task_seq, jdbcType = INTEGER}, #{projmember_seq})
+        insert into todo(todo_name, todo_content, todo_date, todo_status, task_seq, task_title, projmember_seq)
+        values(#{todo_name}, #{todo_content}, NOW(), #{todo_status}, #{task_seq, jdbcType = INTEGER}, #{task_title},#{projmember_seq})
     </insert>
 
     <!--to do 위치에서 note 초기 생성, teskSeq가 널일 때^^-->

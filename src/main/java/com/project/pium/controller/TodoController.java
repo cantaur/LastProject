@@ -21,6 +21,7 @@ public class TodoController {
 
 
 
+    //to do 메모 생성
     @PostMapping("/ajax/createTodo")
     public String insertNote(@RequestBody Map<String, Object> params){
         String todo_name = String.valueOf(params.get("todo_name"));
