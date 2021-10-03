@@ -60,7 +60,7 @@
     </delete>
     <!--노트 상태이동-->
     <update id="updateNoteStatus" parameterType="TodoDTO">
-        UPDATE todo SET todo_status=#{todo_status} WHERE where todo_seq=#{todo_seq}
+        UPDATE todo SET todo_status=#{todo_status} where todo_seq=#{todo_seq}
     </update>
 
 

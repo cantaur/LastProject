@@ -57,8 +57,8 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public void updateNoteStatusS(String todo_status, long todo_seq) {
-        todoMapper.updateNoteStatus(todo_status,todo_seq);
+    public void updateNoteStatusS(TodoDTO todoDTO) {
+        todoMapper.updateNoteStatus(todoDTO);
 
     }
 

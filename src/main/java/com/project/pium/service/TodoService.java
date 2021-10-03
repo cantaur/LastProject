@@ -22,7 +22,7 @@ public interface TodoService {
     void insertNoteS(TodoDTO todoDTO); // 메모 생성
 
     void updateNoteS(TodoDTO todoDTO); // 메모 수정
-    void updateNoteStatusS(String todo_status, long todo_seq); // 메모 상태이동
+    void updateNoteStatusS(TodoDTO todoDTO); // 메모 상태이동
     void deleteNoteS(long todo_seq); // 메모 삭제
 
 

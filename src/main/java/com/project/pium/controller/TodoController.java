@@ -100,7 +100,10 @@ public class TodoController {
         String todo_status = String.valueOf(param.get("todo_status"));
         Long todo_seq = Long.valueOf(param.get("todo_seq"));
         log.info("메모상태변경하기 : "+todo_status+", "+todo_seq);
-        todoService.updateNoteStatusS(todo_status,todo_seq);
+        TodoDTO todoDTO = new TodoDTO();
+        todoDTO.setTodo_status(todo_status);
+        todoDTO.setTodo_seq(todo_seq);
+        todoService.updateNoteStatusS(todoDTO);
 
 
     }

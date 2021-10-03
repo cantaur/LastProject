@@ -28,7 +28,7 @@ public interface TodoMapper {
     void insertNote(TodoDTO todoDTO); // 메모 생성
 
     void updateNote(TodoDTO todoDTO); // 메모 수정
-    void updateNoteStatus(@RequestParam("todo_status")String todo_status, @RequestParam("todo_seq")long todo_seq); // 메모 상태이동
+    void updateNoteStatus(TodoDTO todoDTO); // 메모 상태이동
     void deleteNote(long todo_seq); // 메모 삭제
 
 
