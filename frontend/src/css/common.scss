@@ -1476,17 +1476,18 @@ body{
 //페이지 네비게이션 (전체)
 .pageBtnWrap{
   width: 100%;
+  padding-left: 10px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   padding-bottom:10px;
   padding-top:10px;
   margin-bottom:15px;
-  margin-top:-40px;
+  margin-top:-20px;
   background-color: #fff;
   .pageBtn{
     cursor: pointer;
     color:#333;
-    font-size: 1.1rem;
+    font-size: 1rem;
     text-decoration: none;
     padding:0px;
     height:26px;
@@ -1502,7 +1503,7 @@ body{
       text-decoration: none;
     }
     &+.pageBtn{
-      margin-left: 20px;
+      margin-left: 25px;
       
     }
   }
@@ -1565,7 +1566,7 @@ body{
           // opacity: 1;
         }
         &.on+.list{
-          height: calc(100vh - 395px);
+          height: calc(100vh - 415px);
         }
         input{
           transition: .3s ease-in-out;
@@ -1653,7 +1654,7 @@ body{
       }
       .list{
         margin:0;
-        height: calc(100vh - 208px);
+        height: calc(100vh - 228px);
         max-height: none;
         padding:0px 10px;
         padding-bottom:10px;
@@ -1875,7 +1876,76 @@ body{
 
 //Calender (프로젝트 메인)
 .calenderWrap{
+  .calenderCon{
+    padding:20px;
+    border:1px solid #ccc;
+    background-color: #f2f2f2;
+    border-radius: 6px;
+    .fc-header-toolbar{
+      margin: 0px -20px;
+      margin-top:-20px;
+      padding:20px;
+      width: calc(100% + 40px);
+      background-color: #fff;
+      border-bottom: 1px solid #ccc;
+      border-radius: 6px 6px 0px 0px;
+    }
+    .fc .fc-button-primary:focus{
+      box-shadow: none !important;
 
+    }
+    .fc-toolbar-chunk{
+      font-size: .8rem;
+      &.fc-button-primar:focus{
+        outline: none;
+      }
+    }
+    .fc-col-header-cell-cushion{
+      font-size: .9rem;
+      &:hover{
+        color:black;
+      }
+    }
+    .fc-daygrid-day-frame{
+      background-color: #fff;
+      font-size: .9rem;
+    }
+    .fc-daygrid-day-bottom{
+      display: flex;
+      justify-content: flex-end;
+    }
+    .fc-daygrid-more-link{
+      display: block;
+      padding:2px 6px;
+      text-decoration: none;
+      background-color: #fff;
+      border:1px solid #aaa;
+      width: max-content;
+      border-radius: 4px;
+      margin-top:5px;
+      color:#555;
+      font-size: .7rem;
+      &:hover{
+        background-color: #f2f2f2;
+      }
+    }
+    .fc .fc-daygrid-body-natural .fc-daygrid-day-events{
+      margin-bottom:8px;
+    }
+    .fc-daygrid-day-number:hover{
+      color:black
+    }
+    .fc-event-main{
+      padding:0px 4px;
+      i{
+        font-style: normal;
+      }
+    }
+    .fc-daygrid-event{
+      border:1px solid #fff !important;
+    }
+
+  }
 }
 
 //MileStone (마일스톤)
