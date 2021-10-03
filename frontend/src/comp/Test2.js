@@ -133,10 +133,10 @@ function Test2(p){
 
         function dateCreate(e){
             e.preventDefault()
-          console.log(e.currentTarget.calendar_title.value)
-          console.log(e.currentTarget.calendar_content.value)
-          // console.log(e.currentTarget.startDate.value)
-          // console.log(e.currentTarget.endDate.value)
+          console.log("Title : " + e.currentTarget.calendar_title.value)
+          console.log("Description : " + e.currentTarget.calendar_content.value)
+          console.log(e.currentTarget.calendar_date.startDate.value)
+          console.log(e.currentTarget.calendar_date.endDate.value)
         }
         function createDate(e){
           const {value, name} = e.target;
@@ -182,7 +182,7 @@ function Test2(p){
 
                 <Form.Group className="form-floating">
                     <p className="schedule-div">
-                        <i className="far fa-calendar-check"></i> 스케줄  <SelectDate />
+                        <i className="far fa-calendar-check"></i> 스케줄  <SelectDate name="calendar_date" defaultValue={calendar_startdate} />
                     </p>
                 </Form.Group>
                 </Form>
