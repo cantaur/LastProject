@@ -193,7 +193,7 @@ function Todo(p){
       r.childNodes[2].value = ''    
     })
   }
-  
+
 
 
   useEffect(()=>{
@@ -232,28 +232,12 @@ function Todo(p){
               item.style.display ='none';
           }, 0)          
       });
-      item.addEventListener('dragend', function(){
+      item.addEventListener('dragend', function(e){
+          e.preventDefault();
           setTimeout(function(){
               draggedItem.style.display = 'block';
               draggedItem = null;
           },0)
-          let itemSeq = item.getAttribute('data-seq')
-          let itemStatus = item.getAttribute('data-status')
-          let boxStatus = this.getAttribute('data-status')
-          if(itemStatus==boxStatus){
-            p.dispatch({type:'loadingOn'})
-            axios.post('/ajax/changeTodoStatus',{
-              todo_seq:itemSeq,
-              todo_status:boxStatus,
-            })
-            .then(r=>{
-              myTodoGet()
-            })
-            .catch(e=>{
-              console.log(e)
-              p.dispatch({type:'loadingOff'})
-            })
-          }
       });
       for(let j = 0; j<lists.length; j++){
           const list = lists[j];
@@ -276,9 +260,31 @@ function Todo(p){
           //진입하고 서버로 업데이트
           list.addEventListener('drop', function(e){
               e.preventDefault();
+              e.stopPropagation();
               
               this.append(draggedItem);
               this.style.backgroundColor = '#ececec';
+
+              let itemSeq = draggedItem.getAttribute('data-seq')
+              let itemStatus = draggedItem.getAttribute('data-status')
+              let boxStatus = this.getAttribute('data-status')
+
+              if(itemStatus!=boxStatus){
+                p.dispatch({type:'loadingOn'})
+                console.log(boxStatus)
+                axios.post('/ajax/changeTodoStatus',{
+                  todo_seq:itemSeq,
+                  todo_status:boxStatus,
+                })
+                .then(r=>{
+                  myTodoGet()
+                })
+                .catch(e=>{
+                  console.log(e)
+                  p.dispatch({type:'loadingOff'})
+                })
+              }
+              
           })
 
       }
