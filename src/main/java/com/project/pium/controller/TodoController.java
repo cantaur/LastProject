@@ -23,23 +23,12 @@ public class TodoController {
 
     //to do 메모 생성
     @PostMapping("/ajax/createTodo")
-    public String insertNote(@RequestBody Map<String, Object> params){
-        String todo_name = String.valueOf(params.get("todo_name"));
-        String todo_content = String.valueOf(params.get("todo_content"));
-        String todo_status = String.valueOf(params.get("todo_status"));
-        Object task_seq = params.get("task_seq");
-        Long projmember_seq = Long.valueOf(String.valueOf(params.get("projmember_seq")));
+    public String insertNote(@RequestBody TodoDTO todoDTO){
+        long task_seq= todoDTO.getTask_seq();
+        String task_title=todoDTO.getTask_title();
+        log.info("어떻게 들어오는지 확인하고 싶다 : "+task_seq+", "+task_title);
+        log.info("todoDTO : "+todoDTO);
 
-        
-        TodoDTO todoDTO = new TodoDTO();
-        todoDTO.setTodo_name(todo_name);
-        todoDTO.setTodo_content(todo_content);
-        todoDTO.setTodo_status(todo_status);
-        todoDTO.setProjmember_seq(projmember_seq);
-        if(task_seq != null){
-            todoDTO.setTask_seq(Long.valueOf(String.valueOf(task_seq)));
-
-        }
         todoService.insertNoteS(todoDTO);
         return "success";
     }

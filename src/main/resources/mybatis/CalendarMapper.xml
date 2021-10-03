@@ -7,27 +7,38 @@
 
     <!--Memo insert-->
      <insert id="insertCalMemo" parameterType="CalendarDTO">
-        INSERT INTO calendar (calendar_title,calendar_content,calendar_date,calendar_startdate,calendar_enddate,projmember_seq)
-        VALUES(#{calendar_title},#{calendar_content},#{calendar_date},#{calendar_startdate},#{calendar_enddate},#{projmember_seq})
+        INSERT INTO calendar (calendar_title, calendar_content, calendar_startdate, calendar_enddate, projmember_seq, project_seq)
+        VALUES(#{calendar_title}, #{calendar_content}, #{calendar_startdate}, #{calendar_enddate}, #{projmember_seq}, #{project_seq})
     </insert>
 
-    <!-- 달력 값 입력 -->
-    <!-- front에서 입력 값 받기 전에 확인용으로 -->
-    <insert id="createCal" parameterType="CalendarDTO">
-        INSERT INTO calendar (calendar_title,calendar_content,calendar_date,calendar_startdate,calendar_enddate,projmember_seq)
-        VALUES(#{calendar_title},#{calendar_content},#{calendar_date},#{calendar_startdate},#{calendar_enddate},#{projmember_seq})
-    </insert>
-
-    <!--달력 리스트 출력-->
-    <select id ="calList" resultType="CalendarDTO">
-        select * from calendar
+<!--    이 프로젝트에서 생성된 모든 캘린더 목록 조회-->
+    <select id="calListByProjSeq" resultType="CalendarDTO" parameterType="long">
+        select * from calendar where project_seq=#{project_seq}
     </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- 달력 리스트 BySeq 출력 -->
     <select id="calListBySeq" resultType="CalendarDTO" parameterType="long">
         select *from calendar
         where calendar_seq=#{calendar_seq}
     </select>
+
+
+
+
 
     <!-- 달력 리스트 ByProSeq 출력 -->
     <select id="calListByProSeq" resultType="CalendarDTO" parameterType="long">

@@ -13,17 +13,24 @@ public interface CalendarMapper {
     //달력 MeMo 입력
     void insertCalMemo(CalendarDTO calendarDTO);
 
-    //달력 입력
-    void createCal(CalendarDTO calendarDTO);
-
-    //달력 리스트 출력
-    List<CalendarDTO> calList();
-
-    //달력 list byseq 조회
-    List<CalendarDTO> calListBySeq(long calSeq);
-
     //달력 list byProSeq 조회
-    List<CalendarDTO> calListByProSeq(long calProSeq);
+    List<CalendarDTO> calListByProjSeq(long projSeq);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //달력 title 수정
     void upCalName(CalendarDTO calendarDTO);

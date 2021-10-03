@@ -22,24 +22,10 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     @Override
-    public void creatCal(CalendarDTO calendarDTO) {
-     calendarMapper.createCal(calendarDTO);
+    public List<CalendarDTO> calListByProjSeq(long projSeq) {
+        return calendarMapper.calListByProjSeq(projSeq);
     }
 
-    @Override
-    public List<CalendarDTO> calList() {
-       return calendarMapper.calList();
-    }
-
-    @Override
-    public List<CalendarDTO> calListBySeq(long calSeq) {
-       return calendarMapper.calListBySeq(calSeq);
-    }
-
-    @Override
-    public List<CalendarDTO> calListByProSeq(long calProSeq) {
-        return calendarMapper.calListByProSeq(calProSeq);
-    }
 
     @Override
     public void upCalName(CalendarDTO calendarDTO) {

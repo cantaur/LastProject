@@ -17,4 +17,5 @@ public class CalendarDTO {
     private Date calendar_startdate;
     private Date calendar_enddate;
     private long projmember_seq;
+    private long project_seq;
 }

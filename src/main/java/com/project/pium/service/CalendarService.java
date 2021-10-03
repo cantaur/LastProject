@@ -10,10 +10,8 @@ public interface CalendarService {
     // MEMO 삽입
     void insertCalMemo(CalendarDTO calendarDTO);
 
-    void creatCal(CalendarDTO calendarDTO);
-    List<CalendarDTO> calList();
-    List<CalendarDTO> calListBySeq (long calSeq);
-    List<CalendarDTO> calListByProSeq (long calProSeq);
+    List<CalendarDTO> calListByProjSeq(long projSeq);
+
     void upCalName(CalendarDTO calendarDTO);
     void upCalContent(CalendarDTO calendarDTO);
     void upCalDate(CalendarDTO calendarDTO);
