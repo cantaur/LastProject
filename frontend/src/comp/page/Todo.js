@@ -76,7 +76,7 @@ function Todo(p){
         'todo_content':formData.content,
         'todo_status':status,
         'task_seq':taskSeq,
-        'task_name':formData.task_name,
+        'task_title':formData.task_name,
         'projmember_seq':p.myMemberInfo.projmember_seq
       })
       .then(r=>{
@@ -123,6 +123,7 @@ function Todo(p){
     todo_seq:'',
     todo_status:'',
     task_seq:'',
+    task_title:'',
     projmember_seq:''
   });
 
@@ -149,6 +150,7 @@ function Todo(p){
           todo_seq:'',
           todo_status:'',
           task_seq:'',
+          task_title:'',
           projmember_seq:''
         })
         let wrap = document.querySelectorAll('.list-item')
@@ -573,6 +575,7 @@ function List(p) {
                         todo_seq:r.todo_seq,
                         todo_status:r.todo_status,
                         task_seq:r.task_seq,
+                        task_title:r.task_title,
                         projmember_seq:p.myMemberInfo.projmember_seq
                       })
 
@@ -581,13 +584,14 @@ function List(p) {
                   <div className="editWrp">
                     {
                       p.taskList&&
-                        <Form.Select size="sm" name="task" onChange={e=>{
+                        <Form.Select size="sm" onChange={e=>{
                           p.todoUpdateInfoCng({
                             ...p.todoUpdateInfo,
                             task_seq:e.target.value==''?null:e.target.value,
+                            task_title:e.target[e.target.selectedIndex].getAttribute('data-title'),
                           });
                         }}>
-                          <option value="" selected={p.todoUpdateInfo.task_seq == 0?true:false}>업무를 선택하세요.</option>
+                          <option value="" data-title="" selected={p.todoUpdateInfo.task_seq == 0?true:false}>업무를 선택하세요.</option>
                           {
                             p.taskList.map(r=>{
                               return(
@@ -596,9 +600,9 @@ function List(p) {
                                     p.todoUpdateInfo
                                     ?
                                       p.todoUpdateInfo.task_seq == r.task_seq
-                                      ? <option value={r.task_seq} selected={true}>{r.task_title}</option>
-                                      : <option value={r.task_seq}>{r.task_title}</option>
-                                    :<option value={r.task_seq}>{r.task_title}</option>
+                                      ? <option value={r.task_seq} data-title={r.task_title} selected={true}>{r.task_title}</option>
+                                      : <option value={r.task_seq} data-title={r.task_title}>{r.task_title}</option>
+                                    :<option value={r.task_seq} data-title={r.task_title}>{r.task_title}</option>
                                   }
                                 </>
                               )
@@ -633,6 +637,7 @@ function List(p) {
                           todo_seq:'',
                           todo_status:'',
                           task_seq:'',
+                          task_title:'',
                           projmember_seq:''
                         });
                       }}>취소</p>
@@ -645,7 +650,7 @@ function List(p) {
                     <div className="dateTask">
                       <p className="date">{r.todo_date} 작성</p>
                       {
-                        p.todoUpdateInfo.task_seq != 0 &&
+                        p.todoUpdateInfo.task_title &&
                           <p className="task" onClick={()=>{
                             console.log('이 업무 seq로 링크보내샘' + r.task_seq)
                           }}>업무 : {r.task_title}</p>
