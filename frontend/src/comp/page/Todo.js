@@ -42,7 +42,7 @@ function Todo(p){
   const [formData, formDataCng] = useState({
     title:'',
     content:'',
-    task_name:'',
+    task_title:'',
     task_seq:'',
   });
 
@@ -69,14 +69,13 @@ function Todo(p){
     }else {
     
       const taskSeq = formData.task_seq==''?null:formData.task_seq;
-      console.log(formData.task_seq)
       p.dispatch({type:'loadingOn'})
       axios.post(host+'/ajax/createTodo',{
         'todo_name':formData.title,
         'todo_content':formData.content,
         'todo_status':status,
         'task_seq':taskSeq,
-        'task_title':formData.task_name,
+        'task_title':formData.task_title,
         'projmember_seq':p.myMemberInfo.projmember_seq
       })
       .then(r=>{
@@ -84,7 +83,7 @@ function Todo(p){
           title:'',
           content:'',
           task_seq:'',
-          task_name:'',
+          task_title:'',
         })
         formShowCng({
           'todo':false,
@@ -129,7 +128,6 @@ function Todo(p){
 
   //업데이트
   const myTodoUpdate = () =>{
-    console.log(todoUpdateInfo)
     if(todoUpdateInfo.title == ''){
       const inputList = document.querySelectorAll('.editTitle')
       inputList.forEach(r=>{
@@ -171,7 +169,6 @@ function Todo(p){
     p.dispatch({type:'loadingOn'})
     axios.get(host+'/ajax/mytodo/'+p.myMemberInfo.projmember_seq)
     .then(r=>{
-      console.log(r.data)
       setTodos(r.data[0].todoList)
       setProgresses(r.data[0].progressList)
       setDones(r.data[0].doneList)
@@ -191,7 +188,6 @@ function Todo(p){
   const insertFormEmpty = () =>{
     let node = document.querySelectorAll('.addListWrap')
     node.forEach(r=>{
-      console.log(r.childNodes[1])
       r.childNodes[0].options[0].selected = true;
       r.childNodes[1].value = ''
       r.childNodes[2].value = ''    
@@ -234,13 +230,30 @@ function Todo(p){
           draggedItem = item;
           setTimeout(function(){
               item.style.display ='none';
-          }, 0)
+          }, 0)          
       });
       item.addEventListener('dragend', function(){
           setTimeout(function(){
               draggedItem.style.display = 'block';
               draggedItem = null;
           },0)
+          let itemSeq = item.getAttribute('data-seq')
+          let itemStatus = item.getAttribute('data-status')
+          let boxStatus = this.getAttribute('data-status')
+          if(itemStatus==boxStatus){
+            p.dispatch({type:'loadingOn'})
+            axios.post('/ajax/changeTodoStatus',{
+              todo_seq:itemSeq,
+              todo_status:boxStatus,
+            })
+            .then(r=>{
+              myTodoGet()
+            })
+            .catch(e=>{
+              console.log(e)
+              p.dispatch({type:'loadingOff'})
+            })
+          }
       });
       for(let j = 0; j<lists.length; j++){
           const list = lists[j];
@@ -248,18 +261,26 @@ function Todo(p){
           list.addEventListener('dragover', function(e){
               e.preventDefault();
           });
+
+          //진입할때 아이템 내용으로 업데이트 내용 최신화
           list.addEventListener('dragenter', function(e){
               e.preventDefault();
               this.style.backgroundColor = '#888';
           });
+
+          //벗어날때 초기화
           list.addEventListener('dragleave', function(e){
               this.style.backgroundColor = '#ececec';
           });
+
+          //진입하고 서버로 업데이트
           list.addEventListener('drop', function(e){
-              console.log('drop');
+              e.preventDefault();
+              
               this.append(draggedItem);
               this.style.backgroundColor = '#ececec';
           })
+
       }
     }
   },[todos,progresses,dones])
@@ -303,7 +324,7 @@ function Todo(p){
                   title:'',
                   content:'',
                   task_seq:'',
-                  task_name:'',
+                  task_title:'',
                 })
               }}>
                 <div className="toolTip" style={{marginLeft:'-41.58px'}}>새 To do 만들기</div>
@@ -318,7 +339,7 @@ function Todo(p){
                     formDataCng({
                       ...formData,
                       task_seq:e.target.value,
-                      task_name:e.target[e.target.selectedIndex].getAttribute('data-title'),
+                      task_title:e.target[e.target.selectedIndex].getAttribute('data-title'),
                     })
                   }}>
                     <option value="" data-title="">업무를 선택하세요.</option>
@@ -345,7 +366,7 @@ function Todo(p){
                     title:'',
                     content:'',
                     task_seq:'',
-                    task_name:''
+                    task_title:''
                   })
 
                 insertFormEmpty();
@@ -356,7 +377,7 @@ function Todo(p){
               </div>
             </div>
 
-            <div className="list">
+            <div className="list" data-status="10">
               <List
                 myTodoUpdate={myTodoUpdate} 
                 taskList={taskList}
@@ -394,7 +415,7 @@ function Todo(p){
                   title:'',
                   content:'',
                   task_seq:'',
-                  task_name:''
+                  task_title:''
                 })
               }}>
                 <div className="toolTip" style={{marginLeft:'-49.775px'}}>새 Progress 만들기</div>
@@ -407,7 +428,7 @@ function Todo(p){
                     formDataCng({
                       ...formData,
                       task_seq:e.target.value,
-                      task_name:e.target[e.target.selectedIndex].getAttribute('data-title')
+                      task_title:e.target[e.target.selectedIndex].getAttribute('data-title')
                     })
                   }}>
                     <option value="" data-title=''>업무를 선택하세요.</option>
@@ -433,7 +454,7 @@ function Todo(p){
                     title:'',
                     content:'',
                     task_seq:'',
-                    task_name:''
+                    task_title:''
                   })
 
                 insertFormEmpty();
@@ -444,7 +465,7 @@ function Todo(p){
               </div>
             </div>
 
-            <div className="list">
+            <div className="list" data-status="20">
               <List
                 myTodoUpdate={myTodoUpdate} 
                 taskList={taskList}
@@ -478,7 +499,7 @@ function Todo(p){
                     title:'',
                     content:'',
                     task_seq:'',
-                    task_name:''
+                    task_title:''
                   })
                 }}>
                 <div className="toolTip" style={{marginLeft:'-40.885px'}}>새 Done 만들기</div>
@@ -491,7 +512,7 @@ function Todo(p){
                     formDataCng({
                       ...formData,
                       task_seq:e.target.value,
-                      task_name:e.target[e.target.selectedIndex].getAttribute('data-title')
+                      task_title:e.target[e.target.selectedIndex].getAttribute('data-title')
                     })
                   }}>
                     <option value="" data-title=''>업무를 선택하세요.</option>
@@ -517,7 +538,7 @@ function Todo(p){
                     title:'',
                     content:'',
                     task_seq:'',
-                    task_name:''
+                    task_title:''
                   })
 
 insertFormEmpty();}}>취소</p>
@@ -527,7 +548,7 @@ insertFormEmpty();}}>취소</p>
               </div>
             </div>
 
-            <div className="list">
+            <div className="list" data-status="30">
               <List
                 myTodoUpdate={myTodoUpdate} 
                 taskList={taskList}
@@ -556,7 +577,13 @@ function List(p) {
           ?
             p.list.map(r=>{
               return(
-                <div className="list-item" draggable="true" id={'todo'+r.todo_seq}>
+                <div className="list-item" 
+                    draggable="true" 
+                    id={'todo'+r.todo_seq}
+                    data-seq={r.todo_seq}
+                    data-status={r.todo_status}
+                >
+
                   <div className="editBtnWrap">
                     <i class="fas fa-trash-alt" onClick={()=>{
                       p.myTodoDelete(r.todo_seq)
@@ -650,7 +677,7 @@ function List(p) {
                     <div className="dateTask">
                       <p className="date">{r.todo_date} 작성</p>
                       {
-                        p.todoUpdateInfo.task_title &&
+                        r.task_title &&
                           <p className="task" onClick={()=>{
                             console.log('이 업무 seq로 링크보내샘' + r.task_seq)
                           }}>업무 : {r.task_title}</p>
