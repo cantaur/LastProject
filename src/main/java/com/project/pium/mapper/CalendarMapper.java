@@ -1,6 +1,7 @@
 package com.project.pium.mapper;
 
 import com.project.pium.domain.CalendarDTO;
+import com.project.pium.domain.TaskDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +16,8 @@ public interface CalendarMapper {
 
     //달력 list byProSeq 조회
     List<CalendarDTO> calListByProjSeq(long projSeq);
+    //해당 프로젝트에서 생성된 업무 리스트 조회(날짜 없는 데이터는 제외)
+    List<TaskDTO> taskListByProjSeq(long projSeq);
 
 
 

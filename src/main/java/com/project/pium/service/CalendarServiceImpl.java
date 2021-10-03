@@ -1,6 +1,7 @@
 package com.project.pium.service;
 
 import com.project.pium.domain.CalendarDTO;
+import com.project.pium.domain.TaskDTO;
 import com.project.pium.mapper.CalendarMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
@@ -24,6 +25,11 @@ public class CalendarServiceImpl implements CalendarService {
     @Override
     public List<CalendarDTO> calListByProjSeq(long projSeq) {
         return calendarMapper.calListByProjSeq(projSeq);
+    }
+
+    @Override
+    public List<TaskDTO> taskListByProjSeq(long projSeq) {
+        return calendarMapper.taskListByProjSeq(projSeq);
     }
 
 

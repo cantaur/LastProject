@@ -1,17 +1,11 @@
 package com.project.pium.controller;
 
 import com.project.pium.domain.CalendarDTO;
-import com.project.pium.domain.ProjectDTO;
 import com.project.pium.domain.TaskDTO;
 import com.project.pium.service.CalendarService;
-import com.project.pium.service.MemberService;
-import com.project.pium.service.ProjectService;
-import com.project.pium.service.TaskService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -23,9 +17,7 @@ import java.util.List;
 public class CalendarController {
 
     private CalendarService calendarService;
-    private ProjectService projectService;
-    private MemberService memberService;
-    private TaskService taskService;
+
 
     //새 달력 MEMO 만들기
     @PostMapping("/ajax/createCal")
@@ -40,7 +32,7 @@ public class CalendarController {
         LinkedHashMap<String,Object> tempCal = new LinkedHashMap<>();
 
         List<CalendarDTO> calListProj = calendarService.calListByProjSeq(projSeq); //캘린더 리스트
-        List<TaskDTO> taskListProj = taskService.taskList(projSeq); //업무 리스트 조회
+        List<TaskDTO> taskListProj = calendarService.taskListByProjSeq(projSeq); //업무 리스트 조회
 
         tempCal.put("calListProj", calListProj);
         tempCal.put("taskListProj", taskListProj);
