@@ -14,6 +14,7 @@ function Todo(p){
   const history = useHistory();
   
   /*상태별 정렬*/
+  const [list, listCng] =useState();
   const [todos, setTodos] = useState();
   const [progresses, setProgresses] = useState();
   const [dones, setDones] = useState();
@@ -90,6 +91,7 @@ function Todo(p){
           'prog':false,
           'done':false,
         })
+        listCng(false)
         myTodoGet()
       })
       .catch(e=>{
@@ -107,6 +109,7 @@ function Todo(p){
       todo_seq:seq
     })
     .then(r=>{
+      listCng(false)
       myTodoGet()
     })
     .catch(e=>{
@@ -167,6 +170,7 @@ function Todo(p){
   //전체리스트 불러오기
   const myTodoGet = () =>{
     p.dispatch({type:'loadingOn'})
+    
     axios.get(host+'/ajax/mytodo/'+p.myMemberInfo.projmember_seq)
     .then(r=>{
       setTodos(r.data[0].todoList)
@@ -175,6 +179,7 @@ function Todo(p){
       r.data[0].todoList?setCntTodo(r.data[0].todoList.length):setCntTodo(0);
       r.data[0].progressList?setCntProg(r.data[0].progressList.length):setCntProg(0);
       r.data[0].doneList?setCntDone(r.data[0].doneList.length):setCntDone(0);
+      listCng(true);
 
       p.dispatch({type:'loadingOff'})
     })
@@ -217,79 +222,76 @@ function Todo(p){
   },[p.myMemberInfo])
 
   useEffect(()=>{
-    
     const list_items = document.querySelectorAll('.list-item');
     const lists = document.querySelectorAll('.list');
-    
+
     let draggedItem = null;
-    
+    let itemSeq = null
+    let itemStatus = null
+    let boxStatus = null
+
     for(let i = 0; i<list_items.length; i++){
-      const item= list_items[i];
+        const item= list_items[i];
+        
 
-      item.addEventListener('dragstart', function(){
-          draggedItem = item;
-          setTimeout(function(){
-              item.style.display ='none';
-          }, 0)          
-      });
-      item.addEventListener('dragend', function(e){
-          e.preventDefault();
-          setTimeout(function(){
-              draggedItem.style.display = 'block';
-              draggedItem = null;
-          },0)
-      });
-      for(let j = 0; j<lists.length; j++){
-          const list = lists[j];
+        item.addEventListener('dragstart', function(){
+            draggedItem = item;
+            itemSeq = item.getAttribute('data-seq')
+            itemStatus = item.getAttribute('data-status')
 
-          list.addEventListener('dragover', function(e){
-              e.preventDefault();
-          });
+            setTimeout(function(){
+                item.style.display ='none';
+            }, 0)
+        });
+        //진입하고 업데이트
+        item.addEventListener('dragend', function(e){
+            if(itemStatus!=boxStatus){
+              p.dispatch({type:'loadingOn'})
+              axios.post(host+'/ajax/changeTodoStatus',{
+                todo_seq:itemSeq,
+                todo_status:boxStatus,
+              })
+              .then(r=>{
+                listCng(false)
+                myTodoGet();
+                // p.dispatch({type:'loadingOff'})
+                // window.location.href = '/project/'+p.projectInfo.project_seq+'/todo'
+              })
+              .catch(e=>{
+                console.log(e)
+                p.dispatch({type:'loadingOff'})
+              })
+            }
 
-          //진입할때 아이템 내용으로 업데이트 내용 최신화
-          list.addEventListener('dragenter', function(e){
-              e.preventDefault();
-              this.style.backgroundColor = '#888';
-          });
+            setTimeout(function(){
+                draggedItem.style.display = 'block';
+                draggedItem = null;
+            },0)
+        });
+        for(let j = 0; j<lists.length; j++){
+            const list = lists[j];
 
-          //벗어날때 초기화
-          list.addEventListener('dragleave', function(e){
-              this.style.backgroundColor = '#ececec';
-          });
+            list.addEventListener('dragover', function(e){
+                e.preventDefault();
+            });
+            list.addEventListener('dragenter', function(e){
+                e.preventDefault();
+                this.style.backgroundColor = '#888888';
+            });
+            list.addEventListener('dragleave', function(e){
+                this.style.backgroundColor = '#ececec';
+            });
 
-          //진입하고 서버로 업데이트
-          list.addEventListener('drop', function(e){
-              e.preventDefault();
-              e.stopPropagation();
-              
-              this.append(draggedItem);
-              this.style.backgroundColor = '#ececec';
+            list.addEventListener('drop', function(e){
+                // this.append(draggedItem);
+                this.style.backgroundColor = '#ececec';
+                boxStatus = this.getAttribute('data-status')
 
-              let itemSeq = draggedItem.getAttribute('data-seq')
-              let itemStatus = draggedItem.getAttribute('data-status')
-              let boxStatus = this.getAttribute('data-status')
 
-              if(itemStatus!=boxStatus){
-                p.dispatch({type:'loadingOn'})
-                console.log(boxStatus)
-                axios.post('/ajax/changeTodoStatus',{
-                  todo_seq:itemSeq,
-                  todo_status:boxStatus,
-                })
-                .then(r=>{
-                  myTodoGet()
-                })
-                .catch(e=>{
-                  console.log(e)
-                  p.dispatch({type:'loadingOff'})
-                })
-              }
-              
-          })
-
-      }
+            })
+        }
     }
-  },[todos,progresses,dones])
+  },[list])
 
   return(
 
