@@ -6,22 +6,16 @@
 
     <!--status에 따른 조회, 노트에 표시-->
     <select id="todoBySeq" resultType="TodoDTO" parameterType="long">
-        SELECT DISTINCT a.*, b.task_title
-        from todo as a join task as b on a.task_seq = b.task_seq
-        where a.projmember_seq=#{projmember_seq} and todo_status = '10'
+        SELECT * from todo where projmember_seq=#{projmember_seq} and todo_status = '10'
     </select>
 
 
     <select id="progressBySeq" resultType="TodoDTO" parameterType="long">
-        SELECT DISTINCT a.*, b.task_title
-        from todo as a join task as b on a.task_seq = b.task_seq
-        where a.projmember_seq=#{projmember_seq} and todo_status = '20'
+        SELECT * from todo where projmember_seq=#{projmember_seq} and todo_status = '20'
     </select>
 
     <select id="doneBySeq" resultType="TodoDTO" parameterType="long">
-        SELECT DISTINCT a.*, b.task_title
-        from todo as a join task as b on a.task_seq = b.task_seq
-        where a.projmember_seq=#{projmember_seq} and todo_status = '30'
+        SELECT * from todo where projmember_seq=#{projmember_seq} and todo_status = '30'
     </select>
 
 
