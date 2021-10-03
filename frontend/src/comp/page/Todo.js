@@ -42,7 +42,8 @@ function Todo(p){
   const [formData, formDataCng] = useState({
     title:'',
     content:'',
-    task:'',
+    task_name:'',
+    task_seq:'',
   });
 
   //할일입력 핸들러
@@ -66,21 +67,24 @@ function Todo(p){
         })
       }, 2000);
     }else {
-      console.log(status)
-      const taskSeq = formData.task==''?null:formData.task;
+    
+      const taskSeq = formData.task_seq==''?null:formData.task_seq;
+      console.log(formData.task_seq)
       p.dispatch({type:'loadingOn'})
       axios.post(host+'/ajax/createTodo',{
         'todo_name':formData.title,
         'todo_content':formData.content,
         'todo_status':status,
         'task_seq':taskSeq,
+        'task_name':formData.task_name,
         'projmember_seq':p.myMemberInfo.projmember_seq
       })
       .then(r=>{
         formDataCng({
           title:'',
           content:'',
-          task:'',
+          task_seq:'',
+          task_name:'',
         })
         formShowCng({
           'todo':false,
@@ -165,7 +169,7 @@ function Todo(p){
     p.dispatch({type:'loadingOn'})
     axios.get(host+'/ajax/mytodo/'+p.myMemberInfo.projmember_seq)
     .then(r=>{
-      
+      console.log(r.data)
       setTodos(r.data[0].todoList)
       setProgresses(r.data[0].progressList)
       setDones(r.data[0].doneList)
@@ -174,14 +178,24 @@ function Todo(p){
       r.data[0].doneList?setCntDone(r.data[0].doneList.length):setCntDone(0);
 
       p.dispatch({type:'loadingOff'})
-
     })
     .catch(e=>{
       console.log(e)
       p.dispatch({type:'loadingOff'})
-
     })
   }
+
+  //등록 입력폼 비움
+  const insertFormEmpty = () =>{
+    let node = document.querySelectorAll('.addListWrap')
+    node.forEach(r=>{
+      console.log(r.childNodes[1])
+      r.childNodes[0].options[0].selected = true;
+      r.childNodes[1].value = ''
+      r.childNodes[2].value = ''    
+    })
+  }
+  
 
 
   useEffect(()=>{
@@ -276,6 +290,7 @@ function Todo(p){
                 To do
               </p>
               <i class="fas fa-plus toolTipTopBox" onClick={()=>{
+                insertFormEmpty();
                 todoTitleInput.current.focus();
                 formShowCng({
                   todo:true,
@@ -285,7 +300,8 @@ function Todo(p){
                 formDataCng({
                   title:'',
                   content:'',
-                  task:'',
+                  task_seq:'',
+                  task_name:'',
                 })
               }}>
                 <div className="toolTip" style={{marginLeft:'-41.58px'}}>새 To do 만들기</div>
@@ -296,12 +312,18 @@ function Todo(p){
             <div className={"addListWrap "+(formShow.todo?'on':'')}>
               {
                 taskList&&
-                  <Form.Select size="sm" name="task" onChange={formDataCngFunc}>
-                    <option value="">업무를 선택하세요.</option>
+                  <Form.Select size="sm" name="task" onChange={(e)=>{
+                    formDataCng({
+                      ...formData,
+                      task_seq:e.target.value,
+                      task_name:e.target[e.target.selectedIndex].getAttribute('data-title'),
+                    })
+                  }}>
+                    <option value="" data-title="">업무를 선택하세요.</option>
                     {
                       taskList.map(r=>{
                         return(
-                          <option value={r.task_seq}>{r.task_title}</option>
+                          <option value={r.task_seq} data-title={r.task_title}>{r.task_title}</option>
                         )
                       })
                     }
@@ -320,8 +342,11 @@ function Todo(p){
                   formDataCng({
                     title:'',
                     content:'',
-                    task:'',
+                    task_seq:'',
+                    task_name:''
                   })
+
+                insertFormEmpty();
                 }}>취소</p>
                 <button style={{backgroundColor:p.prjColor, color:'#fff'}} onClick={()=>{
                   myTodoInsert('10')
@@ -357,6 +382,7 @@ function Todo(p){
 
               <i class="fas fa-plus toolTipTopBox" onClick={()=>{
                 progTitleInput.current.focus();
+                insertFormEmpty();
                 formShowCng({
                   todo:false,
                   prog:true,
@@ -365,7 +391,8 @@ function Todo(p){
                 formDataCng({
                   title:'',
                   content:'',
-                  task:'',
+                  task_seq:'',
+                  task_name:''
                 })
               }}>
                 <div className="toolTip" style={{marginLeft:'-49.775px'}}>새 Progress 만들기</div>
@@ -374,12 +401,18 @@ function Todo(p){
             <div className={"addListWrap "+(formShow.prog?'on':'')}>
               {
                 taskList&&
-                  <Form.Select size="sm" name="task" onChange={formDataCngFunc}>
-                    <option value="">업무를 선택하세요.</option>
+                  <Form.Select size="sm" name="task" onChange={e=>{
+                    formDataCng({
+                      ...formData,
+                      task_seq:e.target.value,
+                      task_name:e.target[e.target.selectedIndex].getAttribute('data-title')
+                    })
+                  }}>
+                    <option value="" data-title=''>업무를 선택하세요.</option>
                     {
                       taskList.map(r=>{
                         return(
-                          <option value={r.task_seq}>{r.task_title}</option>
+                          <option value={r.task_seq} data-title={r.task_title}>{r.task_title}</option>
                         )
                       })
                     }
@@ -397,8 +430,11 @@ function Todo(p){
                   formDataCng({
                     title:'',
                     content:'',
-                    task:'',
+                    task_seq:'',
+                    task_name:''
                   })
+
+                insertFormEmpty();
                 }}>취소</p>
                 <button style={{backgroundColor:p.prjColor, color:'#fff'}} onClick={()=>{
                   myTodoInsert('20')
@@ -430,6 +466,7 @@ function Todo(p){
               </p>
               <i class="fas fa-plus toolTipTopBox" onClick={()=>{
                   doneTitleInput.current.focus();
+                  insertFormEmpty();
                   formShowCng({
                     todo:false,
                     prog:false,
@@ -438,7 +475,8 @@ function Todo(p){
                   formDataCng({
                     title:'',
                     content:'',
-                    task:'',
+                    task_seq:'',
+                    task_name:''
                   })
                 }}>
                 <div className="toolTip" style={{marginLeft:'-40.885px'}}>새 Done 만들기</div>
@@ -447,12 +485,18 @@ function Todo(p){
             <div className={"addListWrap "+(formShow.done?'on':'')}>
               {
                 taskList&&
-                  <Form.Select size="sm" name="task" onChange={formDataCngFunc}>
-                    <option value="">업무를 선택하세요.</option>
+                  <Form.Select size="sm" name="task" onChange={e=>{
+                    formDataCng({
+                      ...formData,
+                      task_seq:e.target.value,
+                      task_name:e.target[e.target.selectedIndex].getAttribute('data-title')
+                    })
+                  }}>
+                    <option value="" data-title=''>업무를 선택하세요.</option>
                     {
                       taskList.map(r=>{
                         return(
-                          <option value={r.task_seq}>{r.task_title}</option>
+                          <option value={r.task_seq} data-title={r.task_title}>{r.task_title}</option>
                         )
                       })
                     }
@@ -470,9 +514,11 @@ function Todo(p){
                   formDataCng({
                     title:'',
                     content:'',
-                    task:'',
+                    task_seq:'',
+                    task_name:''
                   })
-                }}>취소</p>
+
+insertFormEmpty();}}>취소</p>
                 <button style={{backgroundColor:p.prjColor, color:'#fff'}} onClick={()=>{
                   myTodoInsert('30')
                 }}>작성완료</button>
@@ -541,7 +587,7 @@ function List(p) {
                             task_seq:e.target.value==''?null:e.target.value,
                           });
                         }}>
-                          <option value="">업무를 선택하세요.</option>
+                          <option value="" selected={p.todoUpdateInfo.task_seq == 0?true:false}>업무를 선택하세요.</option>
                           {
                             p.taskList.map(r=>{
                               return(
@@ -598,9 +644,12 @@ function List(p) {
                     <p className="content">{r.todo_content}</p>
                     <div className="dateTask">
                       <p className="date">{r.todo_date} 작성</p>
-                      <p className="task" onClick={()=>{
-                        console.log('이 업무 seq로 링크보내샘' + r.task_seq)
-                      }}>업무 : {r.task_title}</p>
+                      {
+                        p.todoUpdateInfo.task_seq != 0 &&
+                          <p className="task" onClick={()=>{
+                            console.log('이 업무 seq로 링크보내샘' + r.task_seq)
+                          }}>업무 : {r.task_title}</p>
+                      }
                     </div>
                     
                   </div>
