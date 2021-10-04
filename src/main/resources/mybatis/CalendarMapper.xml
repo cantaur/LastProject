@@ -8,7 +8,7 @@
     <!--Memo insert-->
      <insert id="insertCalMemo" parameterType="CalendarDTO">
         INSERT INTO calendar (calendar_title, calendar_content, calendar_startdate, calendar_enddate, projmember_seq, project_seq)
-        VALUES(#{calendar_title}, #{calendar_content},#{calendar_startdate},DATE_SUB(#{calendar_enddate},INTERVAL 1 SECOND), #{projmember_seq}, #{project_seq})
+        VALUES(#{calendar_title}, #{calendar_content},#{calendar_startdate},#{calendar_enddate}, #{projmember_seq}, #{project_seq})
     </insert>
 
 <!--    이 프로젝트에서 생성된 모든 캘린더 목록 조회-->
