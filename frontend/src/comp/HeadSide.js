@@ -432,8 +432,8 @@ function HeadSide(p){
               <img src={pub.img+'defaultProfile.svg'}/>
             </div>
             <div className="info">
-              <p className="name">순놈 <b>관리자</b></p>
-              <p className="email">tnssha@gmail.com</p>
+              <p className="name">닉네임 <b>관리자</b></p>
+              <p className="email">test@gmail.com</p>
             </div>
           </div>
           <div className="btnWrap">

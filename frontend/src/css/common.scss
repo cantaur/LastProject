@@ -1882,13 +1882,16 @@ body{
     background-color: #f2f2f2;
     border-radius: 6px;
     .fc-header-toolbar{
-      margin: 0px -20px;
-      margin-top:-20px;
+      margin: -20px -20px 0px -20px;
+      margin-bottom: 0px !important;
       padding:20px;
       width: calc(100% + 40px);
       background-color: #fff;
       border-bottom: 1px solid #ccc;
       border-radius: 6px 6px 0px 0px;
+    }
+    .fc-view-harness{
+      margin-top:20px;
     }
     .fc .fc-button-primary:focus{
       box-shadow: none !important;

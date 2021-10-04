@@ -27,7 +27,7 @@ function Calendar(p){
   //캘린더에 표시할 일정 정보
   const [memoList,memoListCng] = useState();
 
-  //캘린더에 표시할 일정 정보 불러옴
+  //캘린더에 표시할 일정 정보 불러오기
   const memoListGetFunc = () => {
     axios.get(host+'/ajax/calList/'+p.projectInfo.project_seq)
     .then(r=>{
@@ -53,6 +53,7 @@ function Calendar(p){
         memoListDummy.push(
           {
             title : r.calendar_title,
+            memoSeq : r.calendar_seq,
             description: r.calendar_content,
             start : r.calendar_startdate,
             end : r.calendar_enddate,
@@ -97,6 +98,15 @@ function Calendar(p){
       })
     }
   },[])
+
+
+  //메모 일정수정_edit(drag), resize
+  const memoQuickEditFunc = (seq, start, end)=>{
+
+    console.log(seq)
+    console.log(start)
+    console.log(end)
+  }
 
   useEffect(()=>{
     p.dispatch({type:'loadingOn'})
@@ -178,19 +188,23 @@ function Calendar(p){
           selectable={true}
           dayMaxEvents={3}
           locale='ko'
+          allDayDefault={true}
           events={memoList}
           eventColor={p.prjColor}
-
-
           eventClick={e=>{
             console.log(e)
           }}
-
           eventDrop={e=>{
-            console.log(e)
+            let start = e.event.startStr
+            let end = e.event.endStr
+            let seq = e.event.extendedProps.memoSeq
+            memoQuickEditFunc(start,end,seq)
           }}
           eventResize={e=>{
-            console.log(e)
+            let start = e.event.startStr
+            let end = e.event.endStr
+            let seq = e.event.extendedProps.memoSeq
+            memoQuickEditFunc(start,end,seq)          
           }}
         />
       </div>
@@ -292,13 +306,20 @@ function CreateDateModal(p) {
             p.dateAlertCng(true)
             p.alertCng(false)
           }else {
-            let data = p.createData.calendar_enddate?p.createData:{
-              ...p.createData,
-              calendar_enddate : p.createData.calendar_startdate
+            let data = {};
+            if(p.createData.calendar_enddate){
+              data = {
+                ...p.createData,
+                calendar_enddate : p.createData.calendar_enddate
+              }
+            } else {
+              data = {
+                ...p.createData,
+                calendar_enddate : p.createData.calendar_startdate
+              }
             }
-            p.dispatch({type:'loadingOn'})
 
-            console.log(data)
+            p.dispatch({type:'loadingOn'})
             axios.post(host+'/ajax/createCal',data)
             .then(r=>{
               p.createModalCng(false)
