@@ -19,9 +19,7 @@
 
     <!--해당 프로젝트에서 생성된 업무 리스트 조회(날짜 없는 데이터는 제외)-->
     <select id="taskListByProjSeq" parameterType="long" resultType="TaskDTO">
-        <if test="task_startdate != null and !task_startdate.equals('') and task_duedate !=null and task_enddate != null">
-        SELECT * FROM task WHERE project_seq = #{project_seq} </if>
-
+        SELECT * FROM task WHERE project_seq = #{project_seq} and task_startdate is not null
     </select>
 
 
