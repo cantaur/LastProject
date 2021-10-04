@@ -6,6 +6,7 @@ import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstr
 import { Link, useParams, withRouter, useHistory } from "react-router-dom";
 import {connect} from 'react-redux';
 import { registerLocale } from "react-datepicker";
+import moment from "moment";
 
 
 import FullCalendar from '@fullcalendar/react'
@@ -41,7 +42,8 @@ function Calendar(p){
               title : r.task_title,
               description: r.task_content,
               start : r.task_startdate,
-              end : r.task_duedate,
+              // end :moment(r.task_duedate).add(1, 'days').format("YYYY-MM-DD"),
+              end:r.task_duedate,
               classNames:'task',
               editable:false,
             },
@@ -56,7 +58,8 @@ function Calendar(p){
             memoSeq : r.calendar_seq,
             description: r.calendar_content,
             start : r.calendar_startdate,
-            end : r.calendar_enddate,
+            // end : moment(r.calendar_enddate).add(1, 'days').format("YYYY-MM-DD"),
+            end:r.calendar_enddate,
             backgroundColor:"#273646",
             
           },
@@ -102,10 +105,18 @@ function Calendar(p){
 
   //메모 일정수정_edit(drag), resize
   const memoQuickEditFunc = (seq, start, end)=>{
-
-    console.log(seq)
-    console.log(start)
-    console.log(end)
+    axios.post(host + '/ajax/updateDate',{
+      calendar_startdate:start,
+      calendar_enddate:end,
+      calendar_seq:seq,
+    })
+    .then(r=>{
+      memoListGetFunc();
+    })
+    .catch(e=>{
+      console.log(e)
+      p.dispatch({type:'loadingOff'})
+    })
   }
 
   useEffect(()=>{
@@ -188,9 +199,9 @@ function Calendar(p){
           selectable={true}
           dayMaxEvents={3}
           locale='ko'
-          allDayDefault={true}
           events={memoList}
           eventColor={p.prjColor}
+          displayEventTime={false}
           eventClick={e=>{
             console.log(e)
           }}
