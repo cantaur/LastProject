@@ -22,6 +22,7 @@ public class CalendarController {
     //새 달력 MEMO 만들기
     @PostMapping("/ajax/createCal")
     public void insertCalMemo (@RequestBody CalendarDTO calendarDTO) {
+        log.info("캘린더dto"+calendarDTO);
         calendarService.insertCalMemo(calendarDTO);
     }
 

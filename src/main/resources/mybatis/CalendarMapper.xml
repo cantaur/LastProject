@@ -54,7 +54,7 @@
 
     <!-- 달력 제목 수정 -->
     <update id ="upCalName" parameterType="CalendarDTO">
-        update calender
+        update calendar
         set calendar_title = #{calendar_title}
         where calendar_seq = #{calendar_seq}
     </update>

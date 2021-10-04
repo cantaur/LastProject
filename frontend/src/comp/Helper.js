@@ -27,7 +27,7 @@ const seqColorTrans = (seq) => {
 
 }
 const pages = [
-  'calender',
+  'calendar',
   'todo',
   'mileStone',
   'mileStoneView',

@@ -5,7 +5,7 @@ import DatePicker from './DatePicker.js'
 import HeadSide from './HeadSide.js'
 import Todo from './page/Todo.js'
 import Notice from './page/Notice.js'
-import Calender from './page/Calender.js'
+import Calendar from './page/Calendar.js'
 import MileStone from './page/MileStone.js'
 import MileStoneView from './page/MileStoneView.js'
 import Task from './page/Task.js'
@@ -156,8 +156,8 @@ function ProjectView(p){
             <Notice prjColor={prjColor} prjSeq={prjSeq} />
           }
           {
-            p.pageInfo == 'calender' &&
-            <Calender prjColor={prjColor} prjSeq={prjSeq}/>
+            p.pageInfo == 'calendar' &&
+            <Calendar prjColor={prjColor} prjSeq={prjSeq}/>
           }
           {
             p.pageInfo == 'mileStone' &&

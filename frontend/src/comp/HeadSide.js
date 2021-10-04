@@ -17,7 +17,7 @@ function pagePath(page){
       return 0;
     case 'notice':
       return 0;
-    case 'calender':
+    case 'calendar':
       return 1;
     case 'mileStone':
       return 2;
@@ -188,8 +188,8 @@ function HeadSide(p){
             <p className="tipRight">내 업무</p>
           </i>
           <i class={"fas fa-tachometer-alt tipRightBox " + (pagePathNum==1?'on':'')} style={{color:p.prjColor}} onClick={()=>{
-            history.push('/project/'+p.prjSeq+'/calender')
-            p.dispatch({type:'pagePush', val:'calender'});
+            history.push('/project/'+p.prjSeq+'/calendar')
+            p.dispatch({type:'pagePush', val:'calendar'});
           }}>
             <p className="tipRight">프로젝트</p>
           </i>
