@@ -6,10 +6,8 @@ import com.project.pium.service.CalendarService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 @Log
 @RestController
@@ -20,7 +18,9 @@ public class CalendarController {
     private CalendarService calendarService;
 
 
+
     //새 달력 MEMO 만들기
+
     @PostMapping("/ajax/createCal")
     public void insertCalMemo (@RequestBody CalendarDTO calendarDTO) {
         log.info("캘린더dto"+calendarDTO);

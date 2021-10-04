@@ -13,8 +13,8 @@ public class CalendarDTO {
     private long calendar_seq;
     private String calendar_title;
     private String calendar_content;
-    private Timestamp calendar_startdate;
-    private Timestamp calendar_enddate;
+    private Date calendar_startdate;
+    private Date calendar_enddate;
     private long projmember_seq;
     private long project_seq;
 }
