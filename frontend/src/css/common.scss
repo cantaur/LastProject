@@ -1881,6 +1881,9 @@ body{
     border:1px solid #ccc;
     background-color: #f2f2f2;
     border-radius: 6px;
+    .fc-daygrid-event{
+      cursor: pointer;
+    }
     .fc-header-toolbar{
       margin: -20px -20px 0px -20px;
       margin-bottom: 0px !important;

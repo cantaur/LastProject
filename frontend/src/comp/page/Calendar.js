@@ -42,7 +42,6 @@ function Calendar(p){
               title : r.task_title,
               description: r.task_content,
               start : r.task_startdate,
-              // end :moment(r.task_duedate).add(1, 'days').format("YYYY-MM-DD"),
               end:r.task_duedate,
               classNames:'task',
               editable:false,
@@ -52,13 +51,13 @@ function Calendar(p){
       })
 
       calendarList.forEach(r=>{
+        
         memoListDummy.push(
           {
             title : r.calendar_title,
             memoSeq : r.calendar_seq,
             description: r.calendar_content,
             start : r.calendar_startdate,
-            // end : moment(r.calendar_enddate).add(1, 'days').format("YYYY-MM-DD"),
             end:r.calendar_enddate,
             backgroundColor:"#273646",
             
@@ -104,11 +103,23 @@ function Calendar(p){
 
 
   //메모 일정수정_edit(drag), resize
-  const memoQuickEditFunc = (seq, start, end)=>{
+  const memoQuickEditFunc = (e)=>{
+    p.dispatch({type:'loadingOn'})
+
+    const start = e.event.startStr.substring(0,10)
+    const end = e.event.endStr.substring(0,10)
+    const seq = e.event.extendedProps.memoSeq
+    const title = e.event._def.title;
+    const content = e.event.extendedProps.description
+
     axios.post(host + '/ajax/updateDate',{
+      calendar_seq:seq,
       calendar_startdate:start,
       calendar_enddate:end,
-      calendar_seq:seq,
+      calendar_title:title,
+      calendar_content:content,
+      projmember_seq:p.myMemberInfo.projmember_seq,
+      project_seq:p.projectInfo.project_seq,
     })
     .then(r=>{
       memoListGetFunc();
@@ -205,17 +216,11 @@ function Calendar(p){
           eventClick={e=>{
             console.log(e)
           }}
-          eventDrop={e=>{
-            let start = e.event.startStr
-            let end = e.event.endStr
-            let seq = e.event.extendedProps.memoSeq
-            memoQuickEditFunc(start,end,seq)
+          eventDrop={e=>{    
+            memoQuickEditFunc(e)
           }}
           eventResize={e=>{
-            let start = e.event.startStr
-            let end = e.event.endStr
-            let seq = e.event.extendedProps.memoSeq
-            memoQuickEditFunc(start,end,seq)          
+            memoQuickEditFunc(e)          
           }}
         />
       </div>
