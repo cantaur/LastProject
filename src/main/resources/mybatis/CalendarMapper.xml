@@ -24,59 +24,31 @@
 
 
     <!-- 달력 startdate, enddate 수정-->
-    <update id="upCalSdate" parameterType="CalendarDTO">
+    <update id="upCalDate" parameterType="CalendarDTO">
         update calendar set calendar_startdate = #{calendar_startdate}, calendar_enddate = #{calendar_enddate}
         where calendar_seq = #{calendar_seq}
     </update>
 
+    <!-- 달력 startdate, enddate 수정-->
+    <update id="updateCal" parameterType="CalendarDTO">
+        update calendar set calendar_title = #{calendar_title},
+                            calendar_content = #{calendar_content},
+                            calendar_startdate = #{calendar_startdate},
+                            calendar_enddate = #{calendar_enddate}
+        where calendar_seq = #{calendar_seq}
+    </update>
 
 
 
-
-
-
-
-
-
-
-
-
-
-    <!-- 달력 리스트 BySeq 출력 -->
+    <!-- 달력에서 메모 클릭하면 상세내용 조회 -->
     <select id="calListBySeq" resultType="CalendarDTO" parameterType="long">
-        select *from calendar
-        where calendar_seq=#{calendar_seq}
+        select * from calendar where calendar_seq=#{calendar_seq}
     </select>
 
 
 
 
-
-    <!-- 달력 리스트 ByProSeq 출력 -->
-    <select id="calListByProSeq" resultType="CalendarDTO" parameterType="long">
-        select *from calendar
-        where projmember_seq=#{projmember_seq}
-    </select>
-
-    <!-- 달력 제목 수정 -->
-    <update id ="upCalName" parameterType="CalendarDTO">
-        update calendar
-        set calendar_title = #{calendar_title}
-        where calendar_seq = #{calendar_seq}
-    </update>
-
-    <!-- 달력 내용 수정 -->
-    <update id="upCalContent" parameterType="CalendarDTO">
-        update calendar
-        set calendar_content = #{calendar_content}
-        where calendar_seq = #{calendar_seq}
-    </update>
-
-
-    <!-- 달력 delete 는 project 안에서 삭제하면 없어짐 -->
-    <!-- 달력 자체에서 삭제하고 싶다면 projectManager 권한 확인 하고 삭제 할 수 있게 구현해야 함-->
-    <!-- 이건 내일 이야기 해보기-->
-    <delete id = "delCal" parameterType="long">
+    <delete id="delCal" parameterType="long">
         DELETE FROM calendar
         WHERE calendar_seq = #{calendar_seq}
     </delete>
