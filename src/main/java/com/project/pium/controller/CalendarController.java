@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Log
 @RestController
@@ -45,15 +46,21 @@ public class CalendarController {
     }
 
 
-    @PutMapping("upCalName")
+    @PostMapping("/ajax/updateCal")
     public void upCalName(@RequestBody CalendarDTO calendarDTO){
         calendarService.upCalName(calendarDTO);
     }
-     /*at Talend API Tester
-      method : put
-      url : http://localhost:8000/calendar/upCalName
-      {"calendar_title":"달력 REre1","calendar_seq":18}
-    */
+
+
+    @PostMapping("/ajax/updateDate")
+    public void updateDate(@RequestBody CalendarDTO calendarDTO){
+        log.info("캘린더 날짜 업데이트 : "+calendarDTO);
+        calendarService.upCalSdate(calendarDTO);
+    }
+
+
+
+
 
     //달력 내용 수정
     @PutMapping("upCalContent")

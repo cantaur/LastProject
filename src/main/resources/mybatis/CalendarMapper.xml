@@ -23,6 +23,12 @@
     </select>
 
 
+    <!-- 달력 startdate, enddate 수정-->
+    <update id="upCalSdate" parameterType="CalendarDTO">
+        update calendar set calendar_startdate = #{calendar_startdate}, calendar_enddate = #{calendar_enddate}
+        where calendar_seq = #{calendar_seq}
+    </update>
+
 
 
 
@@ -66,26 +72,6 @@
         where calendar_seq = #{calendar_seq}
     </update>
 
-    <!-- 달력 날짜 수정-->
-    <update id="upCalDate" parameterType="CalendarDTO">
-        update calendar
-        set calendar_date = #{calendar_date}
-        where calendar_seq = #{calendar_seq}
-    </update>
-
-    <!-- 달력 startdate 수정-->
-    <update id="upCalSdate" parameterType="CalendarDTO">
-        update calendar
-        set calendar_startdate = #{calendar_startdate}
-        where calendar_seq = #{calendar_seq}
-    </update>
-
-    <!-- 달력 enddate 수정-->
-    <update id="upCalEdate" parameterType="CalendarDTO">
-        update calendar
-        set calendar_enddate = #{calendar_enddate}
-        where calendar_seq = #{calendar_seq}
-    </update>
 
     <!-- 달력 delete 는 project 안에서 삭제하면 없어짐 -->
     <!-- 달력 자체에서 삭제하고 싶다면 projectManager 권한 확인 하고 삭제 할 수 있게 구현해야 함-->

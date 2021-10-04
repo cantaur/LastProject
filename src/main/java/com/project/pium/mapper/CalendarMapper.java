@@ -18,6 +18,8 @@ public interface CalendarMapper {
     List<CalendarDTO> calListByProjSeq(long projSeq);
     //해당 프로젝트에서 생성된 업무 리스트 조회(날짜 없는 데이터는 제외)
     List<TaskDTO> taskListByProjSeq(long projSeq);
+    //달력 startdate 수정
+    void upCalSdate(CalendarDTO calendarDTO);
 
 
 
@@ -41,14 +43,9 @@ public interface CalendarMapper {
     //달력 content 수정
     void upCalContent(CalendarDTO calendarDTO);
 
-    //달력 date 수정
-    void upCalDate(CalendarDTO calendarDTO);
 
-    //달력 startdate 수정
-    void upCalSdate(CalendarDTO calendarDTO);
 
-    //달력 enddate 수정
-    void upCalEdate(CalendarDTO calendarDTO);
+
 
     //달력 seq 삭제
     void delCal(long calSeq);
