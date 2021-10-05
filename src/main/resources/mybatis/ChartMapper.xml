@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.pium.mapper.ChartMapper">
+
+    <select id="countMilestoneStatusZero" resultType="long" parameterType="long">
+        SELECT COUNT(*) FROM pium_test.milestone WHERE  project_seq=#{project_seq} AND milestone_status=0;
+    </select>
+    <select id="countMilestoneStatusOne" resultType="long" parameterType="long">
+        SELECT COUNT(*) FROM pium_test.milestone WHERE  project_seq=#{project_seq} AND milestone_status=1;
+    </select>
+
+</mapper>
