@@ -8,43 +8,41 @@ import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Log
 @RestController
-@RequestMapping("comment")
 @AllArgsConstructor
+@ResponseBody
 public class TaskcommentController {
-    private TaskcommentService service;
+    private TaskcommentService taskcommentService;
 
-    @GetMapping("select")//전체글
-    public List<TaskcommentDTO> selectAll(){
-        List<TaskcommentDTO> list = service.selectAllS();
+    //해당 업무를 클릭했을때 오른쪽에서 튀어나오는 업무 상세창의 comment 탭을 눌렀을때 나오는 모든 코멘트를 조회
+    @GetMapping("/ajax/taskCmtselect/{taskSeq}")//업무에 따라 분류
+    public List<TaskcommentDTO> selectBySeqS(@PathVariable long taskSeq) {
+        List<TaskcommentDTO> list = taskcommentService.selectBySeqS(taskSeq);
         return list;
-    }//http://127.0.0.1:8000/comment/select OK
-    @GetMapping("select/{seq}")//업무에 따라 분류
-    public List<TaskcommentDTO> selectBySeq(@PathVariable long seq){
-        List<TaskcommentDTO> list = service.selectBySeqS(seq);
-        return list;
-    }//http://127.0.0.1:8000/comment/select/1 OK
-    @PostMapping("insert")//작성 http://localhost:8000/comment/insert
-    public void insertComment(@RequestBody TaskcommentDTO task){
-        log.info("#Comment insert()"+task);
-        service.insertS(task);
     }
-//    POST /comment/insert HTTP/1.1
-//    {"comment_content":"코멘트테스트",
-//            "task_seq":1,
-//            "projmember_seq":1
-//    }
-    @PatchMapping("delete/{seq}")//삭제상태로 변경 http://127.0.0.1:8000/comment/delete/10 OK
-    public void delete(@PathVariable long seq) {
-        service.deleteS(seq);
+
+    //코멘트 입력창에서 : content, date, 작성한 사람, task seq, project seq<-필요할지 검증 필요함
+    @PostMapping("/ajax/taskCmtinsert")
+    public void insertComment(@RequestBody TaskcommentDTO taskcommentDTO) {
+        log.info("#Comment insert()" + taskcommentDTO);
+        taskcommentService.insertS(taskcommentDTO);
     }
-    @PatchMapping("update")//내용 수정 http://127.0.0.1:8000/comment/update/
-    public void update(@RequestBody TaskcommentDTO task){
-        service.updateS(task);
+
+    // task comment isDel 상태로 변경 _ 마일스톤 참고
+    @PostMapping("/ajax/taskCmtdelete")
+    public void delete(@RequestBody Map<String, Integer> param) {
+        Long seq = Long.valueOf(param.get("comment_seq"));
+        taskcommentService.deleteS(seq);
     }
-//    {"comment_seq":1,
-//    "comment_content":"코멘트테스트"
-//    }
+
+    // task comment 수정
+    @PostMapping("/ajax/taskCmtupdate")
+    public void update(@RequestBody TaskcommentDTO taskcommentDTO) {
+        log.info("taskcommentDTO" + taskcommentDTO);
+        taskcommentService.updateS(taskcommentDTO);
+    }
 }
+
