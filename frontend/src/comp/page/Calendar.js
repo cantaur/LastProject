@@ -86,7 +86,7 @@ function Calendar(p){
   //메모등록 모달 컨트롤
   const [createModal, createModalCng] = useState(false)
 
-  //메모등록시 내부 알림창
+  //메모등록, 수정시 내부 알림창
   const [alert,alertCng] = useState(false);
   const [dateAlert,dateAlertCng] = useState(false);
 
@@ -129,6 +129,20 @@ function Calendar(p){
       p.dispatch({type:'loadingOff'})
     })
   }
+
+  //메모 수정 모달 컨트롤
+  const [editModal,editModalCng] = useState(false)
+
+  //메모 수정 정보
+  const [editData, editDataCng] = useState({
+    calendar_seq:'',
+    calendar_title:'',
+    calendar_content:'',
+    calendar_startdate:'',
+    calendar_enddate:'',
+    projmember_seq:'',
+    project_seq:'',
+  });
 
   useEffect(()=>{
     p.dispatch({type:'loadingOn'})
@@ -182,6 +196,33 @@ function Calendar(p){
         createDataCng={createDataCng}
         memoListGetFunc={memoListGetFunc}
       />
+      <EditModal
+        show={editModal}
+        onHide={() => {
+          editModalCng(false)
+          alertCng(false)
+          dateAlertCng(false)
+          editDataCng({
+            calendar_seq:'',
+            calendar_title:'',
+            calendar_content:'',
+            calendar_startdate:'',
+            calendar_enddate:'',
+            projmember_seq:'',
+            project_seq:'',
+          })
+        }}
+        alert={alert}
+        alertCng={alertCng}
+        dateAlertCng={dateAlertCng}
+        editModalCng={editModalCng}
+        prjColor={p.prjColor}
+        dispatch={p.dispatch}
+        dateModalClose={dateModalClose}
+        editData={editData}
+        editDataCng={editDataCng}
+        memoListGetFunc={memoListGetFunc}
+      />
       <div className="calendarCon">
         <FullCalendar
           plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin, bootstrapPlugin ]}
@@ -214,7 +255,19 @@ function Calendar(p){
           eventColor={p.prjColor}
           displayEventTime={false}
           eventClick={e=>{
-            console.log(e)
+            if(e.event.extendedProps.memoSeq){
+              editDataCng({
+                ...editData,
+                calendar_seq:e.event._def.extendedProps.memoSeq,
+                calendar_title:e.event._def.title,
+                calendar_content:e.event._def.extendedProps.description,
+                calendar_startdate:e.event.startStr.substring(0,10),
+                calendar_enddate:e.event.endStr.substring(0,10),
+              })
+              editModalCng(true)
+            }else {
+              console.log(e)
+            }
           }}
           eventDrop={e=>{    
             memoQuickEditFunc(e)
@@ -357,6 +410,143 @@ function CreateDateModal(p) {
             })
           }
         }}>만들기</Button>
+
+        
+
+      </Modal.Footer>
+    </Modal>
+  );
+}
+
+function EditModal(p){
+  return (
+    <Modal
+      {...p}
+      size="sm"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+      className="modalWrap"
+      style={{marginTop:'-70px'}}
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter" className="modalTitle">
+          캘린더 메모 수정
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        {
+          p.alert
+          ?
+          <Alert variant={'danger'} style={{fontSize:'.8rem',marginBottom:'.4rem'}}>메모 제목을 입력해주세요. &#x1F602;</Alert>
+          : null
+        }
+        {
+          p.dateAlert
+          ?
+          <Alert variant={'danger'} style={{fontSize:'.8rem',marginBottom:'.4rem'}}>날짜를 지정해주세요. &#x1F602;</Alert>
+          : null
+        }
+        
+        <Form.Group className="mb-2 piumInput" controlId="floatingInput">
+          <FloatingLabel
+            controlId="floatingInput"
+            label="메모 제목"
+          >
+            <Form.Control type="text" placeholder="메모 제목" value={p.editData.calendar_title} name="project_title" spellCheck="false" onChange={e=>{
+              p.editDataCng({
+                ...p.editData,
+                calendar_title:e.target.value
+              })
+            }}/>
+          </FloatingLabel>
+        </Form.Group>
+        
+
+        <Form.Group className=" piumInput" controlId="floatingTextarea">
+          <FloatingLabel controlId="floatingTextarea" label="내용">
+            <Form.Control type="textarea" placeholder="내용" name="project_content" spellCheck="false" value={p.editData.calendar_content} onChange={e=>{
+              p.editDataCng({
+                ...p.editData,
+                calendar_content:e.target.value
+              })
+            }}/>
+          </FloatingLabel>
+        </Form.Group>
+
+        <div className="datePickerWrap">
+          <DatePicker
+            pickerStartDate={p.editData.calendar_startdate}
+            pickerEndDate={p.editData.calendar_enddate}
+            pickerDateCng={p.editDataCng}
+            pickerDate={p.editData}
+            pickerStartKey={'calendar_startdate'}
+            pickerEndKey={'calendar_enddate'}
+            dateModalClose={p.dateModalClose}
+          />
+          <p className="dateBtn" onClick={
+            ()=>{
+              p.dispatch({type:'modalOn'})
+              setTimeout(()=>{
+                window.addEventListener('click', p.dateModalClose)
+              })
+            }
+          }>
+            <i class="far fa-calendar-check"></i> 일정선택
+          </p>
+          <p className="dateInfo">
+            {p.editData.calendar_startdate?(p.editData.calendar_startdate + " ~ "):''}
+            
+            {p.editData.calendar_enddate?p.editData.calendar_enddate:''}
+
+          </p>
+        </div>
+        
+      </Modal.Body>
+      <Modal.Footer className="modalBtnWrap">
+        <Button className="modalBtn" onClick={()=>{
+          if(!p.editData.calendar_title){
+            p.alertCng(true)
+            p.dateAlertCng(false)
+          }else if(!p.editData.calendar_startdate){
+            p.dateAlertCng(true)
+            p.alertCng(false)
+          }else {
+            let data = {};
+            if(p.editData.calendar_enddate){
+              data = {
+                ...p.editData,
+                calendar_enddate : p.editData.calendar_enddate
+              }
+            } else {
+              data = {
+                ...p.editData,
+                calendar_enddate : p.editData.calendar_startdate
+              }
+            }
+
+            p.dispatch({type:'loadingOn'})
+            axios.post(host+'/ajax/updateCal',data)
+            .then(r=>{
+              p.editModalCng(false)
+              p.alertCng(false)
+              p.dateAlertCng(false)
+              p.editDataCng({
+                calendar_seq:'',
+                calendar_title:'',
+                calendar_content:'',
+                calendar_startdate:'',
+                calendar_enddate:'',
+                projmember_seq:'',
+                project_seq:'',
+              })
+              p.memoListGetFunc();
+            })
+            .catch(e=>{
+              console.log(e)
+              p.dispatch({type:'loadingOff'})
+            })
+          }
+        }}>수정하기</Button>
 
         
 

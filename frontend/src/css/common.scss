@@ -1913,7 +1913,7 @@ body{
       }
     }
     .fc-daygrid-day-frame{
-      background-color: #fff;
+      // background-color: #fff;
       font-size: .9rem;
     }
     .fc-daygrid-day-bottom{
@@ -1950,9 +1950,31 @@ body{
     .fc-daygrid-event{
       border:1px solid #fff !important;
     }
+    .fc .fc-daygrid-day{
+      background-color: #fff;
+    }
+    .fc .fc-daygrid-day.fc-day-today{
+      background-color: #FFEEEE
+    }
 
   }
+  
+  
 }
+.memoModalWrap{
+  height: 200px;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: nowrap;
+  .memoModalCon{
+    width: 298px;
+    flex-shrink: 0;
+    background-color: #fff;
+    padding:20px;
+    border-radius: .3rem;
+  }
+}
+
 
 //MileStone (마일스톤)
 .mileStoneWrap{
