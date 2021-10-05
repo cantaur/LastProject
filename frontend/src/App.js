@@ -12,6 +12,7 @@ import Test3 from './comp/Test3.js'
 import Test4 from './comp/Test4.js'
 import Test5 from './comp/Test5.js'
 import Test6 from './comp/Test6.js'
+import Test7 from './comp/Test7.js'
 import ErrPage from './comp/ErrPage.js'
 import NonePage from './comp/NonePage.js'
 import ProjectList from './comp/ProjectList.js'
@@ -88,6 +89,9 @@ function App(p) {
         </Route>
       <Route path='/test6' exact>
          <Test6/>
+      </Route>
+      <Route path='/test7' exact>
+         <Test7/>
       </Route>
 
       <Route path='/err' exact>
