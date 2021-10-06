@@ -28,7 +28,7 @@ public class ChartServiceImpl implements ChartService {
     }
 
     @Override
-    public long countTaskMe(ProjectmemberDTO dto) {
-        return chartMapper.countTaskMe(dto);
+    public long countTaskMine(long project_seq, long projectMember_seq, long memberSeq) {
+        return chartMapper.countTaskMine(project_seq, projectMember_seq, memberSeq);
     }
 }
