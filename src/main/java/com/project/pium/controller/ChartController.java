@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.*;
 public class ChartController {
     private ChartService chartService;
 
-    @GetMapping("/ajax/milestoneChart/{prjseq}")
+    //겟맵핑 다음에 오는 주소 겹치면 안되어서 살짝 수정해서 git push
+    @GetMapping("/ajax/milestoneoneChart/{prjseq}")
     public long countMilestoneOne(@PathVariable long prjseq) {
 
         return chartService.countMilestoneStatusOneS(prjseq);
     }
-    @GetMapping("/ajax/milestoneChart/{prjseq}")
+    @GetMapping("/ajax/milestonezeroChart/{prjseq}")
     public long countMilestoneZero(@PathVariable long prjseq) {
         return chartService.countMilestoneStatusZeroS(prjseq);
     }
