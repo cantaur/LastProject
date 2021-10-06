@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Log
 @RestController
@@ -14,19 +17,23 @@ import org.springframework.web.bind.annotation.*;
 public class ChartController {
     private ChartService chartService;
 
-    //겟맵핑 다음에 오는 주소 겹치면 안되어서 살짝 수정해서 git push
     @GetMapping("/ajax/milestoneoneChart/{prjseq}")
-    public long countMilestoneOne(@PathVariable long prjseq) {
+    public List<Long> countChart(@PathVariable long prjseq) {
+        log.info("Pathvariable : "+ prjseq);
+        long a = chartService.countMilestoneStatusZeroS(prjseq);
+        long b = chartService.countMilestoneStatusOneS(prjseq);
+        List<Long> list = new ArrayList<>();
+        list.add(a);
+        list.add(b);
+        log.info("차트1에서 받아오는 prjseq값 : "+prjseq);
+        log.info("milestone 진행중인 갯수 : "+ a);
+        log.info("milestone 완료된 갯수 : "+ b);
+        return list;
+    }
 
-        return chartService.countMilestoneStatusOneS(prjseq);
+    @GetMapping("/ajax/taskChart/{prjseq}")
+    public long taskChart(@PathVariable long prjseq) {
+        return 0;
     }
-    @GetMapping("/ajax/milestonezeroChart/{prjseq}")
-    public long countMilestoneZero(@PathVariable long prjseq) {
-        return chartService.countMilestoneStatusZeroS(prjseq);
-    }
+
 }
-
-
-
-
-

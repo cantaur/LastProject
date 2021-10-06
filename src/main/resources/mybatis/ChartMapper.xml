@@ -5,10 +5,16 @@
 <mapper namespace="com.project.pium.mapper.ChartMapper">
 
     <select id="countMilestoneStatusZero" resultType="long" parameterType="long">
-        SELECT COUNT(*) FROM pium_test.milestone WHERE  project_seq=#{project_seq} AND milestone_status=0;
+        SELECT COUNT(*) FROM milestone WHERE project_seq=#{project_seq} AND milestone_status='0'
     </select>
     <select id="countMilestoneStatusOne" resultType="long" parameterType="long">
-        SELECT COUNT(*) FROM pium_test.milestone WHERE  project_seq=#{project_seq} AND milestone_status=1;
+        SELECT COUNT(*) FROM milestone WHERE project_seq=#{project_seq} AND milestone_status='1'
     </select>
 
+    <select id="countTaskAll" resultType="long" parameterType="long">
+        SELECT COUNT(*) FROM task WHERE project_seq=#{project_seq};
+    </select>
+    <select id="countTaskMe" resultType="long" parameterType="ProjectmemberDTO">
+        SELECT COUNT(*) FROM task, member WHERE project_seq={project_seq} AND projmember_seq={projmember_seq} AND member_seq={member_seq};
+    </select>
 </mapper>

@@ -8,15 +8,18 @@ import {host} from "./Helper";
 function Test6() {
 
     const [countMilestone, setCountMilestone] = useState([]);
+    const [prjseq, setPrjseq] = useState(2);
 
 useEffect(()=>{
+
    axios
        .all([
-           axios.get(host+'/ajax/milestoneChart'),
+           axios.get(host+'/ajax/milestoneoneChart/'+prjseq),
        ])
        .then(
-           axios.spread((c1)=>{
-            setCountMilestone(c1.data);
+
+           axios.spread((r)=>{
+               setCountMilestone(r.data);
            })
        )
        .catch(e =>{
@@ -42,10 +45,11 @@ useEffect(()=>{
                         height={'300px'}
                         chartType="PieChart"
                         loader={<div>로딩중...</div>}
-                        data={[
+                        data={countMilestone?[
                             ['Task','Hours per Day'],
-                            ['진행', countMilestone],
-                        ]}
+                            ['진행', countMilestone[0]],
+                            ['완료', countMilestone[1]],
+                        ]:null}
                         options={{
                             title: '마일스톤',
                             // is3D: true,
