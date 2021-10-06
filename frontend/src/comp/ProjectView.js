@@ -6,6 +6,7 @@ import HeadSide from './HeadSide.js'
 import Todo from './page/Todo.js'
 import Notice from './page/Notice.js'
 import Calendar from './page/Calendar.js'
+import FileList from './page/FileList.js'
 import MileStone from './page/MileStone.js'
 import MileStoneView from './page/MileStoneView.js'
 import Task from './page/Task.js'
@@ -158,6 +159,10 @@ function ProjectView(p){
           {
             p.pageInfo == 'calendar' &&
             <Calendar prjColor={prjColor} prjSeq={prjSeq}/>
+          }
+          {
+            p.pageInfo == 'fileList' &&
+            <FileList prjColor={prjColor} prjSeq={prjSeq}/>
           }
           {
             p.pageInfo == 'mileStone' &&
