@@ -115,6 +115,24 @@ function isProfileEmpty(state=false, action){
   }
 }
 
+function taskModal(state=false, action){
+  switch (action.type){
+    case 'taskModalCng':
+      return action.val;
+    default:
+      return state;
+  }
+}
+function taskModalData(state=false, action){
+  switch (action.type){
+    case 'taskModalDataCng':
+      return action.val;
+    default:
+      return state;
+  }
+}
+
+
 let store = createStore(combineReducers(
   {
     datePickerModal,
@@ -127,7 +145,9 @@ let store = createStore(combineReducers(
     memberList,
     myMemberInfo,
     isMaster,
-    isProfileEmpty
+    isProfileEmpty,
+    taskModal,
+    taskModalData,
   }
 ));
 

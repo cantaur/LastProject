@@ -1473,6 +1473,419 @@ body{
     }
   }
 }
+// 업무 모달 
+.taskModalWrap{
+  transition: right .3s ease-in-out;
+  background-color: #fff;
+  height: calc(100vh - 40px);
+  position: fixed;
+  bottom:0px;
+  z-index: 10;
+  width: 440px;
+  border-left: 1px solid #ccc;
+  border-top:1px solid #ccc;
+  border-bottom:1px solid #ccc;
+  border-radius: 10px 0px 0px 10px;
+  right: -440px;
+  overflow-y: auto;
+  .toolTipTopBox{
+    position: relative;
+    .toolTip{
+      width: max-content;
+      background-color: rgba(0,0,0,.8);
+      position: absolute;
+      left: 50%;
+      width: max-content;
+      font-size: .7rem;
+      color: #fff;
+      padding:0px 4px;
+      height: 20px;
+      line-height: 19px;
+      top:-14px;
+      margin:0;
+      margin-top:-12px;
+      border-radius: 4px;
+      opacity: 0;
+      transform: scale(0);
+      cursor: default;
+      transition: .2s ease-in-out;
+      font-weight: normal;
+    }
+    &:hover{
+      .toolTip{
+        z-index: 10;
+        opacity: 1;
+        transform: scale(1);
+        transform-origin: 50% 100%;
+      }
+    }
+  }
+  &::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+    background:#f2f2f2;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 3.5px;
+    background-color: #ccc;
+
+    &:hover {
+      background-color: #ccc;
+    }
+  }
+  &::-webkit-scrollbar-track {
+    background: #f2f2f2;
+  }
+  &.on{
+    right: 0px;
+  }
+  .head{
+    padding:15px;
+    border-bottom: 1px solid #ececec;
+    .titleWrap{
+      display: flex;
+      align-items: center;
+      margin-bottom:10px;
+      justify-content: space-between;
+      .labelEditBtn{
+        cursor: pointer;
+      }
+      .title{
+        font-size: 1.2rem;
+        font-weight: bold;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 340px;
+        transition: .2s ease-in-out;
+        // padding-bottom: 10px;
+        // border-bottom: 1px solid #ececec;
+      }
+
+    }
+    
+    .info{
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      
+      .profile{
+        display: flex;
+        align-items: center;
+        .img{
+          width: 35px;
+          height: 35px;
+          overflow: hidden;
+          border-radius: 100px;
+          border:1px solid #ccc;
+          align-items: center;
+          justify-content: center;
+          img{
+            height: 100%;
+          }
+        }
+        .text{
+          margin-left: 4px;
+          .name{
+            font-size: .8rem;
+            color:#333;
+          }
+          .email{
+            font-size: .7rem;
+            color:#888;
+            margin-top:-2px;
+          }
+        }
+        
+      }
+      .date{
+        font-size: .8rem;
+        color:#888;
+      }
+    }
+  }
+  .tabNav{
+    display: flex;
+    align-items: center;
+    padding:15px;
+    justify-content: flex-start;
+    .navBtn{
+      cursor: pointer;
+      border-bottom:2px solid transparent;
+      font-size: .8rem;
+      user-select: none;
+      &+.navBtn{
+        margin-left: 30px;
+      }
+    }
+  }
+  .taskCon{
+    .contentWrap{
+      padding:15px;
+      padding-top:0px;
+      position: relative;
+      width: 100%;
+      .conBtn{
+        position: absolute;
+        top:8px;
+        right: 22px;
+        cursor: pointer;
+        width: 22px;
+        height: 22px;
+        text-align: center;
+        line-height: 22px;
+        border-radius: 4px;
+        color:#fff;
+        font-size: .9rem;
+        &.submitBtn{
+          width: auto;
+          display: none;
+          color:#fff;
+          font-size: .7rem;
+          padding:0px 4px;
+        }
+      }
+      &.on{
+        .editBtn{
+          display: none;
+        }
+        .submitBtn{
+          display: block;
+        }
+        .conArea{
+          border-color: #ccc;
+          background-color: #fff;
+        }
+      }
+      .conArea{
+        background-color: #f2f2f2;
+        padding:12px;
+        border-radius: 4px;
+        font-size: .8rem;
+        width: 100%;
+        height:80px;
+        resize: none;
+        border-color:#f2f2f2;
+        cursor: default;
+        white-space: pre-line;
+        &:focus{
+          outline: none;
+        }
+        &::-webkit-scrollbar {
+          width: 3px;
+          height: 3px;
+          background:#f2f2f2;
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 3.5px;
+          background-color: #ccc;
+      
+          &:hover {
+            background-color: #ccc;
+          }
+        }
+        &::-webkit-scrollbar-track {
+          background: #f2f2f2;
+        }
+      }
+    }
+    .menuTitle{
+      margin-left: 15px;
+      margin-right: 15px;
+      border-bottom:1px solid #ececec;
+      padding-bottom:6px;
+      margin-bottom:8px;
+      font-weight: bold;
+      font-size: .8rem;
+    }
+    .statusRow{
+      display: flex;
+      padding:20px 15px;
+      align-items: center;
+      
+      select{
+        width: max-content;
+      }
+      .label{
+        width: 100px;
+        flex-shrink: 0;
+        font-size: .9rem;
+        font-weight: bold;
+      }
+      .memberOuter{
+        display: flex;
+        align-items: center;
+        .memberWrap{
+          width: 100px;
+          margin-right: 24px;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          .profileImg{
+            width: 30px;
+            height: 30px;
+            margin:0px -4px;
+            .toolTip{
+              left: 15px;
+              transform-origin: 0% 100%;
+              border-bottom-left-radius: 0px;
+              top:-8px;
+            }
+            div{
+              width: 30px;
+              height: 30px;
+              border-radius: 100px;
+              border:1px solid #ccc;
+              overflow: hidden;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              img{
+                height: 100%;
+              }
+            }
+            
+          }
+        }
+        .chargeBtn{
+          position: relative;
+          cursor: pointer;
+          color:#fff;
+          width: 48px;
+          border-radius: 4px;
+          height: 24px;
+          line-height: 23px;
+          text-align: center;
+          font-size: .8rem;
+          
+          .chrgeWrap{
+            transition: .3s ease-in-out;
+            transform: scale(0);
+            transform-origin: 0% 100%;
+            position: absolute;
+            width: 170px;
+            max-height: 286px;
+            bottom:30px;
+            left: 24px;
+            background-color: #fff;
+            overflow: hidden;
+            border:1px solid #ccc;
+            border-radius: 4px 4px 4px 0px;
+            overflow-y: auto;
+            cursor: default;
+            &.on{
+              transform: scale(1);
+
+            }
+            &::-webkit-scrollbar {
+              width: 3px;
+              height: 3px;
+              background:#f2f2f2;
+            }
+            &::-webkit-scrollbar-thumb {
+              border-radius: 3.5px;
+              background-color: #ccc;
+          
+              &:hover {
+                background-color: #ccc;
+              }
+            }
+            &::-webkit-scrollbar-track {
+              background: #f2f2f2;
+            }
+            .member{
+              display: flex;
+              padding:8px;
+              align-items: center;
+              &+.member{
+                border-top:1px solid #ececec;
+              }
+              .profile{
+                width: 30px;
+                height: 30px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+                border:1px solid #ccc;
+                border-radius: 100px;
+                flex-shrink: 0;
+                img{
+                  height: 100%;
+                }
+              }
+              .info{
+                color:#333;
+                margin-left: 6px;
+                margin-right: 4px;
+                width: 84px;
+                flex-shrink: 1;
+                .name{
+                  text-align: left;
+                  width: 100%;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                }
+                .email{
+                  font-size: .7rem;
+                  margin-top:-6px;
+                  color:#888;
+                  width: 84px;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                  text-align: left;
+                }
+              }
+              .append{
+                flex-shrink: 0;
+                padding:0px 4px;
+                font-size: .7rem;
+                cursor: pointer;
+                border-radius: 4px;
+              }
+            }
+          }
+        }
+      }
+      .labelEditWrap{
+        display: flex;
+        align-items: center;
+        .editBtn{
+          cursor: pointer;
+          font-size: .8rem;
+        }
+        .submitBtn{
+          color:#fff;
+          cursor: pointer;
+          font-size: .8rem;
+          padding: 2px 6px;
+          border-radius: 4px;
+          margin-left: 4px;
+        }
+        .labelText{
+          color:#fff;
+          font-size: .8rem;
+          border-radius: 4px;
+          padding:2px 6px;
+          margin-right: 10px;;
+        }
+        .labelInput{
+          width: max-content;
+          padding:4px 6px;
+          font-size: .8rem;
+          border-radius: 4px;
+          border:1px solid #ccc;
+          &:focus{
+            outline: none;
+          }
+        }
+      }
+    }
+  }
+}
+
 //페이지 네비게이션 (전체)
 .pageBtnWrap{
   width: 100%;

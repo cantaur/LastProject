@@ -9,6 +9,8 @@ import Calendar from './page/Calendar.js'
 import MileStone from './page/MileStone.js'
 import MileStoneView from './page/MileStoneView.js'
 import Task from './page/Task.js'
+import TaskModal from './page/comp/TaskModal.js'
+
 import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstrap'
 import { Link, useParams, withRouter, useHistory, useLocation } from "react-router-dom";
 import {CSSTransition} from 'react-transition-group';
@@ -67,13 +69,24 @@ function ProjectView(p){
     }
 
     // 프로젝트 리스트 가져옴
-    axios.get(host+'/ajax/myproject') //프론트용 샘플
-    .then(r=>{
-      p.dispatch({type:'projectListCng', val:r.data})
-    })
-    .catch(e=>{
-      console.log(e)
-    })
+    if(window.location.href.indexOf(':3000') != -1){ // 프론트용 샘플
+      axios.get(host+'/ajax/myprojectTest/3')
+      .then(r=>{
+        p.dispatch({type:'projectListCng', val:r.data})
+      })
+      .catch(e=>{
+        console.log(e)
+      })
+    }else if(window.location.href.indexOf(':8000') != -1){
+      axios.get(host+'/ajax/myproject') //프론트용 샘플
+      .then(r=>{
+        p.dispatch({type:'projectListCng', val:r.data})
+      })
+      .catch(e=>{
+        console.log(e)
+      })
+    }
+    
 
     //멤버정보 가져옴
     axios.get('/ajax/allProjMembers/'+prjSeq)
@@ -84,13 +97,23 @@ function ProjectView(p){
       console.log(e)
     })
 
+    //마일스톤 목록 가져옴
+    axios.get(host+'/ajax/'+prjSeq+'/milestonelist')
+    .then(r=>{
+      p.dispatch({type:'mileStoneListCng', val:r.data})
+    })
+    .catch(e=>{
+      console.log(e)
+    })
 
   },[location])
 
   // 프로젝트 리스트를 가져온 후
   useEffect(()=>{
-    //프론트용 샘플
-    // p.dispatch({type:'login', email:'sudosoon@gmail.com', seq:3})
+    //프론트용 
+    if(window.location.href.indexOf(':3000') != -1){
+      p.dispatch({type:'login', email:'sudosoon@gmail.com', seq:3})
+    }
 
     //현재 프로젝트 정보 갱신
     if(p.projectList){
@@ -157,7 +180,11 @@ function ProjectView(p){
           }
           {
             p.pageInfo == 'calendar' &&
-            <Calendar prjColor={prjColor} prjSeq={prjSeq}/>
+            <>
+              <Calendar prjColor={prjColor} prjSeq={prjSeq}/>
+              <TaskModal/>
+            </>
+            
           }
           {
             p.pageInfo == 'mileStone' &&
@@ -311,7 +338,8 @@ function transReducer(state){
     memberList:state.memberList,
     myMemberInfo:state.myMemberInfo,
     isMaster:state.isMaster,
-    isProfileEmpty:state.isProfileEmpty
+    isProfileEmpty:state.isProfileEmpty,
+    mileStoneList : state.mileStoneList,
   }
 }
 

@@ -1,13 +1,10 @@
 import axios from "axios";
-import React, { useEffect, useState,useRef,useCallback } from "react"
+import React, { useEffect, useState, useCallback } from "react"
 import {pub, colors, pages, host} from '../Helper.js'
 import DatePicker from '../DatePicker.js'
-import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstrap'
-import { Link, useParams, withRouter, useHistory } from "react-router-dom";
+import {FloatingLabel, Form, Button, Alert, Modal} from 'react-bootstrap'
+import { useHistory } from "react-router-dom";
 import {connect} from 'react-redux';
-import { registerLocale } from "react-datepicker";
-import moment from "moment";
-
 
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -17,7 +14,6 @@ import bootstrapPlugin from '@fullcalendar/bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import "react-datepicker/dist/react-datepicker.css";
-import ko from 'date-fns/locale/ko';
 
 
 
@@ -32,6 +28,7 @@ function Calendar(p){
   const memoListGetFunc = () => {
     axios.get(host+'/ajax/calList/'+p.projectInfo.project_seq)
     .then(r=>{
+      
       let taskList = r.data[0].taskListProj
       let calendarList = r.data[0].calListProj
       let memoListDummy = [];
@@ -45,6 +42,8 @@ function Calendar(p){
               end:r.task_duedate,
               classNames:'task',
               editable:false,
+              task_seq:r.task_seq,
+              projmember_seq:r.projmember_seq
             },
           )
         }
@@ -97,6 +96,16 @@ function Calendar(p){
       p.dispatch({type:'modalOff'})
       setTimeout(()=>{
         window.removeEventListener('click', dateModalClose)
+      })
+    }
+  },[])
+
+  //업무 이중모달 컨트롤
+  const taskModalClose = useCallback((e)=>{
+    if(!e.target.closest('.taskModalWrap')  && !e.target.closest('.labelEditBtn')){
+      p.dispatch({type:'taskModalCng', val:false})
+      setTimeout(()=>{
+        window.removeEventListener('click', taskModalClose)
       })
     }
   },[])
@@ -267,6 +276,11 @@ function Calendar(p){
               editModalCng(true)
             }else {
               console.log(e)
+              p.dispatch({type:'taskModalCng',val:true})
+              setTimeout(()=>{
+                window.addEventListener('click', taskModalClose)
+
+              })
             }
           }}
           eventDrop={e=>{    
@@ -563,6 +577,8 @@ function transReducer(state){
     projectInfo : state.projectInfo,
     pageInfo : state.pageInfo,
     myMemberInfo : state.myMemberInfo,
+    taskModal : state.taskModal,
+    taskModalData : state.taskModalData,
   }
 }
 
