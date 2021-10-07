@@ -8,18 +8,24 @@ import {host} from "./Helper";
 function Test6() {
 
     const [countMilestone, setCountMilestone] = useState([]);
-    const [prjseq, setPrjseq] = useState(2);
+    const [countTaskChart, setCountTaskChart] = useState([]);
+
+    const [prjSeq, setPrjSeq] = useState(2);
+    const [prjMSeq, setPrjMSeq] = useState(2);
+    const [MSeq, setMSeq] = useState(3);
 
 useEffect(()=>{
 
    axios
        .all([
-           axios.get(host+'/ajax/milestoneoneChart/'+prjseq),
+           axios.get(host+'/ajax/milestoneOneChart/'+prjSeq),
+           axios.get(host+'/ajax/taskChart/'+prjSeq+'/'+prjMSeq+'/'+MSeq),
        ])
        .then(
+           axios.spread((r1,r2)=>{
+               setCountMilestone(r1.data);
+               setCountTaskChart(r2.data);
 
-           axios.spread((r)=>{
-               setCountMilestone(r.data);
            })
        )
        .catch(e =>{
@@ -49,9 +55,12 @@ useEffect(()=>{
                             ['Task','Hours per Day'],
                             ['진행', countMilestone[0]],
                             ['완료', countMilestone[1]],
-                        ]:null}
+                        ]:[
+                            ['Task','Hours per Day'],
+                            ['업무가 없습니다.', 1],
+                        ]}
                         options={{
-                            title: '마일스톤',
+                            title: '마일스톤 진행도',
                             // is3D: true,
                             width: '100%',
                             // legend: 'none', //범례 컨트롤
@@ -76,12 +85,18 @@ useEffect(()=>{
                         height={'300px'}
                         chartType="PieChart"
                         loader={<div>로딩중...</div>}
-                        data={[
+                        data={countTaskChart?[
                             ['Task','Hours per Day'],
-                            ['Work', 11],
-                        ]}
+                            ['전체 프로젝트 업무', countTaskChart[0]],
+                            ['나의 업무', countTaskChart[1]],
+                        ]
+                            :[
+                                ['Task','Hours per Day'],
+                                ['업무가 없습니다.', 1],
+                            ]
+                        }
                         options={{
-                            title: '나에게 생성된 업무',
+                            title: '할당된 업무',
                             is3D: true,
                             legend: 'none', //범례 컨트롤
                             width: '100%',
@@ -109,14 +124,10 @@ useEffect(()=>{
                         loader={<div>로딩중...</div>}
                         data={[
                             ['Task','Hours per Day'],
-                            ['Work', 11],
-                            ['Eat', 8],
-                            ['Commute', 4],
-                            ['Watch TV', 5],
-                            ['Sleep', 2],
+                            ['업무가 없습니다.', 1],
                         ]}
                         options={{
-                            title: '내가 생성한 업무',
+                            title: '현재 업무 진행도',
                             pieHole: 0.4,
                             width: '100%',
                             chartArea: {

@@ -14,6 +14,6 @@ public interface ChartMapper {
     long countMilestoneStatusZero(long project_seq);
     long countMilestoneStatusOne(long project_seq);
     long countTaskAll(long project_seq);
-    long countTaskMe(ProjectmemberDTO dto);
+    long countTaskMine(long project_seq, long projmember_seq, long member_seq);
 
 }

@@ -8,5 +8,5 @@ public interface ChartService {
     long countMilestoneStatusOneS(long project_seq);
 
     long countTaskAll(long project_seq);
-    long countTaskMe(ProjectmemberDTO dto);
+    long countTaskMine(long project_seq, long projectMember_seq, long memberSeq);
 }
