@@ -19,6 +19,8 @@ function pagePath(page){
       return 0;
     case 'calendar':
       return 1;
+    case 'projectChart':
+      return 1;
     case 'fileList' :
       return 1;
     case 'mileStone':

@@ -188,6 +188,13 @@ function ProjectView(p){
             
           }
           {
+            p.pageInfo == 'projectChart' &&
+            <>
+              <ProjectChart prjColor={prjColor} prjSeq={prjSeq}/>
+            </>
+
+          }
+          {
             p.pageInfo == 'fileList' &&
             <FileList prjColor={prjColor} prjSeq={prjSeq}/>
           }
