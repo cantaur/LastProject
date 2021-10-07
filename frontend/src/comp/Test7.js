@@ -2,13 +2,15 @@ import axios from 'axios';
 import React, {useState, useEffect} from 'react';
 import { Chart } from "react-google-charts";
 import {pub, host} from './Helper.js'
+import {forEach} from "react-bootstrap/ElementChildren";
 
 function Test7(){//For 간트차트
     const [milestones, setMilestones] = useState([]);
+    const [tasks, setTasks] = useState([]);
     useEffect(()=>{
         axios
             .all([
-                axios.get(host+'/ajax/1/milestonelist')//마일스톤 전부조회..
+                axios.get(host+'/ajax/1/milestonelist')//마일스톤 전부조회.
             ])
             .then(
                 axios.spread((r1)=>{
@@ -44,6 +46,14 @@ function Test7(){//For 간트차트
             100,
             null
         ])
+        axios.get(host+'/ajax/task/'+milestones[i].milestone_seq)
+            .then(r=>
+                // console.log("#tasks:"+JSON.stringify(r.data))
+                setTasks(r.data)
+            )
+        // console.log("#tasks:"+tasks);//object
+        // console.log("#tasks:"+JSON.stringify(tasks));
+
         // for(var j=0;j<3;j++){//해당 마일스톤의 업무개수만큼 반복을 돌려 입력
         //     arr.push([
         //         'Task'+i+j,
