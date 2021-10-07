@@ -59,6 +59,24 @@ public class TaskController {
 
         
     }
+
+    //날짜 업데이트
+    @PostMapping("/ajax/updateTaskDate")
+    public void updateDate(@RequestBody TaskDTO taskdto){
+        taskService.updateDate(taskdto);
+    }
+
+    //title update
+    @PostMapping("/ajax/updateTaskTitle")
+    public void updateTitle(@RequestBody TaskDTO taskdto){
+        taskService.updateTitle(taskdto);
+    }
+
+    //content update
+    @PostMapping("/ajax/updateTaskCont")
+    public void updateContent(@RequestBody TaskDTO taskdto){
+        taskService.updateContent(taskdto);
+    }
     
     
     
@@ -91,13 +109,7 @@ public class TaskController {
 
     
 
-    //title update
-    @PostMapping("/ajax/updateTaskTitle")
-    public void updateTitle(@RequestBody TaskDTO task){taskService.updateTitle(task);}
 
-    //content update
-    @PostMapping("/ajax/updateTaskCont")
-    public void updateContent(@RequestBody TaskDTO task){taskService.updateContent(task);}
 
     //마일스톤 변경하기
     @PostMapping("/ajax/changeMile")
@@ -125,7 +137,5 @@ public class TaskController {
     @PostMapping("/ajax/updatePriority")
     public void updatePriority(@RequestBody TaskDTO task){taskService.updatePriority(task);}
 
-    //날짜 업데이트
-    @PostMapping("/ajax/updateTaskDate")
-    public void updateDate(@RequestBody TaskDTO task){taskService.updateDate(task);}
+
 }
