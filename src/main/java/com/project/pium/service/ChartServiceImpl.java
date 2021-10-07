@@ -1,6 +1,5 @@
 package com.project.pium.service;
 
-import com.project.pium.domain.ProjectmemberDTO;
 import com.project.pium.mapper.ChartMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,5 +29,15 @@ public class ChartServiceImpl implements ChartService {
     @Override
     public long countTaskMine(long project_seq, long projectMember_seq, long memberSeq) {
         return chartMapper.countTaskMine(project_seq, projectMember_seq, memberSeq);
+    }
+
+    @Override
+    public long countTaskStatusZero(long project_seq) {
+        return chartMapper.countTaskStatusZero(project_seq);
+    }
+
+    @Override
+    public long countTaskStatusOne(long project_seq) {
+        return chartMapper.countTaskStatusOne(project_seq);
     }
 }

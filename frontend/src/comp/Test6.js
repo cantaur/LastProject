@@ -9,10 +9,11 @@ function Test6() {
 
     const [countMilestone, setCountMilestone] = useState([]);
     const [countTaskChart, setCountTaskChart] = useState([]);
+    const [countTask, setCountTask] = useState([]);
 
-    const [prjSeq, setPrjSeq] = useState(2);
-    const [prjMSeq, setPrjMSeq] = useState(2);
-    const [MSeq, setMSeq] = useState(3);
+    const [prjSeq, setPrjSeq] = useState(2);  //얘네 어떻게받는걸까요...??
+    const [prjMSeq, setPrjMSeq] = useState(1);  //얘네 어떻게받는걸까요...??
+    const [MSeq, setMSeq] = useState(3);    //얘네 어떻게받는걸까요...??
 
 useEffect(()=>{
 
@@ -20,12 +21,13 @@ useEffect(()=>{
        .all([
            axios.get(host+'/ajax/milestoneOneChart/'+prjSeq),
            axios.get(host+'/ajax/taskChart/'+prjSeq+'/'+prjMSeq+'/'+MSeq),
+           axios.get(host+'/ajax/countTaskStatus/'+prjSeq),
        ])
        .then(
-           axios.spread((r1,r2)=>{
-               setCountMilestone(r1.data);
-               setCountTaskChart(r2.data);
-
+           axios.spread((r1,r2,r3)=>{
+                setCountMilestone(r1.data);
+                setCountTaskChart(r2.data);
+                setCountTask(r3.data);
            })
        )
        .catch(e =>{
@@ -53,8 +55,8 @@ useEffect(()=>{
                         loader={<div>로딩중...</div>}
                         data={countMilestone?[
                             ['Task','Hours per Day'],
-                            ['진행', countMilestone[0]],
-                            ['완료', countMilestone[1]],
+                            ['진행중인 마일스톤', countMilestone[0]],
+                            ['완료된 마일스톤', countMilestone[1]],
                         ]:[
                             ['Task','Hours per Day'],
                             ['업무가 없습니다.', 1],
@@ -122,10 +124,16 @@ useEffect(()=>{
                         height={'300px'}
                         chartType="PieChart"
                         loader={<div>로딩중...</div>}
-                        data={[
-                            ['Task','Hours per Day'],
-                            ['업무가 없습니다.', 1],
-                        ]}
+                        data={countTask?[
+                                ['Task','Hours per Day'],
+                                ['진행중인 업무', countTask[0]],
+                                ['완료된 업무', countTask[1]],
+                        ]
+                            :[
+                                ['Task','Hours per Day'],
+                                ['업무가 없습니다.', 1],
+                            ]
+                        }
                         options={{
                             title: '현재 업무 진행도',
                             pieHole: 0.4,

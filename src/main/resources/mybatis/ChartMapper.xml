@@ -17,5 +17,11 @@
     <select id="countTaskMine" resultType="long" parameterType="long">
         SELECT COUNT(*) FROM task, member WHERE project_seq=#{project_seq} AND projmember_seq=#{projmember_seq} AND member_seq=#{member_seq};
     </select>
-
+    <!-- chart 3 -->
+    <select id="countTaskStatusZero" resultType="long" parameterType="long">
+        SELECT COUNT(*) FROM task WHERE project_seq=#{project_seq} AND task_status='0';
+    </select>
+    <select id="countTaskStatusOne" resultType="long" parameterType="long">
+        SELECT COUNT(*) FROM task WHERE project_seq=#{project_seq} AND task_status='1';
+    </select>
 </mapper>
