@@ -16,10 +16,10 @@ public class TaskDTO {
     private String task_content;
     private String task_status;
     private String task_isdelete;
-    private Date task_startdate;
-    private Date task_duedate;
-    private Date task_enddate;
-    private Date task_date;
+    private Timestamp task_startdate;
+    private Timestamp task_duedate;
+    private Timestamp task_enddate;
+    private Timestamp task_date;
     private long projmember_seq;
     private long milestone_seq;
     private long project_seq;

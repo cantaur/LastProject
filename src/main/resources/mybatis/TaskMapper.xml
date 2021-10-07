@@ -23,7 +23,7 @@
     <!--새 업무 셋팅-->
     <insert id="createTask" parameterType="TaskDTO">
         insert into task(task_title, task_content, task_startdate, task_duedate, task_date, milestone_seq,project_seq)
-        values(#{task_title}, #{task_content}, #{task_startdate}, #{task_duedate}, now(),#{milestone_seq},#{project_seq})
+        values(#{task_title}, #{task_content}, #{task_startdate}, ADDTIME(#{task_duedate},'0 1:1:1.000002'), now(),#{milestone_seq},#{project_seq})
     </insert>
 
     <!--해당 프로젝트에서 생성된 업무 리스트-->
@@ -96,7 +96,7 @@
     </update>
 <!-- 날짜 업데이트 -->
     <update id="updateDate" parameterType="TaskDTO">
-        UPDATE task SET task_startdate=#{task_startdate}, task_duedate=#{task_duedate} where task_seq=#{task_seq}
+        UPDATE task SET task_startdate=#{task_startdate}, task_duedate = ADDTIME(#{task_duedate},'0 1:1:1.000002' where task_seq=#{task_seq}
     </update>
 
 
