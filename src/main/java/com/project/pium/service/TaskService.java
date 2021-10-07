@@ -3,6 +3,7 @@ package com.project.pium.service;
 import com.project.pium.domain.LabelDTO;
 import com.project.pium.domain.TaskDTO;
 import com.project.pium.domain.TaskmemberDTO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -24,11 +25,16 @@ public interface TaskService {
 
     //마일스톤 페이지(지우면 안됨) labelSeq로 라벨 이름 조회
     LabelDTO findLabelTitle(long labelSeq);
+    //label_title 넣어서 있는지 없는지 조사
+    LabelDTO chkLabel(String labelTitle);
+    //label insert
+    String insertLabel(LabelDTO labelDTO, long taskSeq);
 
     //해당 마일스톤에서 생성된 업무리스트 중 진행중 상태인거
     List<TaskDTO> openTaskListByMile(long mileSeq);
     //해당 마일스톤에서 생성된 업무리스트 중 마감된 상태인거
     List<TaskDTO> closedTaskListByMile(long mileSeq);
+    
 
 
 
@@ -65,6 +71,9 @@ public interface TaskService {
 
     //업무 중요도 셋팅하기
     void updatePriority(TaskDTO task);
+
+    //업무 라벨 셋팅하기
+    void updateLabel(long labelSeq, long taskSeq);
 
     //날짜 업데이트
     void updateDate(TaskDTO task);

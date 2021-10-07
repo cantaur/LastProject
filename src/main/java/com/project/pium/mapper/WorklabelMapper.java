@@ -11,5 +11,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WorklabelMapper {
     LabelDTO findLabelTitle(long labelSeq);
+    LabelDTO chkLabel(String labelTitle);
+    String insertLabel(LabelDTO labelDTO);
+    long lastLabelSeq();
 
 }

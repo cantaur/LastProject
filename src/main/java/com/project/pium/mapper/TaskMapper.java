@@ -4,6 +4,7 @@ import com.project.pium.domain.LabelDTO;
 import com.project.pium.domain.TaskDTO;
 import com.project.pium.domain.TaskmemberDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
@@ -53,6 +54,8 @@ public interface TaskMapper {
     void insertTaskMember(TaskmemberDTO taskmember);
     //업무 중요도 셋팅하기
     void updatePriority(TaskDTO task);
+    //업무 라벨 셋팅하기
+    void updateLabel(@Param("label_seq") long labelSeq, @Param("task_seq") long taskSeq);
     //날짜 업데이트
     void updateDate(TaskDTO task);
 

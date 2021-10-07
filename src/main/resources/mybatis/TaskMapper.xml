@@ -96,6 +96,10 @@
     <update id="updatePriority" parameterType="TaskDTO">
         UPDATE task SET priority_code=#{priority_code} WHERE task_seq=#{task_seq}
     </update>
+<!-- 업무 라벨 셋팅하기   -->
+    <update id="updateLabel" parameterType="TaskDTO">
+        UPDATE task SET label_seq=#{label_seq} WHERE task_seq=#{task_seq}
+    </update>
 <!-- 날짜 업데이트 -->
     <update id="updateDate" parameterType="TaskDTO">
         UPDATE task SET task_startdate=#{task_startdate}, task_duedate = ADDTIME(#{task_duedate},'0 1:1:1.000002' where task_seq=#{task_seq}

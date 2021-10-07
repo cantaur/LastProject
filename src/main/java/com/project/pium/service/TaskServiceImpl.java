@@ -70,6 +70,26 @@ public class TaskServiceImpl implements TaskService {
         return worklabelMapper.findLabelTitle(labelSeq);
     }
 
+    //label_title 넣어서 있는지 없는지 조사
+    @Override
+    public LabelDTO chkLabel(String labelTitle) {
+        return worklabelMapper.chkLabel(labelTitle);
+    }
+
+    @Override
+    public String insertLabel(LabelDTO labelDTO, long taskSeq) {
+        worklabelMapper.insertLabel(labelDTO); //새로운 라벨 insert
+        long labelSeq= worklabelMapper.lastLabelSeq(); //해당 라벨seq 조회
+        updateLabel(labelSeq,taskSeq);
+
+        return "success";
+    }
+
+
+
+
+
+
     @Override
     public List<TaskDTO> openTaskListByMile(long mileSeq) {
         return taskMapper.openTaskListByMile(mileSeq);
@@ -106,6 +126,11 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void updatePriority(TaskDTO task){taskMapper.updatePriority(task);}
+
+    @Override
+    public void updateLabel(long labelSeq, long taskSeq) {
+        taskMapper.updateLabel(labelSeq,taskSeq);
+    }
 
     @Override
     public void updateDate(TaskDTO task){taskMapper.updateDate(task);}
