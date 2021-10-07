@@ -22,8 +22,8 @@
 
     <!--새 업무 셋팅-->
     <insert id="createTask" parameterType="TaskDTO">
-        insert into task(task_title, task_content, task_startdate, task_duedate, milestone_seq,project_seq)
-        values(#{task_title}, #{task_content}, #{task_startdate}, #{task_duedate}, #{milestone_seq},#{project_seq})
+        insert into task(task_title, task_content, task_startdate, task_duedate, task_date, milestone_seq,project_seq)
+        values(#{task_title}, #{task_content}, #{task_startdate}, #{task_duedate}, now(),#{milestone_seq},#{project_seq})
     </insert>
 
     <!--해당 프로젝트에서 생성된 업무 리스트-->
