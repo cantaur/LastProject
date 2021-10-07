@@ -170,8 +170,8 @@ function Calendar(p){
           history.push('/project/'+p.prjSeq+'/notice')
         }}>타임라인</p>
         <p className="pageBtn" onClick={()=>{
-          p.dispatch({type:'pagePush', val:'notice'})
-          history.push('/project/'+p.prjSeq+'/notice')
+          p.dispatch({type:'pagePush', val:'projectChart'})
+          history.push('/project/'+p.prjSeq+'/projectChart')
         }}>프로젝트개요</p>
         <p className="pageBtn" onClick={()=>{
           p.dispatch({type:'pagePush', val:'fileList'})
@@ -279,21 +279,25 @@ function Calendar(p){
               axios.get(host+'/ajax/taskView/'+e.event._def.extendedProps.task_seq)
               .then(r=>{
                 console.log(r.data)
+                p.dispatch({type:'taskModalDataCng',val:{
+                  task_seq:'',
+                  task_title:'',
+                  task_content:'',
+                  task_status:'',
+                  task_isdelete:'',
+                  task_startdate:'',
+                  projmember_seq:'',
+                  task_enddate:'',
+                  milestone_seq:'',
+                  label_seq:'',
+                  priority_code:'',
+                }})
+              })
+              .catch(e=>{
+                console.log(e)
               })
               // p.dispatch({type:'taskModalCng',val:true})
-              // p.dispatch({type:'taskModalDataCng',val:{
-              //   task_seq:'',
-              //   task_title:'',
-              //   task_content:'',
-              //   task_status:'',
-              //   task_isdelete:'',
-              //   task_startdate:'',
-              //   projmember_seq:'',
-              //   task_enddate:'',
-              //   milestone_seq:'',
-              //   label_seq:'',
-              //   priority_code:'',
-              // }})
+              
               // setTimeout(()=>{
               //   window.addEventListener('click', taskModalClose)
               // })
