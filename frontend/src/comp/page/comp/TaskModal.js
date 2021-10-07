@@ -18,6 +18,12 @@ function TaskModal(p){
   let [editTitle, editTitleCng] = useState(false);
   const titleEditInput = useRef();
 
+  // 제목 state
+  let [titleData, titleDataCng] = useState('업무타이틀입니다');
+
+  //제목 미입력시
+  let [titleAlert,titleAlertCng] = useState(false);
+
   // 상세보기_업무내용 수정모드
   let [editContent, editContentCng] = useState(false);
   const conArea = useRef();
@@ -40,23 +46,49 @@ function TaskModal(p){
 
   useEffect(()=>{
   },[])
-  console.log(p.mileStoneList)
   return(
     <>
       <div className={"taskModalWrap " + (p.taskModal?'on':'')}>
         
         <div className="head">
           <div className="titleWrap">
-            <input className={"title " + (editTitle?'on':'')} value={'업무타이틀입니다'} ref={titleEditInput}/>
+            <input className={"title " + (editTitle?'on ':'') + (titleAlert?'msg ':'')} 
+              disabled={editTitle?false:true} 
+              value={titleData} 
+              ref={titleEditInput}
+              onChange={e=>{
+                titleDataCng(e.target.value)
+              }}
+              onKeyPress={e=>{
+                if(e.key == 'Enter'){
+                  if(titleData) {
+                    titleAlertCng(false)
+                    editTitleCng(false)
+                  }else{
+                    titleAlertCng(true)
+                    titleEditInput.current.focus();
+                  }
+                }
+              }}
+            />
             {
               editTitle
               ?
-                <p className="submitBtn labelEditBtn" onClick={()=>{
-                  editTitleCng(false)
+                <p className="submitBtn labelEditBtn" style={{backgroundColor:seqColorTrans(2)}} onClick={()=>{
+                  if(titleData) {
+                    titleAlertCng(false)
+                    editTitleCng(false)
+                  }else{
+                    titleAlertCng(true)
+                    titleEditInput.current.focus();
+                  }
                 }}>수정완료</p>
               :
-                <i class="fas fa-pen editBtn labelEditBtn" onClick={()=>{
+                <i class="fas fa-pen editBtn labelEditBtn" style={{color:seqColorTrans(2)}} onClick={()=>{
                   editTitleCng(true)
+                  setTimeout(()=>{
+                    titleEditInput.current.focus();
+                  })
                 }}></i>
 
             }
@@ -152,7 +184,20 @@ function TaskModal(p){
 
               <div className="statusRow">
                 <p className="label">업무일정</p>
-
+                <div className="dateWrap">
+                  <p className="date">2020-12-12 ~ 2020-12-12</p>
+                  <div className="dateBtn">
+                    <i className="far fa-calendar-check"></i>
+                    일정선택
+                  </div>
+                  {/* <DatePicker
+                    pickerDateCng={p.taskInfoCng}
+                    pickerDate={p.taskInfo}
+                    pickerStartKey={'milestone_startdate'}
+                    pickerEndKey={'milestone_duedate'}
+                    dateModalClose={p.dateModalClose}
+                  /> */}
+                </div>
               </div>
 
               <div className="statusRow">
@@ -285,6 +330,7 @@ function transReducer(state){
     mileStoneList : state.mileStoneList,
     projectInfo : state.projectInfo,
     memberList : state.memberList,
+    taskModalData : state.taskModalData,
   }
 }
 

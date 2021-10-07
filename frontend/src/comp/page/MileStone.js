@@ -315,13 +315,11 @@ function MileStoneCreateModal(p) {
             p.dispatch({type:'loadingOn'})
             axios.post(host+'/ajax/createMileStone', p.mileStoneInfo)
             .then(r=>{
-              console.log(r.data)
               p.onHide();
 
               //목록새로고침
               axios.get(host+'/ajax/'+p.prjSeq+'/milestonelist')
               .then(r=>{
-                console.log(r.data)
                 p.listCng(r.data);
                 p.dispatch({type:'loadingOff'})
               })

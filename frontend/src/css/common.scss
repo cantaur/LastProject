@@ -1549,7 +1549,14 @@ body{
       justify-content: space-between;
       .labelEditBtn{
         cursor: pointer;
+        &.submitBtn{
+          color:#fff;
+          font-size: .8rem;
+          padding:4px 6px;
+          border-radius: 4px;
+        }
       }
+      
       .title{
         font-size: 1.2rem;
         font-weight: bold;
@@ -1558,8 +1565,26 @@ body{
         overflow: hidden;
         width: 340px;
         transition: .2s ease-in-out;
-        // padding-bottom: 10px;
-        // border-bottom: 1px solid #ececec;
+        border:1px solid transparent;
+        &:disabled{
+          color:#333;
+          background-color: #fff;
+          cursor: default;
+        }
+        &.on{
+          background-color: #f2f2f2;
+          padding:5px;
+          border-radius: 4px;
+          &.msg{
+            background-color: $cRedf;
+            border-color: $cRed;
+            margin-bottom:0px
+          }
+        }
+        
+        &:focus{
+          outline: none;
+        }
       }
 
     }
@@ -1880,6 +1905,14 @@ body{
           &:focus{
             outline: none;
           }
+        }
+      }
+      .dateWrap{
+        display: flex;
+        align-items: center;
+        .date{
+          font-size: .8rem;
+          margin-right: 4px;
         }
       }
     }

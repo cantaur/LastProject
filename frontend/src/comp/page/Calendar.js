@@ -276,11 +276,27 @@ function Calendar(p){
               editModalCng(true)
             }else {
               console.log(e)
-              p.dispatch({type:'taskModalCng',val:true})
-              setTimeout(()=>{
-                window.addEventListener('click', taskModalClose)
-
+              axios.get(host+'/ajax/taskView/'+e.event._def.extendedProps.task_seq)
+              .then(r=>{
+                console.log(r.data)
               })
+              // p.dispatch({type:'taskModalCng',val:true})
+              // p.dispatch({type:'taskModalDataCng',val:{
+              //   task_seq:'',
+              //   task_title:'',
+              //   task_content:'',
+              //   task_status:'',
+              //   task_isdelete:'',
+              //   task_startdate:'',
+              //   projmember_seq:'',
+              //   task_enddate:'',
+              //   milestone_seq:'',
+              //   label_seq:'',
+              //   priority_code:'',
+              // }})
+              // setTimeout(()=>{
+              //   window.addEventListener('click', taskModalClose)
+              // })
             }
           }}
           eventDrop={e=>{    

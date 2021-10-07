@@ -47,7 +47,7 @@ public class TaskController {
     public List<TaskDTO> taskListByMile(@PathVariable long mileSeq){return taskService.taskListByMile(mileSeq);}
 
     //업무를 클릭하였을때 나오는 업무 상세보기(검증X)
-    @GetMapping("")//임시이름
+    @GetMapping("/ajax/taskView/{taskSeq}")//임시이름
     public TaskDTO showTaskByTaskseq(@PathVariable long taskSeq){return taskService.showTaskByTaskseq(taskSeq);}
 
     //title update
