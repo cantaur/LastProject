@@ -158,6 +158,7 @@ body{
     padding-top:3px;
     border-radius: 5px;
     color:#fff;
+    font-size: .8rem;
 
     &:hover{
       background-color: #666;
@@ -173,6 +174,7 @@ body{
     padding-top:3px;
     border-radius: 5px;
     color:#fff;
+    font-size: .8rem;
 
     &:hover{
       background-color: $c1d;
@@ -209,6 +211,8 @@ body{
     top:20px;
     opacity: 0;
     transition: .3s ease-in-out;
+    z-index: 10;
+
     &.on{
       opacity: 1;
       transform: scale(.9);
@@ -1487,7 +1491,7 @@ body{
   border-bottom:1px solid #ccc;
   border-radius: 10px 0px 0px 10px;
   right: -440px;
-  overflow-y: auto;
+  // overflow-y: auto;
   .toolTipTopBox{
     position: relative;
     .toolTip{
@@ -1550,7 +1554,9 @@ body{
       .labelEditBtn{
         cursor: pointer;
         &.submitBtn{
-          color:#fff;
+          color:#333;
+          background-color: #f2f2f2;
+          border:1px solid #ccc;
           font-size: .8rem;
           padding:4px 6px;
           border-radius: 4px;
@@ -1660,14 +1666,17 @@ body{
         text-align: center;
         line-height: 22px;
         border-radius: 4px;
-        color:#fff;
+        color:#333;
         font-size: .9rem;
         &.submitBtn{
           width: auto;
           display: none;
-          color:#fff;
+          color:#555;
           font-size: .7rem;
           padding:0px 4px;
+          background-color: #f2f2f2;
+          border:1px solid #ccc;
+          line-height: 20px;
         }
       }
       &.on{
@@ -1730,6 +1739,7 @@ body{
       
       select{
         width: max-content;
+        font-size: .8rem;
       }
       .label{
         width: 100px;
@@ -1741,11 +1751,17 @@ body{
         display: flex;
         align-items: center;
         .memberWrap{
-          width: 100px;
+          max-width: 100px;
           margin-right: 24px;
+          margin-left: 8px;
           display: flex;
           flex-wrap: wrap;
           justify-content: center;
+          .msg{
+            font-size: 0.8rem;
+            padding: 2px 6px;
+            color:#555;
+          }
           .profileImg{
             width: 30px;
             height: 30px;
@@ -1775,13 +1791,13 @@ body{
         .chargeBtn{
           position: relative;
           cursor: pointer;
-          color:#fff;
-          width: 48px;
+          color:#555;
           border-radius: 4px;
           height: 24px;
           line-height: 23px;
           text-align: center;
-          font-size: .8rem;
+          font-size: 1.4rem;
+          
           
           .chrgeWrap{
             transition: .3s ease-in-out;
@@ -1790,8 +1806,8 @@ body{
             position: absolute;
             width: 170px;
             max-height: 286px;
-            bottom:30px;
-            left: 24px;
+            bottom:24px;
+            left: 20px;
             background-color: #fff;
             overflow: hidden;
             border:1px solid #ccc;
@@ -1822,6 +1838,7 @@ body{
               display: flex;
               padding:8px;
               align-items: center;
+              font-size: .8rem;
               &+.member{
                 border-top:1px solid #ececec;
               }
@@ -1869,6 +1886,9 @@ body{
                 font-size: .7rem;
                 cursor: pointer;
                 border-radius: 4px;
+                background-color: #f2f2f2;
+                border:1px solid #ccc;
+                color:#333
               }
             }
           }
@@ -1880,12 +1900,15 @@ body{
         .editBtn{
           cursor: pointer;
           font-size: .8rem;
+          margin-top:2px;
         }
         .submitBtn{
-          color:#fff;
+          color:#333;
+          background-color: #f2f2f2;
+          border:1px solid #ccc;
           cursor: pointer;
           font-size: .8rem;
-          padding: 2px 6px;
+          padding: 4px 6px;
           border-radius: 4px;
           margin-left: 4px;
         }
@@ -1895,6 +1918,9 @@ body{
           border-radius: 4px;
           padding:2px 6px;
           margin-right: 10px;;
+          &.noLabel{
+            color:#555
+          }
         }
         .labelInput{
           width: max-content;
@@ -1910,9 +1936,14 @@ body{
       .dateWrap{
         display: flex;
         align-items: center;
+        margin-top:0px;
         .date{
           font-size: .8rem;
           margin-right: 4px;
+          width: 146px;
+        }
+        .App{
+          margin-left: -390px;
         }
       }
     }

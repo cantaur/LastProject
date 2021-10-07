@@ -20,7 +20,6 @@ import "react-datepicker/dist/react-datepicker.css";
 function Calendar(p){
   const history = useHistory();
 
-
   //캘린더에 표시할 일정 정보
   const [memoList,memoListCng] = useState();
 
@@ -102,7 +101,7 @@ function Calendar(p){
 
   //업무 이중모달 컨트롤
   const taskModalClose = useCallback((e)=>{
-    if(!e.target.closest('.taskModalWrap')  && !e.target.closest('.labelEditBtn')){
+    if(!e.target.closest('.taskModalWrap')  && !e.target.closest('.labelEditBtn') && !e.target.closest('.deleteMemberModal')){
       p.dispatch({type:'taskModalCng', val:false})
       setTimeout(()=>{
         window.removeEventListener('click', taskModalClose)
@@ -156,7 +155,7 @@ function Calendar(p){
   useEffect(()=>{
     p.dispatch({type:'loadingOn'})
     memoListGetFunc();    
-  },[p.projectInfo, p.pageInfo])
+  },[p.projectInfo, p.pageInfo, p.refresh])
 
   return(
     <div className="calendarWrap pageContentWrap">
@@ -275,32 +274,42 @@ function Calendar(p){
               })
               editModalCng(true)
             }else {
-              console.log(e)
+              p.dispatch({type:'loadingOn'})
               axios.get(host+'/ajax/taskView/'+e.event._def.extendedProps.task_seq)
               .then(r=>{
-                console.log(r.data)
-                p.dispatch({type:'taskModalDataCng',val:{
-                  task_seq:'',
-                  task_title:'',
-                  task_content:'',
-                  task_status:'',
-                  task_isdelete:'',
-                  task_startdate:'',
-                  projmember_seq:'',
-                  task_enddate:'',
-                  milestone_seq:'',
-                  label_seq:'',
-                  priority_code:'',
-                }})
+                p.dispatch(
+                  {
+                    type:'taskModalDataCng',
+                    val:{
+                      "task_seq":r.data[0].task.task_seq,
+                      "task_title":r.data[0].task.task_title,
+                      "task_content":r.data[0].task.task_content,
+                      "task_status":r.data[0].task.task_status,
+                      "task_isdelete":r.data[0].task.task_isdelete,
+                      "task_startdate":r.data[0].task.task_startdate.substring(0,10),
+                      "task_duedate":r.data[0].task.task_duedate.substring(0,10),
+                      "projmember_seq":r.data[0].task.projmember_seq,
+                      "milestone_seq":r.data[0].task.milestone_seq,
+                      "label_seq":r.data[0].task.label_seq==0?null:r.data[0].task.label_seq,
+                      "label_title":r.data[0].label?r.data[0].label.label_title:null,
+                      "priority_code":r.data[0].task.priority_code,
+                      "taskMembers":r.data[0].taskMembers,
+                    }
+                  }
+                )
+                p.dispatch({type:'taskModalCng',val:true})
+              
+                setTimeout(()=>{
+                  window.addEventListener('click', taskModalClose)
+                })
+                p.dispatch({type:'loadingOff'})
               })
               .catch(e=>{
                 console.log(e)
+                p.dispatch({type:'loadingOff'})
+
               })
-              // p.dispatch({type:'taskModalCng',val:true})
               
-              // setTimeout(()=>{
-              //   window.addEventListener('click', taskModalClose)
-              // })
             }
           }}
           eventDrop={e=>{    
@@ -599,6 +608,7 @@ function transReducer(state){
     myMemberInfo : state.myMemberInfo,
     taskModal : state.taskModal,
     taskModalData : state.taskModalData,
+    refresh : state.refresh,
   }
 }
 

@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { combineReducers, createStore } from 'redux';
 import axios from 'axios';
 import {host} from './comp/Helper.js'
+import { identity } from '@fullcalendar/react';
 
 
 
@@ -131,6 +132,18 @@ function taskModalData(state=false, action){
       return state;
   }
 }
+function refresh(state=false, action){
+  switch (action.type){
+    case 'refreshCng':
+      if(state == false){
+        return true;
+      }else {
+        return false;
+      }
+    default:
+      return state;
+  }
+}
 
 
 let store = createStore(combineReducers(
@@ -148,6 +161,7 @@ let store = createStore(combineReducers(
     isProfileEmpty,
     taskModal,
     taskModalData,
+    refresh,
   }
 ));
 
