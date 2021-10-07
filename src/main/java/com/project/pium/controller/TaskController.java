@@ -82,18 +82,21 @@ public class TaskController {
     //업무에 라벨 넣기
     @ResponseBody
     @PostMapping("/ajax/addLabel")
-    public void addLabel(@RequestBody Map<String,Integer> param){
-        Long taskSeq = Long.valueOf(param.get("taskSeq")); //task_seq
+    public void addLabel(@RequestBody Map<String,Object> param){
+        LabelDTO labelDTO = null;
+        log.info("뭔데이게"+param);
+        Long taskSeq = Long.valueOf(String.valueOf(param.get("taskSeq"))); //task_seq
         String labelTemp = String.valueOf(param.get("label"));
-        LabelDTO labelDTO= taskService.chkLabel(labelTemp);
+        String labelTitle= taskService.chkLabel(labelTemp);
+        log.info("labelTitle : "+labelTitle);
 
-        if(labelDTO ==null){
-            labelDTO.setLabel_title(labelTemp);
-            String msg= taskService.insertLabel(labelDTO, taskSeq);
-        }else{
-            long labelSeq= labelDTO.getLabel_seq();
+        if(labelTitle !=null){
+            long labelSeq= taskService.findLabelSeq(labelTemp);
             taskService.updateLabel(labelSeq, taskSeq);
+            return;
+
         }
+
 
 
     }

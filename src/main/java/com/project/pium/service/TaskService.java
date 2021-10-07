@@ -25,8 +25,9 @@ public interface TaskService {
 
     //마일스톤 페이지(지우면 안됨) labelSeq로 라벨 이름 조회
     LabelDTO findLabelTitle(long labelSeq);
+    Long findLabelSeq(String labelTitle);
     //label_title 넣어서 있는지 없는지 조사
-    LabelDTO chkLabel(String labelTitle);
+    String chkLabel(String labelTitle);
     //label insert
     String insertLabel(LabelDTO labelDTO, long taskSeq);
 

@@ -70,9 +70,14 @@ public class TaskServiceImpl implements TaskService {
         return worklabelMapper.findLabelTitle(labelSeq);
     }
 
+    @Override
+    public Long findLabelSeq(String labelTitle) {
+        return worklabelMapper.findLabelSeq(labelTitle);
+    }
+
     //label_title 넣어서 있는지 없는지 조사
     @Override
-    public LabelDTO chkLabel(String labelTitle) {
+    public String chkLabel(String labelTitle) {
         return worklabelMapper.chkLabel(labelTitle);
     }
 
