@@ -18,6 +18,20 @@ public class TaskServiceImpl implements TaskService {
     private TaskMapper taskMapper;
     private WorklabelMapper worklabelMapper;
 
+    @Override
+    public TaskDTO showTaskByTaskseq(long taskSeq){
+        return taskMapper.showTaskByTaskseq(taskSeq);
+    }
+
+
+
+
+
+
+
+
+
+
 
     @Override
     public void createTask(TaskDTO taskDTO) {
@@ -67,8 +81,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
 
-    @Override
-    public TaskDTO showTaskByTaskseq(long taskSeq){return taskMapper.showTaskByTaskseq(taskSeq);}
+
 
     @Override
     public void updateTitle(TaskDTO task){taskMapper.updateTitle(task);}

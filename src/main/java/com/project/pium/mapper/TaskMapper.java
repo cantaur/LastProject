@@ -10,6 +10,12 @@ import java.util.List;
 @Mapper
 @Repository
 public interface TaskMapper {
+    TaskDTO showTaskByTaskseq(long taskSeq);
+
+
+
+
+
     //새 업무 생성하기
     void createTask(TaskDTO task);
     //해당 프로젝트에서 생성된 업무 리스트
@@ -30,7 +36,7 @@ public interface TaskMapper {
 
 
     //업무를 클릭하였을 때 업무 상세보기
-    TaskDTO showTaskByTaskseq(long taskSeq);
+
     //title update
     void updateTitle(TaskDTO task);
     //content update

@@ -1,14 +1,18 @@
 package com.project.pium.controller;
 
+import com.project.pium.domain.LabelDTO;
 import com.project.pium.domain.TaskDTO;
 import com.project.pium.domain.TaskmemberDTO;
 import com.project.pium.service.MemberService;
 import com.project.pium.service.TaskService;
+import com.project.pium.service.TaskmemberService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Log
@@ -18,6 +22,7 @@ import java.util.List;
 public class TaskController {
     private TaskService taskService;
     private MemberService memberService;
+    private TaskmemberService taskmemberService;
 
     //현재 로그인한 유저의 세션값 얻어오는 로직 모듈화
     public String currentUserName(Principal principal){
@@ -28,6 +33,44 @@ public class TaskController {
             return sessionEmail;
         }
     }
+
+    //업무를 클릭하였을때 나오는 업무 상세보기
+    //task 테이블만 오는데 여기다가 배정된 멤버의 리스트도 와야한다
+    @GetMapping("/ajax/taskView/{taskSeq}")
+    public ArrayList<Object> showTaskByTaskseq(@PathVariable long taskSeq){
+        //빈 배열 선언 및 초기화
+        ArrayList<Object> taskInfo = new ArrayList<>();
+        LinkedHashMap<String,Object> tempTask = new LinkedHashMap<>();
+
+        //업무 상세조회
+        TaskDTO taskDTO= taskService.showTaskByTaskseq(taskSeq);
+        //업무에 배정된 멤버 조회
+        List<TaskmemberDTO> taskmemberDTOS = taskmemberService.selectByTaskSeq(taskSeq);
+        //업무의 라벨 조회
+        LabelDTO labelDTO = taskService.findLabelTitle(taskDTO.getLabel_seq());
+        log.info("#taskDTO"+taskDTO);
+        log.info("#taskmemberDTOS"+taskmemberDTOS);
+        tempTask.put("task", taskDTO);
+        tempTask.put("taskMembers", taskDTO);
+        tempTask.put("label", labelDTO);
+        taskInfo.add(tempTask);
+
+        return taskInfo;
+
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     //새 업무 생성
     @PostMapping("/ajax/createTask")
@@ -46,9 +89,7 @@ public class TaskController {
     @GetMapping("/ajax/task/{mileSeq}")
     public List<TaskDTO> taskListByMile(@PathVariable long mileSeq){return taskService.taskListByMile(mileSeq);}
 
-    //업무를 클릭하였을때 나오는 업무 상세보기(검증X)
-    @GetMapping("/ajax/taskView/{taskSeq}")//임시이름
-    public TaskDTO showTaskByTaskseq(@PathVariable long taskSeq){return taskService.showTaskByTaskseq(taskSeq);}
+    
 
     //title update
     @PostMapping("/ajax/updateTaskTitle")

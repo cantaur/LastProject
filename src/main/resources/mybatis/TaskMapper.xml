@@ -4,6 +4,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.TaskMapper">
 
+    <!-- 업무를 클릭하였을 때 업무 상세보기 -->
+    <select id="showTaskByTaskseq" parameterType="long" resultType="TaskDTO">
+        SELECT * FROM task WHERE task_seq = #{task_seq}
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
     <!--새 업무 셋팅-->
     <insert id="createTask" parameterType="TaskDTO">
         insert into task(task_title, task_content, task_startdate, task_duedate, milestone_seq,project_seq)
@@ -45,10 +61,7 @@
 
 
 
-<!-- 업무를 클릭하였을 때 업무 상세보기 -->
-    <select id="showTaskByTaskseq" parameterType="long" resultType="TaskDTO">
-        SELECT * FROM task WHERE task_seq = #{task_seq}
-    </select>
+
 <!--title update -->
     <update id="updateTitle" parameterType="TaskDTO">
         UPDATE task SET task_title=#{task_title} WHERE task_seq=#{task_seq}
