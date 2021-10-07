@@ -14,6 +14,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Log
 @RestController
@@ -51,7 +52,7 @@ public class TaskController {
         log.info("#taskDTO"+taskDTO);
         log.info("#taskmemberDTOS"+taskmemberDTOS);
         tempTask.put("task", taskDTO);
-        tempTask.put("taskMembers", taskDTO);
+        tempTask.put("taskMembers", taskmemberDTOS);
         tempTask.put("label", labelDTO);
         taskInfo.add(tempTask);
 
@@ -77,7 +78,16 @@ public class TaskController {
     public void updateContent(@RequestBody TaskDTO taskdto){
         taskService.updateContent(taskdto);
     }
-    
+
+    //업무에 라벨 넣기
+    @ResponseBody
+    @PostMapping("/ajax/addLabel")
+    public void addLabel(@RequestBody Map<String,Integer> param){
+        Long taskSeq = Long.valueOf(param.get("taskSeq")); //task_seq
+
+
+    }
+
     
     
     
