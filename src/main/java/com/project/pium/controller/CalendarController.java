@@ -73,7 +73,7 @@ public class CalendarController {
     }
 
     //캘린더 메모 삭제
-    @DeleteMapping("/ajax/deleteCal/{calSeq}")
+    @GetMapping("/ajax/deleteCal/{calSeq}")
     public void delCal(@PathVariable long calSeq){
         calendarService.delCal(calSeq);
     }
