@@ -133,20 +133,26 @@ public class TaskController {
 
 
     //업무 상태 마감으로 변경
+    @ResponseBody
     @PostMapping("/ajax/closeTask")
-    public void updateStatusFinish(@RequestParam long taskSeq){
+    public void updateStatusFinish(@RequestBody Map<String,Integer> param){
+        Long taskSeq= Long.valueOf(param.get("taskSeq"));
         taskService.updateStatusFinish(taskSeq);
     }
 
     //업무 다시 활성화 시키기
+    @ResponseBody
     @PostMapping("/ajax/openTask")
-    public void updateStatusDefault(@RequestParam long taskSeq){
+    public void updateStatusDefault(@RequestBody Map<String,Integer> param){
+        Long taskSeq= Long.valueOf(param.get("taskSeq"));
         taskService.updateStatusDefault(taskSeq);
     }
 
     //업무 삭제상태로 변경
+    @ResponseBody
     @PostMapping("/ajax/deleteTask")
-    public void updateIsdelete(@RequestParam long taskSeq){
+    public void updateIsdelete(@RequestBody Map<String,Integer> param){
+        Long taskSeq= Long.valueOf(param.get("taskSeq"));
         taskService.updateIsdelete(taskSeq);
     }
 
