@@ -89,13 +89,17 @@ body{
   .modalBtnWrap{
     display: flex;
     justify-content: flex-end;
+    &.del {
+      justify-content: space-between;
+    }
     .modalBtn{
       font-size: .8rem;
       background-color: $c1;
       border-color:$c1;
       &.danger{
-        background-color: #888;
-        border-color:#888
+        background-color: #ececec;
+        border-color:#ececec;
+        color:#555
       }
     }
   }
@@ -953,7 +957,7 @@ body{
     position: fixed;
     left: 0px;
     top:40px;
-    background-color: #fff;
+    background-color: #fafafa;
     width: 100vw;
     height: calc(100vh - 40px);
     overflow-y: auto;
@@ -1491,6 +1495,7 @@ body{
   border-bottom:1px solid #ccc;
   border-radius: 10px 0px 0px 10px;
   right: -440px;
+  box-shadow: -10px 0px 10px -5px rgb(0 0 0 / 10%);
   // overflow-y: auto;
   .toolTipTopBox{
     position: relative;
@@ -1737,6 +1742,7 @@ body{
       padding:20px 15px;
       align-items: center;
       
+      
       select{
         width: max-content;
         font-size: .8rem;
@@ -1960,7 +1966,6 @@ body{
   padding-top:10px;
   margin-bottom:15px;
   margin-top:-20px;
-  background-color: #fff;
   .pageBtn{
     cursor: pointer;
     color:#333;

@@ -61,10 +61,19 @@ function TaskModal(p){
 
   // 업무일정 비우기
   const taskDateNull = () =>{
-    dateDataCng({
-      task_startdate:'',
-      task_duedate:''
+    axios.post(host+'/ajax/updateTaskDate',{
+      task_seq : p.taskModalData.task_seq,
+      task_startdate : null,
+      task_duedate : null,
     })
+    .then(r=>{
+      p.dispatch({type:'refreshCng'})
+      dateDataCng({
+        task_startdate:'',
+        task_duedate:''
+      })
+    })
+    
   }
   
 

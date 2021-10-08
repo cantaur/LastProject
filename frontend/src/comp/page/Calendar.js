@@ -545,7 +545,21 @@ function EditModal(p){
         </div>
         
       </Modal.Body>
-      <Modal.Footer className="modalBtnWrap">
+      <Modal.Footer className="modalBtnWrap del">
+        <Button className="modalBtn danger" onClick={()=>{
+          p.dispatch({type:'loadingOn'})
+          axios.get(host+'/ajax/deleteCal/'+p.editData.calendar_seq)
+          .then(r=>{
+            p.editModalCng(false)
+            p.dispatch({type:'loadingOff'})
+          })
+          .catch(e=>{
+            console.log(e)
+            p.dispatch({type:'loadingOff'})
+          })
+        }}>
+          메모 지우기
+        </Button>
         <Button className="modalBtn" onClick={()=>{
           if(!p.editData.calendar_title){
             p.alertCng(true)

@@ -109,7 +109,7 @@ function HeadSide(p){
   return(
     <>
       {/* 헤더 */}
-      <div className="viewHead" style={{backgroundColor:p.prjColor+'07'}}>
+      <div className="viewHead" style={{backgroundColor:p.prjColor+'10'}}>
         <div className="pathWrap">
           <Form.Select size="sm" onChange={(e)=>{
             history.push('/project/'+e.target.value+'/todo')
