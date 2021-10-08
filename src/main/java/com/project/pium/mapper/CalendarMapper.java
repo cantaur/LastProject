@@ -24,14 +24,6 @@ public interface CalendarMapper {
     void updateCal(CalendarDTO calendarDTO);
     //달력 상세내용 조회
     CalendarDTO calListBySeq(long calSeq);
-
-
-
-
-
-
-
-
     //달력 seq 삭제
     void delCal(long calSeq);
     

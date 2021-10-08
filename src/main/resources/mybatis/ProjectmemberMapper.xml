@@ -84,41 +84,4 @@
 
 
 
-
-
-
-
-
-
-
-    <!--  프로젝트 멤버번호로 리스트 받기-->
-    <select id="selectByPmseq" resultType="ProjectmemberDTO" parameterType="long">
-    select * from project_member where projmember_seq= #{projmember_seq}
-    </select>
-    <!-- 멤버번호로 리스트 받기 -->
-    <select id="selectByMseq" resultType="ProjectmemberDTO" parameterType="long">
-        select * from project_member where member_seq= #{member_seq}
-    </select>
-    <!-- 이름으로 리스트받기 -->
-    <select id="selectByPmname" resultType="ProjectmemberDTO" parameterType="String">
-        select * from project_member where projmember_name= #{projmember_name}
-    </select>
-    <!-- 프로젝트 관리자 이름 찾을 때-->
-    <select id="selectByPBoss" resultType="String" parameterType="String">
-        select projmember_name from Project_member where projmember_type= #{projmember_type}
-    </select>
-
-
-    <delete id="deleteByPm" parameterType="long">
-        Delete from Project_member where projmember_seq= #{projmember}
-    </delete>
-
-
-    <!-- 관리자 권한 획득 -->
-    <update id="updateByPmTypeUp" parameterType="long">
-        update project_member set projmember_type="0" where projmember_seq= #{projmember_seq}
-    </update>
-
-
-
 </mapper>

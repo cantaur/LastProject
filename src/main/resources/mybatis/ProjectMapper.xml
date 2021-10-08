@@ -69,46 +69,5 @@
         WHERE project_seq = #{project_seq}
     </update>
 
-<!--프로젝트에 멤버 초대-->
-<!--프로젝트 관리자 이전-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--나중에 쓸 일이 있을지도-->
-    <!--프로젝트 제목 업데이트-->
-    <update id="updateTitle" parameterType="ProjectDTO">
-        UPDATE project
-        SET project_title = #{project_title}
-        WHERE project_seq = #{project_seq}
-    </update>
-    <!--프로젝트 내용 업데이트-->
-    <update id="updateContent" parameterType="ProjectDTO">
-        UPDATE project
-        SET project_content = #{project_content}
-        WHERE project_seq = #{project_seq}
-    </update>
-
-    <!--프로젝트 실제종료일 업데이트-->
-    <update id="updateEnddate" parameterType="ProjectDTO">
-        UPDATE project
-        SET project_enddate = now()
-        WHERE project_seq = #{project_seq}
-    </update>
-
-
-
 
 </mapper>

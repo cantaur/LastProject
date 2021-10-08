@@ -46,8 +46,6 @@
     </select>
 
 
-
-
     <delete id="delCal" parameterType="long">
         DELETE FROM calendar
         WHERE calendar_seq = #{calendar_seq}

@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+/**
+ * 프로젝트>캘린더 페이지(완료)
+ */
+
 @Log
 @RestController
 @AllArgsConstructor
@@ -45,20 +49,7 @@ public class CalendarController {
         return calList;
     }
 
-
-    @PostMapping("/ajax/updateDate")
-    public void updateDate(@RequestBody CalendarDTO calendarDTO){
-        log.info("캘린더 날짜 업데이트 : "+calendarDTO);
-        calendarService.upCalDate(calendarDTO);
-    }
-
-
-    @PostMapping("/ajax/updateCal")
-    public void updateCal(@RequestBody CalendarDTO calendarDTO){
-        calendarService.updateCal(calendarDTO);
-
-    }
-
+    //캘린더>메모 상세보기
     @GetMapping("/ajax/calendar/{calSeq}")
     public CalendarDTO calDetail(@PathVariable long calSeq){
         CalendarDTO calendarDTO = calendarService.calListBySeq(calSeq);
@@ -66,17 +57,25 @@ public class CalendarController {
 
     }
 
+    //캘린더>메모 날짜 업데이트
+    @PostMapping("/ajax/updateDate")
+    public void updateDate(@RequestBody CalendarDTO calendarDTO){
+        log.info("캘린더 날짜 업데이트 : "+calendarDTO);
+        calendarService.upCalDate(calendarDTO);
+    }
 
 
+    //캘린더>메모 내용 업데이트
+    @PostMapping("/ajax/updateCal")
+    public void updateCal(@RequestBody CalendarDTO calendarDTO){
+        calendarService.updateCal(calendarDTO);
 
-    //달력 seq 삭제
-    @DeleteMapping("delCal/{calSeq}")
+    }
+
+    //캘린더 메모 삭제
+    @DeleteMapping("/ajax/deleteCal/{calSeq}")
     public void delCal(@PathVariable long calSeq){
         calendarService.delCal(calSeq);
     }
-     /*at Talend API Tester
-      method : del
-      url : http://localhost:8000/calendar/delCal/19
-    */
 }
 

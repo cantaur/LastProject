@@ -12,15 +12,10 @@ public interface TodoService {
     List<TodoDTO>progressBySeqS(long seq);
     List<TodoDTO>doneBySeqS(long seq);
 
-    /*갯수카운트*/
-    Long countTodoStatusS(long seq);
-    Long countProgressStatusS(long seq);
-    Long countDoneStatusS(long seq);
-    /*선택지*/
+    /*드롭박스*/
     List<TaskDTO> showTaskByProjSeqS(long seq);
 
     void insertNoteS(TodoDTO todoDTO); // 메모 생성
-
     void updateNoteS(TodoDTO todoDTO); // 메모 수정
     void updateNoteStatusS(TodoDTO todoDTO); // 메모 상태이동
     void deleteNoteS(long todo_seq); // 메모 삭제

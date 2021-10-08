@@ -12,6 +12,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 내 업무 > to do 페이지(완료)
+ */
+
+
 @Log
 @RestController
 @AllArgsConstructor
@@ -61,23 +66,6 @@ public class TodoController {
     }
 
 
-
-    //각각 상태에 저장된 note들의 갯수 표현
-    @GetMapping("/ajax/countTodo/{projMemberSeq}")
-    public Long countTodo(@PathVariable long projMemberSeq){
-        long cnt = todoService.countTodoStatusS(projMemberSeq);
-        return cnt;
-    }
-    @GetMapping("/ajax/countProgress/{projMemberSeq}")
-    public Long countProgress(@PathVariable long projMemberSeq){
-        long cnt = todoService.countProgressStatusS(projMemberSeq);
-        return cnt;
-    }
-    @GetMapping("/ajax/countDone/{projMemberSeq}")
-    public Long countDone(@PathVariable long projMemberSeq) {
-        long cnt = todoService.countDoneStatusS(projMemberSeq);
-        return cnt;
-    }
 
     //메모 삭제하기
     @PostMapping("/ajax/deleteTodo")

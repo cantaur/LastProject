@@ -17,16 +17,11 @@ public interface TodoMapper {
     List<TodoDTO>progressBySeq(long seq);
     List<TodoDTO>doneBySeq(long seq);
 
-    /*갯수카운트*/
-    Long countTodoStatus(long seq);
-    Long countProgressStatus(long seq);
-    Long countDoneStatus(long seq);
-    /*선택지*/
+    /*드롭박스*/
     List<TaskDTO> showTaskByProjSeq(long seq);
 
 
     void insertNote(TodoDTO todoDTO); // 메모 생성
-
     void updateNote(TodoDTO todoDTO); // 메모 수정
     void updateNoteStatus(TodoDTO todoDTO); // 메모 상태이동
     void deleteNote(long todo_seq); // 메모 삭제

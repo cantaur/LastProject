@@ -18,17 +18,6 @@
     </select>
 
 
-    <!--COUNT -->
-    <select id="countTodoStatus" resultType="long" parameterType="long">
-        SELECT COUNT(*) FROM todo WHERE projmember_seq=#{projmember_seq} AND todo_status='10';
-    </select>
-    <select id="countProgressStatus" resultType="long" parameterType="long">
-        SELECT COUNT(*) FROM todo WHERE projmember_seq=#{projmember_seq} AND todo_status='20';
-    </select>
-    <select id="countDoneStatus" resultType="long" parameterType="long">
-        SELECT COUNT(*) FROM todo WHERE projmember_seq=#{projmember_seq} AND todo_status='30';
-    </select>
-
     <!--드롭박스에서 업무 선택할 수 있도록 업무 제목 꺼냄-->
     <select id="showTaskByProjSeq" resultType="TaskDTO" parameterType="long">
         SELECT * FROM task WHERE project_seq=#{project_seq};

@@ -11,6 +11,11 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 프로젝트 선택 페이지 (완료)
+ * 프로젝트 생성, 수정 관리
+ */
+
 @Log
 @RestController
 @AllArgsConstructor

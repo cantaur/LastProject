@@ -8,6 +8,8 @@ import com.project.pium.mapper.WorklabelMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -78,16 +80,28 @@ public class TaskServiceImpl implements TaskService {
     //label_title 넣어서 있는지 없는지 조사
     @Override
     public String chkLabel(String labelTitle) {
-        return worklabelMapper.chkLabel(labelTitle);
+        String temp= worklabelMapper.chkLabel(labelTitle);
+        log.info("라벨 있는지 없는지 조사 : "+temp);
+        if(temp !=null){
+            return "success";
+        }else{
+            return "fail";
+        }
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     @Override
     public String insertLabel(LabelDTO labelDTO, long taskSeq) {
+        log.info("labelDTO, taskseq : "+labelDTO+", "+taskSeq);
         worklabelMapper.insertLabel(labelDTO); //새로운 라벨 insert
         long labelSeq= worklabelMapper.lastLabelSeq(); //해당 라벨seq 조회
         updateLabel(labelSeq,taskSeq);
 
         return "success";
+    }
+    @Override
+    public void updateLabel(long labelSeq, long taskSeq) {
+        taskMapper.updateLabel(labelSeq,taskSeq);
     }
 
 
@@ -132,10 +146,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void updatePriority(TaskDTO task){taskMapper.updatePriority(task);}
 
-    @Override
-    public void updateLabel(long labelSeq, long taskSeq) {
-        taskMapper.updateLabel(labelSeq,taskSeq);
-    }
+
 
     @Override
     public void updateDate(TaskDTO task){taskMapper.updateDate(task);}

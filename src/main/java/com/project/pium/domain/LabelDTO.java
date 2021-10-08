@@ -10,5 +10,4 @@ import lombok.NoArgsConstructor;
 public class LabelDTO {
     private long label_seq;
     private String label_title;
-    private String label_color;
 }

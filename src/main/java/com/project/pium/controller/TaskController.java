@@ -83,22 +83,20 @@ public class TaskController {
     @ResponseBody
     @PostMapping("/ajax/addLabel")
     public void addLabel(@RequestBody Map<String,Object> param){
-        LabelDTO labelDTO = null;
-        log.info("뭔데이게"+param);
+
+        log.info("taskSeq, label : "+param);
         Long taskSeq = Long.valueOf(String.valueOf(param.get("taskSeq"))); //task_seq
         String labelTemp = String.valueOf(param.get("label"));
-        String labelTitle= taskService.chkLabel(labelTemp);
-        log.info("labelTitle : "+labelTitle);
+        String msg= taskService.chkLabel(labelTemp);
+        log.info("msg : "+msg);
 
-        if(labelTitle !=null){
+        if(msg.equals("success")){
             long labelSeq= taskService.findLabelSeq(labelTemp);
             taskService.updateLabel(labelSeq, taskSeq);
-            return;
-
+        }else{
+            LabelDTO labelDTO = new LabelDTO(-1,labelTemp);
+            taskService.insertLabel(labelDTO,taskSeq);
         }
-
-
-
     }
 
     
@@ -109,7 +107,19 @@ public class TaskController {
     
     
     
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     
 

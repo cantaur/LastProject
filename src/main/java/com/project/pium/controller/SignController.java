@@ -27,7 +27,7 @@ import java.util.Map;
 
 
 /**
- * 회원가입을 위한 RestController
+ * 회원가입을 위한 RestController (완료)
  * 인증메일 컨펌
  * 소셜 로그인 구현
  * 앱 실행 시 세션값 프론트에 넘김

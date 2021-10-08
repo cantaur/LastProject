@@ -29,19 +29,6 @@ public class TodoServiceImpl implements TodoService {
 
 
     @Override
-    public Long countDoneStatusS(long seq) {
-        return todoMapper.countDoneStatus(seq);
-    }
-    @Override
-    public Long countTodoStatusS(long seq){return todoMapper.countTodoStatus(seq);}
-    @Override
-    public Long countProgressStatusS(long seq){
-        return todoMapper.countProgressStatus(seq);
-    }
-
-
-
-    @Override
     public List<TaskDTO> showTaskByProjSeqS(long seq){return todoMapper.showTaskByProjSeq(seq);}
 
 

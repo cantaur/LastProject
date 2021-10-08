@@ -13,7 +13,7 @@ public interface WorklabelMapper {
     LabelDTO findLabelTitle(long labelSeq);
     Long findLabelSeq(String labelTitle);
     String chkLabel(String labelTitle);
-    String insertLabel(LabelDTO labelDTO);
+    void insertLabel(LabelDTO labelDTO);
     long lastLabelSeq();
 
 }
