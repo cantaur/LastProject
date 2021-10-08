@@ -1,8 +1,6 @@
 package com.project.pium.service;
 
 import com.project.pium.domain.ProjectDTO;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
