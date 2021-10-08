@@ -11,16 +11,7 @@ import java.util.List;
 @Mapper
 @Repository
 public interface TaskMapper {
-    TaskDTO showTaskByTaskseq(long taskSeq);
 
-
-
-
-
-    //새 업무 생성하기
-    void createTask(TaskDTO task);
-    //해당 프로젝트에서 생성된 업무 리스트
-    List<TaskDTO> taskList(long projSeq);
     //해당 마일스톤에서 생성된 업무 갯수
     int countTask(long mileSeq);
     //해당 마일스톤에서 완료된 업무의 갯수
@@ -33,31 +24,40 @@ public interface TaskMapper {
     List<TaskDTO> closedTaskListByMile(long mileSeq);
 
 
-
-
-
     //업무를 클릭하였을 때 업무 상세보기
-
+    TaskDTO showTaskByTaskseq(long taskSeq);
     //title update
     void updateTitle(TaskDTO task);
     //content update
     void updateContent(TaskDTO task);
     //마일스톤 변경하기
     void updateMilestone(TaskDTO task);
-    //업무상태 마감으로 변경
-    void updateStatusFinish(long taskSeq);
-    //업무상태 다시 활성화 시키기
-    void updateStatusDefault(long taskSeq);
-    //업무상태 종료로 변경
-    void updateIsdelete(long taskSeq);
+    //날짜 업데이트
+    void updateDate(TaskDTO task);
+    //업무 date들 null로 셋팅
+    void setTaskDateEmpty(long taskSeq);
     //task_member테이블에 projmember_seq, task_seq셋팅
     void insertTaskMember(TaskmemberDTO taskmember);
     //업무 중요도 셋팅하기
     void updatePriority(TaskDTO task);
     //업무 라벨 셋팅하기
     void updateLabel(@Param("label_seq") long labelSeq, @Param("task_seq") long taskSeq);
-    //날짜 업데이트
-    void updateDate(TaskDTO task);
+    //업무상태 마감으로 변경
+    void updateStatusFinish(long taskSeq);
+    //업무상태 다시 활성화 시키기
+    void updateStatusDefault(long taskSeq);
+    //업무상태 종료로 변경
+    void updateIsdelete(long taskSeq);
+
+
+
+
+
+
+
+
+    void createTask(TaskDTO task);
+    List<TaskDTO> taskList(long projSeq);
 
 
 

@@ -61,11 +61,6 @@ public class TaskController {
         
     }
 
-    //날짜 업데이트
-    @PostMapping("/ajax/updateTaskDate")
-    public void updateDate(@RequestBody TaskDTO taskdto){
-        taskService.updateDate(taskdto);
-    }
 
     //title update
     @PostMapping("/ajax/updateTaskTitle")
@@ -78,6 +73,36 @@ public class TaskController {
     public void updateContent(@RequestBody TaskDTO taskdto){
         taskService.updateContent(taskdto);
     }
+
+    //마일스톤 변경하기
+    @PostMapping("/ajax/changeMile")
+    public void updateMilestone(@RequestBody TaskDTO taskdto){
+        taskService.updateMilestone(taskdto);
+    }
+
+
+    //task 날짜 비우기(get으로 task_seq 주면 date에 null 셋팅)
+    @GetMapping("/ajax/setDateEmpty/{taskSeq}")
+    public void setDateEmpty(@PathVariable long taskSeq){
+        taskService.setTaskDateEmpty(taskSeq);
+    }
+
+
+
+    //날짜 업데이트
+    @PostMapping("/ajax/updateTaskDate")
+    public void updateDate(@RequestBody TaskDTO taskdto){
+        taskService.updateDate(taskdto);
+    }
+
+    //업무에 멤버 배정
+    @PostMapping("/ajax/addMember")
+    public void addTaskmember(@RequestBody TaskmemberDTO taskmember){
+        log.info("#TaskController createTaskmember() : "+taskmember);
+        taskService.insertTaskMember(taskmember);
+    }
+
+
 
     //업무에 라벨 넣기
     @ResponseBody
@@ -99,14 +124,31 @@ public class TaskController {
         }
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
+    //업무에 중요도 셋팅하기
+    @PostMapping("/ajax/updatePriority")
+    public void updatePriority(@RequestBody TaskDTO taskdto){
+        taskService.updatePriority(taskdto);
+    }
+
+
+
+    //업무 상태 마감으로 변경
+    @PostMapping("/ajax/closeTask")
+    public void updateStatusFinish(@RequestParam long taskSeq){
+        taskService.updateStatusFinish(taskSeq);
+    }
+
+    //업무 다시 활성화 시키기
+    @PostMapping("/ajax/openTask")
+    public void updateStatusDefault(@RequestParam long taskSeq){
+        taskService.updateStatusDefault(taskSeq);
+    }
+
+    //업무 삭제상태로 변경
+    @PostMapping("/ajax/deleteTask")
+    public void updateIsdelete(@RequestParam long taskSeq){
+        taskService.updateIsdelete(taskSeq);
+    }
 
 
 
@@ -120,8 +162,20 @@ public class TaskController {
 
 
 
-    
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //새 업무 생성
     @PostMapping("/ajax/createTask")
@@ -144,31 +198,8 @@ public class TaskController {
 
 
 
-    //마일스톤 변경하기
-    @PostMapping("/ajax/changeMile")
-    public void updateMilestone(@RequestBody TaskDTO task){taskService.updateMilestone(task);}
 
-    //업무 상태 마감으로 변경
-    @PostMapping("/ajax/closeTask")
-    public void updateStatusFinish(@RequestParam long taskSeq){taskService.updateStatusFinish(taskSeq);}
 
-    //업무 다시 활성화 시키기
-    @PostMapping("/ajax/openTask")
-    public void updateStatusDefault(@RequestParam long taskSeq){taskService.updateStatusDefault(taskSeq);}
-
-    //업무 삭제상태로 변경
-    @PostMapping("/ajax/deleteTask")
-    public void updateIsdelete(@RequestParam long taskSeq){taskService.updateIsdelete(taskSeq);}
-
-    //업무에 멤버 배정
-    @PostMapping("/ajax/addMember")
-    public void createTaskmember(@RequestBody TaskmemberDTO taskmember){
-        log.info("#TaskController createTaskmember() : "+taskmember);
-        taskService.insertTaskMember(taskmember);
-    }
-    //업무에 중요도 셋팅하기
-    @PostMapping("/ajax/updatePriority")
-    public void updatePriority(@RequestBody TaskDTO task){taskService.updatePriority(task);}
 
 
 }

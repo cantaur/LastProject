@@ -4,51 +4,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.TaskMapper">
 
-    <!-- 업무를 클릭하였을 때 업무 상세보기 -->
-    <select id="showTaskByTaskseq" parameterType="long" resultType="TaskDTO">
-        SELECT * FROM task WHERE task_seq = #{task_seq}
-    </select>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--새 업무 셋팅-->
-    <insert id="createTask" parameterType="TaskDTO">
-        insert into task(task_title, task_content, task_startdate, task_duedate, task_date, milestone_seq,project_seq)
-        values(#{task_title}, #{task_content}, #{task_startdate}, ADDTIME(#{task_duedate},'0 1:1:1.000002'), now(),#{milestone_seq},#{project_seq})
-    </insert>
-
-    <!--해당 프로젝트에서 생성된 업무 리스트-->
-    <select id="taskList" parameterType="long" resultType="TaskDTO">
-        SELECT * FROM task WHERE project_seq = #{project_seq}
-    </select>
-
-<!--    해당 마일스톤에서 생성된 업무 갯수-->
+    <!--    해당 마일스톤에서 생성된 업무 갯수-->
     <select id="countTask" parameterType="long" resultType="int">
         SELECT COUNT(task_seq) FROM task WHERE milestone_seq = #{milestone_seq}
     </select>
 
-<!--    해당 마일스톤에서 완료된 업무의 갯수-->
+    <!--    해당 마일스톤에서 완료된 업무의 갯수-->
     <select id="countClosedTask" parameterType="long" resultType="int">
         SELECT COUNT(task_status) FROM task WHERE milestone_seq = #{milestone_seq} AND task_status = 1
     </select>
 
-<!-- 해당 마일스톤에서 생성된 전체 업무리스트 -->
+    <!-- 해당 마일스톤에서 생성된 전체 업무리스트 -->
     <select id="taskListByMile" parameterType="long" resultType="TaskDTO">
         SELECT * FROM task WHERE milestone_seq = #{milestone_seq} order by task_seq desc
     </select>
 
-<!-- 해당 마일스톤에서 생성된 업무리스트 중 진행중 상태인거   -->
+    <!-- 해당 마일스톤에서 생성된 업무리스트 중 진행중 상태인거   -->
     <select id="openTaskListByMile" parameterType="long" resultType="TaskDTO">
         SELECT * FROM task WHERE milestone_seq = #{milestone_seq} and task_status='0' order by task_seq desc
     </select>
@@ -64,6 +36,11 @@
 
 
 
+    <!-- 업무를 클릭하였을 때 업무 상세보기 -->
+    <select id="showTaskByTaskseq" parameterType="long" resultType="TaskDTO">
+        SELECT * FROM task WHERE task_seq = #{task_seq}
+    </select>
+
 <!--title update -->
     <update id="updateTitle" parameterType="TaskDTO">
         UPDATE task SET task_title=#{task_title} WHERE task_seq=#{task_seq}
@@ -76,19 +53,15 @@
     <update id="updateMilestone" parameterType="TaskDTO">
         UPDATE task Set milestone_seq=#{milestone_seq} Where task_seq=#{task_seq}
     </update>
-<!--업무상태 마감으로 변경-->
-    <update id="updateStatusFinish" parameterType="long">
-        UPDATE task Set task_status='1' Where task_seq=#{task_seq}
+    <!--마일스톤 date들 null로 셋팅 -->
+    <update id="setTaskDateEmpty" parameterType="long">
+        update task set task_startdate=null, task_duedate=null where task_seq=#{task_seq}
     </update>
-<!-- 업무상태 다시 활성화 시키기 -->
-    <update id="updateStatusDefault" parameterType="long">
-        UPDATE task Set task_status='0' Where task_seq=#{task_seq}
+    <!-- 날짜 업데이트 -->
+    <update id="updateDate" parameterType="TaskDTO">
+        UPDATE task SET task_startdate=#{task_startdate}, task_duedate = ADDTIME(#{task_duedate},'0 1:1:1.000002' where task_seq=#{task_seq}
     </update>
-<!-- 업무상태 종료로 변경 -->
-    <update id="updateIsdelete" parameterType="long">
-        UPDATE task SET task_isdelete='1' WHERE task_seq=#{task_seq}
-    </update>
-<!-- task_member에 추가하기 -->
+    <!-- task_member에 추가하기 -->
     <insert id="insertTaskMember" parameterType="TaskmemberDTO">
         insert into task_member(task_seq, projmember_seq) values(#{task_seq}, #{projmember_seq})
     </insert>
@@ -100,14 +73,37 @@
     <update id="updateLabel" parameterType="TaskDTO">
         UPDATE task SET label_seq=#{label_seq} WHERE task_seq=#{task_seq}
     </update>
-<!-- 날짜 업데이트 -->
-    <update id="updateDate" parameterType="TaskDTO">
-        UPDATE task SET task_startdate=#{task_startdate}, task_duedate = ADDTIME(#{task_duedate},'0 1:1:1.000002' where task_seq=#{task_seq}
+
+
+
+
+
+
+
+
+
+
+    <!--새 업무 셋팅-->
+    <insert id="createTask" parameterType="TaskDTO">
+        insert into task(task_title, task_content, task_startdate, task_duedate, task_date, milestone_seq,project_seq)
+        values(#{task_title}, #{task_content}, #{task_startdate}, ADDTIME(#{task_duedate},'0 1:1:1.000002'), now(),#{milestone_seq},#{project_seq})
+    </insert>
+    <!--해당 프로젝트에서 생성된 업무 리스트-->
+    <select id="taskList" parameterType="long" resultType="TaskDTO">
+        SELECT * FROM task WHERE project_seq = #{project_seq}
+    </select>
+    <!--업무상태 마감으로 변경-->
+    <update id="updateStatusFinish" parameterType="long">
+        UPDATE task Set task_status='1' Where task_seq=#{task_seq}
     </update>
-
-
-
-
+    <!-- 업무상태 다시 활성화 시키기 -->
+    <update id="updateStatusDefault" parameterType="long">
+        UPDATE task Set task_status='0' Where task_seq=#{task_seq}
+    </update>
+    <!-- 업무상태 종료로 변경 -->
+    <update id="updateIsdelete" parameterType="long">
+        UPDATE task SET task_isdelete='1' WHERE task_seq=#{task_seq}
+    </update>
 
 
 

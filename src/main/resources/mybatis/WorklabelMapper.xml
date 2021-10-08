@@ -8,13 +8,12 @@
         select label_title from work_label where label_seq = #{label_seq}
     </select>
 
-    <select id="findLabelSeq" resultType="Long" parameterType="String">
-        select label_Seq from work_label where label_title=#{label_title}
-    </select>
-
-
     <select id="chkLabel" resultType="String" parameterType="String">
         select * from work_label where label_title=#{label_title}
+    </select>
+
+    <select id="findLabelSeq" resultType="Long" parameterType="String">
+        select label_Seq from work_label where label_title=#{label_title}
     </select>
 
     <insert id="insertLabel" parameterType="LabelDTO">
