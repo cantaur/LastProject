@@ -178,7 +178,6 @@ function TaskModal(p){
 
   },[p.taskModalData])
 
-  console.log(p.taskModalData)
   return(
     <>
       <Modal show={deleteMemberAlert} onHide={alertClose} className="modalWrap deleteMemberModal">
