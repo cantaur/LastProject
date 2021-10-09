@@ -95,6 +95,10 @@ function TaskModal(p){
     .then(r=>{
       p.dispatch({type:'refreshCng'})
     })
+    .catch(e=>{
+      console.log(e)
+      p.dispatch({type:'loadingOff'})
+    })
   }
 
   // 업무일정 비우기
@@ -112,6 +116,10 @@ function TaskModal(p){
       })
       taskRefresh()
       p.dispatch({type:'modalOff'})
+    })
+    .catch(e=>{
+      console.log(e)
+      p.dispatch({type:'loadingOff'})
     })
 
   }
@@ -170,7 +178,6 @@ function TaskModal(p){
 
   },[p.taskModalData])
 
-  console.log(p.taskModalData)
   return(
     <>
       <Modal show={deleteMemberAlert} onHide={alertClose} className="modalWrap deleteMemberModal">

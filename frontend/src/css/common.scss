@@ -3078,7 +3078,13 @@ body{
           &.보통{
             color:$c1;
           }
+          &.낮음{
+            color:$c1;
+          }
           &.없음{
+            color:#555;
+          }
+          &.무시 {
             color:#555;
           }
         }
@@ -3196,16 +3202,45 @@ body{
   }
   .taskConWrap{
     display: flex;
-    align-items: flex-start;
     .taskFilter{
       background-color: #f2f2f2;
       margin-right: 20px;
       padding:20px;
       width: 200px;
-      height: 700px;
+      height: max-content;
       border-radius: 10px;
-      margin-left: -220px;
-      // border:1px solid #ccc;
+      // margin-left: -220px;
+      .title{
+        font-size: .9rem;
+        color:#333;
+        font-weight: bold;
+        margin-bottom:1rem;
+        i{
+          font-size: .8rem;
+          margin-right: 4px;
+          color:#888;
+        }
+      }
+      hr{
+        background-color: #aaa;
+        margin:1.2rem 0;
+      }
+      .form-check{
+        display: flex;
+        align-items: center;
+        .form-check-label{
+          font-size: .9rem;
+          margin-left: 4px;
+          width: 100%;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+        &+.form-check{
+          margin-top:10px;
+        }
+      }
+      
     }
   }
   .taskListWrap{
@@ -3213,12 +3248,14 @@ body{
     background-color: #f2f2f2;
     border-radius: 10px;
     width: 100%;
-    min-height: 700px;
     .noTaskMsg{
       background-color: #fff;
       border:1px solid #ececec;
       padding:10px;
       font-size: .9rem;
+      &+.noTaskMsg{
+        display: none;
+      }
     }
     .taskHeader{
       display: flex;
@@ -3290,7 +3327,13 @@ body{
           &.보통{
             color:$c1;
           }
+          &.낮음{
+            color:$c1;
+          }
           &.없음{
+            color:#555;
+          }
+          &.무시 {
             color:#555;
           }
         }
