@@ -52,7 +52,8 @@ public class FileController {
         String fileName = dbFileStorageService.storeFile(file);
         long projMemSeq= fileDTO.getProjmember_seq();
         long taskSeq = fileDTO.getTask_seq();
-        fileDTO = new FileDTO(-1, fileName, fileName, null,file.getSize(), file.getContentType(),null,projMemSeq,taskSeq);
+        long projectSeq = fileDTO.getProject_seq();
+        fileDTO = new FileDTO(-1, fileName, fileName, null,file.getSize(), file.getContentType(),null,projMemSeq,taskSeq,projectSeq);
         dbFileStorageService.saveFile(fileDTO);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()

@@ -20,5 +20,6 @@ public class FileDTO {
     private String file_isdelete;
     private long projmember_seq;
     private long task_seq;
+    private long project_seq;
 
 }

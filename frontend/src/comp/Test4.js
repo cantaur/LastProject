@@ -10,12 +10,16 @@ function Test4(){
     
   },[])
 
-  const [files, filesCng] = useState('');
+  const [files, filesCng] = useState();
 
   const handleSubmit = e => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('file', files)
+    formData.append('project_seq', 3)
+    formData.append('task_seq', 10)
+    formData.append('projmember_seq', 29)
+
 
     axios({
       method:'post',

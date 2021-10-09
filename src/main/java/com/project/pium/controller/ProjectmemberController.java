@@ -47,16 +47,13 @@ public class ProjectmemberController {
         String email= currentUserName(principal);
         long sessionSeq = memberService.findUserNo(email);
 
-
         //3. projectSeq와 memberSeq로 project_member seq 찾음
         long projMemberSeq = projectmemberService.findProjMemberSeq(projSeq,sessionSeq);
         //4. 집어넣음?
-        ProjectmemberDTO projectmemberDTO = new ProjectmemberDTO();
-        projectmemberDTO.setProjmember_name(name);
-        projectmemberDTO.setProjmember_filename(file.getOriginalFilename());
-        projectmemberDTO.setProjmember_filetype(file.getContentType());
-        projectmemberDTO.setProjmember_data(file.getBytes());
-        projectmemberDTO.setProjmember_seq(projMemberSeq);
+        ProjectmemberDTO projectmemberDTO = new ProjectmemberDTO(projMemberSeq, null,name,
+                file.getOriginalFilename(),
+                file.getContentType(),
+                file.getBytes(),-1,-1,null);
         //5. 일단 업데이트로 감?
         projectmemberService.updateProfileS(projectmemberDTO);
         return "success";
