@@ -102,6 +102,7 @@ public class TaskController {
     //날짜 업데이트
     @PostMapping("/ajax/updateTaskDate")
     public void updateDate(@RequestBody TaskDTO taskdto){
+        log.info("taskdto : "+taskdto);
         taskService.updateDate(taskdto);
     }
 
