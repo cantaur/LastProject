@@ -199,6 +199,7 @@ function TaskModal(p){
                     taskTitle:titleData,
                   })
                   .then(r=>{
+                    p.dispatch({type:'refreshCng'})
                     p.dispatch({type:'loadingOff'})
                     editTitleCng(false)
                   })
@@ -337,14 +338,29 @@ function TaskModal(p){
               <div className="statusRow">
                 <p className="label">마일스톤</p>
 
-                <Form.Select size="sm" className="mileSelect">
+                <Form.Select size="sm" className="mileSelect" onChange={e=>{
+                  p.dispatch({type:"loadingOn"})
+                  axios.post(host+'/ajax/changeMile',{
+                    taskSeq:p.taskModalData.task_seq,
+                    mileSeq:e.target.value,
+                  })
+                  .then(r=>{
+                    p.dispatch({type:'loadingOff'})
+                  })
+                  .catch(e=>{
+                    console.log(e)
+                    p.dispatch({type:'loadingOff'})
+                  })
+                }
+                }>
+                  <option value="0" selected={p.taskModalData.milestone_seq == "0"?true:false}>마일스톤 없음</option>
                   {
                     p.mileStoneList &&
                       p.mileStoneList.map((r, i) =>{
                         return(
                           <option value={r.milestone_seq}
                                   selected={r.milestone_seq==p.taskModalData.milestone_seq?true:false}
-                                  
+
                           >{r.milestone_title}</option>
 
                         )
@@ -547,7 +563,20 @@ function TaskModal(p){
               </div>
               <div className="statusRow">
                 <p className="label">중요도</p>
-                <Form.Select size="sm">
+                <Form.Select size="sm" onChange={e=>{
+                  p.dispatch({type:"loadingOn"})
+                  axios.post(host+'/ajax/updatePriority',{
+                    taskSeq:p.taskModalData.task_seq,
+                    priorityCode:e.target.value,
+                  })
+                  .then(r=>{
+                    p.dispatch({type:'loadingOff'})
+                  })
+                  .catch(e=>{
+                    console.log(e)
+                    p.dispatch({type:'loadingOff'})
+                  })
+                }}>
                   <option value="" selected={p.taskModalData.priority_code?false:true}>중요도 없음</option>
                   <option value="10" selected={p.taskModalData.priority_code == "10"?true:false}>긴급</option>
                   <option value="20" selected={p.taskModalData.priority_code == "20"?true:false}>높음</option>
