@@ -26,8 +26,6 @@ public class ProjectmemberServiceImpl implements ProjectmemberService  {
     //프로필 수정
     @Override
     public void updateProfileS(ProjectmemberDTO projectmemberDTO){
-        log.info("#projectmemberDTO : "+projectmemberDTO);
-
         projectmemberMapper.updateProfile(projectmemberDTO);
     }
 

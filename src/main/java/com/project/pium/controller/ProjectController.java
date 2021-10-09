@@ -83,7 +83,6 @@ public class ProjectController {
         String email= currentUserName(principal);
         long sessionSeq = memberService.findUserNo(email);
         List<ProjectDTO> myProject = projectService.myProject(sessionSeq);
-        log.info("#myProject"+myProject);
         return myProject;
     }
 
@@ -92,7 +91,6 @@ public class ProjectController {
     public List<ProjectDTO> myProjectTest(@PathVariable long memberSeq){
 
         List<ProjectDTO> myProject = projectService.myProject(memberSeq);
-        log.info("#myProject"+myProject);
         return myProject;
     }
 

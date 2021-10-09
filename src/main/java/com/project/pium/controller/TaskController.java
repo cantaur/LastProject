@@ -49,8 +49,6 @@ public class TaskController {
         List<TaskmemberDTO> taskmemberDTOS = taskmemberService.selectByTaskSeq(taskSeq);
         //업무의 라벨 조회
         LabelDTO labelDTO = taskService.findLabelTitle(taskDTO.getLabel_seq());
-        log.info("#taskDTO"+taskDTO);
-        log.info("#taskmemberDTOS"+taskmemberDTOS);
         tempTask.put("task", taskDTO);
         tempTask.put("taskMembers", taskmemberDTOS);
         tempTask.put("label", labelDTO);
@@ -68,6 +66,7 @@ public class TaskController {
     public void updateTitle(@RequestBody Map<String,Object> param){
         Long taskSeq = Long.valueOf(String.valueOf(param.get("taskSeq"))); //task_seq
         String teskTitle = String.valueOf(param.get("teskTitle"));
+        log.info("teskTitle : "+teskTitle+", taskSeq : "+taskSeq);
         taskService.updateTitle(teskTitle,taskSeq);
     }
 
@@ -77,6 +76,7 @@ public class TaskController {
     public void updateContent(@RequestBody Map<String,Object> param){
         Long taskSeq = Long.valueOf(String.valueOf(param.get("taskSeq"))); //task_seq
         String teskContent = String.valueOf(param.get("teskContent"));
+        log.info("teskContent : "+teskContent+", taskSeq : "+taskSeq);
         taskService.updateContent(teskContent,taskSeq);
     }
 
@@ -86,6 +86,7 @@ public class TaskController {
     public void updateMilestone(@RequestBody Map<String,Integer> param){
         Long taskSeq= Long.valueOf(param.get("taskSeq")); //task_seq
         Long mileSeq= Long.valueOf(param.get("mileSeq")); //mileSeq
+        log.info("mileSeq : "+mileSeq+", taskSeq : "+taskSeq);
         taskService.updateMilestone(mileSeq,taskSeq);
     }
 
@@ -118,7 +119,6 @@ public class TaskController {
     @PostMapping("/ajax/addLabel")
     public void addLabel(@RequestBody Map<String,Object> param){
 
-        log.info("taskSeq, label : "+param);
         Long taskSeq = Long.valueOf(String.valueOf(param.get("taskSeq"))); //task_seq
         String labelTemp = String.valueOf(param.get("label"));
         String msg= taskService.chkLabel(labelTemp);
@@ -139,6 +139,7 @@ public class TaskController {
     public void updatePriority(@RequestBody Map<String,Integer> param){
         Long taskSeq= Long.valueOf(param.get("taskSeq")); //task_seq
         int priorityCode= param.get("priorityCode"); //mileSeq
+        log.info("priorityCode : "+priorityCode+", taskSeq : "+taskSeq);
         taskService.updatePriority(priorityCode,taskSeq);
     }
 

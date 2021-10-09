@@ -27,7 +27,6 @@ public class CalendarController {
 
     @PostMapping("/ajax/createCal")
     public void insertCalMemo (@RequestBody CalendarDTO calendarDTO) {
-        log.info("캘린더dto"+calendarDTO);
         calendarService.insertCalMemo(calendarDTO);
     }
 
@@ -44,8 +43,6 @@ public class CalendarController {
         tempCal.put("taskListProj", taskListProj);
 
         calList.add(tempCal);
-        log.info("#calList : "+calList);
-
         return calList;
     }
 
@@ -60,7 +57,6 @@ public class CalendarController {
     //캘린더>메모 날짜 업데이트
     @PostMapping("/ajax/updateDate")
     public void updateDate(@RequestBody CalendarDTO calendarDTO){
-        log.info("캘린더 날짜 업데이트 : "+calendarDTO);
         calendarService.upCalDate(calendarDTO);
     }
 

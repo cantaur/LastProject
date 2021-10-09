@@ -31,9 +31,6 @@ public class TodoController {
     public String insertNote(@RequestBody TodoDTO todoDTO){
         long task_seq= todoDTO.getTask_seq();
         String task_title=todoDTO.getTask_title();
-        log.info("어떻게 들어오는지 확인하고 싶다 : "+task_seq+", "+task_title);
-        log.info("todoDTO : "+todoDTO);
-
         todoService.insertNoteS(todoDTO);
         return "success";
     }
@@ -61,7 +58,6 @@ public class TodoController {
 
         todolistInfo.add(tempTodo);
 
-        log.info("#내가 생성한 to do list"+todolistInfo);
         return todolistInfo;
     }
 
