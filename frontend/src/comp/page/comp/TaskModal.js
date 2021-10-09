@@ -203,6 +203,7 @@ function TaskModal(p){
               p.dispatch({type:'loadingOff'})
               p.dispatch({type:'refreshCng'})
               taskAlertClose()
+              p.dispatch({type:'taskModalCng',val:false})
             })
             .catch(e=>{
               p.dispatch({type:'loadingOff'})
@@ -572,7 +573,7 @@ function TaskModal(p){
                         }}
                        onKeyDown={e=>{
                          if(e.key === 'Escape'){
-                           editContentCng(false)
+                           editLabelCng(false)
                            taskRefresh()
                          }
                        }}
@@ -687,24 +688,24 @@ function TaskModal(p){
                           <p className="person">@사용자2</p>
                           <p className="person">@사용자3</p>
                           <p className="person">@사용자3</p>
-                        
-                      
+
+
                         </div>
                         <div className="file">
                           <FileIcon extension="pdf" {...defaultStyles.pdf} />
                           <p className="fileInfo">파일이름입니다 파일이름입니다.pdf</p>
                         </div>
                       </div>
-                      
+
                     </div>
 
                   </div>
-                  
+
                 </div>
 
-                
+
                 <div className="commentForm">
-                  
+
                 </div>
               </div>
             </>
