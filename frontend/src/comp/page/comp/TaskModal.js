@@ -344,9 +344,7 @@ function TaskModal(p){
                         return(
                           <option value={r.milestone_seq}
                                   selected={r.milestone_seq==p.taskModalData.milestone_seq?true:false}
-                                  onchange(()=>{
-
-                                  })
+                                  
                           >{r.milestone_title}</option>
 
                         )
