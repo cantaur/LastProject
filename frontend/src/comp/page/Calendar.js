@@ -294,9 +294,11 @@ function Calendar(p){
                       "label_title":r.data[0].label?r.data[0].label.label_title:null,
                       "priority_code":r.data[0].task.priority_code,
                       "taskMembers":r.data[0].taskMembers,
+                      "task_date":r.data[0].task.task_date.substring(0,10),
                     }
                   }
                 )
+
                 p.dispatch({type:'taskModalCng',val:true})
               
                 setTimeout(()=>{
@@ -551,6 +553,7 @@ function EditModal(p){
           axios.get(host+'/ajax/deleteCal/'+p.editData.calendar_seq)
           .then(r=>{
             p.editModalCng(false)
+            p.memoListGetFunc();
             p.dispatch({type:'loadingOff'})
           })
           .catch(e=>{
