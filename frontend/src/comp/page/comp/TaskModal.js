@@ -13,6 +13,38 @@ function TaskModal(p){
 
   const taskColor = seqColorTrans(p.taskModalData.task_seq)
 
+  //테스트 정보 새로고침
+  const taskRefresh = () =>{
+    axios.get(host+'/ajax/taskView/'+p.taskModalData.task_seq)
+    .then(r=>{
+      p.dispatch(
+        {
+          type:'taskModalDataCng',
+          val:{
+            "task_seq":r.data[0].task.task_seq,
+            "task_title":r.data[0].task.task_title,
+            "task_content":r.data[0].task.task_content,
+            "task_status":r.data[0].task.task_status,
+            "task_isdelete":r.data[0].task.task_isdelete,
+            "task_startdate":r.data[0].task.task_startdate.substring(0,10),
+            "task_duedate":r.data[0].task.task_duedate.substring(0,10),
+            "projmember_seq":r.data[0].task.projmember_seq,
+            "milestone_seq":r.data[0].task.milestone_seq,
+            "label_seq":r.data[0].task.label_seq==0?null:r.data[0].task.label_seq,
+            "label_title":r.data[0].label?r.data[0].label.label_title:null,
+            "priority_code":r.data[0].task.priority_code,
+            "taskMembers":r.data[0].taskMembers,
+            "task_date":r.data[0].task.task_date.substring(0,10),
+          }
+        }
+      )
+      p.dispatch({type:'loadingOff'})
+    })
+    .catch(e=>{
+      console.log(e)
+      p.dispatch({type:'loadingOff'})
+    })
+  }
   // 업무 제목
   let [titleData, titleDataCng] = useState();
   // 업무 내용
@@ -25,6 +57,8 @@ function TaskModal(p){
   // 업무 라벨
   let [labelData,labelDataCng]= useState();
 
+  //업무 진행여부
+  let [statusData, statusDataCng] =useState();
   // 업무 작성자정보
   let [writerData, writerDataCng] = useState({
     projmember_name : '',
@@ -116,6 +150,7 @@ function TaskModal(p){
       task_duedate:p.taskModalData.task_duedate
     })
     labelDataCng(p.taskModalData.label_title)
+    statusDataCng(p.taskModalData.task_status)
     if(p.memberList){
       p.memberList.forEach(r=>{
         if(r.projmember_seq == p.taskModalData.projmember_seq){
@@ -141,7 +176,7 @@ function TaskModal(p){
             취소
           </Button>
           <Button variant="danger" style={{fontSize:'.8rem'}}>
-            삭제
+            제외
           </Button>
         </Modal.Footer>
       </Modal>
@@ -209,7 +244,7 @@ function TaskModal(p){
                 <p className="email">{writerData.member_email}</p>
               </div>
             </div>
-            {/* <p className="date">2020-12-12</p> */}
+            <p className="date">{p.taskModalData.task_date}</p>
 
           </div>
         </div>
@@ -492,9 +527,28 @@ function TaskModal(p){
                   <option value="50" selected={p.taskModalData.priority_code == "50"?true:false}>무시</option>
                 </Form.Select>
               </div>
-              
-
-
+              <div className="statusRow">
+                <p className="label">진행여부</p>
+                <Form.Check inline label="진행중" type="radio" name="endRadio" id="endRadio1" checked={statusData == "0"?true:false} onClick={()=>{
+                  p.dispatch({type:'loadingOn'})
+                  axios.post(host+'/ajax/openTask',{
+                    taskSeq:p.taskModalData.task_seq
+                  })
+                  .then(r=>{
+                    taskRefresh()
+                  })
+                }}/>
+                <Form.Check inline label="종료" type="radio" name="endRadio" id="endRadio2" checked={statusData == "1"?true:false} onClick={()=>{
+                  p.dispatch({type:'loadingOn'})
+                  axios.post(host+'/ajax/closeTask',{
+                    taskSeq:p.taskModalData.task_seq
+                  })
+                  .then(r=>{
+                    taskRefresh()
+                  })
+                }}/>
+                <Button className="taskDeleteBtn">업무 삭제하기</Button>
+              </div>
             </>
           }
         </div>
