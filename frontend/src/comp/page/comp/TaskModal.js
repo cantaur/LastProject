@@ -6,7 +6,7 @@ import {pub, host, colors, pages, seqColorTrans} from '../../Helper.js'
 import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstrap'
 import { Link, useParams, withRouter, useHistory } from "react-router-dom";
 import {connect} from 'react-redux';
-
+import { FileIcon, defaultStyles } from "react-file-icon";
 
 
 function TaskModal(p){
@@ -662,6 +662,50 @@ function TaskModal(p){
                 <Button type="button" className="taskDeleteBtn" onClick={()=>{
                   deleteTaskAlertCng(true)
                 }}>업무 삭제하기</Button>
+              </div>
+            </>
+          }
+
+          {
+            tabState == 1 &&
+            <>
+              <div className="commentWrap">
+                <div className="commentList">
+                  <div className="comment">
+
+                    <div className="data">
+                      <div className="textWrap">
+                        <div className="writer">
+                          <p>작성자</p>
+                          <p>2020-12-12</p>
+                        </div>
+                        <div className="text">안녕하세요 이렇게 텍스트가 들어감 안녕하세요 이렇게 텍스트가 들어감안녕하세요 이렇게 텍스트가 들어감안녕하세요 이렇게 텍스트가 들어감안녕하세요 이렇게 텍스트가 들어감안녕하세요 이렇게 텍스트가 들어감안녕하세요 이렇게 텍스트가 들어감</div>
+                      </div>
+                      <div className="fileMemberWrap">
+                        <div className="member">
+                          <p className="person">@사용자1</p>
+                          <p className="person">@사용자2</p>
+                          <p className="person">@사용자3</p>
+                          <p className="person">@사용자3</p>
+                        
+                      
+                        </div>
+                        <div className="file">
+                          <FileIcon extension="pdf" {...defaultStyles.pdf} />
+                          <p className="fileInfo">파일이름입니다 파일이름입니다.pdf</p>
+                        </div>
+                      </div>
+                      
+                    </div>
+
+                  </div>
+                  
+                </div>
+
+                
+                <div className="commentForm">
+                  
+                </div>
               </div>
             </>
           }
