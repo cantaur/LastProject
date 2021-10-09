@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState, useCallback } from "react"
-import {pub, colors, pages, host} from '../Helper.js'
+import {pub, colors, pages, host, seqColorTrans} from '../Helper.js'
 import DatePicker from '../DatePicker.js'
 import {FloatingLabel, Form, Button, Alert, Modal} from 'react-bootstrap'
 import { useHistory } from "react-router-dom";
@@ -27,7 +27,6 @@ function Calendar(p){
   const memoListGetFunc = () => {
     axios.get(host+'/ajax/calList/'+p.projectInfo.project_seq)
     .then(r=>{
-
       let taskList = r.data[0].taskListProj
       let calendarList = r.data[0].calListProj
       let memoListDummy = [];
@@ -40,9 +39,10 @@ function Calendar(p){
               start : r.task_startdate,
               end:r.task_duedate,
               classNames:'task',
-              editable:false,
+              // editable:false,
               task_seq:r.task_seq,
-              projmember_seq:r.projmember_seq
+              projmember_seq:r.projmember_seq,
+              color:seqColorTrans(r.task_seq)
             },
           )
         }
@@ -109,8 +109,24 @@ function Calendar(p){
     }
   },[])
 
+  //업무 일정수정_edit(drag)
+  const taskQuickEditFunc = (e)=>{
+    p.dispatch({type:'loadingOn'})
+    axios.post(host+'/ajax/updateTaskDate',{
+      task_seq : e.event._def.extendedProps.task_seq,
+      task_startdate : e.event.startStr.substring(0,10),
+      task_duedate : e.event.endStr.substring(0,10)
+    })
+    .then(r=>{
+      p.dispatch({type:'refreshCng'})
+    })
+    .catch(e=>{
+      console.log(e)
+      p.dispatch({type:'loadingOff'})
+    })
 
-  //메모 일정수정_edit(drag), resize
+  }
+  //메모 일정수정_edit(drag)
   const memoQuickEditFunc = (e)=>{
     p.dispatch({type:'loadingOn'})
 
@@ -260,7 +276,6 @@ function Calendar(p){
           dayMaxEvents={3}
           locale='ko'
           events={memoList}
-          eventColor={p.prjColor}
           displayEventTime={false}
           eventClick={e=>{
             if(e.event.extendedProps.memoSeq){
@@ -315,11 +330,13 @@ function Calendar(p){
             }
           }}
           eventDrop={e=>{
-            memoQuickEditFunc(e)
+            if(e.event.extendedProps.memoSeq){
+              memoQuickEditFunc(e)
+            }else {
+              taskQuickEditFunc(e)
+            }
           }}
-          eventResize={e=>{
-            memoQuickEditFunc(e)
-          }}
+          
         />
       </div>
 

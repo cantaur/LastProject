@@ -87,20 +87,23 @@ function MileStoneView(p){
       name:'',
       data:''
     }
-    p.memberList.map(r=>{
-      if(r.projmember_seq == seq){
-        if(r.projmember_data){
-          info.data = 'data:image;base64,'+r.projmember_data;
-        }else{
-          info.data = pub.img+'defaultProfile.svg'
+    if(p.memberList){
+      p.memberList.map(r=>{
+        if(r.projmember_seq == seq){
+          if(r.projmember_data){
+            info.data = 'data:image;base64,'+r.projmember_data;
+          }else{
+            info.data = pub.img+'defaultProfile.svg'
+          }
+          if(r.projmember_name){
+            info.name = r.projmember_name
+          }else {
+            info.name = '#'+r.member_seq
+          }
         }
-        if(r.projmember_name){
-          info.name = r.projmember_name
-        }else {
-          info.name = '#'+r.member_seq
-        }
-      }
-    })
+      })
+    }
+    
     return info;
   }
 
@@ -248,7 +251,9 @@ function MileStoneView(p){
                     const typeArr = {
                       '10':'긴급',
                       '20':'높음',
-                      '30':'보통'
+                      '30':'보통',
+                      '40':'낮음',
+                      '50':'무시',
                     }
                     let writerInfo = memberInfoGetFunc(r.task.projmember_seq)
 
@@ -339,3 +344,5 @@ function transReducer(state){
 }
 
 export default connect(transReducer)(MileStoneView);
+
+        
