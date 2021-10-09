@@ -71,6 +71,10 @@ function TaskModal(p){
   const alertClose =()=> deleteMemberAlertCng(false);
   let [deleteMemberName, deleteMemberNameCng] =useState();
 
+  //  업무 삭제 확인용
+  let [deleteTaskAlert, deleteTaskAlertCng] = useState(false)
+  const taskAlertClose = () => deleteTaskAlertCng(false);
+
   // 데이트픽커 이중모달 컨트롤
   const dateModalClose =useCallback((e)=>{
     if(!e.target.closest('.DayPicker_1') && !e.target.closest('.datePickerEmptyDate') ){
@@ -106,6 +110,7 @@ function TaskModal(p){
         task_startdate:'',
         task_duedate:''
       })
+      taskRefresh()
     })
 
   }
@@ -177,6 +182,33 @@ function TaskModal(p){
           </Button>
           <Button variant="danger" style={{fontSize:'.8rem'}}>
             제외
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal show={deleteTaskAlert} onHide={taskAlertClose} className="modalWrap deleteMemberModal">
+        <Modal.Header style={{borderBottom:0}}>
+          <Modal.Title className="modalTitle" >정말 업무를 삭제할까요?</Modal.Title>
+        </Modal.Header>
+        <Modal.Footer style={{borderTop:0}}>
+          <Button variant="secondary" onClick={taskAlertClose} style={{fontSize:'.8rem'}}>
+            취소
+          </Button>
+          <Button variant="danger" style={{fontSize:'.8rem'}} onClick={e=>{
+            p.dispatch({type:'loadingOn'})
+            axios.post(host+'/ajax/deleteTask',{
+              taskSeq:p.taskModalData.task_seq,
+            })
+            .then(r=>{
+              p.dispatch({type:'loadingOff'})
+              taskAlertClose()
+              taskRefresh()
+            })
+            .catch(e=>{
+              p.dispatch({type:'loadingOff'})
+              console.log(e)
+            })
+          }}>
+            삭제
           </Button>
         </Modal.Footer>
       </Modal>
@@ -605,7 +637,9 @@ function TaskModal(p){
                     taskRefresh()
                   })
                 }}/>
-                <Button className="taskDeleteBtn">업무 삭제하기</Button>
+                <Button type="button" className="taskDeleteBtn" onClick={()=>{
+                  deleteTaskAlertCng(true)
+                }}>업무 삭제하기</Button>
               </div>
             </>
           }
