@@ -34,7 +34,7 @@ public interface TaskService {
     //task_member에 추가하기
     void insertTaskMember(TaskmemberDTO taskmember);
     //업무 중요도 셋팅하기
-    void updatePriority(int priorityCode, long taskSeq);
+    void updatePriority(String priorityCode, long taskSeq);
     //라벨 셋팅
     String chkLabel(String labelTitle);
     Long findLabelSeq(String labelTitle);

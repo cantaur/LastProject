@@ -139,7 +139,7 @@ public class TaskController {
     @PostMapping("/ajax/updatePriority")
     public void updatePriority(@RequestBody Map<String,Integer> param){
         Long taskSeq= Long.valueOf(param.get("taskSeq")); //task_seq
-        int priorityCode= param.get("priorityCode"); //mileSeq
+        String priorityCode = String.valueOf(param.get("priorityCode")); //중요도코드(문자열임)
         log.info("priorityCode : "+priorityCode+", taskSeq : "+taskSeq);
         taskService.updatePriority(priorityCode,taskSeq);
     }

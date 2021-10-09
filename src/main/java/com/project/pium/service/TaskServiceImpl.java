@@ -72,7 +72,11 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void updateMilestone(long mileSeq, long taskSeq){
-        taskMapper.updateMilestone(mileSeq,taskSeq);
+        if(mileSeq==0){
+            taskMapper.deleteMilestone(taskSeq);
+        }else{
+            taskMapper.updateMilestone(mileSeq,taskSeq);
+        }
     }
 
     @Override
@@ -91,7 +95,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void updatePriority(int priorityCode, long taskSeq){
+    public void updatePriority(String priorityCode, long taskSeq){
         taskMapper.updatePriority(priorityCode,taskSeq);
     }
 

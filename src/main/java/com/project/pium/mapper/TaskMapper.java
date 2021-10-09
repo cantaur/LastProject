@@ -32,6 +32,8 @@ public interface TaskMapper {
     void updateContent(@Param("task_content") String teskContent, @Param("task_seq") long taskSeq);
     //마일스톤 변경하기
     void updateMilestone(@Param("milestone_seq") long mileSeq, @Param("task_seq") long taskSeq);
+    //마일스톤 빼기
+    void deleteMilestone(@Param("task_seq") long taskSeq);
     //날짜 업데이트
     void updateDate(TaskDTO task);
     //업무 date들 null로 셋팅
@@ -39,7 +41,7 @@ public interface TaskMapper {
     //task_member테이블에 projmember_seq, task_seq셋팅
     void insertTaskMember(TaskmemberDTO taskmember);
     //업무 중요도 셋팅하기
-    void updatePriority(@Param("priority_code") int priorityCode, @Param("task_seq") long taskSeq);
+    void updatePriority(@Param("priority_code") String priorityCode, @Param("task_seq") long taskSeq);
     //업무 라벨 셋팅하기
     void updateLabel(@Param("label_seq") long labelSeq, @Param("task_seq") long taskSeq);
     //업무상태 마감으로 변경
