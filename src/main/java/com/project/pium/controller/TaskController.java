@@ -56,7 +56,7 @@ public class TaskController {
 
         return taskInfo;
 
-        
+
     }
 
 
@@ -65,9 +65,9 @@ public class TaskController {
     @PostMapping("/ajax/updateTaskTitle")
     public void updateTitle(@RequestBody Map<String,Object> param){
         Long taskSeq = Long.valueOf(String.valueOf(param.get("taskSeq"))); //task_seq
-        String teskTitle = String.valueOf(param.get("teskTitle"));
-        log.info("teskTitle : "+teskTitle+", taskSeq : "+taskSeq);
-        taskService.updateTitle(teskTitle,taskSeq);
+        String taskTitle = String.valueOf(param.get("taskTitle"));
+        log.info("taskTitle : "+taskTitle+", taskSeq : "+taskSeq);
+        taskService.updateTitle(taskTitle,taskSeq);
     }
 
     //content update
@@ -75,9 +75,9 @@ public class TaskController {
     @PostMapping("/ajax/updateTaskCont")
     public void updateContent(@RequestBody Map<String,Object> param){
         Long taskSeq = Long.valueOf(String.valueOf(param.get("taskSeq"))); //task_seq
-        String teskContent = String.valueOf(param.get("teskContent"));
-        log.info("teskContent : "+teskContent+", taskSeq : "+taskSeq);
-        taskService.updateContent(teskContent,taskSeq);
+        String taskContent = String.valueOf(param.get("taskContent"));
+        log.info("taskContent : "+taskContent+", taskSeq : "+taskSeq);
+        taskService.updateContent(taskContent,taskSeq);
     }
 
     //마일스톤 변경하기
@@ -208,12 +208,12 @@ public class TaskController {
     public List<TaskDTO> taskList(@PathVariable long projSeq){
         return taskService.taskList(projSeq);
     }
-    
+
     //해당 마일스톤에서 생성된 전체 업무리스트(검증X)
     @GetMapping("/ajax/task/{mileSeq}")
     public List<TaskDTO> taskListByMile(@PathVariable long mileSeq){return taskService.taskListByMile(mileSeq);}
 
-    
+
 
 
 

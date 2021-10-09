@@ -107,14 +107,14 @@ function TaskModal(p){
         task_duedate:''
       })
     })
-    
+
   }
-  
+
 
   // 탭 상태관리
   let [tabState, tabStateCng] = useState(0);
 
-  
+
   //제목 수정모드
   let [editTitle, editTitleCng] = useState(false);
   const titleEditInput = useRef();
@@ -161,7 +161,7 @@ function TaskModal(p){
     editTitleCng(false)
     editContentCng(false)
     editLabelCng(false)
-    
+
   },[p.taskModalData])
 
   console.log(p.taskModalData)
@@ -181,25 +181,31 @@ function TaskModal(p){
         </Modal.Footer>
       </Modal>
       <div className={"taskModalWrap " + (p.taskModal?'on':'')}>
-        
+
         <div className="head">
           <div className="titleWrap">
-            <input className={"title " + (editTitle?'on ':'') + (titleAlert?'msg ':'')} 
-              disabled={editTitle?false:true} 
-              value={titleData} 
+            <input className={"title " + (editTitle?'on ':'') + (titleAlert?'msg ':'')}
+              disabled={editTitle?false:true}
+              value={titleData}
               ref={titleEditInput}
               onChange={e=>{
                 titleDataCng(e.target.value)
               }}
               onKeyPress={e=>{
                 if(e.key == 'Enter'){
-                  if(titleData) {
-                    titleAlertCng(false)
+                  p.dispatch({type:'loadingOn'})
+                  axios.post(host+'/ajax/updateTaskTitle',{
+                    taskSeq:p.taskModalData.task_seq,
+                    taskTitle:titleData,
+                  })
+                  .then(r=>{
+                    p.dispatch({type:'loadingOff'})
                     editTitleCng(false)
-                  }else{
-                    titleAlertCng(true)
-                    titleEditInput.current.focus();
-                  }
+                  })
+                  .catch(e=>{
+                    console.log(e)
+                    p.dispatch({type:'loadingOff'})
+                  })
                 }
               }}
             />
@@ -207,13 +213,19 @@ function TaskModal(p){
               editTitle
               ?
                 <p className="submitBtn labelEditBtn" onClick={()=>{
-                  if(titleData) {
-                    titleAlertCng(false)
-                    editTitleCng(false)
-                  }else{
-                    titleAlertCng(true)
-                    titleEditInput.current.focus();
-                  }
+                  p.dispatch({type:'loadingOn'})
+                  axios.post(host+'/ajax/updateTaskTitle',{
+                    taskSeq:p.taskModalData.task_seq,
+                    taskTitle:titleData,
+                  })
+                      .then(r=>{
+                        p.dispatch({type:'loadingOff'})
+                        editTitleCng(false)
+                      })
+                      .catch(e=>{
+                        console.log(e)
+                        p.dispatch({type:'loadingOff'})
+                      })
                 }}>수정완료</p>
               :
                 <i class="fas fa-pen editBtn labelEditBtn" onClick={()=>{
@@ -224,15 +236,15 @@ function TaskModal(p){
                 }}></i>
 
             }
-            
+
           </div>
-          
+
           <div className="info">
             <div className="profile">
               <div className="img">
                 <img src={
                   writerData.projmember_data
-                  ? 
+                  ?
                   'data:image;base64,'+writerData.projmember_data
                   :
                     pub.img+'defaultProfile.svg'
@@ -259,7 +271,7 @@ function TaskModal(p){
               onClick={()=>{tabStateCng(0)}}>
             상세보기
           </p>
-          <p className={"navBtn "+(tabState==1?'on':'')} 
+          <p className={"navBtn "+(tabState==1?'on':'')}
               style={{
                 color:(tabState==1?taskColor:''),
                 borderColor:(tabState==1?taskColor:''),
@@ -268,7 +280,7 @@ function TaskModal(p){
               onClick={()=>{tabStateCng(1)}}>
             코멘트
           </p>
-          <p className={"navBtn "+(tabState==2?'on':'')} 
+          <p className={"navBtn "+(tabState==2?'on':'')}
               style={{
                 color:(tabState==2?taskColor:''),
                 borderColor:(tabState==2?taskColor:''),
@@ -295,12 +307,25 @@ function TaskModal(p){
                 </div>
                 <div className="conBtn submitBtn toolTipTopBox" onClick={()=>{
                   editContentCng(false)
+                  p.dispatch({type:'loadingOn'})
+                  axios.post(host+'/ajax/updateTaskCont',{
+                    taskSeq:p.taskModalData.task_seq,
+                    taskContent:contentData,
+                  })
+                      .then(r=>{
+                        p.dispatch({type:'loadingOff'})
+                        editContentCng(false)
+                      })
+                      .catch(e=>{
+                        p.dispatch({type:'loadingOff'})
+                        console.log(e)
+                      })
                 }}
                 >
                   수정완료
                 </div>
                 <textarea className="conArea" ref={conArea}
-                  readOnly={editContent?false:true} 
+                  readOnly={editContent?false:true}
                   placeholder="업무내용이 없습니다."
                   value={contentData}
                   onChange={e=>{
@@ -311,13 +336,19 @@ function TaskModal(p){
               <p className="menuTitle">속성변경</p>
               <div className="statusRow">
                 <p className="label">마일스톤</p>
-                
+
                 <Form.Select size="sm" className="mileSelect">
                   {
                     p.mileStoneList &&
                       p.mileStoneList.map((r, i) =>{
                         return(
-                          <option value={r.milestone_seq} selected={r.milestone_seq==p.taskModalData.milestone_seq?true:false}>{r.milestone_title}</option>
+                          <option value={r.milestone_seq}
+                                  selected={r.milestone_seq==p.taskModalData.milestone_seq?true:false}
+                                  onchange(()=>{
+
+                                  })
+                          >{r.milestone_title}</option>
+
                         )
                       })
                   }
@@ -339,7 +370,7 @@ function TaskModal(p){
                     {dateData.task_duedate?' '+dateData.task_duedate:''}
                   </p>
                   }
-                  
+
                   <div className="dateBtn" onClick={
                     ()=>{
                       p.dispatch({type:'modalOn'})
@@ -372,8 +403,8 @@ function TaskModal(p){
                   <div className="memberWrap">
                     {
                       p.taskModalData.taskMembers &&
-                      p.taskModalData.taskMembers.length > 0 
-                      ? 
+                      p.taskModalData.taskMembers.length > 0
+                      ?
                         p.taskModalData.taskMembers.map(r=>{
                           let name = '';
                           let data = '';
@@ -383,7 +414,7 @@ function TaskModal(p){
                               data = m.projmember_data;
                             }
                           })
-                          
+
                           return(
                             <div className="profileImg toolTipTopBox" onClick={()=>{
                               deleteMemberAlertCng(true)
@@ -397,7 +428,7 @@ function TaskModal(p){
                               <div>
                                 <img src={
                                   data
-                                  ? 
+                                  ?
                                   'data:image;base64,'+data
                                   :
                                     pub.img+'defaultProfile.svg'
@@ -409,7 +440,7 @@ function TaskModal(p){
                       :
                         <p className="msg">멤버 없음</p>
                     }
-                    
+
 
                   </div>
                   <div className="chargeBtn"
@@ -418,7 +449,7 @@ function TaskModal(p){
                             appendMemberModalCng(true)
                             window.addEventListener('click', appendMemberModalClose)
                           })
-                          
+
                         }}
                   >
                     <i class="fas fa-plus-square"></i>
@@ -431,7 +462,7 @@ function TaskModal(p){
                               <div className="profile">
                                 <img src={
                                   r.projmember_data
-                                  ? 
+                                  ?
                                   'data:image;base64,'+r.projmember_data
                                   :
                                     pub.img+'defaultProfile.svg'
@@ -446,12 +477,12 @@ function TaskModal(p){
                           )
                         })
                       }
-                      
-                      
+
+
                     </div>
                   </div>
                 </div>
-                
+
               </div>
               <div className="statusRow">
                 <p className="label">라벨</p>
@@ -490,7 +521,7 @@ function TaskModal(p){
                           .catch(e=>{
                             console.log(e)
                           })
-                          
+
                         }}>수정완료</p>
                       </>
                     :
@@ -552,7 +583,7 @@ function TaskModal(p){
             </>
           }
         </div>
-        
+
 
 
       </div>
@@ -569,7 +600,6 @@ function transReducer(state){
     mileStoneList : state.mileStoneList,
     projectInfo : state.projectInfo,
     memberList : state.memberList,
-    taskModalData : state.taskModalData,
     refresh : state.refresh,
   }
 }

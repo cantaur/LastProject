@@ -14,11 +14,13 @@ function ProjectChart(p) {
     const [countTaskChart, setCountTaskChart] = useState([]);
     const [countTask, setCountTask] = useState([]);
 
+    const prjTitle = p.projectInfo.project_title;
     const prjSeq = p.projectInfo.project_seq;
     const prjMSeq = p.memberList[0].projmember_seq;
     const MSeq = p.projectInfo.member_seq;
-    console.log(MSeq);
     const history = useHistory();
+
+    console.log(p.projectInfo.project_title);
 
     useEffect(() => {
         axios
@@ -61,7 +63,7 @@ function ProjectChart(p) {
             </div>
             <div>
                 <div className="project-title">
-                    <h1>프로젝트 이름</h1>
+                    <h1><Title/></h1>
                 </div>
                 <div className="project-progress-bar">
                     <h3>프로젝트 개요</h3>
@@ -127,7 +129,7 @@ function ProjectChart(p) {
                             options={{
                                 title: '할당된 업무',
                                 is3D: true,
-                                legend: 'none', //범례 컨트롤
+                                // legend: 'none', //범례 컨트롤
                                 width: '100%',
                                 chartArea: {
                                     left: 30,
@@ -183,10 +185,66 @@ function ProjectChart(p) {
                             rootProps={{'data-testid': '3'}}
                         />
                     </div>
+                    {/*네번째 차트*/}
+                    <div className={'chartLine-child-4'}>
+                        <Chart
+                            width={'100%'}
+                            height={'300px'}
+                            chartType="Bar"
+                            loader={<div>로딩중...</div>}
+                            data={[
+                                ['Year', '세일즈', 'Expenses'],
+                                ['2014', 1000, 400],
+                                ['2015', 1170, 460],
+                                ['2016', 660, 1120],
+                                ['2017', 1030, 540],
+
+                            ]}
+                            options={{
+                                chart:{
+                                    title: '프로젝트 어벤져스',
+                                },
+                                bars: 'horizontal', // 'vertical' 'horizontal'
+
+
+                            }}
+
+                            rootProps={{'data-testid':'2'}}
+                        />
+                    </div>
+                    {/*다섯번째 차트*/}
+                    <div className={'chartLine-child-5'}>
+                        <Chart
+                            width={'100%'}
+                            height={'300px'}
+                            chartType="Bar"
+                            loader={<div>로딩중...</div>}
+                            data={[
+                                ['Year', 'Sales', 'Expenses', 'Profit'],
+                                ['2014', 1000, 400, 200],
+                                ['2015', 1170, 460, 250],
+                                ['2016', 660, 1120, 300],
+                                ['2017', 1030, 540, 350],
+
+                            ]}
+                            options={{
+                                chart:{
+                                    title: 'Company Performance',
+                                    subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+                                },
+                            }}
+                            rootProps={{'data-testid':'2'}}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
     )
+    function Title(p) {
+        return(
+            prjTitle
+        );
+    }
 }
 
 function transReducer(state){
