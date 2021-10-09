@@ -111,6 +111,7 @@ function TaskModal(p){
         task_duedate:''
       })
       taskRefresh()
+      p.dispatch({type:'modalOff'})
     })
 
   }
@@ -200,8 +201,8 @@ function TaskModal(p){
             })
             .then(r=>{
               p.dispatch({type:'loadingOff'})
+              p.dispatch({type:'refreshCng'})
               taskAlertClose()
-              taskRefresh()
             })
             .catch(e=>{
               p.dispatch({type:'loadingOff'})
@@ -224,7 +225,7 @@ function TaskModal(p){
                 titleDataCng(e.target.value)
               }}
               onKeyPress={e=>{
-                if(e.key == 'Enter'){
+                if(e.key === 'Enter'){
                   p.dispatch({type:'loadingOn'})
                   axios.post(host+'/ajax/updateTaskTitle',{
                     taskSeq:p.taskModalData.task_seq,
@@ -241,6 +242,12 @@ function TaskModal(p){
                   })
                 }
               }}
+             onKeyDown={e=>{
+             if(e.key === 'Escape'){
+                 editTitleCng(false)
+                 taskRefresh()
+               }
+             }}
             />
             {
               editTitle
@@ -338,22 +345,23 @@ function TaskModal(p){
 
                   <i class="fas fa-pen"></i>
                 </div>
-                <div className="conBtn submitBtn toolTipTopBox" onClick={()=>{
+                <div className="conBtn submitBtn toolTipTopBox"
+                     onClick={()=>{
                   editContentCng(false)
                   p.dispatch({type:'loadingOn'})
                   axios.post(host+'/ajax/updateTaskCont',{
                     taskSeq:p.taskModalData.task_seq,
                     taskContent:contentData,
                   })
-                      .then(r=>{
-                        p.dispatch({type:'loadingOff'})
-                        editContentCng(false)
-                      })
-                      .catch(e=>{
-                        p.dispatch({type:'loadingOff'})
-                        console.log(e)
-                      })
-                }}
+                  .then(r=>{
+                    p.dispatch({type:'loadingOff'})
+                    editContentCng(false)
+                  })
+                  .catch(e=>{
+                    p.dispatch({type:'loadingOff'})
+                    console.log(e)
+                  })
+                  }}
                 >
                   수정완료
                 </div>
@@ -363,6 +371,12 @@ function TaskModal(p){
                   value={contentData}
                   onChange={e=>{
                     contentDataCng(e.target.value)
+                  }}
+                  onKeyDown={e=>{
+                    if(e.key === 'Escape'){
+                      editContentCng(false)
+                      taskRefresh()
+                    }
                   }}
                 ></textarea>
               </div>
@@ -549,12 +563,19 @@ function TaskModal(p){
                             })
                             .then(r=>{
                               editLabelCng(false)
+                              taskRefresh()
                             })
                             .catch(e=>{
                               console.log(e)
                             })
                           }
                         }}
+                       onKeyDown={e=>{
+                         if(e.key === 'Escape'){
+                           editContentCng(false)
+                           taskRefresh()
+                         }
+                       }}
                         />
                         <p className="submitBtn labelEditBtn" onClick={()=>{
                           axios.post(host+'/ajax/addLabel',{
@@ -563,6 +584,7 @@ function TaskModal(p){
                           })
                           .then(r=>{
                             editLabelCng(false)
+                            taskRefresh()
                           })
                           .catch(e=>{
                             console.log(e)
@@ -644,9 +666,6 @@ function TaskModal(p){
             </>
           }
         </div>
-
-
-
       </div>
     </>
   )

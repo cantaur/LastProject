@@ -27,12 +27,12 @@ function Calendar(p){
   const memoListGetFunc = () => {
     axios.get(host+'/ajax/calList/'+p.projectInfo.project_seq)
     .then(r=>{
-      
+
       let taskList = r.data[0].taskListProj
       let calendarList = r.data[0].calListProj
       let memoListDummy = [];
       taskList.forEach(r=>{
-        if(r.task_startdate){
+        if(r.task_startdate && r.task_isdelete=='0'){
           memoListDummy.push(
             {
               title : r.task_title,
@@ -49,7 +49,7 @@ function Calendar(p){
       })
 
       calendarList.forEach(r=>{
-        
+
         memoListDummy.push(
           {
             title : r.calendar_title,
@@ -58,7 +58,7 @@ function Calendar(p){
             start : r.calendar_startdate,
             end:r.calendar_enddate,
             backgroundColor:"#273646",
-            
+
           },
         )
       })
@@ -154,7 +154,7 @@ function Calendar(p){
 
   useEffect(()=>{
     p.dispatch({type:'loadingOn'})
-    memoListGetFunc();    
+    memoListGetFunc();
   },[p.projectInfo, p.pageInfo, p.refresh])
 
   return(
@@ -300,7 +300,7 @@ function Calendar(p){
                 )
 
                 p.dispatch({type:'taskModalCng',val:true})
-              
+
                 setTimeout(()=>{
                   window.addEventListener('click', taskModalClose)
                 })
@@ -311,14 +311,14 @@ function Calendar(p){
                 p.dispatch({type:'loadingOff'})
 
               })
-              
+
             }
           }}
-          eventDrop={e=>{    
+          eventDrop={e=>{
             memoQuickEditFunc(e)
           }}
           eventResize={e=>{
-            memoQuickEditFunc(e)          
+            memoQuickEditFunc(e)
           }}
         />
       </div>
@@ -355,7 +355,7 @@ function CreateDateModal(p) {
           <Alert variant={'danger'} style={{fontSize:'.8rem',marginBottom:'.4rem'}}>날짜를 지정해주세요. &#x1F602;</Alert>
           : null
         }
-        
+
         <Form.Group className="mb-2 piumInput" controlId="floatingInput">
           <FloatingLabel
             controlId="floatingInput"
@@ -369,7 +369,7 @@ function CreateDateModal(p) {
             }}/>
           </FloatingLabel>
         </Form.Group>
-        
+
 
         <Form.Group className=" piumInput" controlId="floatingTextarea">
           <FloatingLabel controlId="floatingTextarea" label="내용">
@@ -404,12 +404,12 @@ function CreateDateModal(p) {
           </p>
           <p className="dateInfo">
             {p.createData.calendar_startdate?(p.createData.calendar_startdate + " ~ "):''}
-            
+
             {p.createData.calendar_enddate?p.createData.calendar_enddate:''}
 
           </p>
         </div>
-        
+
       </Modal.Body>
       <Modal.Footer className="modalBtnWrap">
         <Button className="modalBtn" onClick={()=>{
@@ -456,7 +456,7 @@ function CreateDateModal(p) {
           }
         }}>만들기</Button>
 
-        
+
 
       </Modal.Footer>
     </Modal>
@@ -491,7 +491,7 @@ function EditModal(p){
           <Alert variant={'danger'} style={{fontSize:'.8rem',marginBottom:'.4rem'}}>날짜를 지정해주세요. &#x1F602;</Alert>
           : null
         }
-        
+
         <Form.Group className="mb-2 piumInput" controlId="floatingInput">
           <FloatingLabel
             controlId="floatingInput"
@@ -505,7 +505,7 @@ function EditModal(p){
             }}/>
           </FloatingLabel>
         </Form.Group>
-        
+
 
         <Form.Group className=" piumInput" controlId="floatingTextarea">
           <FloatingLabel controlId="floatingTextarea" label="내용">
@@ -540,12 +540,12 @@ function EditModal(p){
           </p>
           <p className="dateInfo">
             {p.editData.calendar_startdate?(p.editData.calendar_startdate + " ~ "):''}
-            
+
             {p.editData.calendar_enddate?p.editData.calendar_enddate:''}
 
           </p>
         </div>
-        
+
       </Modal.Body>
       <Modal.Footer className="modalBtnWrap del">
         <Button className="modalBtn danger" onClick={()=>{
@@ -608,7 +608,7 @@ function EditModal(p){
           }
         }}>수정하기</Button>
 
-        
+
 
       </Modal.Footer>
     </Modal>
