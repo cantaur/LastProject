@@ -63,21 +63,30 @@ public class TaskController {
 
 
     //title update
+    @ResponseBody
     @PostMapping("/ajax/updateTaskTitle")
-    public void updateTitle(@RequestBody TaskDTO taskdto){
-        taskService.updateTitle(taskdto);
+    public void updateTitle(@RequestBody Map<String,Object> param){
+        Long taskSeq = Long.valueOf(String.valueOf(param.get("taskSeq"))); //task_seq
+        String teskTitle = String.valueOf(param.get("teskTitle"));
+        taskService.updateTitle(teskTitle,taskSeq);
     }
 
     //content update
+    @ResponseBody
     @PostMapping("/ajax/updateTaskCont")
-    public void updateContent(@RequestBody TaskDTO taskdto){
-        taskService.updateContent(taskdto);
+    public void updateContent(@RequestBody Map<String,Object> param){
+        Long taskSeq = Long.valueOf(String.valueOf(param.get("taskSeq"))); //task_seq
+        String teskContent = String.valueOf(param.get("teskContent"));
+        taskService.updateContent(teskContent,taskSeq);
     }
 
     //마일스톤 변경하기
+    @ResponseBody
     @PostMapping("/ajax/changeMile")
-    public void updateMilestone(@RequestBody TaskDTO taskdto){
-        taskService.updateMilestone(taskdto);
+    public void updateMilestone(@RequestBody Map<String,Integer> param){
+        Long taskSeq= Long.valueOf(param.get("taskSeq")); //task_seq
+        Long mileSeq= Long.valueOf(param.get("mileSeq")); //mileSeq
+        taskService.updateMilestone(mileSeq,taskSeq);
     }
 
 
@@ -125,9 +134,12 @@ public class TaskController {
     }
 
     //업무에 중요도 셋팅하기
+    @ResponseBody
     @PostMapping("/ajax/updatePriority")
-    public void updatePriority(@RequestBody TaskDTO taskdto){
-        taskService.updatePriority(taskdto);
+    public void updatePriority(@RequestBody Map<String,Integer> param){
+        Long taskSeq= Long.valueOf(param.get("taskSeq")); //task_seq
+        int priorityCode= param.get("priorityCode"); //mileSeq
+        taskService.updatePriority(priorityCode,taskSeq);
     }
 
 

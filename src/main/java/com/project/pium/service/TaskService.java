@@ -22,11 +22,11 @@ public interface TaskService {
     //업무를 클릭하였을 때 업무 상세보기
     TaskDTO showTaskByTaskseq(long taskSeq);
     //title update
-    void updateTitle(TaskDTO task);
+    void updateTitle(String teskTitle, long taskSeq);
     //content update
-    void updateContent(TaskDTO task);
+    void updateContent(String teskContent, long taskSeq);
     //마일스톤 변경하기
-    void updateMilestone(TaskDTO task);
+    void updateMilestone(long mileSeq, long taskSeq);
     //날짜 비우기
     void setTaskDateEmpty(long taskSeq);
     //날짜 업데이트
@@ -34,7 +34,7 @@ public interface TaskService {
     //task_member에 추가하기
     void insertTaskMember(TaskmemberDTO taskmember);
     //업무 중요도 셋팅하기
-    void updatePriority(TaskDTO task);
+    void updatePriority(int priorityCode, long taskSeq);
     //라벨 셋팅
     String chkLabel(String labelTitle);
     Long findLabelSeq(String labelTitle);

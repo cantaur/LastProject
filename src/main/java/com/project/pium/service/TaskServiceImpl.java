@@ -61,18 +61,18 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.showTaskByTaskseq(taskSeq);
     }
     @Override
-    public void updateTitle(TaskDTO task){
-        taskMapper.updateTitle(task);
+    public void updateTitle(String teskTitle, long taskSeq){
+        taskMapper.updateTitle(teskTitle,taskSeq);
     }
 
     @Override
-    public void updateContent(TaskDTO task){
-        taskMapper.updateContent(task);
+    public void updateContent(String teskContent, long taskSeq){
+        taskMapper.updateContent(teskContent,taskSeq);
     }
 
     @Override
-    public void updateMilestone(TaskDTO task){
-        taskMapper.updateMilestone(task);
+    public void updateMilestone(long mileSeq, long taskSeq){
+        taskMapper.updateMilestone(mileSeq,taskSeq);
     }
 
     @Override
@@ -91,8 +91,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void updatePriority(TaskDTO task){
-        taskMapper.updatePriority(task);
+    public void updatePriority(int priorityCode, long taskSeq){
+        taskMapper.updatePriority(priorityCode,taskSeq);
     }
 
     //label_title 넣어서 있는지 없는지 조사

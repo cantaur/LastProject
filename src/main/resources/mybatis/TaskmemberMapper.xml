@@ -32,10 +32,6 @@
     </select>
 
 
-    <!-- 추가 -->
-    <insert id="insertByTm" parameterType="TaskmemberDTO">
-        insert into task_member(task_seq, projmember_seq) values (#{task_seq}, #{projmember_seq})
-    </insert>
     <!-- 삭제 -->
     <delete id="delete" parameterType="long">
         delete from task_member where taskmember_seq = #{taskmember_seq}
