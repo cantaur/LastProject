@@ -72,6 +72,7 @@ public class TaskController {
 
     }
 
+    //업무페이지>업무리스트
     //해당 프로젝트에서 생성된 모든 업무 리스트
     @GetMapping("/ajax/{projSeq}/tasklist")
     public ArrayList<Object> taskList(@PathVariable long projSeq){
@@ -83,8 +84,13 @@ public class TaskController {
             //결과로 나온 업무리스트의 label_seq를 뽑아서 업무에 있는 label_title을 뽑는다
             LabelDTO labelDTO = taskService.findLabelTitle(taskDTO.getLabel_seq());
 
+            //결과로 나온 업무리스트에서 task_seq를 뽑아서 업무당 배정된 멤버를 뽑아와서 새 배열에 넣는다.
+            List<TaskmemberDTO> taskmemberDTOS= taskmemberService.selectByTaskSeq(taskDTO.getTask_seq());
+
             tempTask.put("task", taskDTO);
+            tempTask.put("taskMembers",taskmemberDTOS);
             tempTask.put("label", labelDTO);
+
             taskAllInfo.add(tempTask);
         }
         return taskAllInfo;
