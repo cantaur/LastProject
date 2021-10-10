@@ -46,6 +46,7 @@ function Task(p){
     task_startdate:'',
     task_duedate:'',
     milestone_seq:'0',
+    projmember_seq:'',
     project_seq:p.prjSeq,
   });
 
@@ -203,6 +204,10 @@ function Task(p){
           <>
             <div className="toolTipTopBox">
               <p className="createBtn" style={{backgroundColor:p.prjColor}} onClick={()=>{
+                taskInfoCng({
+                  ...taskInfo,
+                  projmember_seq:p.myMemberInfo.projmember_seq
+                })
                 createModalCng(true)
                 setTimeout(()=>{
                   titleInput.current.focus();
@@ -221,6 +226,7 @@ function Task(p){
                     task_startdate:'',
                     task_duedate:'',
                     milestone_seq:'0',
+                    projmember_seq:'',
                     project_seq:p.prjSeq,
                   })
                   chargeMemberCng([])
@@ -506,7 +512,7 @@ function TaskCreateModal(p) {
           </Form.Group>
 
 
-          <textarea className="taskConInput form-control" name="task_content" placeholder="설명" onChange={p.taskInfoChange}></textarea>
+          <textarea className="taskConInput form-control" name="task_content" placeholder="설명" onChange={p.taskInfoChange} spellCheck={false}></textarea>
 
           <p className="subTitle">마일스톤</p>
           <Form.Select name="milestone_seq" onChange={p.taskInfoChange}>
