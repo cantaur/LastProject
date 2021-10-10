@@ -7,12 +7,10 @@ import com.project.pium.service.TaskService;
 import com.project.pium.service.TaskmemberService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
-import org.apache.tomcat.util.digester.ArrayStack;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Log
@@ -28,20 +26,19 @@ public class TaskController {
     public void createTask(@RequestBody Map<String,Object> param) throws ParseException {
         log.info("#param: "+param);
         //1. TaskDTO 객체 생성
+        TaskDTO taskDTO = new TaskDTO();
         Map<String,Object> temp = (Map<String, Object>) param.get("taskInfo");
         String task_title= temp.get("task_title").toString();
         String task_content= temp.get("task_content").toString();
         
         Long projmember_seq= Long.valueOf(temp.get("projmember_seq").toString());
-        // Long milestone_seq= Long.valueOf(temp.get("milestone_seq").toString());
-        Long milestone_seq = null;
+        Long milestone_seq= Long.valueOf(temp.get("milestone_seq").toString());
         Long project_seq= Long.valueOf(temp.get("project_seq").toString());
 
-
-        
+        //일정을 입력하지 않았을 경우
         if(temp.get("task_startdate") == ""){
-          TaskDTO taskDTO = new TaskDTO(-1,task_title,task_content,null,null,null,null,null,null,projmember_seq,milestone_seq,project_seq,null,-1);
-          taskService.createTask(taskDTO);
+          taskDTO = new TaskDTO(-1,task_title,task_content,null,null,null,null,null,null,
+                  projmember_seq,milestone_seq,project_seq,null,-1);
         } else {
             String tempStartdate= temp.get("task_startdate").toString();
             String tempDuedate= temp.get("task_duedate").toString();
@@ -49,9 +46,18 @@ public class TaskController {
             Timestamp task_startdate = Timestamp.valueOf(temp.get("task_startdate").toString()+" 00:00:00.0");
             Timestamp task_duedate = Timestamp.valueOf(temp.get("task_duedate").toString()+" 00:00:00.0");
 
-            TaskDTO taskDTO = new TaskDTO(-1,task_title,task_content,null,null,task_startdate,task_duedate,null,null,projmember_seq,milestone_seq,project_seq,null,-1);
-            taskService.createTask(taskDTO);
+            taskDTO = new TaskDTO(-1,task_title,task_content,null,null,task_startdate,task_duedate,
+                    null,null,projmember_seq,milestone_seq,project_seq,null,-1);
+
         }
+
+        //마일스톤을 선택하지 않았을 경우
+        if(milestone_seq ==0L){
+            taskDTO.setMilestone_seq(null);
+        }
+
+        log.info("#taskDTO : "+taskDTO);
+        taskService.createTask(taskDTO);
 
         
 
@@ -68,18 +74,30 @@ public class TaskController {
 
     //해당 프로젝트에서 생성된 모든 업무 리스트
     @GetMapping("/ajax/{projSeq}/tasklist")
-    public List<TaskDTO> taskList(@PathVariable long projSeq){
-        return taskService.taskList(projSeq);
+    public ArrayList<Object> taskList(@PathVariable long projSeq){
+        ArrayList<Object> taskAllInfo = new ArrayList<>();
+        List<TaskDTO> tasks= taskService.taskList(projSeq);
+        for(TaskDTO taskDTO : tasks){
+            LinkedHashMap<String,Object> tempTask = new LinkedHashMap<>();
+
+            //결과로 나온 업무리스트의 label_seq를 뽑아서 업무에 있는 label_title을 뽑는다
+            LabelDTO labelDTO = taskService.findLabelTitle(taskDTO.getLabel_seq());
+
+            tempTask.put("task", taskDTO);
+            tempTask.put("label", labelDTO);
+            taskAllInfo.add(tempTask);
+        }
+        return taskAllInfo;
     }
 
-    //해당 마일스톤에서 생성된 전체 업무리스트
+    //해당 마일스톤에서 생성된 전체 업무리스트 (Test7.js에서 사용)
     @GetMapping("/ajax/task/{mileSeq}")
     public List<TaskDTO> taskListByMile(@PathVariable long mileSeq){
         return taskService.taskListByMile(mileSeq);
     }
 
 
-    //업무를 클릭하였을때 나오는 업무 상세보기
+    //업무를 클릭하였을때 나오는 업무 상세보기(업무 모달)
     @GetMapping("/ajax/taskView/{taskSeq}")
     public ArrayList<Object> showTaskByTaskseq(@PathVariable long taskSeq){
         //빈 배열 선언 및 초기화
