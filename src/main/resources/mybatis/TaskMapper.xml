@@ -5,6 +5,17 @@
 <mapper namespace="com.project.pium.mapper.TaskMapper">
 
 
+    <!--새 업무 셋팅-->
+    <insert id="createTask" parameterType="TaskDTO">
+        insert into task(task_title, task_content, task_startdate, task_duedate, task_date, projmember_seq, milestone_seq, project_seq)
+        values(#{task_title}, #{task_content}, #{task_startdate}, ADDTIME(#{task_duedate},'0 1:1:1.000002'), now(), #{projmember_seq}, #{milestone_seq}, #{project_seq})
+    </insert>
+    <!--해당 프로젝트에서 생성된 업무 리스트-->
+    <select id="taskList" parameterType="long" resultType="TaskDTO">
+        SELECT * FROM task WHERE project_seq = #{project_seq}
+    </select>
+
+
     <!--    해당 마일스톤에서 생성된 업무 갯수-->
     <select id="countTask" parameterType="long" resultType="int">
         SELECT COUNT(task_seq) FROM task WHERE milestone_seq = #{milestone_seq}
@@ -67,7 +78,7 @@
         where task_seq=#{task_seq}
     </update>
     <!-- task_member에 추가하기 -->
-    <insert id="insertTaskMember" parameterType="TaskmemberDTO">
+    <insert id="updateTaskMember" parameterType="TaskmemberDTO">
         insert into task_member(task_seq, projmember_seq) values(#{task_seq}, #{projmember_seq})
     </insert>
 <!-- 업무 중요도 셋팅하기 -->
@@ -88,15 +99,7 @@
 
 
 
-    <!--새 업무 셋팅-->
-    <insert id="createTask" parameterType="TaskDTO">
-        insert into task(task_title, task_content, task_startdate, task_duedate, task_date, milestone_seq,project_seq)
-        values(#{task_title}, #{task_content}, #{task_startdate}, ADDTIME(#{task_duedate},'0 1:1:1.000002'), now(),#{milestone_seq},#{project_seq})
-    </insert>
-    <!--해당 프로젝트에서 생성된 업무 리스트-->
-    <select id="taskList" parameterType="long" resultType="TaskDTO">
-        SELECT * FROM task WHERE project_seq = #{project_seq}
-    </select>
+
     <!--업무상태 마감으로 변경-->
     <update id="updateStatusFinish" parameterType="long">
         UPDATE task Set task_status='1' Where task_seq=#{task_seq}

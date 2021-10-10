@@ -39,7 +39,7 @@ public interface TaskMapper {
     //업무 date들 null로 셋팅
     void setTaskDateEmpty(long taskSeq);
     //task_member테이블에 projmember_seq, task_seq셋팅
-    void insertTaskMember(TaskmemberDTO taskmember);
+    void updateTaskMember(@Param("task_seq") long taskSeq, @Param("projmember_seq") long projmemberSeq);
     //업무 중요도 셋팅하기
     void updatePriority(@Param("priority_code") String priorityCode, @Param("task_seq") long taskSeq);
     //업무 라벨 셋팅하기

@@ -32,7 +32,7 @@ public interface TaskService {
     //날짜 업데이트
     void updateDate(TaskDTO task);
     //task_member에 추가하기
-    void insertTaskMember(TaskmemberDTO taskmember);
+    void updateTaskMember(long taskSeq, long projmemberSeq);
     //업무 중요도 셋팅하기
     void updatePriority(String priorityCode, long taskSeq);
     //라벨 셋팅
@@ -58,6 +58,8 @@ public interface TaskService {
 
     //새 업무 생성하기
     void createTask(TaskDTO task);
+    //task_member에 추가하기
+    void insertTaskMember(long projmemberSeq);
 
     //해당 프로젝트에서 생성된 업무 리스트
     List<TaskDTO> taskList(long projSeq);

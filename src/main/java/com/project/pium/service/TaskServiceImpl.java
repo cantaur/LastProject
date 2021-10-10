@@ -4,6 +4,7 @@ import com.project.pium.domain.LabelDTO;
 import com.project.pium.domain.TaskDTO;
 import com.project.pium.domain.TaskmemberDTO;
 import com.project.pium.mapper.TaskMapper;
+import com.project.pium.mapper.TaskmemberMapper;
 import com.project.pium.mapper.WorklabelMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
@@ -18,7 +19,31 @@ import java.util.List;
 @Service
 public class TaskServiceImpl implements TaskService {
     private TaskMapper taskMapper;
+    private TaskmemberMapper taskmemberMapper;
     private WorklabelMapper worklabelMapper;
+
+
+
+
+    @Override
+    public void createTask(TaskDTO taskDTO) {
+        taskMapper.createTask(taskDTO);
+    }
+
+    @Override
+    public void insertTaskMember(long projmemberSeq){
+        long taskSeq = taskmemberMapper.lastTaskSeq();
+        taskMapper.updateTaskMember(taskSeq,projmemberSeq);
+    }
+
+    @Override
+    public List<TaskDTO> taskList(long projSeq) {
+        return taskMapper.taskList(projSeq);
+    }
+
+
+
+
 
 
     //마일스톤 페이지에서 씀. 지우면 안됨
@@ -90,8 +115,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void insertTaskMember(TaskmemberDTO taskmember){
-        taskMapper.insertTaskMember(taskmember);
+    public void updateTaskMember(long taskSeq, long projmemberSeq){
+        taskMapper.updateTaskMember(taskSeq,projmemberSeq);
     }
 
     @Override
@@ -147,32 +172,6 @@ public class TaskServiceImpl implements TaskService {
     public void updateIsdelete(long taskSeq){
         taskMapper.updateIsdelete(taskSeq);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @Override
-    public void createTask(TaskDTO taskDTO) {
-        taskMapper.createTask(taskDTO);
-    }
-
-    @Override
-    public List<TaskDTO> taskList(long projSeq) {
-        return taskMapper.taskList(projSeq);
-    }
-
-
-
-
 
 
 

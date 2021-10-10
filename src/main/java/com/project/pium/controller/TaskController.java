@@ -3,18 +3,17 @@ package com.project.pium.controller;
 import com.project.pium.domain.LabelDTO;
 import com.project.pium.domain.TaskDTO;
 import com.project.pium.domain.TaskmemberDTO;
-import com.project.pium.service.MemberService;
 import com.project.pium.service.TaskService;
 import com.project.pium.service.TaskmemberService;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
+import org.apache.tomcat.util.digester.ArrayStack;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Log
 @RestController
@@ -22,21 +21,54 @@ import java.util.Map;
 @ResponseBody
 public class TaskController {
     private TaskService taskService;
-    private MemberService memberService;
     private TaskmemberService taskmemberService;
 
-    //현재 로그인한 유저의 세션값 얻어오는 로직 모듈화
-    public String currentUserName(Principal principal){
-        if(principal ==null){
-            return "false";
-        }else{
-            String sessionEmail = principal.getName();
-            return sessionEmail;
+    //업무페이지>새 업무 생성
+    @PostMapping("/ajax/createTask")
+    public void createTask(@RequestBody Map<String,Object> param) throws ParseException {
+        log.info("#param: "+param);
+        //1. TaskDTO 객체 생성
+        Map<String,Object> temp = (Map<String, Object>) param.get("taskInfo");
+        String task_title= temp.get("task_title").toString();
+        String task_content= temp.get("task_content").toString();
+        String tempStartdate= temp.get("task_startdate").toString();
+        String tempDuedate= temp.get("task_duedate").toString();
+        Long projmember_seq= Long.valueOf(temp.get("projmember_seq").toString());
+        Long milestone_seq= Long.valueOf(temp.get("milestone_seq").toString());
+        Long project_seq= Long.valueOf(temp.get("project_seq").toString());
+
+        Timestamp task_startdate = Timestamp.valueOf(tempStartdate+" 00:00:00.0");
+        Timestamp task_duedate = Timestamp.valueOf(tempDuedate+" 00:00:00.0");
+
+        TaskDTO taskDTO = new TaskDTO(-1,task_title,task_content,null,null,task_startdate,task_duedate,null,null,projmember_seq,milestone_seq,project_seq,null,-1);
+        log.info("#taskDTO"+taskDTO);
+        taskService.createTask(taskDTO);
+
+        //2. TaskmemberDTO 객체 생성
+        ArrayList<Object> members = (ArrayList<Object>) param.get("memberInfo");
+        for(int i=0; i<members.size(); i++){
+            Long tempMember = Long.valueOf(members.get(i).toString());
+            log.info("이건 뭐지"+tempMember);
+            taskService.insertTaskMember(tempMember);
         }
+
+
     }
 
+    //해당 프로젝트에서 생성된 모든 업무 리스트
+    @GetMapping("/ajax/{projSeq}/tasklist")
+    public List<TaskDTO> taskList(@PathVariable long projSeq){
+        return taskService.taskList(projSeq);
+    }
+
+    //해당 마일스톤에서 생성된 전체 업무리스트
+    @GetMapping("/ajax/task/{mileSeq}")
+    public List<TaskDTO> taskListByMile(@PathVariable long mileSeq){
+        return taskService.taskListByMile(mileSeq);
+    }
+
+
     //업무를 클릭하였을때 나오는 업무 상세보기
-    //task 테이블만 오는데 여기다가 배정된 멤버의 리스트도 와야한다
     @GetMapping("/ajax/taskView/{taskSeq}")
     public ArrayList<Object> showTaskByTaskseq(@PathVariable long taskSeq){
         //빈 배열 선언 및 초기화
@@ -60,7 +92,7 @@ public class TaskController {
     }
 
 
-    //title update
+    //업무 모달>title update
     @ResponseBody
     @PostMapping("/ajax/updateTaskTitle")
     public void updateTitle(@RequestBody Map<String,Object> param){
@@ -70,7 +102,7 @@ public class TaskController {
         taskService.updateTitle(taskTitle,taskSeq);
     }
 
-    //content update
+    //업무 모달>content update
     @ResponseBody
     @PostMapping("/ajax/updateTaskCont")
     public void updateContent(@RequestBody Map<String,Object> param){
@@ -80,7 +112,7 @@ public class TaskController {
         taskService.updateContent(taskContent,taskSeq);
     }
 
-    //마일스톤 변경하기
+    //업무 모달>마일스톤 변경하기
     @ResponseBody
     @PostMapping("/ajax/changeMile")
     public void updateMilestone(@RequestBody Map<String,Integer> param){
@@ -91,7 +123,7 @@ public class TaskController {
     }
 
 
-    //task 날짜 비우기(get으로 task_seq 주면 date에 null 셋팅)
+    //업무 모달>task 날짜 비우기(get으로 task_seq 주면 date에 null 셋팅)
     @GetMapping("/ajax/setDateEmpty/{taskSeq}")
     public void setDateEmpty(@PathVariable long taskSeq){
         taskService.setTaskDateEmpty(taskSeq);
@@ -99,23 +131,25 @@ public class TaskController {
 
 
 
-    //날짜 업데이트
+    //업무 모달>날짜 업데이트
     @PostMapping("/ajax/updateTaskDate")
     public void updateDate(@RequestBody TaskDTO taskdto){
         log.info("taskdto : "+taskdto);
         taskService.updateDate(taskdto);
     }
 
-    //업무에 멤버 배정
+    //업무 모달>업무에 멤버 배정
     @PostMapping("/ajax/addMember")
-    public void addTaskmember(@RequestBody TaskmemberDTO taskmember){
-        log.info("#TaskController createTaskmember() : "+taskmember);
-        taskService.insertTaskMember(taskmember);
+    public void addTaskmember(@RequestBody Map<String,Object> param){
+        Long taskSeq = Long.valueOf(String.valueOf(param.get("taskSeq"))); //task_seq
+        Long projmemberSeq = Long.valueOf(String.valueOf(param.get("projmemberSeq")));
+
+        taskService.updateTaskMember(taskSeq,projmemberSeq);
     }
 
 
 
-    //업무에 라벨 넣기
+    //업무 모달>업무에 라벨 넣기
     @ResponseBody
     @PostMapping("/ajax/addLabel")
     public void addLabel(@RequestBody Map<String,Object> param){
@@ -134,7 +168,7 @@ public class TaskController {
         }
     }
 
-    //업무에 중요도 셋팅하기
+    //업무 모달>업무에 중요도 셋팅하기
     @ResponseBody
     @PostMapping("/ajax/updatePriority")
     public void updatePriority(@RequestBody Map<String,Integer> param){
@@ -146,7 +180,7 @@ public class TaskController {
 
 
 
-    //업무 상태 마감으로 변경
+    //업무 모달>업무 상태 마감으로 변경
     @ResponseBody
     @PostMapping("/ajax/closeTask")
     public void updateStatusFinish(@RequestBody Map<String,Integer> param){
@@ -154,7 +188,7 @@ public class TaskController {
         taskService.updateStatusFinish(taskSeq);
     }
 
-    //업무 다시 활성화 시키기
+    //업무 모달>업무 다시 활성화 시키기
     @ResponseBody
     @PostMapping("/ajax/openTask")
     public void updateStatusDefault(@RequestBody Map<String,Integer> param){
@@ -162,64 +196,12 @@ public class TaskController {
         taskService.updateStatusDefault(taskSeq);
     }
 
-    //업무 삭제상태로 변경
+    //업무 모달>업무 삭제상태로 변경
     @ResponseBody
     @PostMapping("/ajax/deleteTask")
     public void updateIsdelete(@RequestBody Map<String,Integer> param){
         Long taskSeq= Long.valueOf(param.get("taskSeq"));
         taskService.updateIsdelete(taskSeq);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //새 업무 생성
-    @PostMapping("/ajax/createTask")
-    public void createTask(@RequestBody TaskDTO taskDTO){
-        log.info("#TaskController insert() : "+taskDTO);
-        taskService.createTask(taskDTO);
-    }
-
-    //해당 프로젝트에서 생성된 모든 업무 리스트
-    @GetMapping("/ajax/{projSeq}/tasklist")
-    public List<TaskDTO> taskList(@PathVariable long projSeq){
-        return taskService.taskList(projSeq);
-    }
-
-    //해당 마일스톤에서 생성된 전체 업무리스트(검증X)
-    @GetMapping("/ajax/task/{mileSeq}")
-    public List<TaskDTO> taskListByMile(@PathVariable long mileSeq){return taskService.taskListByMile(mileSeq);}
-
-
-
-
-
-
-
-
 
 }
