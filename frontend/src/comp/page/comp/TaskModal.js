@@ -167,6 +167,22 @@ function TaskModal(p){
   let [editLabel, editLabelCng] = useState(false);
   const labelInput = useRef();
 
+
+  //코멘트
+
+  //코멘트 멤버배정
+  const [commentMember, commentMemberCng] = useState([]);
+  const [commentMemberModal, commentMemberModalCng] = useState(false);
+
+  const commentMemberModalClose =useCallback((e)=>{
+    if(!e.target.closest('.chargeBtn')){
+      commentMemberModalCng(false)
+      setTimeout(()=>{
+        window.removeEventListener('click', commentMemberModalClose)
+      })
+    }
+  },[])
+
   useEffect(()=>{
     titleDataCng(p.taskModalData.task_title)
     contentDataCng(p.taskModalData.task_content)
@@ -189,6 +205,10 @@ function TaskModal(p){
 
   },[p.taskModalData])
 
+  useEffect(()=>{
+    commentMemberCng([]);
+  },[tabState])
+
   return(
     <>
       <Modal show={deleteMemberAlert} onHide={alertClose} className="modalWrap deleteMemberModal">
@@ -200,7 +220,20 @@ function TaskModal(p){
             취소
           </Button>
           <Button variant="danger" style={{fontSize:'.8rem'}} onClick={()=>{
-            console.log(deleteMemberSeq)
+            p.dispatch({type:'loadingOn'})
+            axios.post('/ajax/deleteProjMember',{
+              taskSeq:p.taskModalData.task_seq,
+              projmemberSeq:deleteMemberSeq
+            })
+            .then(r=>{
+              taskRefresh();
+              alertClose()
+            })
+            .catch(e=>{
+              console.log(e)
+              p.dispatch({type:'loadingOff'})
+
+            })
           }}>
             제외
           </Button>
@@ -541,21 +574,23 @@ function TaskModal(p){
                         p.memberList.map(r=>{
                           return(
                             <div className="member" onClick={()=>{
-                              let findArr = p.taskModalData.taskMembers.find(r=> r.projmember_seq == 35)
-                              console.log(p.taskModalData.taskMembers)
+                              let findArr = p.taskModalData.taskMembers.find(rr=> rr.projmember_seq == r.projmember_seq)
+                              if(findArr==undefined){
+                                p.dispatch({type:'loadingOn'})
+                                axios.post(host+'/ajax/addMember',{
+                                  taskSeq:p.taskModalData.task_seq,
+                                  projmemberSeq:r.projmember_seq
+                                })
+                                .then(r=>{
+                                  taskRefresh();
+                                  p.dispatch({type:'loadingOff'})
+                                })
+                                .catch(e=>{
+                                  p.dispatch({type:'loadingOff'})
+                                })
+                              }
                               
-                              // p.dispatch({type:'loadingOn'})
-                              // axios.post(host+'/ajax/addMember',{
-                              //   taskSeq:p.taskModalData.task_seq,
-                              //   projmemberSeq:r.projmember_seq
-                              // })
-                              // .then(r=>{
-                              //   taskRefresh();
-                              //   p.dispatch({type:'loadingOff'})
-                              // })
-                              // .catch(e=>{
-                              //   p.dispatch({type:'loadingOff'})
-                              // })
+                              
                             }}>
                               <div className="profile">
                                 <img src={
@@ -753,8 +788,61 @@ function TaskModal(p){
                       </div>
                     </div>
                     <div className="member">
-                      <div className="commentBtn" style={{color:seqColorTrans(2)}}>
+                      <div className="commentBtn chargeBtn" style={{color:seqColorTrans(2)}} onClick={()=>{
+                        setTimeout(()=>{
+                          commentMemberModalCng(true)
+                          window.addEventListener('click', commentMemberModalClose)
+                        })
+                      }}>
                         <i class="fas fa-users"></i>멤버
+                        <div className={"chrgeWrap "+(commentMemberModal?'on':'')}>
+                          {
+                            p.memberList &&
+                            p.memberList.map(r=>{
+                              return(
+                                <div className="member" onClick={()=>{
+                                  let check = commentMember.find(rr=>rr==r.projmember_seq)
+
+                                  if(check==undefined){
+                                    commentMemberCng([
+                                      ...commentMember,
+                                      r.projmember_seq
+                                    ])
+                                  }
+                                  
+                                }}>
+                                  <div className="profile">
+                                    <img src={
+                                      r.projmember_data
+                                      ?
+                                      'data:image;base64,'+r.projmember_data
+                                      :
+                                        pub.img+'defaultProfile.svg'
+                                    }/>
+                                  </div>
+                                  <div className="info">
+                                    <p className="name">{r.projmember_name?r.projmember_name:'#'+r.projmember_seq}</p>
+                                    <p className="email">{r.member_email}</p>
+                                  </div>
+                                </div>
+                              )
+                            })
+                          }
+                        </div>
+                      </div>
+
+                      <div className="commentMemberWrap">
+                          {
+                            commentMember &&
+                            commentMember.map(r=>{
+                              let member = p.memberList.find(rr=>rr.projmember_seq == r)
+                              let name = member.projmember_name?member.projmember_name:'#'+member.projmember_seq
+                              
+                              return(
+                                <p>@{name}</p>
+                              )
+                            })
+                          }
                       </div>
                     </div>
                   </div>

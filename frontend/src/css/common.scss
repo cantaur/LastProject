@@ -2215,21 +2215,22 @@ body{
         }
         .member{
           display: flex;
-          align-items: flex-start;
+          align-items: center;
           .commentBtn{
             position: relative;
+            flex-shrink: 0;
             i{
               margin-left: -2px;
             }
             .chrgeWrap{
               transition: .3s ease-in-out;
-              transform: scale(1);
+              transform: scale(0);
               transform-origin: 0% 100%;
               position: absolute;
               width: 170px;
               max-height: 286px;
-              bottom:21px;
-              left: 19px;
+              bottom:24px;
+              left: 54px;
               background-color: #fff;
               overflow: hidden;
               border:1px solid #ccc;
@@ -2317,6 +2318,21 @@ body{
                   border:1px solid #ccc;
                   color:#333
                 }
+              }
+            }
+          }
+          .commentMemberWrap{
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-left: 4px;
+            p{
+              font-size: .7rem;
+              padding:5px;
+              cursor: pointer;
+              
+              &:hover{
+                background-color: #f2f2f2;
               }
             }
           }
@@ -3307,6 +3323,11 @@ body{
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
+            p.noMember{
+              text-align: center;
+              color:#555;
+              font-size: .8rem;
+            }
           }
           .label{
             display: flex;
@@ -3359,6 +3380,7 @@ body{
             display: flex;
             align-items: center;
             justify-content: center;
+            background-color: #fff;
             img{
               height: 100%;
             }
@@ -3557,6 +3579,11 @@ body{
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
+            p.noMember{
+              text-align: center;
+              color:#555;
+              font-size: .8rem;
+            }
           }
           .label{
             display: flex;

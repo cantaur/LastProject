@@ -108,39 +108,42 @@ function Task(p){
 
   //task 리스트 불러오기
   const taskListGetFunc = () =>{
+    taskListCng();
     let listDummy = [];
     p.dispatch({type:'loadingOn'})
     axios.get(host+'/ajax/'+p.prjSeq+'/tasklist')
+    
     .then(r=>{
+
       if(taskFilter.myTaskFilter != '전체'){
-        listDummy = r.data.filter(rr => rr.projmember_seq == p.myMemberInfo.projmember_seq);
+        listDummy = r.data.filter(rr => rr.task.projmember_seq == p.myMemberInfo.projmember_seq);
       } else {
         listDummy = r.data;
       }
 
       if(taskFilter.mileFilter != '전체'){
-        listDummy = listDummy.filter(rr => Number(rr.milestone_seq) == Number(taskFilter.mileFilter));
+        listDummy = listDummy.filter(rr => Number(rr.task.milestone_seq) == Number(taskFilter.mileFilter));
       } else {
         listDummy = listDummy;
       }
+
       if(taskFilter.priFilter != '전체'){
-        listDummy = listDummy.filter(rr => Number(rr.priority_code) == Number(taskFilter.priFilter));
+        listDummy = listDummy.filter(rr => Number(rr.task.priority_code) == Number(taskFilter.priFilter));
       } else {
         listDummy = listDummy;
       }
       if(taskFilter.statusFilter != '전체'){
         if(taskFilter.statusFilter == '진행중'){
-          listDummy = listDummy.filter(rr => Number(rr.task_status) == 0);
+          listDummy = listDummy.filter(rr => Number(rr.task.task_status) == 0);
         }else if(taskFilter.statusFilter == '종료'){
-          listDummy = listDummy.filter(rr => Number(rr.task_status) == 1);
+          listDummy = listDummy.filter(rr => Number(rr.task.task_status) == 1);
         }
-
       } else {
         listDummy = listDummy;
       }
-
-      p.dispatch({type:'loadingOff'})
       taskListCng(listDummy)
+      p.dispatch({type:'loadingOff'})
+
 
     })
     .catch(e=>{
@@ -187,12 +190,18 @@ function Task(p){
     }
   },[p.myMemberInfo])
 
+
   useEffect(()=>{
     if(p.myMemberInfo){
       taskListGetFunc();
     }
-  },[taskFilter, p.myMemberInfo])
+  },[taskFilter])
 
+  useEffect(()=>{
+    if(p.myMemberInfo){
+      taskListGetFunc();
+    }
+  },[p.refresh])
 
   return(
     <div className="pageContentWrap taskWrap">
@@ -387,68 +396,90 @@ function Task(p){
                 taskList.length>0
                 ?
                   taskList.map(r=>{
-                    let writerInfo = memberInfoGetFunc(r.projmember_seq)
-                    if(r.task_isdelete == '0'){
+                    let writerInfo = memberInfoGetFunc(r.task.projmember_seq)
+                    if(r.task.task_isdelete == '0'){
                       return(
                         <div className="taskRow">
                           <p className="title" onClick={()=>{
                             p.dispatch({type:'loadingOn'})
-                            axios.get(host+'/ajax/taskView/'+r.task_seq)
-                                .then(r=>{
-                                  p.dispatch(
-                                      {
-                                        type:'taskModalDataCng',
-                                        val:{
-                                          "task_seq":r.data[0].task.task_seq,
-                                          "task_title":r.data[0].task.task_title,
-                                          "task_content":r.data[0].task.task_content,
-                                          "task_status":r.data[0].task.task_status,
-                                          "task_isdelete":r.data[0].task.task_isdelete,
-                                          "task_startdate":r.data[0].task.task_startdate?r.data[0].task.task_startdate.substring(0,10):'',
-                                          "task_duedate":r.data[0].task.task_duedate?r.data[0].task.task_duedate.substring(0,10):'',
-                                          "projmember_seq":r.data[0].task.projmember_seq,
-                                          "milestone_seq":r.data[0].task.milestone_seq,
-                                          "label_seq":r.data[0].task.label_seq==0?null:r.data[0].task.label_seq,
-                                          "label_title":r.data[0].label?r.data[0].label.label_title:null,
-                                          "priority_code":r.data[0].task.priority_code,
-                                          "taskMembers":r.data[0].taskMembers,
-                                          "task_date":r.data[0].task.task_date.substring(0,10),
-                                        }
-                                      }
-                                  )
+                            axios.get(host+'/ajax/taskView/'+r.task.task_seq)
+                            .then(r=>{
+                              p.dispatch(
+                                  {
+                                    type:'taskModalDataCng',
+                                    val:{
+                                      "task_seq":r.data[0].task.task_seq,
+                                      "task_title":r.data[0].task.task_title,
+                                      "task_content":r.data[0].task.task_content,
+                                      "task_status":r.data[0].task.task_status,
+                                      "task_isdelete":r.data[0].task.task_isdelete,
+                                      "task_startdate":r.data[0].task.task_startdate?r.data[0].task.task_startdate.substring(0,10):'',
+                                      "task_duedate":r.data[0].task.task_duedate?r.data[0].task.task_duedate.substring(0,10):'',
+                                      "projmember_seq":r.data[0].task.projmember_seq,
+                                      "milestone_seq":r.data[0].task.milestone_seq,
+                                      "label_seq":r.data[0].task.label_seq==0?null:r.data[0].task.label_seq,
+                                      "label_title":r.data[0].label?r.data[0].label.label_title:null,
+                                      "priority_code":r.data[0].task.priority_code,
+                                      "taskMembers":r.data[0].taskMembers,
+                                      "task_date":r.data[0].task.task_date.substring(0,10),
+                                    }
+                                  }
+                              )
 
-                                  p.dispatch({type:'taskModalCng',val:true})
+                              p.dispatch({type:'taskModalCng',val:true})
 
-                                  setTimeout(()=>{
-                                    window.addEventListener('click', taskModalClose)
-                                  })
-                                  p.dispatch({type:'loadingOff'})
-                                })
-                                .catch(e=>{
-                                  console.log(e)
-                                  p.dispatch({type:'loadingOff'})
+                              setTimeout(()=>{
+                                window.addEventListener('click', taskModalClose)
+                              })
+                              p.dispatch({type:'loadingOff'})
+                            })
+                            .catch(e=>{
+                              console.log(e)
+                              p.dispatch({type:'loadingOff'})
 
-                                })
-                          }}>{r.task_title}</p>
+                            })
+                          }}>{r.task.task_title}</p>
                           <div className="infoWrap">
                             {/* 담당자 */}
                             <div className="profileWrap w120">
-
-                              <div className="profileImg toolTipTopBox">
-                                <p className="toolTip">사용자</p>
-                                <div>
-                                  <img src={pub.img+'defaultProfile.svg'}/>
-                                </div>
-                              </div>
+                              {
+                                r.taskMembers
+                                ?
+                                  r.taskMembers.length > 0
+                                  ?
+                                    r.taskMembers.map(rr=>{
+                                      let chargeInfo = memberInfoGetFunc(rr.projmember_seq)
+                                      return(
+                                        <div className="profileImg toolTipTopBox">
+                                          <p className="toolTip">{chargeInfo.name}</p>
+                                          <div>
+                                            <img src={chargeInfo.data}/>
+                                          </div>
+                                        </div>
+                                      )
+                                    })
+                                  : <p className="noMember">없음</p>
+                                : <p className="noMember">없음</p>
+                              }
+                              
 
                             </div>
                             {/* 중요도 */}
-                            <p className={"type w80 " + (r.priority_code?typeArr[r.priority_code]:'없음')}>{r.priority_code?typeArr[r.priority_code]:'없음'}</p>
+                            <p className={"type w80 " + (r.task.priority_code?typeArr[r.task.priority_code]:'없음')}>{r.task.priority_code?typeArr[r.task.priority_code]:'없음'}</p>
                             {/* 라벨 */}
                             <div className="label w120">
-                              <b style={{backgroundColor:seqColorTrans(r.label_seq)}}>
-                                라벨 불러와야함
-                              </b>
+                              {
+                                r.label
+                                ?
+                                  <b style={{backgroundColor:seqColorTrans(r.task.label_seq)}}>
+                                    {r.label.label_title}
+                                  </b>
+                                :
+                                <b style={{backgroundColor:'#ccc',color:'#555'}}>
+                                  없음
+                                </b>
+                              }
+
 
                             </div>
                             {/* 작성자 */}

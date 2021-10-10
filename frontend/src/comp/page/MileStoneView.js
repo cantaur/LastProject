@@ -319,18 +319,21 @@ function MileStoneView(p){
                               {
                                 r.taskMembers
                                 ?
-                                  r.taskMembers.map(r=>{
-                                    let chargeInfo = memberInfoGetFunc(r.projmember_seq)
-                                    return(
-                                      <div className="profileImg toolTipTopBox">
-                                        <p className="toolTip">{chargeInfo.name}</p>
-                                        <div>
-                                          <img src={chargeInfo.data}/>
+                                  r.taskMembers.length > 0
+                                  ?
+                                    r.taskMembers.map(r=>{
+                                      let chargeInfo = memberInfoGetFunc(r.projmember_seq)
+                                      return(
+                                        <div className="profileImg toolTipTopBox">
+                                          <p className="toolTip">{chargeInfo.name}</p>
+                                          <div>
+                                            <img src={chargeInfo.data}/>
+                                          </div>
                                         </div>
-                                      </div>
-                                    )
-                                  })
-                                :<b>없음</b>
+                                      )
+                                    })
+                                  :<p className="noMember">없음</p>
+                                :<p className="noMember">없음</p>
                               }
 
 
