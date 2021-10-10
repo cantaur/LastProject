@@ -3489,6 +3489,7 @@ body{
         width: 30px;
         height: 30px;
         margin:0px -4px;
+        
         .toolTip{
           left: 15px;
           transform-origin: 0% 100%;
@@ -3504,6 +3505,7 @@ body{
           display: flex;
           align-items: center;
           justify-content: center;
+          background-color: #fff;
           img{
             height: 100%;
           }

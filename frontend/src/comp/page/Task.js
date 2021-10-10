@@ -45,8 +45,12 @@ function Task(p){
     task_content:'',
     task_startdate:'',
     task_duedate:'',
+    milestone_seq:'0',
     project_seq:p.prjSeq,
   });
+
+  //업무 만들기_멤버배정
+  const [chargeMember, chargeMemberCng] = useState([]);
 
   //업무 생성_제목 알림 상태
   let [alert, alertCng] = useState(false);
@@ -188,8 +192,6 @@ function Task(p){
     }
   },[taskFilter, p.myMemberInfo])
 
-  console.log(taskInfo)
-
 
   return(
     <div className="pageContentWrap taskWrap">
@@ -218,8 +220,10 @@ function Task(p){
                     task_content:'',
                     task_startdate:'',
                     task_duedate:'',
+                    milestone_seq:'0',
                     project_seq:p.prjSeq,
                   })
+                  chargeMemberCng([])
                   alertCng(false)
                 }}
                 dispatch={p.dispatch}
@@ -232,11 +236,13 @@ function Task(p){
                 listCng={listCng}
                 prjSeq={p.prjSeq}
                 titleInput={titleInput}
-                typeArr={typeArr}
+                mileStoneList={p.mileStoneList}
                 appendMemberModalClose={appendMemberModalClose}
                 appendMemberModal={appendMemberModal}
                 appendMemberModalCng={appendMemberModalCng}
                 memberList={p.memberList}
+                chargeMember={chargeMember}
+                chargeMemberCng={chargeMemberCng}
             />
           </>
           :null
@@ -503,28 +509,22 @@ function TaskCreateModal(p) {
           <textarea className="taskConInput form-control" name="task_content" placeholder="설명" onChange={p.taskInfoChange}></textarea>
 
           <p className="subTitle">마일스톤</p>
-          <Form.Select>
-            <option value="0">마일스톤 </option>
+          <Form.Select name="milestone_seq" onChange={p.taskInfoChange}>
+            <option value="0" selected={true}>마일스톤 없음</option>
             {
-              Object.keys(p.typeArr).map((k,i)=>{
-                return(
-                  <option value={k}>{p.typeArr[k]}</option>
-                )
-              })
+              p.mileStoneList&&
+                p.mileStoneList.length >0
+                ?
+                p.mileStoneList.map((r,i)=>{
+                  return(
+                    <option value={r.milestone_seq}>{r.milestone_title}</option>
+                  )
+                })
+                : null
             }
+            
           </Form.Select>
-          <p className="subTitle">중요도</p>
-          <Form.Select>
-            <option value="0">중요도 없음</option>
-            {
-              Object.keys(p.typeArr).map((k,i)=>{
-                return(
-                  <option value={k}>{p.typeArr[k]}</option>
-                )
-              })
-            }
-          </Form.Select>
-
+          
           <div className="datePickerWrap">
             <DatePicker
                 pickerDateCng={p.taskInfoCng}
@@ -555,7 +555,17 @@ function TaskCreateModal(p) {
                 p.memberList &&
                 p.memberList.map(r=>{
                   return(
-                    <div className="member">
+                    <div className="member" onClick={()=>{
+                      let check = p.chargeMember.find(rr=>rr==r.projmember_seq)
+
+                      if(check==undefined){
+                        p.chargeMemberCng([
+                          ...p.chargeMember,
+                          r.projmember_seq
+                        ])
+                      }
+                      
+                    }}>
                       <div className="profile">
                         <img src={
                           r.projmember_data
@@ -583,19 +593,41 @@ function TaskCreateModal(p) {
             }}>
               <i class="fas fa-users"></i>멤버배정
             </div>
-
+            
             <div className="chargeList">
-              <div className="profileImg toolTipTopBox">
-                <p className="toolTip">사용자</p>
-                <div>
-                  <img src={pub.img+'defaultProfile.svg'}/>
-                </div>
-              </div>
+            {
+              p.chargeMember && p.memberList 
+                ?
+                  p.chargeMember.map((r,i)=>{
+                    let memberList = [...p.memberList]
+                    
+                    let rr = memberList.filter(rr => rr.projmember_seq == r)
+
+                    return(
+                      <div className="profileImg toolTipTopBox" onClick={()=>{
+                        let dummy = [...p.chargeMember]
+                        dummy.map((r,i)=>{
+                          if(r == rr[0].projmember_seq){
+                            dummy.splice(i,1)
+                            p.chargeMemberCng(dummy)
+                          }
+                        })
+                      }}>
+                        <p className="toolTip">{rr[0].projmember_name?rr[0].projmember_name:'#'+rr[0].projmember_seq}</p>
+                        <div>
+                          <img src={rr[0].projmember_data?'data:image;base64,'+rr[0].projmember_data:pub.img+'defaultProfile.svg'}/>
+                        </div>
+                      </div>
+                    )
+                  })
+                : null
+            }
+              
+              
               
             </div>
           </div>
-          
-          
+
 
         </Modal.Body>
         <Modal.Footer className="modalBtnWrap">
@@ -603,7 +635,10 @@ function TaskCreateModal(p) {
 
             if(p.taskInfo.task_title != ''){
               p.dispatch({type:'loadingOn'})
-              axios.post(host+'/ajax/createTask', p.taskInfo)
+              axios.post(host+'/ajax/createTask', {
+                taskInfo : p.taskInfo,
+                memberInfo : p.chargeMember
+              })
               .then(r=>{
                 p.onHide();
               })
