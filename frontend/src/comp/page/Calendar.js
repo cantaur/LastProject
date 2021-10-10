@@ -181,8 +181,8 @@ function Calendar(p){
           history.push('/project/'+p.prjSeq+'/calendar')
         }}>캘린더</p>
         <p className="pageBtn" onClick={()=>{
-          p.dispatch({type:'pagePush', val:'notice'})
-          history.push('/project/'+p.prjSeq+'/notice')
+          p.dispatch({type:'pagePush', val:'timeLine'})
+          history.push('/project/'+p.prjSeq+'/timeLine')
         }}>타임라인</p>
         <p className="pageBtn" onClick={()=>{
           p.dispatch({type:'pagePush', val:'projectChart'})
@@ -336,7 +336,7 @@ function Calendar(p){
               taskQuickEditFunc(e)
             }
           }}
-          
+
         />
       </div>
 

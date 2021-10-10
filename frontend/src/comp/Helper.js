@@ -28,6 +28,7 @@ const seqColorTrans = (seq) => {
 }
 const pages = [
   'calendar',
+  'timeLine',
   'projectChart',
   'fileList',
   'todo',

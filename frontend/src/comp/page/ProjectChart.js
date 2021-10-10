@@ -49,8 +49,8 @@ function ProjectChart(p) {
                     history.push('/project/' + p.prjSeq + '/calendar')
                 }}>캘린더</p>
                 <p className="pageBtn" onClick={() => {
-                    p.dispatch({type: 'pagePush', val: 'notice'})
-                    history.push('/project/' + p.prjSeq + '/notice')
+                    p.dispatch({type: 'pagePush', val: 'timeLine'})
+                    history.push('/project/' + p.prjSeq + '/timeLine')
                 }}>타임라인</p>
                 <p className="pageBtn on" style={{color: p.prjColor, borderColor: p.prjColor}} onClick={() => {
                     p.dispatch({type: 'pagePush', val: 'projectChart'})

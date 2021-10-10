@@ -19,6 +19,8 @@ function pagePath(page){
       return 0;
     case 'calendar':
       return 1;
+    case 'timeLine':
+      return 1;
     case 'projectChart':
       return 1;
     case 'fileList' :
@@ -79,16 +81,16 @@ function HeadSide(p){
 
   //제외할 계정
   const [outMember, outMemberCng]=useState();
-  
+
   const [outAlertModal, outAlertModalCng] = useState(false)
-  const outAlertClose =()=>{ 
+  const outAlertClose =()=>{
     outMemberCng('');
     outAlertModalCng(false)
   };
-  
+
   //스스로 제외
   const [outAlertModal2, outAlertModalCng2] = useState(false)
-  const outAlertClose2 =()=>{ 
+  const outAlertClose2 =()=>{
     outMemberCng('');
     outAlertModalCng2(false)
   };
@@ -170,7 +172,7 @@ function HeadSide(p){
           </div>
         </div>
 
-        
+
       </div>
 
 
@@ -224,9 +226,9 @@ function HeadSide(p){
               })
             }
           }}>
-            
+
             <p className="tipRight r45">멤버 설정</p>
-            <i class="fas fa-users" style={{color:p.prjColor}}></i>            
+            <i class="fas fa-users" style={{color:p.prjColor}}></i>
           </div>
 
 
@@ -354,7 +356,7 @@ function HeadSide(p){
                 let src = r.projmember_data?'data:image;base64,'+r.projmember_data:'/img/defaultProfile.svg'
                 let name = r.projmember_name?r.projmember_name:'#'+r.member_seq
                 let isManager = r.projmember_type==0?true:false;
-                
+
                 return(
                   <>
                     <div className="memberList on">
@@ -423,13 +425,13 @@ function HeadSide(p){
                     </div>
                   </>
                 )
-                
+
               })
             }
 
           </div>
         </div>
-        
+
         <div className={"profileModalWrap "+ (profileModal?"on":"")}>
           <div className="infoWrap">
             <div className="profileImg">
@@ -451,7 +453,7 @@ function HeadSide(p){
             }}>프로필 설정</p>
             <a href={host+'/logout'} className='logoutBtn'>로그아웃</a>
           </div>
-          
+
         </div>
         {
           outMember &&
@@ -530,7 +532,7 @@ function HeadSide(p){
               </Modal.Footer>
             </Modal>
         }
-        
+
       </div>
     </>
   )

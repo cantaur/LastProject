@@ -17,6 +17,7 @@ import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstr
 import { Link, useParams, withRouter, useHistory, useLocation } from "react-router-dom";
 import {CSSTransition} from 'react-transition-group';
 import {connect} from 'react-redux';
+import TimeLine from "./page/TimeLine";
 
 
 
@@ -186,14 +187,19 @@ function ProjectView(p){
               <Calendar prjColor={prjColor} prjSeq={prjSeq}/>
               <TaskModal/>
             </>
-
+          }
+          {
+            p.pageInfo == 'timeLine' &&
+            <>
+              <TimeLine prjColor={prjColor} prjSeq={prjSeq}/>
+              <TaskModal/>
+            </>
           }
           {
             p.pageInfo == 'projectChart' &&
             <>
               <ProjectChart prjColor={prjColor} prjSeq={prjSeq}/>
             </>
-
           }
           {
             p.pageInfo == 'fileList' &&
@@ -205,7 +211,10 @@ function ProjectView(p){
           }
           {
             p.pageInfo == 'mileStoneView' &&
-            <MileStoneView prjColor={prjColor} prjSeq={prjSeq} />
+            <>
+              <MileStoneView prjColor={prjColor} prjSeq={prjSeq} />
+              <TaskModal/>
+            </>
           }
           {
             p.pageInfo == 'task' &&

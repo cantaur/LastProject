@@ -20,6 +20,16 @@ function MileStoneView(p){
   const history = useHistory();
   const mileStoneSeq = params.pageSeq;
 
+  //업무 이중모달 컨트롤
+  const taskModalClose = useCallback((e)=>{
+    if(!e.target.closest('.taskModalWrap')  && !e.target.closest('.labelEditBtn') && !e.target.closest('.deleteMemberModal')){
+      p.dispatch({type:'taskModalCng', val:false})
+      setTimeout(()=>{
+        window.removeEventListener('click', taskModalClose)
+      })
+    }
+  },[])
+
   //마일스톤 정보
   const [mileStoneInfo, mileStoneInfoCng] = useState();
 
@@ -35,7 +45,7 @@ function MileStoneView(p){
   const taskFilterFunc = filter =>{
     p.dispatch({type:'loadingOn'})
     taskFilterCng(filter)
-    
+
     if(filter == '전체'){
       axios.get(host+'/ajax/milestone/'+mileStoneSeq+'/tasks')
       .then(r=>{
@@ -69,12 +79,12 @@ function MileStoneView(p){
       })
     }
 
-    
+
   }
 
   let dateModalClose =useCallback((e)=>{
     if(!e.target.closest('.DayPicker_1') ){
-      
+
       p.dispatch({type:'modalOff'})
       setTimeout(()=>{
         window.removeEventListener('click', dateModalClose)
@@ -103,7 +113,7 @@ function MileStoneView(p){
         }
       })
     }
-    
+
     return info;
   }
 
@@ -115,9 +125,9 @@ function MileStoneView(p){
     .then(r=>{
       axios.get(host+'/ajax/milestone/'+mileStoneSeq)
       .then(r=>{
-        
+
         mileStoneInfoCng(r.data)
-        
+
         p.dispatch({type:'loadingOff'})
       })
       .catch(e=>{
@@ -185,19 +195,19 @@ function MileStoneView(p){
 
   return(
     <div className="pageContentWrap mileStoneWrap">
-      
+
 
       <div className="stoneListWrap">
         {
           mileStoneInfo &&
           <>
-            <StoneList 
+            <StoneList
               prjSeq={p.prjSeq}
               milestone_seq={1}
               milestone_title={mileStoneInfo.milestone_title}
               milestone_content={mileStoneInfo.milestone_content}
-              color={seqColorTrans(mileStoneInfo.milestone_seq)} 
-              
+              color={seqColorTrans(mileStoneInfo.milestone_seq)}
+
               completeTaskCnt={mileStoneInfo.closedTask}
               taskCnt={mileStoneInfo.countTask}
               milestone_startdate={mileStoneInfo.milestone_startdate}
@@ -218,7 +228,7 @@ function MileStoneView(p){
                     :{color:p.prjColor}
                     } onClick={()=>{
                       taskFilterFunc('전체')
-                      
+
                     }}>전체</p>
                   <p style={
                     taskFilter == '진행중'?
@@ -246,7 +256,7 @@ function MileStoneView(p){
               taskList
               ?
                 taskList.length != 0
-                ? 
+                ?
                   taskList.map((r,i)=>{
                     const typeArr = {
                       '10':'긴급',
@@ -262,7 +272,46 @@ function MileStoneView(p){
                       ?
                         <div className="taskList">
                         <div className="taskRow">
-                          <p className="title">{r.task.task_title}</p>
+                          <p className="title" onClick={()=>{
+                            p.dispatch({type:'loadingOn'})
+                            console.log(r.task.task_seq)
+                            axios.get(host+'/ajax/taskView/'+r.task.task_seq)
+                                .then(r=>{
+                                  p.dispatch(
+                                      {
+                                        type:'taskModalDataCng',
+                                        val:{
+                                          "task_seq":r.data[0].task.task_seq,
+                                          "task_title":r.data[0].task.task_title,
+                                          "task_content":r.data[0].task.task_content,
+                                          "task_status":r.data[0].task.task_status,
+                                          "task_isdelete":r.data[0].task.task_isdelete,
+                                          "task_startdate":r.data[0].task.task_startdate.substring(0,10),
+                                          "task_duedate":r.data[0].task.task_duedate.substring(0,10),
+                                          "projmember_seq":r.data[0].task.projmember_seq,
+                                          "milestone_seq":r.data[0].task.milestone_seq,
+                                          "label_seq":r.data[0].task.label_seq==0?null:r.data[0].task.label_seq,
+                                          "label_title":r.data[0].label?r.data[0].label.label_title:null,
+                                          "priority_code":r.data[0].task.priority_code,
+                                          "taskMembers":r.data[0].taskMembers,
+                                          "task_date":r.data[0].task.task_date.substring(0,10),
+                                        }
+                                      }
+                                  )
+
+                                  p.dispatch({type:'taskModalCng',val:true})
+
+                                  setTimeout(()=>{
+                                    window.addEventListener('click', taskModalClose)
+                                  })
+                                  p.dispatch({type:'loadingOff'})
+                                })
+                                .catch(e=>{
+                                  console.log(e)
+                                  p.dispatch({type:'loadingOff'})
+
+                                })
+                          }}>{r.task.task_title}</p>
                           <div className="infoWrap">
                             {/* 담당자 */}
                             <div className="profileWrap w120">
@@ -283,7 +332,7 @@ function MileStoneView(p){
                                   })
                                 :<b>없음</b>
                               }
-                              
+
 
 
                             </div>
@@ -292,12 +341,12 @@ function MileStoneView(p){
                             {/* 라벨 */}
                             <div className="label w120">
                               {
-                                r.label 
+                                r.label
                                 ?
                                   <b style={{backgroundColor:seqColorTrans(r.label.label_seq)}}>
                                     {r.label.label_title}
                                   </b>
-                                : 
+                                :
                                   <b style={{backgroundColor:'#ccc',color:'#555'}}>
                                     없음
                                   </b>
@@ -322,11 +371,11 @@ function MileStoneView(p){
             </div>
           </>
         }
-        
-        
-        
 
-      
+
+
+
+
 
 
       </div>
@@ -345,4 +394,3 @@ function transReducer(state){
 
 export default connect(transReducer)(MileStoneView);
 
-        
