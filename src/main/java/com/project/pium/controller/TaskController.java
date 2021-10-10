@@ -31,18 +31,29 @@ public class TaskController {
         Map<String,Object> temp = (Map<String, Object>) param.get("taskInfo");
         String task_title= temp.get("task_title").toString();
         String task_content= temp.get("task_content").toString();
-        String tempStartdate= temp.get("task_startdate").toString();
-        String tempDuedate= temp.get("task_duedate").toString();
+        
         Long projmember_seq= Long.valueOf(temp.get("projmember_seq").toString());
-        Long milestone_seq= Long.valueOf(temp.get("milestone_seq").toString());
+        // Long milestone_seq= Long.valueOf(temp.get("milestone_seq").toString());
+        Long milestone_seq = null;
         Long project_seq= Long.valueOf(temp.get("project_seq").toString());
 
-        Timestamp task_startdate = Timestamp.valueOf(tempStartdate+" 00:00:00.0");
-        Timestamp task_duedate = Timestamp.valueOf(tempDuedate+" 00:00:00.0");
 
-        TaskDTO taskDTO = new TaskDTO(-1,task_title,task_content,null,null,task_startdate,task_duedate,null,null,projmember_seq,milestone_seq,project_seq,null,-1);
-        log.info("#taskDTO"+taskDTO);
-        taskService.createTask(taskDTO);
+        
+        if(temp.get("task_startdate") == ""){
+          TaskDTO taskDTO = new TaskDTO(-1,task_title,task_content,null,null,null,null,null,null,projmember_seq,milestone_seq,project_seq,null,-1);
+          taskService.createTask(taskDTO);
+        } else {
+            String tempStartdate= temp.get("task_startdate").toString();
+            String tempDuedate= temp.get("task_duedate").toString();
+
+            Timestamp task_startdate = Timestamp.valueOf(temp.get("task_startdate").toString()+" 00:00:00.0");
+            Timestamp task_duedate = Timestamp.valueOf(temp.get("task_duedate").toString()+" 00:00:00.0");
+
+            TaskDTO taskDTO = new TaskDTO(-1,task_title,task_content,null,null,task_startdate,task_duedate,null,null,projmember_seq,milestone_seq,project_seq,null,-1);
+            taskService.createTask(taskDTO);
+        }
+
+        
 
         //2. TaskmemberDTO 객체 생성
         ArrayList<Object> members = (ArrayList<Object>) param.get("memberInfo");

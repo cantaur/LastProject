@@ -26,8 +26,8 @@ function TaskModal(p){
             "task_content":r.data[0].task.task_content,
             "task_status":r.data[0].task.task_status,
             "task_isdelete":r.data[0].task.task_isdelete,
-            "task_startdate":r.data[0].task.task_startdate.substring(0,10),
-            "task_duedate":r.data[0].task.task_duedate.substring(0,10),
+            "task_startdate":r.data[0].task.task_startdate?r.data[0].task.task_startdate.substring(0,10):'',
+            "task_duedate":r.data[0].task.task_duedate?r.data[0].task.task_duedate.substring(0,10):'',
             "projmember_seq":r.data[0].task.projmember_seq,
             "milestone_seq":r.data[0].task.milestone_seq,
             "label_seq":r.data[0].task.label_seq==0?null:r.data[0].task.label_seq,
@@ -67,9 +67,20 @@ function TaskModal(p){
   });
 
   // 배정된 멤버 삭제 확인용
-  let [deleteMemberAlert, deleteMemberAlertCng] = useState(false)
-  const alertClose =()=> deleteMemberAlertCng(false);
   let [deleteMemberName, deleteMemberNameCng] =useState();
+  let [deleteMemberSeq, deleteMemberSeqCng] =useState();
+
+  let [deleteMemberAlert, deleteMemberAlertCng] = useState(false)
+
+  const alertClose =()=> {
+    deleteMemberAlertCng(false)
+    setTimeout(()=>{
+      deleteMemberNameCng();
+      deleteMemberSeqCng();
+    },500)
+    
+  };
+
 
   //  업무 삭제 확인용
   let [deleteTaskAlert, deleteTaskAlertCng] = useState(false)
@@ -188,7 +199,9 @@ function TaskModal(p){
           <Button variant="secondary" onClick={alertClose} style={{fontSize:'.8rem'}}>
             취소
           </Button>
-          <Button variant="danger" style={{fontSize:'.8rem'}}>
+          <Button variant="danger" style={{fontSize:'.8rem'}} onClick={()=>{
+            console.log(deleteMemberSeq)
+          }}>
             제외
           </Button>
         </Modal.Footer>
@@ -491,6 +504,7 @@ function TaskModal(p){
                               }else {
                                 deleteMemberNameCng('#'+r.projmember_seq)
                               }
+                              deleteMemberSeqCng(r.projmember_seq)
                             }}>
                               <p className="toolTip">{name?name:'#'+r.projmember_seq}</p>
                               <div>
@@ -526,7 +540,23 @@ function TaskModal(p){
                         p.memberList &&
                         p.memberList.map(r=>{
                           return(
-                            <div className="member">
+                            <div className="member" onClick={()=>{
+                              let findArr = p.taskModalData.taskMembers.find(r=> r.projmember_seq == 35)
+                              console.log(p.taskModalData.taskMembers)
+                              
+                              // p.dispatch({type:'loadingOn'})
+                              // axios.post(host+'/ajax/addMember',{
+                              //   taskSeq:p.taskModalData.task_seq,
+                              //   projmemberSeq:r.projmember_seq
+                              // })
+                              // .then(r=>{
+                              //   taskRefresh();
+                              //   p.dispatch({type:'loadingOff'})
+                              // })
+                              // .catch(e=>{
+                              //   p.dispatch({type:'loadingOff'})
+                              // })
+                            }}>
                               <div className="profile">
                                 <img src={
                                   r.projmember_data
@@ -711,9 +741,30 @@ function TaskModal(p){
 
 
                 <div className="commentForm">
-
+                  <div className="dataWrap">
+                    <div className="file">
+                      <input type="file" id="commentFileInput"/>
+                      <label htmlFor="commentFileInput" className="commentBtn" style={{color:seqColorTrans(2)}}>
+                        <i class="fas fa-file-upload"></i>파일
+                      </label>
+                      <div className="name toolTipTopBox">
+                        <div className="toolTip" style={{marginLeft:'-32px'}}>파일 삭제</div>
+                        <p>파일명파일명파일명파일명파일명.jpg</p>
+                      </div>
+                    </div>
+                    <div className="member">
+                      <div className="commentBtn" style={{color:seqColorTrans(2)}}>
+                        <i class="fas fa-users"></i>멤버
+                      </div>
+                    </div>
+                  </div>
+                  <textarea name="" placeholder="코멘트 내용을 입력해주세요." className="commentTextInput" spellCheck={false}></textarea>
+                  
+                  
+                  
                 </div>
               </div>
+              
             </>
           }
         </div>

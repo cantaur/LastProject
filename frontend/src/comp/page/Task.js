@@ -185,7 +185,7 @@ function Task(p){
     if(p.myMemberInfo){
       taskListGetFunc();
     }
-  },[])
+  },[p.myMemberInfo])
 
   useEffect(()=>{
     if(p.myMemberInfo){
@@ -404,8 +404,8 @@ function Task(p){
                                           "task_content":r.data[0].task.task_content,
                                           "task_status":r.data[0].task.task_status,
                                           "task_isdelete":r.data[0].task.task_isdelete,
-                                          "task_startdate":r.data[0].task.task_startdate.substring(0,10),
-                                          "task_duedate":r.data[0].task.task_duedate.substring(0,10),
+                                          "task_startdate":r.data[0].task.task_startdate?r.data[0].task.task_startdate.substring(0,10):'',
+                                          "task_duedate":r.data[0].task.task_duedate?r.data[0].task.task_duedate.substring(0,10):'',
                                           "projmember_seq":r.data[0].task.projmember_seq,
                                           "milestone_seq":r.data[0].task.milestone_seq,
                                           "label_seq":r.data[0].task.label_seq==0?null:r.data[0].task.label_seq,
@@ -640,9 +640,19 @@ function TaskCreateModal(p) {
           <Button className="modalBtn" onClick={()=>{
 
             if(p.taskInfo.task_title != ''){
+              let taskData = {};
+
+              if(p.taskInfo.task_startdate && !p.taskInfo.task_duedate){
+                taskData = {
+                  ...p.taskInfo,
+                  task_duedate:p.taskInfo.task_startdate
+                }
+              } else {
+                taskData = {...p.taskInfo}
+              }
               p.dispatch({type:'loadingOn'})
               axios.post(host+'/ajax/createTask', {
-                taskInfo : p.taskInfo,
+                taskInfo : taskData,
                 memberInfo : p.chargeMember
               })
               .then(r=>{
