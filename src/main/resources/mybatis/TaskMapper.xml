@@ -115,4 +115,14 @@
 
 
 
+
+
+    <!-- 삭제 -->
+    <delete id="deleteTaskmem" parameterType="long">
+        delete from task_member where task_seq = #{task_seq} and projmember_seq = #{projmember_seq}
+    </delete>
+
+
+
+
 </mapper>

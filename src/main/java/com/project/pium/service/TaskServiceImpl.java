@@ -44,8 +44,6 @@ public class TaskServiceImpl implements TaskService {
 
 
 
-
-
     //마일스톤 페이지에서 씀. 지우면 안됨
     //해당 마일스톤에서 생성된 업무 갯수
     @Override
@@ -175,7 +173,11 @@ public class TaskServiceImpl implements TaskService {
 
 
 
+    @Override
+    public void deleteTaskmem(long task_seq, long projmember_seq) {
+        taskMapper.deleteTaskmem(task_seq,projmember_seq);
 
+    }
 
 
 

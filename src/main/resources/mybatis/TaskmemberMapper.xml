@@ -10,32 +10,11 @@
 
     </select>
 
-
-
     <!--  업무번호로 조회 -->
     <select id="selectByTaskSeq" resultType="TaskmemberDTO" parameterType="long">
         select * from task_member where task_seq = #{task_seq}
     </select>
 
-
-
-    <!-- 업무멤버 번호로 조회 -->
-    <select id="selectByTm" resultType="TaskmemberDTO" parameterType="long">
-        select * from task_member where taskmember_seq= #{taskmember_seq}
-    </select>
-
-
-
-    <!-- 플젝멤버번호로 조회 -->
-    <select id="selectByPm" resultType="TaskmemberDTO" parameterType="long">
-        select * from task_member where projmember_seq= #{projmember_seq}
-    </select>
-
-
-    <!-- 삭제 -->
-    <delete id="delete" parameterType="long">
-        delete from task_member where taskmember_seq = #{taskmember_seq}
-    </delete>
 
 
 </mapper>

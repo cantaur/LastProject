@@ -62,5 +62,9 @@ public interface TaskMapper {
     List<TaskDTO> taskList(long projSeq);
 
 
+    //업무에서 멤버 삭제
+    void deleteTaskmem(long task_seq, long projmember_seq);
+
+
 
 }

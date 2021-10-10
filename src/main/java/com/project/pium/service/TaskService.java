@@ -65,7 +65,7 @@ public interface TaskService {
     List<TaskDTO> taskList(long projSeq);
 
 
-
+    void deleteTaskmem(long task_seq, long projmember_seq);
 
 
 

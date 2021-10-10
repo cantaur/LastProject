@@ -182,6 +182,16 @@ public class TaskController {
         taskService.updateTaskMember(taskSeq,projmemberSeq);
     }
 
+    //업무 모달>업무에서 멤버 빼기
+    @PostMapping("/ajax/deleteProjMember")
+    public void projectout(@RequestBody Map<String, Integer> param){
+        Long task_seq = Long.valueOf(param.get("taskSeq"));
+        Long projmember_seq = Long.valueOf(param.get("projmemberSeq"));
+        taskService.deleteTaskmem(task_seq, projmember_seq);
+    }
+
+
+
 
 
     //업무 모달>업무에 라벨 넣기
