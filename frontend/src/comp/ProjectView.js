@@ -154,7 +154,8 @@ function ProjectView(p){
         ...profileSetInfo,
         name:p.myMemberInfo.projmember_name,
       })
-      if(p.myMemberInfo.projmember_data == null && p.myMemberInfo.projmember_name == ""){
+      //프로필이름과 이미지가 둘다 없으면
+      if(p.myMemberInfo.projmember_data == null && p.myMemberInfo.projmember_name == null){
         profileMsgCng(true)
         profileSetModalCng(true)
       }

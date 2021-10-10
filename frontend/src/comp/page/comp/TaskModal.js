@@ -39,6 +39,7 @@ function TaskModal(p){
         }
       )
       p.dispatch({type:'loadingOff'})
+      p.dispatch({type:'refreshCng'})
     })
     .catch(e=>{
       console.log(e)

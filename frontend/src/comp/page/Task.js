@@ -106,11 +106,11 @@ function Task(p){
   //task 리스트
   const [taskList, taskListCng] = useState();
 
-  //task 리스트 불러오기
+  //task 리스트 불러오기 (전체)
   const taskListGetFunc = () =>{
     taskListCng();
     let listDummy = [];
-    p.dispatch({type:'loadingOn'})
+    // p.dispatch({type:'loadingOn'})
     axios.get(host+'/ajax/'+p.prjSeq+'/tasklist')
     
     .then(r=>{
@@ -715,6 +715,7 @@ function transReducer(state){
     memberList:state.memberList,
     myMemberInfo:state.myMemberInfo,
     mileStoneList : state.mileStoneList,
+    refresh:state.refresh
   }
 }
 
