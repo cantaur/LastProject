@@ -11,6 +11,18 @@ import Box from '@mui/material/Box';
 
 function Task(p){
 
+  // 상세보기_배정된 멤버 추가 모달
+  let [appendMemberModal, appendMemberModalCng] = useState(false);
+
+  const appendMemberModalClose =useCallback((e)=>{
+    if(!e.target.closest('.chrgeWrap') && !e.target.closest('.chargeBtn')){
+      appendMemberModalCng(false)
+      setTimeout(()=>{
+        window.removeEventListener('click', appendMemberModalClose)
+      })
+    }
+  },[])
+
   //업무 이중모달 컨트롤
   const taskModalClose = useCallback((e)=>{
     if(!e.target.closest('.taskModalWrap')  && !e.target.closest('.labelEditBtn') && !e.target.closest('.deleteMemberModal')){
@@ -122,40 +134,6 @@ function Task(p){
         listDummy = listDummy;
       }
 
-
-      // listDummy.map((rr,i)=>{
-      //   console.log(Number(rr.milestone_seq))
-
-      //   // if(rr.task_isdelete == '1'){
-      //   //   listDummy.splice(i)
-      //   //   // return false;
-      //   // }
-
-      //   // if(taskFilter.myTaskFilter != '전체'){
-      //   //   if(Number(rr.projmember_seq) != Number(p.myMemberInfo.projmember_seq)){
-      //   //     listDummy.splice(i)
-      //   //     // return false;
-      //   //   }
-      //   // }
-
-      //   // if(taskFilter.mileFilter != '전체'){
-      //   //   if(Number(rr.milestone_seq) != Number(taskFilter.mileFilter)){
-      //   //     listDummy.splice(i)
-      //   //     // return false;
-      //   //   }
-      //   // }
-
-      //   // if(taskFilter.priFilter != '전체'){
-      //   //   if(Number(rr.priority_code) != Number(taskFilter.priFilter)){
-      //   //     listDummy.splice(i)
-      //   //     // return false;
-      //   //   }
-      //   // }
-
-      // })
-
-      console.log('listDummy')
-      console.log(listDummy)
       p.dispatch({type:'loadingOff'})
       taskListCng(listDummy)
 
@@ -210,10 +188,8 @@ function Task(p){
     }
   },[taskFilter, p.myMemberInfo])
 
-  console.log('taskList')
-  console.log(taskList)
-  console.log('taskFilter')
-  console.log(taskFilter)
+  console.log(taskInfo)
+
 
   return(
     <div className="pageContentWrap taskWrap">
@@ -256,6 +232,11 @@ function Task(p){
                 listCng={listCng}
                 prjSeq={p.prjSeq}
                 titleInput={titleInput}
+                typeArr={typeArr}
+                appendMemberModalClose={appendMemberModalClose}
+                appendMemberModal={appendMemberModal}
+                appendMemberModalCng={appendMemberModalCng}
+                memberList={p.memberList}
             />
           </>
           :null
@@ -492,8 +473,9 @@ function TaskCreateModal(p) {
           size="sm"
           aria-labelledby="contained-modal-title-vcenter"
           centered
-          className="modalWrap"
+          className="modalWrap taskCreateModalWrap"
           style={{marginTop:'-70px'}}
+          
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter" className="modalTitle">
@@ -518,11 +500,30 @@ function TaskCreateModal(p) {
           </Form.Group>
 
 
-          <Form.Group className=" piumInput" controlId="floatingTextarea">
-            <FloatingLabel controlId="floatingTextarea" label="설명">
-              <Form.Control type="textarea" placeholder="설명" name="task_content" spellcheck="false" onChange={p.taskInfoChange}/>
-            </FloatingLabel>
-          </Form.Group>
+          <textarea className="taskConInput form-control" name="task_content" placeholder="설명" onChange={p.taskInfoChange}></textarea>
+
+          <p className="subTitle">마일스톤</p>
+          <Form.Select>
+            <option value="0">마일스톤 </option>
+            {
+              Object.keys(p.typeArr).map((k,i)=>{
+                return(
+                  <option value={k}>{p.typeArr[k]}</option>
+                )
+              })
+            }
+          </Form.Select>
+          <p className="subTitle">중요도</p>
+          <Form.Select>
+            <option value="0">중요도 없음</option>
+            {
+              Object.keys(p.typeArr).map((k,i)=>{
+                return(
+                  <option value={k}>{p.typeArr[k]}</option>
+                )
+              })
+            }
+          </Form.Select>
 
           <div className="datePickerWrap">
             <DatePicker
@@ -548,6 +549,54 @@ function TaskCreateModal(p) {
             </p>
           </div>
 
+          <div className="chargeWrap">
+            <div className={"chrgeWrap "+(p.appendMemberModal?'on':'')}>
+              {
+                p.memberList &&
+                p.memberList.map(r=>{
+                  return(
+                    <div className="member">
+                      <div className="profile">
+                        <img src={
+                          r.projmember_data
+                          ?
+                          'data:image;base64,'+r.projmember_data
+                          :
+                            pub.img+'defaultProfile.svg'
+                        }/>
+                      </div>
+                      <div className="info">
+                        <p className="name">{r.projmember_name?r.projmember_name:'#'+r.projmember_seq}</p>
+                        <p className="email">{r.member_email}</p>
+                      </div>
+                    </div>
+                  )
+                })
+              }
+            </div>
+            <div className="chargeBtn" onClick={()=>{
+              setTimeout(()=>{
+                p.appendMemberModalCng(true)
+                window.addEventListener('click', p.appendMemberModalClose)
+              })
+
+            }}>
+              <i class="fas fa-users"></i>멤버배정
+            </div>
+
+            <div className="chargeList">
+              <div className="profileImg toolTipTopBox">
+                <p className="toolTip">사용자</p>
+                <div>
+                  <img src={pub.img+'defaultProfile.svg'}/>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          
+          
+
         </Modal.Body>
         <Modal.Footer className="modalBtnWrap">
           <Button className="modalBtn" onClick={()=>{
@@ -555,29 +604,17 @@ function TaskCreateModal(p) {
             if(p.taskInfo.task_title != ''){
               p.dispatch({type:'loadingOn'})
               axios.post(host+'/ajax/createTask', p.taskInfo)
-                  .then(r=>{
-                    p.onHide();
-
-                    //목록새로고침
-                    axios.get(host+'/ajax/'+p.prjSeq+'/tasklist')
-                        .then(r=>{
-                          p.listCng(r.data);
-                          p.dispatch({type:'loadingOff'})
-                        })
-                        .catch(e=>{
-                          console.log(e)
-                          p.dispatch({type:'loadingOff'})
-                        })
-                  })
-                  .catch(e=>{
-                    console.log(e)
-                    p.onHide();
-                    p.dispatch({type:'loadingOff'})
-                  })
+              .then(r=>{
+                p.onHide();
+              })
+              .catch(e=>{
+                console.log(e)
+                p.onHide();
+                p.dispatch({type:'loadingOff'})
+              })
             } else {
               p.alertCng(true)
             }
-            // console.log('aa')
           }}>만들기</Button>
 
 

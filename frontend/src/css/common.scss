@@ -1448,36 +1448,37 @@ body{
 .pageContentWrap{
   width: 1080px;
   padding-top:30px;
-  .toolTipTopBox{
-    position: relative;
+  
+}
+.toolTipTopBox{
+  position: relative;
+  .toolTip{
+    width: max-content;
+    background-color: rgba(0,0,0,.8);
+    position: absolute;
+    left: 50%;
+    width: max-content;
+    font-size: .7rem;
+    color: #fff;
+    padding:0px 4px;
+    height: 20px;
+    line-height: 19px;
+    top:-14px;
+    margin:0;
+    margin-top:-12px;
+    border-radius: 4px;
+    opacity: 0;
+    transform: scale(0);
+    cursor: default;
+    transition: .2s ease-in-out;
+    font-weight: normal;
+  }
+  &:hover{
     .toolTip{
-      width: max-content;
-      background-color: rgba(0,0,0,.8);
-      position: absolute;
-      left: 50%;
-      width: max-content;
-      font-size: .7rem;
-      color: #fff;
-      padding:0px 4px;
-      height: 20px;
-      line-height: 19px;
-      top:-14px;
-      margin:0;
-      margin-top:-12px;
-      border-radius: 4px;
-      opacity: 0;
-      transform: scale(0);
-      cursor: default;
-      transition: .2s ease-in-out;
-      font-weight: normal;
-    }
-    &:hover{
-      .toolTip{
-        z-index: 10;
-        opacity: 1;
-        transform: scale(1);
-        transform-origin: 50% 100%;
-      }
+      z-index: 10;
+      opacity: 1;
+      transform: scale(1);
+      transform-origin: 50% 100%;
     }
   }
 }
@@ -1547,6 +1548,11 @@ body{
   }
   &.on{
     right: 0px;
+  }
+  &:not(.on){
+    .App{
+      display: none;
+    }
   }
   .head{
     padding:15px;
@@ -1830,8 +1836,8 @@ body{
             position: absolute;
             width: 170px;
             max-height: 286px;
-            bottom:24px;
-            left: 20px;
+            bottom:21px;
+            left: 19px;
             background-color: #fff;
             overflow: hidden;
             border:1px solid #ccc;
@@ -1860,9 +1866,13 @@ body{
             }
             .member{
               display: flex;
-              padding:8px;
+              padding:4px 8px;
               align-items: center;
               font-size: .8rem;
+              cursor: pointer;
+              &:hover{
+                background-color: #f2f2f2;
+              }
               &+.member{
                 border-top:1px solid #ececec;
               }
@@ -1876,6 +1886,7 @@ body{
                 border:1px solid #ccc;
                 border-radius: 100px;
                 flex-shrink: 0;
+                background-color: #fff;
                 img{
                   height: 100%;
                 }
@@ -1884,7 +1895,7 @@ body{
                 color:#333;
                 margin-left: 6px;
                 margin-right: 4px;
-                width: 84px;
+                width: 120px;
                 flex-shrink: 1;
                 .name{
                   text-align: left;
@@ -1897,7 +1908,7 @@ body{
                   font-size: .7rem;
                   margin-top:-6px;
                   color:#888;
-                  width: 84px;
+                  width: 120px;
                   white-space: nowrap;
                   text-overflow: ellipsis;
                   overflow: hidden;
@@ -2006,7 +2017,7 @@ body{
       width: 100%;
       height: calc(100vh - 340px);
       overflow-y: auto;
-      padding:20px;
+      padding:15px;
       &::-webkit-scrollbar {
         width: 3px;
         height: 3px;
@@ -3199,6 +3210,7 @@ body{
       color: #fff;
       font-weight: bold;
     }
+    
   }
   .taskConWrap{
     display: flex;
@@ -3423,6 +3435,202 @@ body{
   }
 
 }
+//업무 생성모달
+.taskCreateModalWrap{
+  .taskConInput{
+    font-size: .8rem;
+    resize: none;
+    &::-webkit-scrollbar {
+      width: 3px;
+      height: 3px;
+      background:#f2f2f2;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 3.5px;
+      background-color: #ccc;
+
+      &:hover {
+        background-color: #ccc;
+      }
+    }
+    &::-webkit-scrollbar-track {
+      background: #f2f2f2;
+    }
+  }
+  .subTitle{
+    font-size: .7rem;
+    margin-top:8px;
+    padding-left: 4px;
+    margin-bottom:4px;
+  }
+  select{
+    font-size: .8rem;
+  }
+  .chargeWrap{
+    display: flex;
+    justify-content: space-between;
+    margin-top:10px;
+    position: relative;
+    flex-wrap: nowrap;
+    align-items: center;
+    .chargeList{
+      
+      width: 140px;
+      margin-left: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      .msg{
+        font-size: 0.8rem;
+        padding: 2px 6px;
+        color:#555;
+      }
+      .profileImg{
+        width: 30px;
+        height: 30px;
+        margin:0px -4px;
+        .toolTip{
+          left: 15px;
+          transform-origin: 0% 100%;
+          border-bottom-left-radius: 0px;
+          top:-8px;
+        }
+        div{
+          width: 30px;
+          height: 30px;
+          border-radius: 100px;
+          border:1px solid #ccc;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          img{
+            height: 100%;
+          }
+        }
+        
+      }
+    }
+    .chrgeWrap{
+      transition: .3s ease-in-out;
+      transform: scale(0);
+      transform-origin: 0% 100%;
+      position: absolute;
+      width: 170px;
+      max-height: 286px;
+      bottom:24px;
+      left: 78px;
+      background-color: #fff;
+      overflow: hidden;
+      border:1px solid #ccc;
+      border-radius: 4px 4px 4px 0px;
+      overflow-y: auto;
+      cursor: default;
+      z-index: 20;
+      &.on{
+        transform: scale(1);
+
+      }
+      &::-webkit-scrollbar {
+        width: 3px;
+        height: 3px;
+        background:#f2f2f2;
+      }
+      &::-webkit-scrollbar-thumb {
+        border-radius: 3.5px;
+        background-color: #ccc;
+    
+        &:hover {
+          background-color: #ccc;
+        }
+      }
+      &::-webkit-scrollbar-track {
+        background: #f2f2f2;
+      }
+      .member{
+        display: flex;
+        padding:4px 8px;
+        align-items: center;
+        font-size: .8rem;
+        cursor: pointer;
+        &:hover{
+          background-color: #f2f2f2;
+        }
+        &+.member{
+          border-top:1px solid #ececec;
+        }
+        .profile{
+          width: 30px;
+          height: 30px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          overflow: hidden;
+          border:1px solid #ccc;
+          border-radius: 100px;
+          flex-shrink: 0;
+          background-color: #fff;
+          img{
+            height: 100%;
+          }
+        }
+        .info{
+          color:#333;
+          margin-left: 6px;
+          margin-right: 4px;
+          width: 120px;
+          flex-shrink: 1;
+          .name{
+            text-align: left;
+            width: 100%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+          .email{
+            font-size: .7rem;
+            margin-top:-6px;
+            color:#888;
+            width: 120px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            text-align: left;
+          }
+        }
+        .append{
+          flex-shrink: 0;
+          padding:0px 4px;
+          font-size: .7rem;
+          cursor: pointer;
+          border-radius: 4px;
+          background-color: #f2f2f2;
+          border:1px solid #ccc;
+          color:#333
+        }
+      }
+    }
+    .chargeBtn{
+      cursor: pointer;
+      flex-shrink: 0;
+      margin:0px 0px;
+      border-radius: 100px;
+      font-size: .8rem;
+      padding:4px 10px;
+      color:$c1;
+      width: max-content;
+      margin-bottom: 0px;
+      background-color: #f2f2f2;
+      i{
+        margin-right: 2px;
+        margin-left: -2px;
+        font-size: .9rem;
+      }
+    }
+  }
+}
+
+
 .fc-daygrid-day-number {
   color: black;
   text-decoration: none;

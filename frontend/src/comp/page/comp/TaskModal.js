@@ -538,9 +538,8 @@ function TaskModal(p){
                               </div>
                               <div className="info">
                                 <p className="name">{r.projmember_name?r.projmember_name:'#'+r.projmember_seq}</p>
-                                <p className="email">r.projmember_email</p>
+                                <p className="email">{r.member_email}</p>
                               </div>
-                              <p className="append">배정</p>
                             </div>
                           )
                         })
