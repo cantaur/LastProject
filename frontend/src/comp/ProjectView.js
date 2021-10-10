@@ -42,7 +42,7 @@ function ProjectView(p){
 
   //프로필 변경인지 변경알림인지
   const [profileMsg, profileMsgCng] = useState(false);
-  
+
   //프로필 변경 정보
   const [profileSetInfo,profileSetInfoCng] = useState({img:'',name:''});
 
@@ -55,14 +55,14 @@ function ProjectView(p){
     reader.onload = e=> {
       profileImgPreviewCng(e.target.result);
     };
-  
+
     reader.readAsDataURL(file);
   };
-  
+
 
   //페이지 최초 접속시
   useEffect(()=>{
-    
+
     const isPage = pages.find(e=> e === page)
     if(isPage == undefined){
       history.push('/404')
@@ -88,7 +88,7 @@ function ProjectView(p){
         console.log(e)
       })
     }
-    
+
 
     //멤버정보 가져옴
     axios.get('/ajax/allProjMembers/'+prjSeq)
@@ -112,7 +112,7 @@ function ProjectView(p){
 
   // 프로젝트 리스트를 가져온 후
   useEffect(()=>{
-    //프론트용 
+    //프론트용
     if(window.location.href.indexOf(':3000') != -1){
       p.dispatch({type:'login', email:'sudosoon@gmail.com', seq:3})
     }
@@ -125,7 +125,7 @@ function ProjectView(p){
         }
       })
     }
-    
+
   },[p.projectList])
 
   //현재 프로젝트 정보 갱신한 후
@@ -165,10 +165,10 @@ function ProjectView(p){
     {
       p.projectInfo ?
       <div className="viewOutWrap">
-        <HeadSide 
-          prjColor={prjColor} 
-          prjSeq={prjSeq} 
-          profileMsgCng={profileMsgCng} 
+        <HeadSide
+          prjColor={prjColor}
+          prjSeq={prjSeq}
+          profileMsgCng={profileMsgCng}
           profileSetModalCng={profileSetModalCng}
         />
         <div className="viewInnerWrap">
@@ -186,7 +186,7 @@ function ProjectView(p){
               <Calendar prjColor={prjColor} prjSeq={prjSeq}/>
               <TaskModal/>
             </>
-            
+
           }
           {
             p.pageInfo == 'projectChart' &&
@@ -209,7 +209,10 @@ function ProjectView(p){
           }
           {
             p.pageInfo == 'task' &&
-            <Task prjColor={prjColor} prjSeq={prjSeq}/>
+            <>
+              <Task prjColor={prjColor} prjSeq={prjSeq}/>
+              <TaskModal/>
+            </>
           }
         </div>
         <Modal
@@ -245,7 +248,7 @@ function ProjectView(p){
                 img:file,
               })
               toBase64(file);
-            
+
             }}/>
             <p className="profileSetTitle">
               프로필 설정
@@ -270,7 +273,7 @@ function ProjectView(p){
             <Form.Group className=" piumInput" controlId="floatingTextarea">
               <FloatingLabel controlId="floatingTextarea" label="닉네임">
                 <Form.Control type="textarea" placeholder="닉네임" name="project_content" value={profileSetInfo.name} spellCheck="false" onChange={(e)=>{
-                  
+
                   profileSetInfoCng({
                     ...profileSetInfo,
                     name:e.target.value,
@@ -284,7 +287,7 @@ function ProjectView(p){
                     formData.append('projmember_name', profileSetInfo.name)
                     formData.append('projmember_image', profileSetInfo.img)
                     formData.append('project_seq', prjSeq)
-                
+
                     axios({
                       method:'post',
                       url:host+'/ajax/updateProfile',
@@ -311,7 +314,7 @@ function ProjectView(p){
                 formData.append('projmember_name', profileSetInfo.name)
                 formData.append('projmember_image', profileSetInfo.img)
                 formData.append('project_seq', prjSeq)
-            
+
                 axios({
                   method:'post',
                   url:host+'/ajax/updateProfile',
@@ -330,13 +333,13 @@ function ProjectView(p){
 
             </div>
           </div>
-          
-            
+
+
         </Modal>
       </div>
       :null
     }
-      
+
     </>
   )
 }

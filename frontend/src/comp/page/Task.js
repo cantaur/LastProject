@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react"
+import React, {useCallback, useEffect, useRef, useState} from "react"
 import {pub, colors, pages,seqColorTrans, host} from '../Helper.js'
 import DatePicker from '../DatePicker.js'
 import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstrap'
@@ -10,6 +10,56 @@ import Box from '@mui/material/Box';
 
 
 function Task(p){
+
+  //업무 이중모달 컨트롤
+  const taskModalClose = useCallback((e)=>{
+    if(!e.target.closest('.taskModalWrap')  && !e.target.closest('.labelEditBtn') && !e.target.closest('.deleteMemberModal')){
+      p.dispatch({type:'taskModalCng', val:false})
+      setTimeout(()=>{
+        window.removeEventListener('click', taskModalClose)
+      })
+    }
+  },[])
+
+  //업무 만들기 모달 상태
+  const [createModal, createModalCng] = useState(false)
+
+  //업무 만들기 제목 인풋
+  const titleInput = useRef();
+
+  //업무 만들기 정보
+  const [taskInfo, taskInfoCng] = useState({
+    task_title:'',
+    task_content:'',
+    task_startdate:'',
+    task_duedate:'',
+    project_seq:p.prjSeq,
+  });
+
+  //업무 생성_제목 알림 상태
+  let [alert, alertCng] = useState(false);
+
+  //날짜선택 이중모달 컨트롤
+  let dateModalClose =useCallback((e)=>{
+    if(!e.target.closest('.DayPicker_1') ){
+      p.dispatch({type:'modalOff'})
+      setTimeout(()=>{
+        window.removeEventListener('click', dateModalClose)
+      })
+    }
+  },[])
+
+  //업무 생성시 상태 업데이트
+  const taskInfoChange = e =>{
+    const {value, name} = e.target;
+    taskInfoCng({
+      ...taskInfo,
+      [name]: value
+    })
+  }
+
+  //업무 목록
+  let [list, listCng] = useState();
 
   //업무 중요도 배열
   const typeArr = {
@@ -67,15 +117,15 @@ function Task(p){
         }else if(taskFilter.statusFilter == '종료'){
           listDummy = listDummy.filter(rr => Number(rr.task_status) == 1);
         }
-        
+
       } else {
         listDummy = listDummy;
       }
-      
-      
+
+
       // listDummy.map((rr,i)=>{
       //   console.log(Number(rr.milestone_seq))
-        
+
       //   // if(rr.task_isdelete == '1'){
       //   //   listDummy.splice(i)
       //   //   // return false;
@@ -113,7 +163,7 @@ function Task(p){
     .catch(e=>{
       console.log(e)
       p.dispatch({type:'loadingOff'})
-    })  
+    })
   }
 
   //멤버정보 가져오기
@@ -138,10 +188,10 @@ function Task(p){
         }
       })
     }
-    
+
     return info;
   }
-  
+
   useEffect(()=>{
     taskFilterCng({
       myTaskFilter:'전체',
@@ -175,9 +225,38 @@ function Task(p){
           <>
             <div className="toolTipTopBox">
               <p className="createBtn" style={{backgroundColor:p.prjColor}} onClick={()=>{
-                
+                createModalCng(true)
+                setTimeout(()=>{
+                  titleInput.current.focus();
+                })
               }}>+ 업무 만들기</p>
             </div>
+            <TaskCreateModal
+                show={createModal}
+                onHide={() => {
+                  createModalCng(false);
+                  p.dispatch({type:'modalOff'})
+                  window.removeEventListener('click', dateModalClose)
+                  taskInfoCng({
+                    task_title:'',
+                    task_content:'',
+                    task_startdate:'',
+                    task_duedate:'',
+                    project_seq:p.prjSeq,
+                  })
+                  alertCng(false)
+                }}
+                dispatch={p.dispatch}
+                taskInfo={taskInfo}
+                taskInfoCng={taskInfoCng}
+                taskInfoChange={taskInfoChange}
+                dateModalClose={dateModalClose}
+                alert={alert}
+                alertCng={alertCng}
+                listCng={listCng}
+                prjSeq={p.prjSeq}
+                titleInput={titleInput}
+            />
           </>
           :null
         }
@@ -185,8 +264,8 @@ function Task(p){
       <div className="taskConWrap">
         <div className="taskFilter">
           {/* <p className="title"><i class="fas fa-filter"></i>업무 필터</p> */}
-          
-          <Form.Check 
+
+          <Form.Check
             type="radio"
             name="myTaskFilter"
             label="전체 업무"
@@ -196,7 +275,7 @@ function Task(p){
             onChange={taskFilterChange}
           />
 
-          <Form.Check 
+          <Form.Check
             type="radio"
             name="myTaskFilter"
             label="내 업무"
@@ -207,7 +286,7 @@ function Task(p){
           />
           <hr/>
           <p className="title">마일스톤</p>
-          <Form.Check 
+          <Form.Check
             type="radio"
             name="mileFilter"
             value="전체"
@@ -222,7 +301,7 @@ function Task(p){
               ?
                 p.mileStoneList.map((r,i)=>{
                   return(
-                    <Form.Check 
+                    <Form.Check
                       type="radio"
                       name="mileFilter"
                       value={r.milestone_seq}
@@ -237,7 +316,7 @@ function Task(p){
           }
           <hr/>
           <p className="title">중요도</p>
-          <Form.Check 
+          <Form.Check
             type="radio"
             name="priFilter"
             value="전체"
@@ -249,7 +328,7 @@ function Task(p){
           {
             Object.keys(typeArr).map((key, i)=>{
               return(
-                <Form.Check 
+                <Form.Check
                   type="radio"
                   name="priFilter"
                   value={key}
@@ -261,14 +340,14 @@ function Task(p){
               )
 
             })
-            
+
           }
-          
+
         </div>
         <div className="taskListWrap">
           <div className="taskHeader">
             <div className="filter">
-              
+
               <p style={
                 taskFilter.statusFilter == '전체'?
                 {backgroundColor:p.prjColor,color:'#fff'}
@@ -308,7 +387,7 @@ function Task(p){
             </div>
           </div>
           <div className="taskList">
-            
+
             {
               taskList
               ?
@@ -319,7 +398,45 @@ function Task(p){
                     if(r.task_isdelete == '0'){
                       return(
                         <div className="taskRow">
-                          <p className="title">{r.task_title}</p>
+                          <p className="title" onClick={()=>{
+                            p.dispatch({type:'loadingOn'})
+                            axios.get(host+'/ajax/taskView/'+r.task_seq)
+                                .then(r=>{
+                                  p.dispatch(
+                                      {
+                                        type:'taskModalDataCng',
+                                        val:{
+                                          "task_seq":r.data[0].task.task_seq,
+                                          "task_title":r.data[0].task.task_title,
+                                          "task_content":r.data[0].task.task_content,
+                                          "task_status":r.data[0].task.task_status,
+                                          "task_isdelete":r.data[0].task.task_isdelete,
+                                          "task_startdate":r.data[0].task.task_startdate.substring(0,10),
+                                          "task_duedate":r.data[0].task.task_duedate.substring(0,10),
+                                          "projmember_seq":r.data[0].task.projmember_seq,
+                                          "milestone_seq":r.data[0].task.milestone_seq,
+                                          "label_seq":r.data[0].task.label_seq==0?null:r.data[0].task.label_seq,
+                                          "label_title":r.data[0].label?r.data[0].label.label_title:null,
+                                          "priority_code":r.data[0].task.priority_code,
+                                          "taskMembers":r.data[0].taskMembers,
+                                          "task_date":r.data[0].task.task_date.substring(0,10),
+                                        }
+                                      }
+                                  )
+
+                                  p.dispatch({type:'taskModalCng',val:true})
+
+                                  setTimeout(()=>{
+                                    window.addEventListener('click', taskModalClose)
+                                  })
+                                  p.dispatch({type:'loadingOff'})
+                                })
+                                .catch(e=>{
+                                  console.log(e)
+                                  p.dispatch({type:'loadingOff'})
+
+                                })
+                          }}>{r.task_title}</p>
                           <div className="infoWrap">
                             {/* 담당자 */}
                             <div className="profileWrap w120">
@@ -330,7 +447,7 @@ function Task(p){
                                   <img src={pub.img+'defaultProfile.svg'}/>
                                 </div>
                               </div>
-            
+
                             </div>
                             {/* 중요도 */}
                             <p className={"type w80 " + (r.priority_code?typeArr[r.priority_code]:'없음')}>{r.priority_code?typeArr[r.priority_code]:'없음'}</p>
@@ -339,7 +456,7 @@ function Task(p){
                               <b style={{backgroundColor:seqColorTrans(r.label_seq)}}>
                                 라벨 불러와야함
                               </b>
-                        
+
                             </div>
                             {/* 작성자 */}
                             <div className="profileImg writer toolTipTopBox">
@@ -352,7 +469,7 @@ function Task(p){
                         </div>
                       )
                     }
-                  
+
                   })
                 :<div className="noTaskMsg">업무가 없습니다.</div>
               :<Box sx={{ width: '100%' }}><LinearProgress /></Box>
@@ -362,9 +479,112 @@ function Task(p){
 
       </div>
 
-      
+
     </div>
   )
+}
+
+function TaskCreateModal(p) {
+
+  return (
+      <Modal
+          {...p}
+          size="sm"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+          className="modalWrap"
+          style={{marginTop:'-70px'}}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter" className="modalTitle">
+            업무 만들기
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {
+            p.alert
+                ?
+                <Alert variant={'danger'} style={{fontSize:'.8rem',marginBottom:'.4rem'}}>업무 제목을 입력해주세요. &#x1F602;</Alert>
+                : null
+          }
+
+          <Form.Group className="mb-2 piumInput" controlId="floatingInput">
+            <FloatingLabel
+                controlId="floatingInput"
+                label="업무 제목"
+            >
+              <Form.Control type="text" placeholder="업무 제목" name="task_title" spellCheck="false" onChange={p.taskInfoChange} ref={p.titleInput}/>
+            </FloatingLabel>
+          </Form.Group>
+
+
+          <Form.Group className=" piumInput" controlId="floatingTextarea">
+            <FloatingLabel controlId="floatingTextarea" label="설명">
+              <Form.Control type="textarea" placeholder="설명" name="task_content" spellcheck="false" onChange={p.taskInfoChange}/>
+            </FloatingLabel>
+          </Form.Group>
+
+          <div className="datePickerWrap">
+            <DatePicker
+                pickerDateCng={p.taskInfoCng}
+                pickerDate={p.taskInfo}
+                pickerStartKey={'task_startdate'}
+                pickerEndKey={'task_duedate'}
+                dateModalClose={p.dateModalClose}
+            />
+            <p className="dateBtn" onClick={
+              ()=>{
+                p.dispatch({type:'modalOn'})
+                setTimeout(()=>{
+                  window.addEventListener('click', p.dateModalClose)
+                })
+              }
+            }>
+              <i class="far fa-calendar-check"></i> 일정선택
+            </p>
+            <p className="dateInfo">
+              {p.taskInfo.task_startdate?(p.taskInfo.task_startdate + " ~ "):''}
+              {p.taskInfo.task_duedate?p.taskInfo.task_duedate:''}
+            </p>
+          </div>
+
+        </Modal.Body>
+        <Modal.Footer className="modalBtnWrap">
+          <Button className="modalBtn" onClick={()=>{
+
+            if(p.taskInfo.task_title != ''){
+              p.dispatch({type:'loadingOn'})
+              axios.post(host+'/ajax/createTask', p.taskInfo)
+                  .then(r=>{
+                    p.onHide();
+
+                    //목록새로고침
+                    axios.get(host+'/ajax/'+p.prjSeq+'/tasklist')
+                        .then(r=>{
+                          p.listCng(r.data);
+                          p.dispatch({type:'loadingOff'})
+                        })
+                        .catch(e=>{
+                          console.log(e)
+                          p.dispatch({type:'loadingOff'})
+                        })
+                  })
+                  .catch(e=>{
+                    console.log(e)
+                    p.onHide();
+                    p.dispatch({type:'loadingOff'})
+                  })
+            } else {
+              p.alertCng(true)
+            }
+            // console.log('aa')
+          }}>만들기</Button>
+
+
+
+        </Modal.Footer>
+      </Modal>
+  );
 }
 
 
