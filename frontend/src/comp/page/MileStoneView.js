@@ -291,7 +291,7 @@ function MileStoneView(p){
                                           "projmember_seq":r.data[0].task.projmember_seq,
                                           "milestone_seq":r.data[0].task.milestone_seq,
                                           "label_seq":r.data[0].task.label_seq==0?null:r.data[0].task.label_seq,
-                                          "label_title":r.data[0].label?r.data[0].label.label_title:null,
+                                          "label_title":r.data[0].task?r.data[0].task.label_title:null,
                                           "priority_code":r.data[0].task.priority_code,
                                           "taskMembers":r.data[0].taskMembers,
                                           "task_date":r.data[0].task.task_date.substring(0,10),
@@ -344,10 +344,10 @@ function MileStoneView(p){
                             {/* 라벨 */}
                             <div className="label w120">
                               {
-                                r.label
+                                r.task.label_seq
                                 ?
                                   <b style={{backgroundColor:seqColorTrans(r.label.label_seq)}}>
-                                    {r.label.label_title}
+                                    {r.task.label_title}
                                   </b>
                                 :
                                   <b style={{backgroundColor:'#ccc',color:'#555'}}>
