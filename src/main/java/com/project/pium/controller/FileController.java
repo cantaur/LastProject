@@ -104,7 +104,7 @@ public class FileController {
 
     @GetMapping("/ajax/FileList/{projSeq}")
     public List<FileDTO> projectFilelist(@PathVariable long projSeq){
-        log.info("####"+dbFileStorageService.findFileByTaskseq(projSeq));
+        log.info("####"+dbFileStorageService.findFileByProjseq(projSeq));
         return dbFileStorageService.findFileByProjseq(projSeq);
     }
 
