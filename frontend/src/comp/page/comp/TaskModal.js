@@ -187,6 +187,9 @@ function TaskModal(p){
   //코멘트 파일
   const [commentFile, commentFileCng] = useState();
 
+  //코멘트 내용
+  const [commentText, commentTextCng] = useState();
+
 
   useEffect(()=>{
     titleDataCng(p.taskModalData.task_title)
@@ -213,6 +216,7 @@ function TaskModal(p){
   useEffect(()=>{
     commentMemberCng([]);
     commentFileCng(undefined);
+    commentTextCng('');
   },[tabState])
   return(
     <>
@@ -861,8 +865,71 @@ function TaskModal(p){
                       </div>
                     </div>
                   </div>
-                  <textarea name="" placeholder="코멘트 내용을 입력해주세요." className="commentTextInput" spellCheck={false}></textarea>
-                  <div className="sendBtn" style={{backgroundColor:seqColorTrans(p.taskModalData.task_seq)}}><i class="fas fa-pen"></i></div>
+                  <textarea name="" placeholder="코멘트 내용을 입력해주세요." className="commentTextInput" spellCheck={false} onChange={e=>{
+                    commentTextCng(e.target.value)
+                  }}></textarea>
+
+                  <div className="sendBtn toolTipTopBox" style={{color:seqColorTrans(p.taskModalData.task_seq)}} onClick={()=>{
+                    if(!commentText){
+                      console.log('ddd')
+                    }else {
+                      if(commentFile){
+                        const formData = new FormData();
+                        console.log(commentFile)
+                        formData.append('file', commentFile)
+                        formData.append('project_seq', p.projectInfo.project_seq)
+                        formData.append('task_seq', p.taskModalData.task_seq)
+                        formData.append('projmember_seq', p.myMemberInfo.projmember_seq)
+  
+                        axios({
+                          method:'post',
+                          url:host+'/ajax/uploadFile',
+                          data:formData,
+                          headers: {"Content-Type": "multipart/form-data"}
+                        })
+                        .then(r=>{
+                          let membersString = commentMember?commentMember.join(','):'';
+                          axios.post(host+'/ajax/taskComment',{
+                            comment_content:commentText,
+                            members : membersString,
+                            projmember_seq:p.myMemberInfo.projmember_seq,
+                            tesk_seq:p.taskModalData.task_seq,
+                          })
+                          .then(r=>{
+                            p.dispatch({type:'loadingOff'})
+                          })
+                          .catch(e=>{
+                            console.log(e)
+                            p.dispatch({type:'loadingOff'})
+                          })
+                        })
+                        .catch(e=>{
+                          console.log(e)
+                          p.dispatch({type:'loadingOff'})
+
+                        })
+                      }else {
+                        let membersString = commentMember?commentMember.join(','):'';
+                        axios.post(host+'/ajax/taskComment',{
+                          comment_content:commentText,
+                          members : membersString,
+                          projmember_seq:p.myMemberInfo.projmember_seq,
+                          tesk_seq:p.taskModalData.task_seq,
+                        })
+                        .then(r=>{
+                          p.dispatch({type:'loadingOff'})
+                        })
+                        .catch(e=>{
+                          console.log(e)
+                          p.dispatch({type:'loadingOff'})
+                        })
+                      }
+                    }
+                    
+                  }}>
+                    <p className="toolTip" style={{marginLeft:'-34px'}}>코멘트 등록</p>
+                    <i class="fas fa-paper-plane"></i>
+                  </div>
                   
                   
                 </div>
@@ -886,6 +953,7 @@ function transReducer(state){
     projectInfo : state.projectInfo,
     memberList : state.memberList,
     refresh : state.refresh,
+    myMemberInfo : state.myMemberInfo
   }
 }
 

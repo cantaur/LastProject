@@ -49,7 +49,6 @@ function MileStoneView(p){
     if(filter == '전체'){
       axios.get(host+'/ajax/milestone/'+mileStoneSeq+'/tasks')
       .then(r=>{
-        console.log(r.data)
         taskListCng(r.data)
         p.dispatch({type:'loadingOff'})
       })
@@ -60,7 +59,6 @@ function MileStoneView(p){
 
       axios.get(host+'/ajax/milestone/'+mileStoneSeq+'/taskOpend')
       .then(r=>{
-        console.log(r.data)
         taskListCng(r.data)
         p.dispatch({type:'loadingOff'})
       })
@@ -70,7 +68,6 @@ function MileStoneView(p){
     } else if(filter == '종료'){
       axios.get(host+'/ajax/milestone/'+mileStoneSeq+'/taskClosed')
       .then(r=>{
-        console.log(r.data)
         taskListCng(r.data)
         p.dispatch({type:'loadingOff'})
       })
@@ -191,7 +188,6 @@ function MileStoneView(p){
     })
     taskFilterCng('전체')
   },[])
-  console.log(taskList)
 
   return(
     <div className="pageContentWrap mileStoneWrap">
