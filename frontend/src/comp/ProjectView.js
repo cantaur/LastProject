@@ -162,6 +162,18 @@ function ProjectView(p){
     }
   },[p.myMemberInfo])
 
+  //내 멤버정보 새로고침 용
+  useEffect(()=>{
+    //멤버정보 가져옴
+    axios.get('/ajax/allProjMembers/'+prjSeq)
+    .then(r=>{
+      p.dispatch({type:'memberListCng', val:r.data})
+    })
+    .catch(e=>{
+      console.log(e)
+    })
+  },[p.refreshMyInfo])
+
   return(
     <>
     {
@@ -305,12 +317,11 @@ function ProjectView(p){
                       headers: {"Content-Type": "multipart/form-data"}
                     })
                     .then(r=>{
-                      p.dispatch({type:'refreshCng'})
+                      p.dispatch({type:'refreshMyInfoCng'})
                       p.dispatch({type:'loadingOff'})
                     })
                     .catch(e=>{
                       console.log(e)
-                      p.dispatch({type:'refreshCng'})
                       p.dispatch({type:'loadingOff'})
 
                     })
@@ -335,13 +346,11 @@ function ProjectView(p){
                 })
                 .then(r=>{
                   profileSetModalClose()
-                  p.dispatch({type:'refreshCng'})
+                  p.dispatch({type:'refreshMyInfoCng'})
                   p.dispatch({type:'loadingOff'})
                 })
                 .catch(e=>{
                   console.log(e)
-                  profileSetModalClose()
-                  p.dispatch({type:'refreshCng'})
                   p.dispatch({type:'loadingOff'})
 
                 })
@@ -372,6 +381,7 @@ function transReducer(state){
     isMaster:state.isMaster,
     isProfileEmpty:state.isProfileEmpty,
     mileStoneList : state.mileStoneList,
+    refreshMyInfo : state.refreshMyInfo,
   }
 }
 

@@ -145,6 +145,19 @@ function refresh(state=false, action){
   }
 }
 
+function refreshMyInfo(state=false, action){
+  switch (action.type){
+    case 'refreshMyInfoCng':
+      if(state == false){
+        return true;
+      }else {
+        return false;
+      }
+    default:
+      return state;
+  }
+}
+
 
 let store = createStore(combineReducers(
   {
@@ -162,6 +175,7 @@ let store = createStore(combineReducers(
     taskModal,
     taskModalData,
     refresh,
+    refreshMyInfo,
   }
 ));
 
