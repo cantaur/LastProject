@@ -16,7 +16,6 @@ import java.util.*;
 @Log
 @RestController
 @AllArgsConstructor
-@ResponseBody
 public class TaskController {
     private TaskService taskService;
     private TaskmemberService taskmemberService;
@@ -40,9 +39,6 @@ public class TaskController {
           taskDTO = new TaskDTO(-1,task_title,task_content,null,null,null,null,null,null,
                   projmember_seq,milestone_seq,project_seq,null,-1);
         } else {
-            String tempStartdate= temp.get("task_startdate").toString();
-            String tempDuedate= temp.get("task_duedate").toString();
-
             Timestamp task_startdate = Timestamp.valueOf(temp.get("task_startdate").toString()+" 00:00:00.0");
             Timestamp task_duedate = Timestamp.valueOf(temp.get("task_duedate").toString()+" 00:00:00.0");
 
@@ -63,9 +59,8 @@ public class TaskController {
 
         //2. TaskmemberDTO 객체 생성
         ArrayList<Object> members = (ArrayList<Object>) param.get("memberInfo");
-        for(int i=0; i<members.size(); i++){
-            Long tempMember = Long.valueOf(members.get(i).toString());
-            log.info("이건 뭐지"+tempMember);
+        for (Object member : members) {
+            Long tempMember = Long.valueOf(member.toString());
             taskService.insertTaskMember(tempMember);
         }
 
@@ -78,21 +73,18 @@ public class TaskController {
     public ArrayList<Object> taskList(@PathVariable long projSeq){
         ArrayList<Object> taskAllInfo = new ArrayList<>();
         List<TaskDTO> tasks= taskService.taskList(projSeq);
-        for(TaskDTO taskDTO : tasks){
-            LinkedHashMap<String,Object> tempTask = new LinkedHashMap<>();
-
-            //결과로 나온 업무리스트의 label_seq를 뽑아서 업무에 있는 label_title을 뽑는다
+        //결과로 나온 업무리스트의 label_seq를 뽑아서 업무에 있는 label_title을 뽑는다
+        //결과로 나온 업무리스트에서 task_seq를 뽑아서 업무당 배정된 멤버를 뽑아와서 새 배열에 넣는다.
+        for (TaskDTO taskDTO : tasks) {
+            LinkedHashMap<String, Object> tempTask = new LinkedHashMap<>();
             LabelDTO labelDTO = taskService.findLabelTitle(taskDTO.getLabel_seq());
-
-            //결과로 나온 업무리스트에서 task_seq를 뽑아서 업무당 배정된 멤버를 뽑아와서 새 배열에 넣는다.
-            List<TaskmemberDTO> taskmemberDTOS= taskmemberService.selectByTaskSeq(taskDTO.getTask_seq());
-
+            List<TaskmemberDTO> taskmemberDTOS = taskmemberService.selectByTaskSeq(taskDTO.getTask_seq());
             tempTask.put("task", taskDTO);
-            tempTask.put("taskMembers",taskmemberDTOS);
+            tempTask.put("taskMembers", taskmemberDTOS);
             tempTask.put("label", labelDTO);
-
             taskAllInfo.add(tempTask);
         }
+        log.info("#taskAllInfo : "+taskAllInfo);
         return taskAllInfo;
     }
 
@@ -128,7 +120,6 @@ public class TaskController {
 
 
     //업무 모달>title update
-    @ResponseBody
     @PostMapping("/ajax/updateTaskTitle")
     public void updateTitle(@RequestBody Map<String,Object> param){
         Long taskSeq = Long.valueOf(String.valueOf(param.get("taskSeq"))); //task_seq
@@ -138,7 +129,6 @@ public class TaskController {
     }
 
     //업무 모달>content update
-    @ResponseBody
     @PostMapping("/ajax/updateTaskCont")
     public void updateContent(@RequestBody Map<String,Object> param){
         Long taskSeq = Long.valueOf(String.valueOf(param.get("taskSeq"))); //task_seq
@@ -148,7 +138,6 @@ public class TaskController {
     }
 
     //업무 모달>마일스톤 변경하기
-    @ResponseBody
     @PostMapping("/ajax/changeMile")
     public void updateMilestone(@RequestBody Map<String,Integer> param){
         Long taskSeq= Long.valueOf(param.get("taskSeq")); //task_seq
@@ -195,7 +184,6 @@ public class TaskController {
 
 
     //업무 모달>업무에 라벨 넣기
-    @ResponseBody
     @PostMapping("/ajax/addLabel")
     public void addLabel(@RequestBody Map<String,Object> param){
 
@@ -214,7 +202,6 @@ public class TaskController {
     }
 
     //업무 모달>업무에 중요도 셋팅하기
-    @ResponseBody
     @PostMapping("/ajax/updatePriority")
     public void updatePriority(@RequestBody Map<String,Integer> param){
         Long taskSeq= Long.valueOf(param.get("taskSeq")); //task_seq
@@ -226,7 +213,6 @@ public class TaskController {
 
 
     //업무 모달>업무 상태 마감으로 변경
-    @ResponseBody
     @PostMapping("/ajax/closeTask")
     public void updateStatusFinish(@RequestBody Map<String,Integer> param){
         Long taskSeq= Long.valueOf(param.get("taskSeq"));
@@ -234,7 +220,6 @@ public class TaskController {
     }
 
     //업무 모달>업무 다시 활성화 시키기
-    @ResponseBody
     @PostMapping("/ajax/openTask")
     public void updateStatusDefault(@RequestBody Map<String,Integer> param){
         Long taskSeq= Long.valueOf(param.get("taskSeq"));
@@ -242,7 +227,6 @@ public class TaskController {
     }
 
     //업무 모달>업무 삭제상태로 변경
-    @ResponseBody
     @PostMapping("/ajax/deleteTask")
     public void updateIsdelete(@RequestBody Map<String,Integer> param){
         Long taskSeq= Long.valueOf(param.get("taskSeq"));

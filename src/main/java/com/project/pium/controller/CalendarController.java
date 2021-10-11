@@ -16,7 +16,6 @@ import java.util.*;
 @Log
 @RestController
 @AllArgsConstructor
-@ResponseBody
 public class CalendarController {
 
     private CalendarService calendarService;

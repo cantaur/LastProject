@@ -19,7 +19,6 @@ import java.util.Map;
 @Log
 @RestController
 @AllArgsConstructor
-@ResponseBody
 public class ProjectController {
 
     private ProjectService projectService;
@@ -52,7 +51,6 @@ public class ProjectController {
     }
 
     //프로젝트를 완료상태로 전환
-    @ResponseBody
     @PostMapping("/ajax/closeProject")
     public void closeProject(@RequestBody Map<String,Integer> param){
         Long projSeq= Long.valueOf(param.get("project_seq"));
@@ -60,7 +58,6 @@ public class ProjectController {
     }
 
     //프로젝트를 진행상태로 전환
-    @ResponseBody
     @PostMapping("/ajax/openProject")
     public void openProject(@RequestBody Map<String,Integer> param){
         Long projSeq= Long.valueOf(param.get("project_seq"));
@@ -68,7 +65,6 @@ public class ProjectController {
     }
 
     //프로젝트를 삭제상태로 전환
-    @ResponseBody
     @PostMapping("/ajax/deleteProject")
     public void updateIsdelete(@RequestBody Map<String,Integer> param){
         Long projSeq= Long.valueOf(param.get("project_seq"));

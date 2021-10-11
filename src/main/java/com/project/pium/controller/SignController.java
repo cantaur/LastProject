@@ -18,11 +18,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 
 
@@ -43,7 +40,6 @@ public class SignController {
     private MemberService memberService;
 
     private NaverLoginBO naverLoginBO;
-    private String apiResult = null;
 
 
     @Autowired
@@ -147,7 +143,6 @@ public class SignController {
 
     //앱 실행시 세션값이 있으면 프론트에 email과 seq 넘겨주고, 세션이 없으면 false 반환
     @GetMapping("/ajax/loginUser")
-    @ResponseBody
     public Object currentUserName(Principal principal) {
 
         if(principal ==null){

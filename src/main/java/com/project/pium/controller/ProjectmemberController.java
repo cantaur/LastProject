@@ -15,15 +15,17 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 프로젝트 멤버 추가 및 관리(완료)
+ */
+
+
 @Log
 @RestController
 @AllArgsConstructor
-@ResponseBody
 public class ProjectmemberController {
-    private ProjectService projectService;
     private MemberService memberService;
     private ProjectmemberService projectmemberService;
-    private FileStorageService fileStorageService;
 
 
     //현재 로그인한 유저의 세션값 얻어오는 로직 모듈화
@@ -43,17 +45,33 @@ public class ProjectmemberController {
                                 @RequestParam(value="projmember_image", required = false) MultipartFile file,
                                 @RequestParam(value="projmember_name") String name,
                                 Principal principal) throws Exception {
+        log.info("들어오는것ㅎ ㅘㄱ인러ㅏㅇ러ㅣ : "+file+", "+name);
         //1. 접속한 유저 이메일로 memberSeq 찾음
         String email= currentUserName(principal);
         long sessionSeq = memberService.findUserNo(email);
 
         //3. projectSeq와 memberSeq로 project_member seq 찾음
         long projMemberSeq = projectmemberService.findProjMemberSeq(projSeq,sessionSeq);
+        ProjectmemberDTO projectmemberDTO = new ProjectmemberDTO();
+
         //4. 집어넣음?
-        ProjectmemberDTO projectmemberDTO = new ProjectmemberDTO(projMemberSeq, null,name,
-                file.getOriginalFilename(),
-                file.getContentType(),
-                file.getBytes(),-1,-1,null);
+        if(file !=null && name !=null){
+            projectmemberDTO = new ProjectmemberDTO(projMemberSeq, null,name,
+                    file.getOriginalFilename(),
+                    file.getContentType(),
+                    file.getBytes(),-1,-1,null);
+        }else if(name.equals("")){
+            projectmemberDTO = new ProjectmemberDTO(projMemberSeq, null,null,
+                    file.getOriginalFilename(),
+                    file.getContentType(),
+                    file.getBytes(),-1,-1,null);
+        }else if(file ==null){
+            projectmemberDTO = new ProjectmemberDTO(projMemberSeq, null,name,
+                    null,
+                    null,
+                    null,-1,-1,null);
+        }
+
         //5. 일단 업데이트로 감?
         projectmemberService.updateProfileS(projectmemberDTO);
         return "success";
@@ -125,7 +143,7 @@ public class ProjectmemberController {
         if(flag!=null){
             long memSeq = memberService.findUserNo(email);
             String msg= projectmemberService.insertMember(projSeq,memSeq);
-            if(msg=="success"){
+            if(msg.equals("success")){
                 return "success";
             }else{
                 return "duplicated";

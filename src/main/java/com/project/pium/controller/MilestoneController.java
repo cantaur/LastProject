@@ -21,7 +21,6 @@ import java.util.*;
 @Log
 @RestController
 @AllArgsConstructor
-@ResponseBody
 public class MilestoneController {
 
     private MilestoneService milestoneService;
@@ -70,24 +69,24 @@ public class MilestoneController {
         MilestoneDTO milestoneDTO = null; //get메소드로 dto에 담긴 값을 받아오기 위해 초기화
         ArrayList<Object> mileInfo = new ArrayList<>();
 
-        for (int i=0; i<milestoneList.size(); i++) {
+        for (MilestoneDTO dto : milestoneList) {
             LinkedHashMap<String, Object> tempMile = new LinkedHashMap<>(); //
-            milestoneDTO = milestoneList.get(i);
+            milestoneDTO = dto;
             long mileSeq = milestoneDTO.getMilestone_seq();
             int countTask = taskService.countTask(mileSeq); //해당 마일스톤에서 생성된 업무의 갯수
             int closedTask = taskService.countClosedTask(mileSeq); //종료된 업무의 갯수
-            tempMile.put("countTask",countTask);
-            tempMile.put("closedTask",closedTask);
-            tempMile.put("milestone_seq",mileSeq);
-            tempMile.put("milestone_title",milestoneDTO.getMilestone_title());
-            tempMile.put("milestone_content",milestoneDTO.getMilestone_content());
-            tempMile.put("milestone_status",milestoneDTO.getMilestone_status());
-            tempMile.put("milestone_isdelete",milestoneDTO.getMilestone_isdelete());
-            tempMile.put("milestone_startdate",milestoneDTO.getMilestone_startdate());
-            tempMile.put("milestone_duedate",milestoneDTO.getMilestone_duedate());
-            tempMile.put("milestone_enddate",milestoneDTO.getMilestone_enddate());
-            tempMile.put("projmember_seq",milestoneDTO.getProjmember_seq());
-            tempMile.put("project_seq",milestoneDTO.getProject_seq());
+            tempMile.put("countTask", countTask);
+            tempMile.put("closedTask", closedTask);
+            tempMile.put("milestone_seq", mileSeq);
+            tempMile.put("milestone_title", milestoneDTO.getMilestone_title());
+            tempMile.put("milestone_content", milestoneDTO.getMilestone_content());
+            tempMile.put("milestone_status", milestoneDTO.getMilestone_status());
+            tempMile.put("milestone_isdelete", milestoneDTO.getMilestone_isdelete());
+            tempMile.put("milestone_startdate", milestoneDTO.getMilestone_startdate());
+            tempMile.put("milestone_duedate", milestoneDTO.getMilestone_duedate());
+            //tempMile.put("milestone_enddate", milestoneDTO.getMilestone_enddate());
+            tempMile.put("projmember_seq", milestoneDTO.getProjmember_seq());
+            //tempMile.put("project_seq", milestoneDTO.getProject_seq());
             mileInfo.add(tempMile);
 
         }
@@ -201,7 +200,7 @@ public class MilestoneController {
 
     //마일스톤 수정(제목,설명,달력)
     @PostMapping("/ajax/updateMileStone")
-    public void updateMileStone(@RequestBody MilestoneDTO milestoneDTO, Principal principal){
+    public void updateMileStone(@RequestBody MilestoneDTO milestoneDTO){
         milestoneService.updateMilestone(milestoneDTO);
     }
 
@@ -213,7 +212,6 @@ public class MilestoneController {
 
 
     // 마일스톤 완료상태로 전환
-    @ResponseBody
     @PostMapping("/ajax/closeMileStone")
     public void closeMileStone(@RequestBody Map<String,Integer> param){
         Long mileSeq= Long.valueOf(param.get("milestone_seq"));
@@ -221,7 +219,6 @@ public class MilestoneController {
     }
 
     // 마일스톤 오픈상태로 전환
-    @ResponseBody
     @PostMapping("/ajax/openMileStone")
     public void openMileStone(@RequestBody Map<String,Integer> param){
         Long mileSeq= Long.valueOf(param.get("milestone_seq"));
@@ -230,7 +227,6 @@ public class MilestoneController {
 
 
     // 마일스톤 삭제상태로 전환
-    @ResponseBody
     @PostMapping("/ajax/deleteMileStone")
     public void deleteMileStone(@RequestBody Map<String,Integer> param){
         Long mileSeq= Long.valueOf(param.get("milestone_seq"));

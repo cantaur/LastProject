@@ -20,7 +20,6 @@ import java.util.Map;
 @Log
 @RestController
 @AllArgsConstructor
-@ResponseBody
 public class TodoController {
     private TodoService todoService;
 
@@ -29,8 +28,6 @@ public class TodoController {
     //to do 메모 생성
     @PostMapping("/ajax/createTodo")
     public String insertNote(@RequestBody TodoDTO todoDTO){
-        long task_seq= todoDTO.getTask_seq();
-        String task_title=todoDTO.getTask_title();
         todoService.insertNoteS(todoDTO);
         return "success";
     }

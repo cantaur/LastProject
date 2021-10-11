@@ -1,6 +1,5 @@
 package com.project.pium.controller;
 
-import com.project.pium.domain.TaskDTO;
 import com.project.pium.domain.TaskcommentDTO;
 import com.project.pium.service.TaskcommentService;
 import lombok.AllArgsConstructor;
@@ -13,7 +12,6 @@ import java.util.Map;
 @Log
 @RestController
 @AllArgsConstructor
-@ResponseBody
 public class TaskcommentController {
     private TaskcommentService taskcommentService;
 
