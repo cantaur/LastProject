@@ -146,7 +146,8 @@ function ProjectView(p){
 
   },[p.memberList])
 
-
+console.log(p.myMemberInfo.projmember_data)
+console.log(p.myMemberInfo.projmember_name)
   useEffect(()=>{
     //프로필 수정용 데이터 입력
     if(p.myMemberInfo){
@@ -158,6 +159,11 @@ function ProjectView(p){
       if(p.myMemberInfo.projmember_data == null && p.myMemberInfo.projmember_name == null){
         profileMsgCng(true)
         profileSetModalCng(true)
+      }
+      //프로필이름과 이미지가 둘다 공백이면
+      else if(p.myMemberInfo.projmember_data === '' && p.myMemberInfo.projmember_name === ''){
+          profileMsgCng(true)
+          profileSetModalCng(true)
       }
     }
   },[p.myMemberInfo])
@@ -317,6 +323,7 @@ function ProjectView(p){
                       headers: {"Content-Type": "multipart/form-data"}
                     })
                     .then(r=>{
+                      profileSetModalClose()
                       p.dispatch({type:'refreshMyInfoCng'})
                       p.dispatch({type:'loadingOff'})
                     })
@@ -346,6 +353,7 @@ function ProjectView(p){
                 })
                 .then(r=>{
                   profileSetModalClose()
+                  console.log(1)
                   p.dispatch({type:'refreshMyInfoCng'})
                   p.dispatch({type:'loadingOff'})
                 })
