@@ -41,7 +41,6 @@ function HeadSide(p){
   //검색 모달 상태
   let [searchModal, searchModalCng] = useState(false);
   const searchInput = useRef();
-
   const pagePathNum = pagePath(p.pageInfo);
 
   //멤버 설정 모달 상태
@@ -435,11 +434,30 @@ function HeadSide(p){
         <div className={"profileModalWrap "+ (profileModal?"on":"")}>
           <div className="infoWrap">
             <div className="profileImg">
-              <img src={pub.img+'defaultProfile.svg'}/>
+              {p.myMemberInfo?
+                p.myMemberInfo.projmember_data?
+                  <img src={'data:image;base64,'+p.myMemberInfo.projmember_data}/>
+                  :<img src={pub.img+'defaultProfile.svg'}/>
+                :<img src={pub.img+'defaultProfile.svg'}/>
+              }
             </div>
             <div className="info">
-              <p className="name">닉네임 <b>관리자</b></p>
-              <p className="email">test@gmail.com</p>
+              <p className="name">
+                {p.myMemberInfo.projmember_name
+                    ?
+                    p.myMemberInfo.projmember_name
+                    :
+                    "닉네임"
+                }
+                <b>관리자</b></p>
+              <p className="email">
+                {p.myMemberInfo.member_email
+                ?
+                p.myMemberInfo.member_email
+                :
+                'test@gmail.com'
+                }
+              </p>
             </div>
           </div>
           <div className="btnWrap">

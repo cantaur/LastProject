@@ -305,10 +305,12 @@ function ProjectView(p){
                       headers: {"Content-Type": "multipart/form-data"}
                     })
                     .then(r=>{
+                      p.dispatch({type:'refreshCng'})
                       p.dispatch({type:'loadingOff'})
                     })
                     .catch(e=>{
                       console.log(e)
+                      p.dispatch({type:'refreshCng'})
                       p.dispatch({type:'loadingOff'})
 
                     })
@@ -332,10 +334,14 @@ function ProjectView(p){
                   headers: {"Content-Type": "multipart/form-data"}
                 })
                 .then(r=>{
+                  profileSetModalClose()
+                  p.dispatch({type:'refreshCng'})
                   p.dispatch({type:'loadingOff'})
                 })
                 .catch(e=>{
                   console.log(e)
+                  profileSetModalClose()
+                  p.dispatch({type:'refreshCng'})
                   p.dispatch({type:'loadingOff'})
 
                 })
