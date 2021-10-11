@@ -84,7 +84,7 @@ public class TaskController {
             //tempTask.put("label", labelDTO);
             taskAllInfo.add(tempTask);
         }
-        log.info("#taskAllInfo : "+taskAllInfo);
+
         return taskAllInfo;
     }
 

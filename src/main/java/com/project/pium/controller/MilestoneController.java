@@ -129,18 +129,19 @@ public class MilestoneController {
             LinkedHashMap<String,Object> tempTask = new LinkedHashMap<>();
 
             //결과로 나온 업무리스트의 label_seq를 뽑아서 업무에 있는 label_title을 뽑는다
-            LabelDTO labelDTO = taskService.findLabelTitle(taskDTO1.getLabel_seq());
+            //LabelDTO labelDTO = taskService.findLabelTitle(taskDTO1.getLabel_seq());
 
             //결과로 나온 업무리스트에서 task_seq를 뽑아서 업무당 배정된 멤버를 뽑아와서 새 배열에 넣는다.
             List<TaskmemberDTO> taskmemberDTOS= taskmemberService.selectByTaskSeq(taskDTO1.getTask_seq());
 
             tempTask.put("task",taskDTO1);
             tempTask.put("taskMembers",taskmemberDTOS);
-            tempTask.put("label", labelDTO);
+            //tempTask.put("label", labelDTO);
 
 
             mileInfo.add(tempTask);
         }
+        log.info("#mileInfo : "+mileInfo);
         return mileInfo;
     }
 
