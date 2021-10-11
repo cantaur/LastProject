@@ -84,30 +84,12 @@ function MileStone(p){
 
 
   useEffect(()=>{
-    p.dispatch({type:'loadingOn'})
-    axios.get(host+'/ajax/'+p.prjSeq+'/milestonelist')
-    .then(r=>{
-      listCng(r.data);
-      p.dispatch({type:'loadingOff'})
-    })
-    .catch(e=>{
-      console.log(e)
-      p.dispatch({type:'loadingOff'})
-    })
-  },[])
-
-  useEffect(()=>{
-    p.dispatch({type:'loadingOn'})
-    axios.get(host+'/ajax/'+p.prjSeq+'/milestonelist')
-    .then(r=>{
-      listCng(r.data);
-      p.dispatch({type:'loadingOff'})
-    })
-    .catch(e=>{
-      console.log(e)
-      p.dispatch({type:'loadingOff'})
-    })
-  },[location])
+    listCng();
+    if(p.mileStoneList){
+      listCng(p.mileStoneList)
+    }
+  },[p.mileStoneList])
+  
 
   return(
     <div className="pageContentWrap mileStoneWrap">
@@ -353,6 +335,7 @@ function transReducer(state){
     datePickerModal : state.datePickerModal,
     isMaster:state.isMaster,
     projectInfo:state.projectInfo,
+    mileStoneList : state.mileStoneList
   }
 }
 

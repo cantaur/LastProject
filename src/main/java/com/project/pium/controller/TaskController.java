@@ -93,6 +93,7 @@ public class TaskController {
 
             taskAllInfo.add(tempTask);
         }
+        log.info("요청받음");
         return taskAllInfo;
     }
 
