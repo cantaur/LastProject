@@ -15,7 +15,9 @@ public class TaskcommentDTO {
     private String comment_content;
     private String comment_isdelete;
     private Date comment_date;
-    private long task_seq;
-    private long projmember_seq;
+    private String members;
+    private Long task_seq;
+    private Long projmember_seq;
+    private Long file_seq;
 
 }

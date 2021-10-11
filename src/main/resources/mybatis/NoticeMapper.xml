@@ -3,6 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.NoticeMapper">
+    <insert id="mentionedMember" parameterType="NoticeDTO">
+        INSERT INTO notice (notice_type,notice_date,notice_sender,task_seq,milestone_seq,projmember_seq)
+        VALUES(#{notice_type},now(),#{notice_sender},#{task_seq},#{milestone_seq},#{projmember_seq})
+    </insert>
 
 
 

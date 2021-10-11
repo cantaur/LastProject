@@ -6,12 +6,12 @@
 
     <!--해당 업무를 클릭했을때 오른쪽에서 튀어나오는 업무 상세창의 comment 탭을 눌렀을때 나오는 모든 코멘트를 조회-->
     <select id="selectBySeq" resultType="TaskcommentDTO" parameterType="long">
-        select * from task_comment where task_seq=#{seq} order by comment_date desc;
+        select * from task_comment where task_seq=#{task_seq} order by comment_date desc;
     </select>
 
     <!--  //task insertComment-->
     <insert id="insert" parameterType="TaskcommentDTO">
-        insert into task_comment(comment_content, comment_date, task_seq, projmember_seq) values(#{comment_content}, now(), #{task_seq}, #{projmember_seq})
+        insert into task_comment(comment_content, comment_date, members, projmember_seq, task_seq, file_seq) values(#{comment_content}, now(), #{members}, #{projmember_seq}, #{task_seq}, #{file_seq})
     </insert>
 
     <!--task comment isdel 상태로 변경-->

@@ -11,6 +11,7 @@ import java.util.List;
 public interface FileMapper {
     //파일 저장
     void saveFile(FileDTO fileDTO);
-    FileDTO findById(String fileId);
+    FileDTO findById(long fileId);
+    Long lastFileSeq(long taskSeq);
 
 }

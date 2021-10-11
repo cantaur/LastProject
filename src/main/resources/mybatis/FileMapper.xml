@@ -13,6 +13,13 @@
     </select>
 
 
+    <!--  마지막으로 입력된 파일 seq 검색-->
+    <select id="lastFileSeq" parameterType="long" resultType="long">
+        SELECT MAX( file_seq ) FROM file where task_seq=#{task_seq};
+
+    </select>
+
+
 
 
 </mapper>

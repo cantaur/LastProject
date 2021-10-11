@@ -65,7 +65,7 @@ public class DBFileStorageService {
 
 
 
-    public FileDTO getFile(String fileId) {
+    public FileDTO getFile(long fileId) {
         return fileMapper.findById(fileId);
 
     }
