@@ -2147,13 +2147,28 @@ body{
     }
     .commentForm{
       border-top:#ececec;
-      padding:8px;
+      padding:6px;
+      height: max-content;
+      height: 140px;
+      position: relative;
+      .sendBtn{
+        position: absolute;
+        right: 10px;
+        top:106px;
+        color:#fff;
+        font-size: .8rem;
+        padding:2px 6px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
       .commentTextInput{
         width: 100%;
         padding:8px;
         border:0;
-        background-color: #f2f2f2;
-        border-radius: 4px;
+        background-color: #fff;
+        border:1px solid #ddd;
+        height: 95px;
+        border-radius: 4px 4px 4px 10px;
         font-size: .8rem;
         resize: none;
         &:focus{
@@ -2179,7 +2194,7 @@ body{
       .dataWrap{
         display: flex;
         align-items: center;
-        margin-bottom:8px;
+        margin-bottom:6px;
         #commentFileInput{
           display: none;
         }
@@ -2328,11 +2343,13 @@ body{
             margin-left: 4px;
             p{
               font-size: .7rem;
-              padding:5px;
               cursor: pointer;
-              
+              margin:0px 3px;
+              &+p{
+                
+              }
               &:hover{
-                background-color: #f2f2f2;
+                text-decoration: underline;
               }
             }
           }

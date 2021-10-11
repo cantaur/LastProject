@@ -184,6 +184,10 @@ function TaskModal(p){
     }
   },[])
 
+  //코멘트 파일
+  const [commentFile, commentFileCng] = useState();
+
+
   useEffect(()=>{
     titleDataCng(p.taskModalData.task_title)
     contentDataCng(p.taskModalData.task_content)
@@ -208,8 +212,8 @@ function TaskModal(p){
 
   useEffect(()=>{
     commentMemberCng([]);
+    commentFileCng(undefined);
   },[tabState])
-
   return(
     <>
       <Modal show={deleteMemberAlert} onHide={alertClose} className="modalWrap deleteMemberModal">
@@ -779,17 +783,21 @@ function TaskModal(p){
                 <div className="commentForm">
                   <div className="dataWrap">
                     <div className="file">
-                      <input type="file" id="commentFileInput"/>
-                      <label htmlFor="commentFileInput" className="commentBtn" style={{color:seqColorTrans(2)}}>
+                      <input type="file" id="commentFileInput" accept=".jpg, .jpeg, .png, .svg, .zip, .hwp, .docx, .ppt, .pptx, .xlsx, .txt, .pdf" onChange={e=>{
+                        commentFileCng(e.target.files[0])
+                      }}/>
+                      <label htmlFor="commentFileInput" className="commentBtn" style={{color:seqColorTrans(p.taskModalData.task_seq)}}>
                         <i class="fas fa-file-upload"></i>파일
                       </label>
-                      <div className="name toolTipTopBox">
+                      <div className="name toolTipTopBox" onClick={()=>{
+                        commentFileCng(undefined);
+                      }}>
                         <div className="toolTip" style={{marginLeft:'-32px'}}>파일 삭제</div>
-                        <p>파일명파일명파일명파일명파일명.jpg</p>
+                        <p>{commentFile?commentFile.name:''}</p>
                       </div>
                     </div>
                     <div className="member">
-                      <div className="commentBtn chargeBtn" style={{color:seqColorTrans(2)}} onClick={()=>{
+                      <div className="commentBtn chargeBtn" style={{color:seqColorTrans(p.taskModalData.task_seq)}} onClick={()=>{
                         setTimeout(()=>{
                           commentMemberModalCng(true)
                           window.addEventListener('click', commentMemberModalClose)
@@ -835,12 +843,18 @@ function TaskModal(p){
                       <div className="commentMemberWrap">
                           {
                             commentMember &&
-                            commentMember.map(r=>{
+                            commentMember.map((r,i)=>{
                               let member = p.memberList.find(rr=>rr.projmember_seq == r)
                               let name = member.projmember_name?member.projmember_name:'#'+member.projmember_seq
                               
                               return(
-                                <p>@{name}</p>
+                                <p className="commentMemberList toolTipTopBox" onClick={()=>{
+                                  let listDummy = [...commentMember]
+                                  listDummy.splice(i,1)
+                                  setTimeout(()=>{
+                                    commentMemberCng(listDummy)
+                                  })
+                                }}>@{name}</p>
                               )
                             })
                           }
@@ -848,7 +862,7 @@ function TaskModal(p){
                     </div>
                   </div>
                   <textarea name="" placeholder="코멘트 내용을 입력해주세요." className="commentTextInput" spellCheck={false}></textarea>
-                  
+                  <div className="sendBtn" style={{backgroundColor:seqColorTrans(p.taskModalData.task_seq)}}>코멘트 등록</div>
                   
                   
                 </div>

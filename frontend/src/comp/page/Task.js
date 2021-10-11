@@ -106,15 +106,15 @@ function Task(p){
   //task 리스트
   const [taskList, taskListCng] = useState();
 
-  //task 리스트 불러오기 (전체)
+
+  //task 리스트 불러오기
   const taskListGetFunc = () =>{
+      
     taskListCng();
     let listDummy = [];
-    // p.dispatch({type:'loadingOn'})
-    axios.get(host+'/ajax/'+p.prjSeq+'/tasklist')
-    
-    .then(r=>{
 
+    axios.get(host+'/ajax/'+p.prjSeq+'/tasklist')
+    .then(r=>{
       if(taskFilter.myTaskFilter != '전체'){
         listDummy = r.data.filter(rr => rr.task.projmember_seq == p.myMemberInfo.projmember_seq);
       } else {
@@ -144,12 +144,12 @@ function Task(p){
       taskListCng(listDummy)
       p.dispatch({type:'loadingOff'})
 
-
     })
     .catch(e=>{
       console.log(e)
       p.dispatch({type:'loadingOff'})
     })
+    
   }
 
   //멤버정보 가져오기
@@ -185,14 +185,12 @@ function Task(p){
       priFilter:'전체',
       statusFilter:'전체',
     })
-    if(p.myMemberInfo){
-      taskListGetFunc();
-    }
   },[p.myMemberInfo])
 
 
   useEffect(()=>{
     if(p.myMemberInfo){
+      p.dispatch({type:'loadingOn'})
       taskListGetFunc();
     }
   },[taskFilter])
