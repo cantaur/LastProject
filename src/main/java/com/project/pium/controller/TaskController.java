@@ -37,13 +37,13 @@ public class TaskController {
         //일정을 입력하지 않았을 경우
         if(temp.get("task_startdate") == ""){
           taskDTO = new TaskDTO(-1,task_title,task_content,null,null,null,null,null,null,
-                  projmember_seq,milestone_seq,project_seq,null,-1);
+                  projmember_seq,milestone_seq,project_seq,null,-1,null);
         } else {
             Timestamp task_startdate = Timestamp.valueOf(temp.get("task_startdate").toString()+" 00:00:00.0");
             Timestamp task_duedate = Timestamp.valueOf(temp.get("task_duedate").toString()+" 00:00:00.0");
 
             taskDTO = new TaskDTO(-1,task_title,task_content,null,null,task_startdate,task_duedate,
-                    null,null,projmember_seq,milestone_seq,project_seq,null,-1);
+                    null,null,projmember_seq,milestone_seq,project_seq,null,-1,null);
 
         }
 
@@ -77,11 +77,11 @@ public class TaskController {
         //결과로 나온 업무리스트에서 task_seq를 뽑아서 업무당 배정된 멤버를 뽑아와서 새 배열에 넣는다.
         for (TaskDTO taskDTO : tasks) {
             LinkedHashMap<String, Object> tempTask = new LinkedHashMap<>();
-            LabelDTO labelDTO = taskService.findLabelTitle(taskDTO.getLabel_seq());
+            //LabelDTO labelDTO = taskService.findLabelTitle(taskDTO.getLabel_seq());
             List<TaskmemberDTO> taskmemberDTOS = taskmemberService.selectByTaskSeq(taskDTO.getTask_seq());
             tempTask.put("task", taskDTO);
             tempTask.put("taskMembers", taskmemberDTOS);
-            tempTask.put("label", labelDTO);
+            //tempTask.put("label", labelDTO);
             taskAllInfo.add(tempTask);
         }
         log.info("#taskAllInfo : "+taskAllInfo);
@@ -107,10 +107,10 @@ public class TaskController {
         //업무에 배정된 멤버 조회
         List<TaskmemberDTO> taskmemberDTOS = taskmemberService.selectByTaskSeq(taskSeq);
         //업무의 라벨 조회
-        LabelDTO labelDTO = taskService.findLabelTitle(taskDTO.getLabel_seq());
+        //LabelDTO labelDTO = taskService.findLabelTitle(taskDTO.getLabel_seq());
         tempTask.put("task", taskDTO);
         tempTask.put("taskMembers", taskmemberDTOS);
-        tempTask.put("label", labelDTO);
+        //tempTask.put("label", labelDTO);
         taskInfo.add(tempTask);
 
         return taskInfo;

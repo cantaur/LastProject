@@ -12,7 +12,8 @@
     </insert>
     <!--해당 프로젝트에서 생성된 업무 리스트-->
     <select id="taskList" parameterType="long" resultType="TaskDTO">
-        SELECT * FROM task WHERE project_seq = #{project_seq}
+        SELECT t.*, wl.label_title FROM task AS t LEFT JOIN work_label as wl ON t.label_seq = wl.label_seq
+        WHERE t.project_seq = #{project_seq}
     </select>
 
 
@@ -49,7 +50,8 @@
 
     <!-- 업무를 클릭하였을 때 업무 상세보기 -->
     <select id="showTaskByTaskseq" parameterType="long" resultType="TaskDTO">
-        SELECT * FROM task WHERE task_seq = #{task_seq}
+        SELECT t.*, wl.label_title FROM task AS t LEFT JOIN work_label as wl ON t.label_seq = wl.label_seq
+        WHERE t.task_seq = #{task_seq}
     </select>
 
 <!--title update -->

@@ -25,5 +25,6 @@ public class TaskDTO {
     private long project_seq;
     private String priority_code;
     private long label_seq;
+    private String label_title;
 
 }
