@@ -191,7 +191,7 @@ function MileStoneView(p){
     })
     taskFilterCng('전체')
   },[])
-
+  console.log(taskList)
 
   return(
     <div className="pageContentWrap mileStoneWrap">
@@ -274,7 +274,6 @@ function MileStoneView(p){
                         <div className="taskRow">
                           <p className="title" onClick={()=>{
                             p.dispatch({type:'loadingOn'})
-                            console.log(r.task.task_seq)
                             axios.get(host+'/ajax/taskView/'+r.task.task_seq)
                                 .then(r=>{
                                   p.dispatch(
@@ -346,7 +345,7 @@ function MileStoneView(p){
                               {
                                 r.task.label_seq
                                 ?
-                                  <b style={{backgroundColor:seqColorTrans(r.label.label_seq)}}>
+                                  <b style={{backgroundColor:seqColorTrans(r.task.label_seq)}}>
                                     {r.task.label_title}
                                   </b>
                                 :
