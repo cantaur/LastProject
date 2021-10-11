@@ -95,4 +95,17 @@ public class FileController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
     }
+
+    @GetMapping("/ajax/taskFileList/{taskSeq}")
+    public List<FileDTO> taskFilelist(@PathVariable long taskSeq){
+        log.info("####"+dbFileStorageService.findFileByTaskseq(taskSeq));
+        return dbFileStorageService.findFileByTaskseq(taskSeq);
+    }
+
+    @GetMapping("/ajax/FileList/{projSeq}")
+    public List<FileDTO> projectFilelist(@PathVariable long projSeq){
+        log.info("####"+dbFileStorageService.findFileByTaskseq(projSeq));
+        return dbFileStorageService.findFileByProjseq(projSeq);
+    }
+
 }

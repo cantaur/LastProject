@@ -12,6 +12,8 @@ public interface FileMapper {
     //파일 저장
     void saveFile(FileDTO fileDTO);
     FileDTO findById(long fileId);
+    List<FileDTO> findFileByTaskseq(long taskSeq);
+    List<FileDTO> findFileByProjseq(long projSeq);
     Long lastFileSeq(long taskSeq);
 
 }

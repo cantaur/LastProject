@@ -12,6 +12,13 @@
         select * from file where file_seq=#{file_seq}
     </select>
 
+    <select id="findFileByTaskseq" parameterType="long" resultType="FileDTO">
+        select * from file where task_seq=#{task_seq}
+    </select>
+
+    <select id="findFileByProjseq" parameterType="long" resultType="FileDTO">
+        select * from file where project_seq=#{project_seq}
+    </select>
 
     <!--  마지막으로 입력된 파일 seq 검색-->
     <select id="lastFileSeq" parameterType="long" resultType="long">
