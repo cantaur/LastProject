@@ -206,13 +206,13 @@ function TaskModal(p){
     commentTextCng('');
     commentTextEmptyCng(false);
 
-    // axios.get(host+'/ajax/')
-    // .then(r=>{
-    //   commentList(r.data);
-    // })
-    // .catch(e=>{
-    //   console.log(e)
-    // })
+    axios.get(host+'/ajax/taskComment/'+p.taskModalData.task_seq)
+    .then(r=>{
+      console.log(r.data)
+    })
+    .catch(e=>{
+      console.log(e)
+    })
     commentWrap.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
   }
 
