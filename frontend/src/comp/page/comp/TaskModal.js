@@ -191,6 +191,22 @@ function TaskModal(p){
   const [commentText, commentTextCng] = useState();
 
 
+  //파일
+
+  //파일 용량 변환 함수
+  const formatBytes = (bytes, decimals = 2) => {
+    if (bytes === 0) return '0 Bytes';
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  }
+  
+
   useEffect(()=>{
     titleDataCng(p.taskModalData.task_title)
     contentDataCng(p.taskModalData.task_content)
@@ -894,6 +910,7 @@ function TaskModal(p){
                             members : membersString,
                             projmember_seq:p.myMemberInfo.projmember_seq,
                             task_seq:p.taskModalData.task_seq,
+                            isFile:true,
                           })
                           .then(r=>{
                             p.dispatch({type:'loadingOff'})
@@ -916,6 +933,7 @@ function TaskModal(p){
                           members : membersString,
                           projmember_seq:p.myMemberInfo.projmember_seq,
                           task_seq:p.taskModalData.task_seq,
+                          isFile:false,
                         })
                         .then(r=>{
                           p.dispatch({type:'loadingOff'})
