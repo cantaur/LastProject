@@ -146,8 +146,8 @@ function ProjectView(p){
 
   },[p.memberList])
 
-console.log(p.myMemberInfo.projmember_data)
-console.log(p.myMemberInfo.projmember_name)
+// console.log(p.myMemberInfo.projmember_data)
+// console.log(p.myMemberInfo.projmember_name)
   useEffect(()=>{
     //프로필 수정용 데이터 입력
     if(p.myMemberInfo){

@@ -7,6 +7,8 @@ import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstr
 import { Link, useParams, withRouter, useHistory } from "react-router-dom";
 import {connect} from 'react-redux';
 import { FileIcon, defaultStyles } from "react-file-icon";
+import { Box } from "@mui/material";
+import LinearProgress from '@mui/material/LinearProgress';
 
 
 function TaskModal(p){
@@ -189,6 +191,30 @@ function TaskModal(p){
 
   //코멘트 내용
   const [commentText, commentTextCng] = useState();
+  const commentTextInput = useRef();
+  //코멘트 내용 비었는지
+  const [commentTextEmpty, commentTextEmptyCng] = useState(false);
+  // 코멘트 목록 wrap (스크롤 컨트롤용)
+  const commentWrap = useRef();
+  //코멘트 목록
+  const [commentList, commentListCng] = useState();
+
+  //코멘트 목록 불러오기
+  const commentListGetFunc = () =>{
+    commentMemberCng([]);
+    commentFileCng(undefined);
+    commentTextCng('');
+    commentTextEmptyCng(false);
+
+    // axios.get(host+'/ajax/')
+    // .then(r=>{
+    //   commentList(r.data);
+    // })
+    // .catch(e=>{
+    //   console.log(e)
+    // })
+    commentWrap.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+  }
 
 
   //파일
@@ -230,10 +256,12 @@ function TaskModal(p){
   },[p.taskModalData])
 
   useEffect(()=>{
-    commentMemberCng([]);
-    commentFileCng(undefined);
-    commentTextCng('');
+    if(tabState==1){
+      commentListGetFunc();
+      commentTextInput.current.focus();
+    }
   },[tabState])
+
   return(
     <>
       <Modal show={deleteMemberAlert} onHide={alertClose} className="modalWrap deleteMemberModal">
@@ -425,22 +453,22 @@ function TaskModal(p){
                   <i class="fas fa-pen"></i>
                 </div>
                 <div className="conBtn submitBtn toolTipTopBox"
-                     onClick={()=>{
-                  editContentCng(false)
-                  p.dispatch({type:'loadingOn'})
-                  axios.post(host+'/ajax/updateTaskCont',{
-                    taskSeq:p.taskModalData.task_seq,
-                    taskContent:contentData,
-                  })
-                  .then(r=>{
-                    p.dispatch({type:'loadingOff'})
-                    editContentCng(false)
-                  })
-                  .catch(e=>{
-                    p.dispatch({type:'loadingOff'})
-                    console.log(e)
-                  })
-                  }}
+                      onClick={()=>{
+                        editContentCng(false)
+                        p.dispatch({type:'loadingOn'})
+                        axios.post(host+'/ajax/updateTaskCont',{
+                          taskSeq:p.taskModalData.task_seq,
+                          taskContent:contentData,
+                        })
+                        .then(r=>{
+                          p.dispatch({type:'loadingOff'})
+                          editContentCng(false)
+                        })
+                        .catch(e=>{
+                          p.dispatch({type:'loadingOff'})
+                          console.log(e)
+                        })
+                      }}
                 >
                   수정완료
                 </div>
@@ -667,12 +695,12 @@ function TaskModal(p){
                             })
                           }
                         }}
-                       onKeyDown={e=>{
-                         if(e.key === 'Escape'){
-                           editLabelCng(false)
-                           taskRefresh()
-                         }
-                       }}
+                        onKeyDown={e=>{
+                          if(e.key === 'Escape'){
+                            editLabelCng(false)
+                            taskRefresh()
+                          }
+                        }}
                         />
                         <p className="submitBtn labelEditBtn" onClick={()=>{
                           axios.post(host+'/ajax/addLabel',{
@@ -767,36 +795,48 @@ function TaskModal(p){
             tabState == 1 &&
             <>
               <div className="commentWrap">
-                <div className="commentList">
-                  <div className="comment">
+                <div className="commentList" ref={commentWrap}>
+                  {
+                    commentList
+                    ?
+                      commentList.legth > 0
+                      ? 
+                        commentList.map((r,i)=>{
+                          return(
+                            <div className="comment">
+                              <div className="data">
+                                <div className="textWrap">
+                                  <div className="writer">
+                                    <p>작성자</p>
+                                    <p>2020-12-12</p>
+                                  </div>
+                                  <div className="text">안녕하세요 이렇게 텍스트가 들어감 안녕하세요 이렇게 텍스트가 들어감안녕하세요 이렇게 텍스트가 들어감안녕하세요 이렇게 텍스트가 들어감안녕하세요 이렇게 텍스트가 들어감안녕하세요 이렇게 텍스트가 들어감안녕하세요 이렇게 텍스트가 들어감</div>
+                                </div>
+                                <div className="fileMemberWrap">
+                                  <div className="member">
+                                    <p className="person">@사용자1</p>
+                                    <p className="person">@사용자2</p>
+                                    <p className="person">@사용자3</p>
+                                    <p className="person">@사용자3</p>
 
-                    <div className="data">
-                      <div className="textWrap">
-                        <div className="writer">
-                          <p>작성자</p>
-                          <p>2020-12-12</p>
-                        </div>
-                        <div className="text">안녕하세요 이렇게 텍스트가 들어감 안녕하세요 이렇게 텍스트가 들어감안녕하세요 이렇게 텍스트가 들어감안녕하세요 이렇게 텍스트가 들어감안녕하세요 이렇게 텍스트가 들어감안녕하세요 이렇게 텍스트가 들어감안녕하세요 이렇게 텍스트가 들어감</div>
-                      </div>
-                      <div className="fileMemberWrap">
-                        <div className="member">
-                          <p className="person">@사용자1</p>
-                          <p className="person">@사용자2</p>
-                          <p className="person">@사용자3</p>
-                          <p className="person">@사용자3</p>
 
+                                  </div>
+                                  <div className="file">
+                                    <FileIcon extension="pdf" {...defaultStyles.pdf} />
+                                    <p className="fileInfo">파일이름입니다 파일이름입니다.pdf</p>
+                                  </div>
+                                </div>
 
-                        </div>
-                        <div className="file">
-                          <FileIcon extension="pdf" {...defaultStyles.pdf} />
-                          <p className="fileInfo">파일이름입니다 파일이름입니다.pdf</p>
-                        </div>
-                      </div>
+                              </div>
 
-                    </div>
+                            </div>
+                          )
+                        })
+                      :<p className="noneComment">코멘트가 없습니다.</p>
+                    :<Box sx={{ width: '100%' }}><LinearProgress /></Box>
 
-                  </div>
-
+                  }
+                  
                 </div>
 
 
@@ -881,14 +921,17 @@ function TaskModal(p){
                       </div>
                     </div>
                   </div>
-                  <textarea name="" placeholder="코멘트 내용을 입력해주세요." className="commentTextInput" spellCheck={false} onChange={e=>{
+                  <textarea ref={commentTextInput} placeholder="코멘트 내용을 입력해주세요." className={"commentTextInput " + (commentTextEmpty?'on':'')} spellCheck={false} onChange={e=>{
                     commentTextCng(e.target.value)
+                    commentTextEmptyCng(false)
                   }}></textarea>
 
                   <div className="sendBtn toolTipTopBox" style={{color:seqColorTrans(p.taskModalData.task_seq)}} onClick={()=>{
                     if(!commentText){
-                      console.log('ddd')
+                      commentTextEmptyCng(true)
+                      commentTextInput.current.focus();
                     }else {
+                      // p.dispatch({})
                       if(commentFile){
                         const formData = new FormData();
                         console.log(commentFile)
@@ -904,7 +947,8 @@ function TaskModal(p){
                           headers: {"Content-Type": "multipart/form-data"}
                         })
                         .then(r=>{
-                          let membersString = commentMember?commentMember.join(','):'';
+                          let membersString = commentMember != ''?commentMember.join(','):'none';
+                          
                           axios.post(host+'/ajax/taskComment',{
                             comment_content:commentText,
                             members : membersString,
@@ -926,8 +970,9 @@ function TaskModal(p){
 
                         })
                       }else {
-                        let membersString = commentMember?commentMember.join(','):'';
-                        console.log(p.taskModalData.task_seq)
+                        let membersString = commentMember != ''?commentMember.join(','):'none';
+
+                        console.log(membersString)
                         axios.post(host+'/ajax/taskComment',{
                           comment_content:commentText,
                           members : membersString,
@@ -961,10 +1006,22 @@ function TaskModal(p){
             <>
               <div className="fileWrap">
                 <div className="fileCon">
-                  <div className="fileIcon toolTipTopBox">
+                  <div className="fileIcon">
+                    <FileIcon extension="png" {...defaultStyles.png} />
+                  </div>
+                  <div className="fileInfo">
+                    <p className="name">파일명파일명파일명파일명파일명파일명파일명파일명파일명파일명.jpg</p>
+                    <div className="info">
+                      <p className="writer">작성자, 2020-12-12</p>
+                      <p className="byte">{formatBytes(494231)}</p>
+
+                    </div>
+                  </div>
+
+                  <div className="downBtn toolTipTopBox">
                     <p className="toolTip" style={{marginLeft:'-24px'}}>다운로드</p>
                     <i class="fas fa-download" style={{color:seqColorTrans(p.taskModalData.task_seq)}}></i>
-                    <FileIcon extension="png" {...defaultStyles.png} />
+
                   </div>
                   
                 </div>
