@@ -2104,7 +2104,7 @@ body{
               align-items: center;
               font-size: .7rem;
               color:#555;
-              width: 230px;
+              width: 210px;
               flex-wrap: wrap;
 
               .person{
@@ -2117,7 +2117,7 @@ body{
               }
               &+.file{
                 .fileInfo{
-                  max-width: 120px;
+                  max-width: 155px;
                 }
               }
             }
@@ -2126,7 +2126,6 @@ body{
               display: flex;
               align-items: center;
               cursor: pointer;
-              margin-right: 4px;
               padding:4px;
               &:hover{
                 .fileInfo{
@@ -2395,6 +2394,15 @@ body{
     }
     &::-webkit-scrollbar-track {
       background: #f2f2f2;
+    }
+    .noneFile{
+      text-align: center;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color:#888;
+      padding-bottom:120px;
     }
     .fileCon{
       background-color: #fff;

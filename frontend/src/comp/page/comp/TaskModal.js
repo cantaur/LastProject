@@ -203,21 +203,41 @@ function TaskModal(p){
   const commentListGetFunc = () =>{
     commentMemberCng([]);
     commentFileCng(undefined);
-    commentTextCng('');
+    commentTextCng();
     commentTextEmptyCng(false);
+
+    commentListCng();
 
     axios.get(host+'/ajax/taskComment/'+p.taskModalData.task_seq)
     .then(r=>{
+      commentListCng(r.data)
       console.log(r.data)
     })
     .catch(e=>{
       console.log(e)
     })
+    //여기 나중에해야함
     commentWrap.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
   }
 
 
   //파일
+
+  //파일 목록
+  const [fileList, fileListCng] = useState([]);
+
+  //파일 목록 불러오기
+  const fileListGetFunc = () =>{
+    fileListCng();
+    axios.get(host+'/ajax/taskFileList/'+p.taskModalData.task_seq)
+    .then(r=>{
+      console.log(r.data)
+      fileListCng(r.data)
+    })
+    .catch(e=>{
+      console.log(e)
+    })
+  }
 
   //파일 용량 변환 함수
   const formatBytes = (bytes, decimals = 2) => {
@@ -231,8 +251,43 @@ function TaskModal(p){
 
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
-  
 
+  //파일 확장자 뽑는 함수
+  const fileGetTypeFunc = (name) =>{
+    let _fileLen = name.length;
+    let _lastDot = name.lastIndexOf('.');
+    let _fileExt = name.substring(_lastDot, _fileLen).toLowerCase();
+    
+
+    return _fileExt.substr(1)
+  }
+
+  //멤버정보 가져오기
+  const memberInfoGetFunc = (seq) =>{
+    let info = {
+      name:'',
+      data:''
+    }
+    if(p.memberList){
+      p.memberList.map(r=>{
+        if(r.projmember_seq == seq){
+          if(r.projmember_data){
+            info.data = 'data:image;base64,'+r.projmember_data;
+          }else{
+            info.data = pub.img+'defaultProfile.svg'
+          }
+          if(r.projmember_name){
+            info.name = r.projmember_name
+          }else {
+            info.name = '#'+r.member_seq
+          }
+        }
+      })
+    }
+
+    return info;
+  }
+  
   useEffect(()=>{
     titleDataCng(p.taskModalData.task_title)
     contentDataCng(p.taskModalData.task_content)
@@ -252,6 +307,7 @@ function TaskModal(p){
     editTitleCng(false)
     editContentCng(false)
     editLabelCng(false)
+    tabStateCng(0)
 
   },[p.taskModalData])
 
@@ -259,7 +315,10 @@ function TaskModal(p){
     if(tabState==1){
       commentListGetFunc();
       commentTextInput.current.focus();
+    } else if(tabState == 2){
+      fileListGetFunc();
     }
+    
   },[tabState])
 
   return(
@@ -655,7 +714,7 @@ function TaskModal(p){
                                 }/>
                               </div>
                               <div className="info">
-                                <p className="name">{r.projmember_name?r.projmember_name:'#'+r.projmember_seq}</p>
+                                <p className="name">{r.projmember_name?r.projmember_name:'#'+r.member_seq}</p>
                                 <p className="email">{r.member_email}</p>
                               </div>
                             </div>
@@ -799,32 +858,46 @@ function TaskModal(p){
                   {
                     commentList
                     ?
-                      commentList.legth > 0
+                      commentList.length > 0
                       ? 
                         commentList.map((r,i)=>{
+                          const writer = memberInfoGetFunc(r.comment.projmember_seq)
+                          const membersArr = r.comment.members?r.comment.members.split(','):''
                           return(
                             <div className="comment">
                               <div className="data">
                                 <div className="textWrap">
                                   <div className="writer">
-                                    <p>작성자</p>
-                                    <p>2020-12-12</p>
+                                    <p>{writer.name}</p>
+                                    <p>{r.comment.comment_date}</p>
                                   </div>
-                                  <div className="text">안녕하세요 이렇게 텍스트가 들어감 안녕하세요 이렇게 텍스트가 들어감안녕하세요 이렇게 텍스트가 들어감안녕하세요 이렇게 텍스트가 들어감안녕하세요 이렇게 텍스트가 들어감안녕하세요 이렇게 텍스트가 들어감안녕하세요 이렇게 텍스트가 들어감</div>
+                                  <div className="text">{r.comment.comment_content}</div>
                                 </div>
                                 <div className="fileMemberWrap">
                                   <div className="member">
-                                    <p className="person">@사용자1</p>
-                                    <p className="person">@사용자2</p>
-                                    <p className="person">@사용자3</p>
-                                    <p className="person">@사용자3</p>
-
-
+                                    {
+                                      r.comment.members
+                                      ? 
+                                        membersArr.map(r=>{
+                                          return(
+                                            <p className="person">{'@'+memberInfoGetFunc(r).name}</p>
+                                          )
+                                        })
+                                      :<p className="person">멤버없음</p>
+                                    }
                                   </div>
-                                  <div className="file">
-                                    <FileIcon extension="pdf" {...defaultStyles.pdf} />
-                                    <p className="fileInfo">파일이름입니다 파일이름입니다.pdf</p>
-                                  </div>
+                                  {
+                                    r.file && 
+                                    
+                                    <div className="file" onClick={()=>{
+                                      window.location.href = host+'/downloadFile/'+r.file.file_savename
+                                      
+                                    }}>
+                                      <FileIcon extension={fileGetTypeFunc(r.file.file_savename)} {...defaultStyles[fileGetTypeFunc(r.file.file_savename)]} />
+                                      <p className="fileInfo">{r.file.file_savename}</p>
+                                    </div>
+                                  }
+                                  
                                 </div>
 
                               </div>
@@ -890,7 +963,7 @@ function TaskModal(p){
                                     }/>
                                   </div>
                                   <div className="info">
-                                    <p className="name">{r.projmember_name?r.projmember_name:'#'+r.projmember_seq}</p>
+                                    <p className="name">{r.projmember_name?r.projmember_name:'#'+r.member_seq}</p>
                                     <p className="email">{r.member_email}</p>
                                   </div>
                                 </div>
@@ -931,7 +1004,7 @@ function TaskModal(p){
                       commentTextEmptyCng(true)
                       commentTextInput.current.focus();
                     }else {
-                      // p.dispatch({})
+                      p.dispatch({type:'loadingOn'})
                       if(commentFile){
                         const formData = new FormData();
                         console.log(commentFile)
@@ -957,6 +1030,7 @@ function TaskModal(p){
                             isFile:true,
                           })
                           .then(r=>{
+                            commentListGetFunc();
                             p.dispatch({type:'loadingOff'})
                           })
                           .catch(e=>{
@@ -981,6 +1055,7 @@ function TaskModal(p){
                           isFile:false,
                         })
                         .then(r=>{
+                          commentListGetFunc();
                           p.dispatch({type:'loadingOff'})
                         })
                         .catch(e=>{
@@ -1004,27 +1079,42 @@ function TaskModal(p){
           {
             tabState == 2 &&
             <>
-              <div className="fileWrap">
-                <div className="fileCon">
-                  <div className="fileIcon">
-                    <FileIcon extension="png" {...defaultStyles.png} />
-                  </div>
-                  <div className="fileInfo">
-                    <p className="name">파일명파일명파일명파일명파일명파일명파일명파일명파일명파일명.jpg</p>
-                    <div className="info">
-                      <p className="writer">작성자, 2020-12-12</p>
-                      <p className="byte">{formatBytes(494231)}</p>
+            <div className="fileWrap">
+              {
+                fileList
+                ?
+                  fileList.length > 0
+                  ?
+                    fileList.map(r=>{
+                      const writer = memberInfoGetFunc(r.projmember_seq)
+                      return(
+                        <div className="fileCon">
+                          <div className="fileIcon">
+                            <FileIcon extension={fileGetTypeFunc(r.file_savename)} {...defaultStyles[fileGetTypeFunc(r.file_savename)]} />
+                          </div>
+                          <div className="fileInfo">
+                            <p className="name">{r.file_savename}</p>
+                            <div className="info">
+                              <p className="writer">{writer.name + ', ' + r.file_uploaddate}</p>
+                              <p className="byte">{formatBytes(494231)}</p>
 
-                    </div>
-                  </div>
+                            </div>
+                          </div>
 
-                  <div className="downBtn toolTipTopBox">
-                    <p className="toolTip" style={{marginLeft:'-24px'}}>다운로드</p>
-                    <i class="fas fa-download" style={{color:seqColorTrans(p.taskModalData.task_seq)}}></i>
+                          <div className="downBtn toolTipTopBox" onClick={()=>{
+                            window.location.href = host+'/downloadFile/'+r.file_savename
+                          }}>
+                            <p className="toolTip" style={{marginLeft:'-24px'}}>다운로드</p>
+                            <i class="fas fa-download" style={{color:seqColorTrans(p.taskModalData.task_seq)}}></i>
 
-                  </div>
-                  
-                </div>
+                          </div>
+                        </div>
+                      )
+                    })
+                    
+                  :<p className="noneFile">파일이 없습니다.</p>
+                :<Box sx={{ width: '100%' }}><LinearProgress /></Box>
+              }
               </div>
             </>
           }

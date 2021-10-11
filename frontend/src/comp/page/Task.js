@@ -611,7 +611,7 @@ function TaskCreateModal(p) {
                         }/>
                       </div>
                       <div className="info">
-                        <p className="name">{r.projmember_name?r.projmember_name:'#'+r.projmember_seq}</p>
+                        <p className="name">{r.projmember_name?r.projmember_name:'#'+r.member_seq}</p>
                         <p className="email">{r.member_email}</p>
                       </div>
                     </div>
