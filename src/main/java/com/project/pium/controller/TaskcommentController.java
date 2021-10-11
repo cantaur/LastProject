@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,15 +40,26 @@ public class TaskcommentController {
     
     //해당 업무를 클릭했을때 오른쪽에서 튀어나오는 업무 상세창의 comment 탭을 눌렀을때 나오는 모든 코멘트를 조회
     @GetMapping("/ajax/taskComment/{taskSeq}")//업무에 따라 분류
-    public List<TaskcommentDTO> selectBySeqS(@PathVariable long taskSeq) {
+    public ArrayList<Object> selectBySeqS(@PathVariable long taskSeq) {
+        ArrayList<Object> commentArray = new ArrayList<>();
         List<TaskcommentDTO> list = taskcommentService.selectBySeqS(taskSeq);
         //결과로 나온 comment 리스트의 file_seq를 뽑아서 comment에 있는 file을 뽑는다
+
+
         for(TaskcommentDTO taskcommentDTO : list){
             LinkedHashMap<String, Object> temp = new LinkedHashMap<>();
-            FileDTO fileDTO = fileStorageService.getFile(taskcommentDTO.getFile_seq());
-            log.info("#fileDTO : "+fileDTO);
+            FileDTO fileDTO = null;
+
+            if(taskcommentDTO.getFile_seq() != null){
+                fileDTO = fileStorageService.getFile(taskcommentDTO.getFile_seq());
+                log.info("#fileDTO : "+fileDTO);
+            }
+            temp.put("comment", taskcommentDTO);
+            temp.put("file", fileDTO);
+            commentArray.add(temp);
         }
-        return list;
+        log.info("#commentArray : "+commentArray);
+        return commentArray;
     }
 
 
