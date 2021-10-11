@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,20 +61,23 @@ public class ProjectmemberController {
                     file.getOriginalFilename(),
                     file.getContentType(),
                     file.getBytes(),-1,-1,null);
-        }else if(name.equals("")){
+            projectmemberService.updateProfileS(projectmemberDTO);
+        }else if(file !=null){
             projectmemberDTO = new ProjectmemberDTO(projMemberSeq, null,null,
                     file.getOriginalFilename(),
                     file.getContentType(),
                     file.getBytes(),-1,-1,null);
-        }else if(file ==null){
-            projectmemberDTO = new ProjectmemberDTO(projMemberSeq, null,name,
-                    null,
-                    null,
-                    null,-1,-1,null);
+            projectmemberService.updatePicture(projectmemberDTO);
+        }else if(name !=null){
+            HashMap<String,Object> map = new HashMap<String,Object>();
+            map.put("projmember_name", name);
+            map.put("projmember_seq", projMemberSeq);
+            projectmemberService.updateName(map);
+
         }
 
         //5. 일단 업데이트로 감?
-        projectmemberService.updateProfileS(projectmemberDTO);
+
         return "success";
     }
 

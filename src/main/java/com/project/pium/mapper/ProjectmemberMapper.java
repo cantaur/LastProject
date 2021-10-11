@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 
+import java.util.HashMap;
 import java.util.List;
 
 @Mapper
@@ -13,6 +14,10 @@ import java.util.List;
 public interface ProjectmemberMapper {
     //프로필 수정
     void updateProfile(ProjectmemberDTO projectmemberDTO);
+    //프로필 사진만 수정
+    void updatePicture(ProjectmemberDTO projectmemberDTO);
+    //프로필 이름만 수정
+    void updateName(HashMap hashMap);
     //프로젝트seq와 멤버seq로 프로젝트멤버 seq 찾기
     long findProjMemberSeq(@Param("project_seq") long projSeq, @Param("member_seq")long memSeq);
     //프로젝트멤버 이미지 조회

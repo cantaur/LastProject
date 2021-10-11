@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 @Log
 @AllArgsConstructor
@@ -27,6 +28,16 @@ public class ProjectmemberServiceImpl implements ProjectmemberService  {
     @Override
     public void updateProfileS(ProjectmemberDTO projectmemberDTO){
         projectmemberMapper.updateProfile(projectmemberDTO);
+    }
+
+    @Override
+    public void updatePicture(ProjectmemberDTO projectmemberDTO) {
+        projectmemberMapper.updatePicture(projectmemberDTO);
+    }
+
+    @Override
+    public void updateName(HashMap hashMap) {
+        projectmemberMapper.updateName(hashMap);
     }
 
     //프로젝트seq와 멤버seq로 프로젝트멤버 seq 찾기

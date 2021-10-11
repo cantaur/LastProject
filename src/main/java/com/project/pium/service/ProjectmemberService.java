@@ -5,11 +5,16 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface ProjectmemberService {
 
     void updateProfileS(ProjectmemberDTO projectmemberDTO);
+    //프로필 사진만 수정
+    void updatePicture(ProjectmemberDTO projectmemberDTO);
+    //프로필 이름만 수정
+    void updateName(HashMap hashMap);
     long findProjMemberSeq(@RequestParam("project_seq")long projSeq, @RequestParam("member_seq")long memSeq);
     ProjectmemberDTO showImage(long projmember_seq);
     //해당 프로젝트의 멤버 리스트
