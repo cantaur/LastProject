@@ -3,6 +3,25 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.pium.mapper.SearchMapper">
+    <select id="searchM" resultType="MilestoneDTO" parameterType="Map">
+        SELECT
+           *
+        FROM milestone
+        WHERE
+            (project_seq = #{project_seq} AND milestone_title LIKE CONCAT('%',#{keyword},'%'))
+           OR
+            (project_seq = #{project_seq} AND milestone_content LIKE CONCAT('%',#{keyword},'%'))
+    </select>
+
+    <select id="searchT" resultType="TaskDTO" parameterType="Map">
+        SELECT
+           *
+        FROM task
+        WHERE
+            (project_seq = #{project_seq} AND task_title LIKE CONCAT('%',#{keyword},'%'))
+           OR
+            (project_seq = #{project_seq} AND task_content LIKE CONCAT('%',#{keyword},'%'))
+    </select>
 
 
 
