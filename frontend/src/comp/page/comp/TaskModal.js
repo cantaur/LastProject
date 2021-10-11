@@ -893,7 +893,7 @@ function TaskModal(p){
                             comment_content:commentText,
                             members : membersString,
                             projmember_seq:p.myMemberInfo.projmember_seq,
-                            tesk_seq:p.taskModalData.task_seq,
+                            task_seq:p.taskModalData.task_seq,
                           })
                           .then(r=>{
                             p.dispatch({type:'loadingOff'})
@@ -910,11 +910,12 @@ function TaskModal(p){
                         })
                       }else {
                         let membersString = commentMember?commentMember.join(','):'';
+                        console.log(p.taskModalData.task_seq)
                         axios.post(host+'/ajax/taskComment',{
                           comment_content:commentText,
                           members : membersString,
                           projmember_seq:p.myMemberInfo.projmember_seq,
-                          tesk_seq:p.taskModalData.task_seq,
+                          task_seq:p.taskModalData.task_seq,
                         })
                         .then(r=>{
                           p.dispatch({type:'loadingOff'})
@@ -935,6 +936,21 @@ function TaskModal(p){
                 </div>
               </div>
               
+            </>
+          }
+          {
+            tabState == 2 &&
+            <>
+              <div className="fileWrap">
+                <div className="fileCon">
+                  <div className="fileIcon toolTipTopBox">
+                    <p className="toolTip" style={{marginLeft:'-24px'}}>다운로드</p>
+                    <i class="fas fa-download" style={{color:seqColorTrans(p.taskModalData.task_seq)}}></i>
+                    <FileIcon extension="png" {...defaultStyles.png} />
+                  </div>
+                  
+                </div>
+              </div>
             </>
           }
         </div>

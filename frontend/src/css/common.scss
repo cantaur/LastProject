@@ -2356,7 +2356,71 @@ body{
   }
   //업무모달_파일탭
   .fileWrap{
-    
+    padding:15px;
+    overflow-y: auto;
+    background-color: #f2f2f2;
+    height: calc(100vh - 200px);
+    border-radius: 0px 0px 0px 10px;
+    border-top:1px solid #ececec;
+    &:focus{
+      outline: none;
+    }
+    &::-webkit-scrollbar {
+      width: 3px;
+      height: 3px;
+      background:#f2f2f2;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 3.5px;
+      background-color: #ccc;
+  
+      &:hover {
+        background-color: #ccc;
+      }
+    }
+    &::-webkit-scrollbar-track {
+      background: #f2f2f2;
+    }
+    .fileCon{
+      background-color: #fff;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-shadow: 2px 2px 10px 0px rgb(0 0 0 / 10%);
+      display: flex;
+      align-items: center;
+      .fileIcon{
+        cursor: pointer;
+        transition: .3s ease-in-out;
+        position: relative;
+        border-radius: 4px;
+        i{
+          position: absolute;
+          z-index: 1;
+          opacity: 0;
+          transition: .3s ease-in-out;
+          font-size: 1.4rem;
+          margin-left: -11.205px;
+          left: 50%;
+          top:50%;
+          margin-top:-11.5px;
+        }
+        svg{
+          width: 40px;
+          transition: .3s ease-in-out;
+        }
+        &:hover{
+          // background-color: #ccc;
+          svg{
+            opacity: .6;
+          }
+          i{
+            opacity: .8;
+          }
+        }
+      }
+      
+    }
   }
 }
 
