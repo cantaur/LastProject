@@ -37,7 +37,6 @@ function pagePath(page){
 
 function HeadSide(p){
   const history = useHistory();
-
   //검색 모달 상태
   let [searchModal, searchModalCng] = useState(false);
   const searchInput = useRef();
@@ -445,7 +444,11 @@ function HeadSide(p){
               <p className="name">
                 {p.myMemberInfo.projmember_name
                     ?
-                    p.myMemberInfo.projmember_name
+                    (p.myMemberInfo.projmember_name.trim() === null) || (p.myMemberInfo.projmember_name.trim().length === 0)
+                        ?
+                        "닉네임"
+                        :
+                        p.myMemberInfo.projmember_name
                     :
                     "닉네임"
                 }
