@@ -3958,6 +3958,120 @@ body{
   }
 }
 
+//프로젝트 차트
+.projectChartWrap{
+  .chartInfo{
+    display: flex;
+    align-items: center;
+    .title{
+      width: 100%;
+      flex-shrink: 1;
+      display: flex;
+      align-items: center;
+      
+      
+      .icon{
+        width: 36px;
+        height: 36px;
+        text-align: center;
+        line-height: 34px;
+        color:#fff;
+        font-weight: bold;
+        font-size: 1.4rem;
+        border-radius: 5px;
+        margin-right: 6px;;
+      }
+      .text{
+        font-size: 2rem;
+        margin-top:-4px;
+        font-weight: bold;
+        max-width: 510px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+
+    }
+    .infoWrap{
+      display: flex;
+      flex-shrink: 0;
+      .col{
+        flex-shrink: 0;
+        background-color: #ececec;
+        border-radius: 8px;
+        padding:8px 0px;
+        &+.col{
+          margin-left: 8px;
+          
+        }
+        .key{
+          font-size: .8rem;
+          font-weight: bold;
+          text-align: center;
+          margin-bottom:2px;
+        }
+        .date{
+          // font-weight: bold;
+          display: flex;
+          align-items: center;
+          width: 130px;
+          justify-content: center;
+          i{
+            margin-right: 4px;
+            margin-top: 1px;
+          }
+        }
+        .row{
+          // font-weight: bold;
+          width: 140px;
+          display: flex;
+          justify-content: center;
+        }
+      }
+    }
+  }
+  .chartBar{
+    margin-top:20px;
+    background-color: #ececec;
+    border-radius: 8px;
+    padding:15px;
+    .barTop{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding:0px 2px;
+      margin-bottom:8px;
+      .title{
+        font-weight: bold;
+        font-size: .8rem;
+      }
+      .info{
+        font-size: .8rem;
+      }
+    }
+    .barWrap{
+      background-color: #fafafa;
+      border-radius: 4px;
+      padding:0px;
+      .bar{
+        min-width: 42px;
+        border-radius: 4px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding-right: 10px;
+        transition: .8s ease-out;
+        p{
+          color:#fff;
+          margin-top:-2px;
+          font-size: .8rem;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
 
 .fc-daygrid-day-number {
   color: black;
