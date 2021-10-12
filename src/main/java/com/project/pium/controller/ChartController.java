@@ -64,14 +64,19 @@ public class ChartController {
         return list;
     }
     //  chart 4
-    @GetMapping("/ajax/countAllMyTask/{prjSeq}/{prjMSeq}")
-    public List<Long> countMyTask(@PathVariable long prjSeq, @PathVariable long prjMSeq){
+    @GetMapping("/ajax/countAllMyTask/{prj_seq}/{prjMySeq}")
+    public List<Long> countMyTask(@PathVariable long prj_seq, @PathVariable long prjMySeq){
 
-        long all = chartService.countMyAllTask(prjSeq, prjMSeq);
-        long end = chartService.countMyEndTask(prjMSeq, prjSeq);
+        log.info("chart4_prjSeq : "+prj_seq);
+        log.info("chart4_prjMySeq : "+prjMySeq);
+        long all = chartService.countMyAllTask(prj_seq, prjMySeq);
+        long end = chartService.countMyEndTask(prjMySeq, prj_seq);
+        log.info("chart4_all : "+all);
+        log.info("chart4_end : "+end);
         List<Long> list = new ArrayList<>();
         list.add(all);
         list.add(end);
+        log.info("chart4_list : "+list);
 
         return list;
     }

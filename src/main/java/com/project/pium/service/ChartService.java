@@ -11,6 +11,6 @@ public interface ChartService {
     long countTaskStatusZero(long project_seq);
     long countTaskStatusOne(long project_seq);
     //    chart4
-    long countMyAllTask(long project_seq, long projMember_seq);
+    long countMyAllTask(long project_seq, long projmember_seq);
     long countMyEndTask(long projmember_seq, long project_seq);
 }

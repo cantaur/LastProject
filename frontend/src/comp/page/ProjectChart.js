@@ -7,25 +7,36 @@ import '../../css/test6.css';
 import ChartHead from './comp/ChartHead.js'
 
 import Chart from "react-google-charts";
+import data from "bootstrap/js/src/dom/data";
 
 
 function ProjectChart(p) {
 
+    //첫번째 차트 데이터
     const [countMilestone, setCountMilestone] = useState([]);
+    //두번째 차트 데이터
     const [countTaskChart, setCountTaskChart] = useState([]);
+    //세번째 차트 데이터
     const [countTask, setCountTask] = useState([]);
-    const [countMyTask ,setCountMyTask] = useState([]);
+    //네번째 차트 데이터
+    const [countMyTask,setCountMyTask] = useState([]);
 
     const prjTitle = p.projectInfo.project_title;
     const prjSeq = p.projectInfo.project_seq;
     const prjMSeq = p.memberList[0].projmember_seq;
     const MSeq = p.projectInfo.member_seq;
     const history = useHistory();
+    const prjMySeq = p.memberList[0].projmember_seq
 
     console.log(p.projectInfo.project_title);
+    console.log(p.projectInfo.project_seq);
     console.log(p.memberList[0].projmember_seq);
     console.log(p.memberList[0]);
-    console.log(p.memberList);
+    console.log(p.memberList[0].projmember_name);
+
+    const memberListLoop = p.memberList.map((data)=>{
+        console.log(data);
+    });
 
     useEffect(() => {
         axios
@@ -33,7 +44,7 @@ function ProjectChart(p) {
                 axios.get(host + '/ajax/milestoneOneChart/' + prjSeq),
                 axios.get(host + '/ajax/taskChart/' + prjSeq + '/' + prjMSeq + '/' + MSeq),
                 axios.get(host + '/ajax/countTaskStatus/' + prjSeq),
-                axios.get(host +'/ajax/countAllMyTask/'+ prjSeq + prjMSeq),
+                axios.get(host +'/ajax/countAllMyTask/'+ prjSeq + '/' + prjMySeq),
             ])
             .then(
                 axios.spread((r1, r2, r3, r4) => {
@@ -41,6 +52,7 @@ function ProjectChart(p) {
                     setCountTaskChart(r2.data);
                     setCountTask(r3.data);
                     setCountMyTask(r4.data);
+                    console.log("r4.data : "+r4.data);
                 })
             )
             .catch(e => {
@@ -150,7 +162,7 @@ function ProjectChart(p) {
 
                                 //추가 옵션은 여기로!!
                             }}
-                            rootProps={{'data-testid': '2'}}
+                            rootProps={{'data-testid': '1'}}
                         />
                     </div>
                     {/*세번째 차트*/}
@@ -167,7 +179,8 @@ function ProjectChart(p) {
                                     ['진행중인 업무', countTask[0]],
                                     ['완료된 업무', countTask[1]],
                                 ]
-                                : [
+                                :
+                                [
                                     ['Task', 'Hours per Day'],
                                     ['업무가 없습니다.', 1],
                                 ]
@@ -189,7 +202,7 @@ function ProjectChart(p) {
 
                                 //추가 옵션은 여기로!!
                             }}
-                            rootProps={{'data-testid': '3'}}
+                            rootProps={{'data-testid': '1'}}
                         />
                     </div>
                     {/*네번째 차트*/}
@@ -199,14 +212,14 @@ function ProjectChart(p) {
                             height={'300px'}
                             chartType="Bar"
                             loader={<div>로딩중...</div>}
-                            data={[
-                                ['', '전체 업무', '완료된 업무'], //차트 이름, 첫번째 막대 이름, 두번째 막대 이름
-                                ['2014', 1000, 400],
-                                ['2015', 1170, 460],
-                                ['2016', 660, 1120],
-                                ['2017', 1030, 540],
-
-                            ]}
+                            data={
+                                [
+                                    ['', '전체 업무', '완료된 업무'], //차트 이름, 첫번째 막대 이름, 두번째 막대 이름
+                                    [
+                                        p.memberList[0].projmember_name, countMyTask[0], countMyTask[1]
+                                    ]
+                                ]
+                            }
                             options={{
                                 chart:{
                                     title: '프로젝트 어벤져스',
@@ -216,7 +229,7 @@ function ProjectChart(p) {
 
                             }}
 
-                            rootProps={{'data-testid':'2'}}
+                            rootProps={{'data-testid':'1'}}
                         />
                     </div>
                     {/*다섯번째 차트*/}
@@ -240,7 +253,7 @@ function ProjectChart(p) {
                                     subtitle: 'Sales, Expenses, and Profit: 2014-2017',
                                 },
                             }}
-                            rootProps={{'data-testid':'2'}}
+                            rootProps={{'data-testid':'1'}}
                         />
                     </div>
                 </div>

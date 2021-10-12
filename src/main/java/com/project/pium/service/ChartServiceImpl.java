@@ -42,8 +42,8 @@ public class ChartServiceImpl implements ChartService {
     }
 
     @Override
-    public long countMyAllTask(long project_seq, long projMember_seq) {
-        return chartMapper.countMyAllTask(project_seq, projMember_seq);
+    public long countMyAllTask(long project_seq, long projmember_seq) {
+        return chartMapper.countMyAllTask(project_seq, projmember_seq);
     }
 
     @Override

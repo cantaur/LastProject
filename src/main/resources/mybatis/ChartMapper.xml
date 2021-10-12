@@ -27,14 +27,14 @@
     <!-- chart 4 -->
     <!-- 프로젝트 멤버 한명의 전체 업무 -->
     <select id="countMyAllTask" resultType="long" parameterType="long">
-        SELECT * FROM task_member AS tm
+        SELECT count(*) FROM task_member AS tm
         JOIN task AS t ON t.task_seq = tm.task_seq
-        WHERE tm.projmember_seq=#{projmember_seq} AND project_seq = #{project_seq};
+        WHERE tm.projmember_seq = #{projmember_seq} AND project_seq = #{project_seq}
     </select>
     <!-- 프로젝트 멤버 한명의 종료된 업무 -->
     <select id="countMyEndTask" resultType="long" parameterType="long">
-        SELECT * FROM task_member AS tm
-        JOIN task AS t ON t.task_seq = tm.task_seq
-        WHERE t.task_status = 1 AND tm.projmember_seq=#{projmember_seq} AND project_seq = #{project_seq};
+        SELECT count(*) FROM task_member AS tm
+            JOIN task AS t ON t.task_seq = tm.task_seq
+        WHERE t.task_status = '1' AND tm.projmember_seq = #{projmember_seq} AND project_seq = #{project_seq}
     </select>
 </mapper>
