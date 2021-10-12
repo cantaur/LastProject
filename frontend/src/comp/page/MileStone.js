@@ -84,6 +84,17 @@ function MileStone(p){
 
 
   useEffect(()=>{
+    p.dispatch({type:'mileStoneListCng', val:''})
+    axios.get(host+'/ajax/'+p.projectInfo.project_seq+'/milestonelist')
+    .then(r=>{
+      p.dispatch({type:'mileStoneListCng', val:r.data})
+    })
+    .catch(e=>{
+      console.log(e)
+    })
+  },[])
+  
+  useEffect(()=>{
     listCng();
     if(p.mileStoneList){
       listCng(p.mileStoneList)
