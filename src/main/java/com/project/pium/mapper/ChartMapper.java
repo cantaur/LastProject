@@ -15,5 +15,6 @@ public interface ChartMapper {
     long countTaskMine(long project_seq, long projmember_seq, long member_seq);
     long countTaskStatusZero(long project_seq);
     long countTaskStatusOne(long project_seq);
-
+    long countMyAllTask(long project_seq, long projmember_seq);
+    long countMyEndTask(long projmember_seq, long project_seq);
 }

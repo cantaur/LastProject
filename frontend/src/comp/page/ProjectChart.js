@@ -13,6 +13,7 @@ function ProjectChart(p) {
     const [countMilestone, setCountMilestone] = useState([]);
     const [countTaskChart, setCountTaskChart] = useState([]);
     const [countTask, setCountTask] = useState([]);
+    const [countMyTask ,setCountMyTask] = useState([]);
 
     const prjTitle = p.projectInfo.project_title;
     const prjSeq = p.projectInfo.project_seq;
@@ -21,6 +22,9 @@ function ProjectChart(p) {
     const history = useHistory();
 
     console.log(p.projectInfo.project_title);
+    console.log(p.memberList[0].projmember_seq);
+    console.log(p.memberList[0]);
+    console.log(p.memberList);
 
     useEffect(() => {
         axios
@@ -28,18 +32,19 @@ function ProjectChart(p) {
                 axios.get(host + '/ajax/milestoneOneChart/' + prjSeq),
                 axios.get(host + '/ajax/taskChart/' + prjSeq + '/' + prjMSeq + '/' + MSeq),
                 axios.get(host + '/ajax/countTaskStatus/' + prjSeq),
+                axios.get(host +'/ajax/countAllMyTask/'+ prjSeq + prjMSeq),
             ])
             .then(
-                axios.spread((r1, r2, r3) => {
+                axios.spread((r1, r2, r3, r4) => {
                     setCountMilestone(r1.data);
                     setCountTaskChart(r2.data);
                     setCountTask(r3.data);
+                    setCountMyTask(r4.data);
                 })
             )
             .catch(e => {
                 console.log(e)
             });
-
     }, []);
     return (
         <div className="projectChartWrap pageContentWrap">
@@ -63,7 +68,7 @@ function ProjectChart(p) {
             </div>
             <div>
                 <div className="project-title">
-                    <h1><Title/></h1>
+                    <h1>{prjTitle}</h1>
                 </div>
                 <div className="project-progress-bar">
                     <h3>프로젝트 개요</h3>
@@ -193,7 +198,7 @@ function ProjectChart(p) {
                             chartType="Bar"
                             loader={<div>로딩중...</div>}
                             data={[
-                                ['Year', '세일즈', 'Expenses'],
+                                ['', '전체 업무', '완료된 업무'], //차트 이름, 첫번째 막대 이름, 두번째 막대 이름
                                 ['2014', 1000, 400],
                                 ['2015', 1170, 460],
                                 ['2016', 660, 1120],
@@ -240,11 +245,6 @@ function ProjectChart(p) {
             </div>
         </div>
     )
-    function Title(p) {
-        return(
-            prjTitle
-        );
-    }
 }
 
 function transReducer(state){

@@ -40,4 +40,14 @@ public class ChartServiceImpl implements ChartService {
     public long countTaskStatusOne(long project_seq) {
         return chartMapper.countTaskStatusOne(project_seq);
     }
+
+    @Override
+    public long countMyAllTask(long project_seq, long projMember_seq) {
+        return chartMapper.countMyAllTask(project_seq, projMember_seq);
+    }
+
+    @Override
+    public long countMyEndTask(long projmember_seq, long project_seq) {
+        return chartMapper.countMyEndTask(projmember_seq, project_seq);
+    }
 }
