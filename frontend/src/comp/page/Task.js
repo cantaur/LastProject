@@ -686,6 +686,9 @@ function TaskCreateModal(p) {
               })
               .then(r=>{
                 p.onHide();
+                p.dispatch({type:'refreshCng'})
+                p.dispatch({type:'loadingOff'})
+
               })
               .catch(e=>{
                 console.log(e)
