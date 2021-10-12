@@ -4,6 +4,7 @@ import {pub, colors, pages, host, seqColorTrans} from '../Helper.js'
 import { Link, useParams, withRouter, useHistory } from "react-router-dom";
 import {connect} from 'react-redux';
 import '../../css/test6.css';
+import ChartHead from './comp/ChartHead.js'
 
 import Chart from "react-google-charts";
 
@@ -61,6 +62,7 @@ function ProjectChart(p) {
                     history.push('/project/' + p.prjSeq + '/fileList')
                 }}>파일보관함</p>
             </div>
+            <ChartHead/>
             <div>
                 <div className="project-title">
                     <h1><Title/></h1>
