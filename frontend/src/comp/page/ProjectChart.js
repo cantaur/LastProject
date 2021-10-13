@@ -3,11 +3,14 @@ import React, { useEffect, useState,useRef,useCallback } from "react"
 import {pub, colors, pages, host, seqColorTrans} from '../Helper.js'
 import { Link, useParams, withRouter, useHistory } from "react-router-dom";
 import {connect} from 'react-redux';
-import '../../css/test6.css';
+// import '../../css/test6.css';
 import ChartHead from './comp/ChartHead.js'
 
 import Chart from "react-google-charts";
 import data from "bootstrap/js/src/dom/data";
+import { InputGroup } from "react-bootstrap";
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 
 function ProjectChart(p) {
@@ -22,82 +25,81 @@ function ProjectChart(p) {
     const [countMyTask,setCountMyTask] = useState([]);
     let [memberTasks, setMemberTasks] = useState([]);
 
-    const prjSeq = p.projectInfo.project_seq;
-    const prjMSeq = p.memberList[0].projmember_seq;
-    const MSeq = p.projectInfo.member_seq;
+    // const prjSeq = p.projectInfo.project_seq;
+    // const prjMSeq = p.memberList[0].projmember_seq;
+    // const MSeq = p.projectInfo.member_seq;
     const history = useHistory();
 
-    console.log(p.projectInfo.project_title);
-    console.log(p.projectInfo.project_seq);
-    console.log(p.memberList[0].projmember_seq);
-    console.log(p.memberList[0]);
-    console.log(p.memberList[0].projmember_name);
-    // console.log(countMyTask[0].projmember_seq);
-    // console.log(countMyTask[0].total);
-    console.log(countMyTask);
-    console.log(memberTasks);
+    const countAllMyTaskGetFunc = () =>{
+      axios.get(host +'/ajax/countAllMyTask/'+p.projectInfo.project_seq)
+      .then(r=>{
+        let countMyTaskDummy = [['','전체 업무','완료된 업무']];
+        r.data.map(row=>{
+          let name = '';
+          p.memberList.map(member=>{
+            if(row.projmember_seq == member.projmember_seq){
+              name = member.projmember_name?member.projmember_name:'#'+member.projmember_seq;
+            }
+          })
+          let done = Number(row.done);
+          let total = Number(row.total);
+          countMyTaskDummy.push([name, total, done])
+        })
+        setCountMyTask(countMyTaskDummy)
+      })
+      .catch(e=>{
+        console.log(e)
+      })
+    }
+    
+    const mileStoneOneChartGetFunc = () =>{
+      axios.get(host + '/ajax/milestoneOneChart/' + p.projectInfo.project_seq)
+      .then(r=>{
+        setCountMilestone(r.data)
+      })
+      .catch(e=>{
+        console.log(e)
+      })
+    } 
+
+    useEffect(()=>{
+      countAllMyTaskGetFunc();
+      mileStoneOneChartGetFunc();
+    },[p.memberList])
 
 
 
 
-
-
-    useEffect(() => {
-        axios
-            .all([
-                axios.get(host + '/ajax/milestoneOneChart/' + prjSeq),
-                axios.get(host + '/ajax/taskChart/' + prjSeq + '/' + prjMSeq + '/' + MSeq),
-                axios.get(host + '/ajax/countTaskStatus/' + prjSeq),
-                axios.get(host +'/ajax/countAllMyTask/'+ prjSeq),
-            ])
-            .then(
-                axios.spread((r1, r2, r3, r4) => {
-                    setCountMilestone(r1.data);
-                    setCountTaskChart(r2.data);
-                    setCountTask(r3.data);
-                    setCountMyTask(r4.data);
-                }),
-                setMemberTasks([
-                    ['', '전체 업무', '완료된 업무'],
-                    countMyTask.map(r=>{
-                        memberTasks.push([{
-                            projmember_seq : r.projmember_seq,
-                            total: r.total,
-                            done: r.done
-                        }]);
-                    })
-                ]),
-            )
-            .catch(e => {
-                console.log(e)
-            });
-    }, []);
-    // const countMyTaskLoop = () =>{
-    //     countMyTask.map(r=>{
-    //         memberTasks.push([{
-    //             projmember_seq: r.projmember_seq,
-    //             total: r.total,
-    //             done: r.done
-    //         }])
-    //     })
-    //     return memberTasks
-    // }
-    // console.log(countMyTaskLoop);
-    // useEffect(()=>{
-    //     axios.get(host +'/ajax/countAllMyTask/'+ prjSeq)
-    //
-    //         .then(r=>{
-    //             setCountMyTask(r.data);
-    //
-    //             memberTasks.push([
+    // useEffect(() => {
+    //     axios
+    //         .all([
+    //             axios.get(host + '/ajax/milestoneOneChart/' + prjSeq),
+    //             axios.get(host + '/ajax/taskChart/' + prjSeq + '/' + prjMSeq + '/' + MSeq),
+    //             axios.get(host + '/ajax/countTaskStatus/' + prjSeq),
+    //             axios.get(host +'/ajax/countAllMyTask/'+ prjSeq),
+    //         ])
+    //         .then(
+    //             axios.spread((r1, r2, r3, r4) => {
+    //                 c(r1.data);
+    //                 setCountTaskChart(r2.data);
+    //                 setCountTask(r3.data);
+    //                 setCountMyTask(r4.data);
+    //             }),
+    //             setMemberTasks([
     //                 ['', '전체 업무', '완료된 업무'],
-    //                 [countMyTask[0].projmember_seq, countMyTask[0].total, countMyTask[0].done]
-    //             ])
-    //         })
-    //         .catch(e=>{
-    //             console.log(e);
-    //         })
-    // },[])
+    //                 countMyTask.map(r=>{
+    //                     memberTasks.push([{
+    //                         projmember_seq : r.projmember_seq,
+    //                         total: r.total,
+    //                         done: r.done
+    //                     }]);
+    //                 })
+    //             ]),
+    //         )
+    //         .catch(e => {
+    //             console.log(e)
+    //         });
+    // }, []);
 
     return (
         <div className="projectChartWrap pageContentWrap">
@@ -239,27 +241,33 @@ function ProjectChart(p) {
                         />
                     </div>
                     {/*네번째 차트*/}
-                    <div className={'chartLine-child-4'}>
-                        <Chart
-                            width={'100%'}
-                            height={'300px'}
-                            chartType="Bar"
-                            loader={<div>로딩중...</div>}
-                            data={memberTasks}
-                            options={{
-                                chart:{
-                                    title: '프로젝트 어벤져스',
-                                },
-                                bars: 'horizontal', // 'vertical' 'horizontal'
-
-
-                            }}
-
-                            rootProps={{'data-testid':'1'}}
-                        />
+                    <div className={'chartLine-child-4'} style={{width:'100%'}}>
+                      {
+                        p.memberList
+                        ?
+                          countMyTask.length > 0
+                          ?
+                            <Chart
+                                width={'100%'}
+                                height={'300px'}
+                                chartType="Bar"
+                                loader={<div>로딩중...</div>}
+                                data={countMyTask}
+                                options={{
+                                    chart:{
+                                        title: '프로젝트 어벤져스',
+                                    },
+                                    bars: 'vertical', // 'vertical' 'horizontal'
+                                }}
+                                rootProps={{'data-testid':'1'}}
+                            />
+                          :<CircularProgress />
+                        :<CircularProgress />
+                      }
+                        
                     </div>
                     {/*다섯번째 차트*/}
-                    <div className={'chartLine-child-5'}>
+                    {/* <div className={'chartLine-child-5'}>
                         <Chart
                             width={'100%'}
                             height={'300px'}
@@ -281,7 +289,7 @@ function ProjectChart(p) {
                             }}
                             rootProps={{'data-testid':'1'}}
                         />
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>
