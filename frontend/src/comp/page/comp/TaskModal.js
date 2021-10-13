@@ -219,6 +219,16 @@ function TaskModal(p){
     commentWrap.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
   }
 
+  //코멘트 삭제 확인용
+  let [deleteCommentAlert, deleteCommentAlertCng] = useState(false)
+  const commentAlertClose = () => {
+    deleteCommentAlertCng(false)
+    deleteCommentSeqCng();
+  };
+
+  //코멘트 삭제용 state
+  let [deleteCommentSeq, deleteCommentSeqCng] = useState(); 
+
 
   //파일
 
@@ -367,6 +377,34 @@ function TaskModal(p){
               p.dispatch({type:'refreshCng'})
               taskAlertClose()
               p.dispatch({type:'taskModalCng',val:false})
+            })
+            .catch(e=>{
+              p.dispatch({type:'loadingOff'})
+              console.log(e)
+            })
+          }}>
+            삭제
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={deleteCommentAlert} onHide={commentAlertClose} className="modalWrap deleteMemberModal">
+        <Modal.Header style={{borderBottom:0}}>
+          <Modal.Title className="modalTitle">삭제한 코멘트는 모든 멤버에게 보이지 않으며, 복구할 수 없습니다.<br/> 정말 코멘트를 삭제할까요?</Modal.Title>
+        </Modal.Header>
+        <Modal.Footer style={{borderTop:0}}>
+          <Button variant="secondary" onClick={commentAlertClose} style={{fontSize:'.8rem'}}>
+            취소
+          </Button>
+          <Button variant="danger" style={{fontSize:'.8rem'}} onClick={e=>{
+            p.dispatch({type:'loadingOn'})
+            axios.post(host+'/ajax/taskCmtdelete',{
+              comment_seq:deleteCommentSeq,
+            })
+            .then(r=>{
+              p.dispatch({type:'loadingOff'})
+              commentListGetFunc();
+              commentAlertClose();
             })
             .catch(e=>{
               p.dispatch({type:'loadingOff'})
@@ -861,47 +899,59 @@ function TaskModal(p){
                         commentList.map((r,i)=>{
                           const writer = memberInfoGetFunc(r.comment.projmember_seq)
                           const membersArr = r.comment.members?r.comment.members.split(','):''
-                          return(
-                            <div className="comment">
-                              <div className="data">
-                                <div className="textWrap">
-                                  <div className="writer">
-                                    <p>{writer.name}</p>
-                                    <p>{r.comment.comment_date}</p>
-                                  </div>
-                                  <div className="text">{r.comment.comment_content}</div>
-                                </div>
-                                <div className="fileMemberWrap">
-                                  <div className="member">
-                                    {
-                                      r.comment.members
-                                      ? 
-                                        membersArr.map(r=>{
-                                          return(
-                                            <p className="person">{'@'+memberInfoGetFunc(r).name}</p>
-                                          )
-                                        })
-                                      :<p className="person">멤버없음</p>
-                                    }
-                                  </div>
-                                  {
-                                    r.file && 
-                                    
-                                    <div className="file" onClick={()=>{
-                                      window.location.href = host+'/downloadFile/'+r.file.file_savename
-                                      
-                                    }}>
-                                      <FileIcon extension={fileGetTypeFunc(r.file.file_savename)} {...defaultStyles[fileGetTypeFunc(r.file.file_savename)]} />
-                                      <p className="fileInfo">{r.file.file_savename}</p>
+                          console.log(r)
+                          if(r.comment.comment_isdelete == '0'){
+                            return(
+                              <div className="comment">
+                                <i class="fas fa-trash-alt deleteBtn toolTipTopBox" 
+                                    onClick={()=>{
+                                      deleteCommentSeqCng(r.comment.comment_seq);
+                                      deleteCommentAlertCng(true);
+                                    }}
+                                >
+                                  <p className="toolTip" style={{marginLeft:'-32px',top:'-10px'}}>코멘트 삭제</p>
+                                </i>
+                                <div className="data">
+                                  <div className="textWrap">
+                                    <div className="writer">
+                                      <p>{writer.name}</p>
+                                      <p>{r.comment.comment_date}</p>
                                     </div>
-                                  }
-                                  
+                                    <div className="text">{r.comment.comment_content}</div>
+                                  </div>
+                                  <div className="fileMemberWrap">
+                                    <div className="member">
+                                      {
+                                        r.comment.members
+                                        ? 
+                                          membersArr.map(r=>{
+                                            return(
+                                              <p className="person">{'@'+memberInfoGetFunc(r).name}</p>
+                                            )
+                                          })
+                                        :<p className="person">멤버없음</p>
+                                      }
+                                    </div>
+                                    {
+                                      r.file && 
+                                      
+                                      <div className="file" onClick={()=>{
+                                        window.location.href = host+'/downloadFile/'+r.file.file_savename
+                                        
+                                      }}>
+                                        <FileIcon extension={fileGetTypeFunc(r.file.file_savename)} {...defaultStyles[fileGetTypeFunc(r.file.file_savename)]} />
+                                        <p className="fileInfo">{r.file.file_savename}</p>
+                                      </div>
+                                    }
+                                    
+                                  </div>
+  
                                 </div>
-
+  
                               </div>
-
-                            </div>
-                          )
+                            )
+                          }
+                          
                         })
                       :<p className="noneComment">코멘트가 없습니다.</p>
                     :<Box sx={{ width: '100%' }}><LinearProgress /></Box>
