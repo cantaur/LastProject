@@ -23,17 +23,17 @@ function ProjectChart(p) {
     const [countTask, setCountTask] = useState([]);
     //네번째 차트 데이터
     const [countMyTask,setCountMyTask] = useState([]);
-    let [memberTasks, setMemberTasks] = useState([]);
 
     // const prjSeq = p.projectInfo.project_seq;
     // const prjMSeq = p.memberList[0].projmember_seq;
     // const MSeq = p.projectInfo.member_seq;
+    console.log(p.myMemberInfo.projmember_seq)
     const history = useHistory();
 
     const countAllMyTaskGetFunc = () =>{
       axios.get(host +'/ajax/countAllMyTask/'+p.projectInfo.project_seq)
       .then(r=>{
-        let countMyTaskDummy = [['','전체 업무','완료된 업무']];
+        let countMyTaskDummy = [['','배정된 업무','완료']];
         r.data.map(row=>{
           let name = '';
           p.memberList.map(member=>{
@@ -51,7 +51,7 @@ function ProjectChart(p) {
         console.log(e)
       })
     }
-    
+
     const mileStoneOneChartGetFunc = () =>{
       axios.get(host + '/ajax/milestoneOneChart/' + p.projectInfo.project_seq)
       .then(r=>{
@@ -60,11 +60,32 @@ function ProjectChart(p) {
       .catch(e=>{
         console.log(e)
       })
-    } 
+    }
+    const taskChartGetFunc = () =>{
+      axios.get(host + '/ajax/taskChart/' + p.projectInfo.project_seq + '/' + p.myMemberInfo.projmember_seq + '/' + p.projectInfo.member_seq)
+      .then(r=>{
+        setCountTaskChart(r.data);
+      })
+      .catch(e=>{
+        console.log(e)
+      })
+    }
+
+    const countTaskStatusGetFunc = () =>{
+      axios.get(host + '/ajax/countTaskStatus/' + p.projectInfo.project_seq)
+      .then(r=>{
+        setCountTask(r.data);
+      })
+      .catch(e=>{
+        console.log(e)
+      })
+    }
 
     useEffect(()=>{
       countAllMyTaskGetFunc();
       mileStoneOneChartGetFunc();
+      taskChartGetFunc();
+      countTaskStatusGetFunc();
     },[p.memberList])
 
 
@@ -264,7 +285,7 @@ function ProjectChart(p) {
                           :<CircularProgress />
                         :<CircularProgress />
                       }
-                        
+
                     </div>
                     {/*다섯번째 차트*/}
                     {/* <div className={'chartLine-child-5'}>
