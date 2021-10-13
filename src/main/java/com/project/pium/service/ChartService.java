@@ -1,5 +1,10 @@
 package com.project.pium.service;
 
+import com.project.pium.domain.TaskDTO;
+import com.project.pium.domain.TaskmemberDTO;
+
+import java.util.List;
+
 public interface ChartService {
     //    chart1
     long countMilestoneStatusZeroS(long project_seq);
@@ -11,6 +16,5 @@ public interface ChartService {
     long countTaskStatusZero(long project_seq);
     long countTaskStatusOne(long project_seq);
     //    chart4
-    long countMyAllTask(long project_seq, long projmember_seq);
-    long countMyEndTask(long projmember_seq, long project_seq);
+    List<TaskmemberDTO> countMyAllTask(long project_seq);
 }

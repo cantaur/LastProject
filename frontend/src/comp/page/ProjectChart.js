@@ -20,23 +20,27 @@ function ProjectChart(p) {
     const [countTask, setCountTask] = useState([]);
     //네번째 차트 데이터
     const [countMyTask,setCountMyTask] = useState([]);
+    let [memberTasks, setMemberTasks] = useState([]);
 
-    const prjTitle = p.projectInfo.project_title;
     const prjSeq = p.projectInfo.project_seq;
     const prjMSeq = p.memberList[0].projmember_seq;
     const MSeq = p.projectInfo.member_seq;
     const history = useHistory();
-    const prjMySeq = p.memberList[0].projmember_seq
 
     console.log(p.projectInfo.project_title);
     console.log(p.projectInfo.project_seq);
     console.log(p.memberList[0].projmember_seq);
     console.log(p.memberList[0]);
     console.log(p.memberList[0].projmember_name);
+    // console.log(countMyTask[0].projmember_seq);
+    // console.log(countMyTask[0].total);
+    console.log(countMyTask);
+    console.log(memberTasks);
 
-    const memberListLoop = p.memberList.map((data)=>{
-        console.log(data);
-    });
+
+
+
+
 
     useEffect(() => {
         axios
@@ -44,7 +48,7 @@ function ProjectChart(p) {
                 axios.get(host + '/ajax/milestoneOneChart/' + prjSeq),
                 axios.get(host + '/ajax/taskChart/' + prjSeq + '/' + prjMSeq + '/' + MSeq),
                 axios.get(host + '/ajax/countTaskStatus/' + prjSeq),
-                axios.get(host +'/ajax/countAllMyTask/'+ prjSeq + '/' + prjMySeq),
+                axios.get(host +'/ajax/countAllMyTask/'+ prjSeq),
             ])
             .then(
                 axios.spread((r1, r2, r3, r4) => {
@@ -52,13 +56,49 @@ function ProjectChart(p) {
                     setCountTaskChart(r2.data);
                     setCountTask(r3.data);
                     setCountMyTask(r4.data);
-                    console.log("r4.data : "+r4.data);
-                })
+                }),
+                setMemberTasks([
+                    ['', '전체 업무', '완료된 업무'],
+                    countMyTask.map(r=>{
+                        memberTasks.push([{
+                            projmember_seq : r.projmember_seq,
+                            total: r.total,
+                            done: r.done
+                        }]);
+                    })
+                ]),
             )
             .catch(e => {
                 console.log(e)
             });
     }, []);
+    // const countMyTaskLoop = () =>{
+    //     countMyTask.map(r=>{
+    //         memberTasks.push([{
+    //             projmember_seq: r.projmember_seq,
+    //             total: r.total,
+    //             done: r.done
+    //         }])
+    //     })
+    //     return memberTasks
+    // }
+    // console.log(countMyTaskLoop);
+    // useEffect(()=>{
+    //     axios.get(host +'/ajax/countAllMyTask/'+ prjSeq)
+    //
+    //         .then(r=>{
+    //             setCountMyTask(r.data);
+    //
+    //             memberTasks.push([
+    //                 ['', '전체 업무', '완료된 업무'],
+    //                 [countMyTask[0].projmember_seq, countMyTask[0].total, countMyTask[0].done]
+    //             ])
+    //         })
+    //         .catch(e=>{
+    //             console.log(e);
+    //         })
+    // },[])
+
     return (
         <div className="projectChartWrap pageContentWrap">
             <div className="pageBtnWrap">
@@ -81,13 +121,6 @@ function ProjectChart(p) {
             </div>
             <ChartHead/>
             <div>
-                <div className="project-title">
-                    <h1>{prjTitle}</h1>
-                </div>
-                <div className="project-progress-bar">
-                    <h3>프로젝트 개요</h3>
-                    <h6>프로그래스바</h6>
-                </div>
                 {/*첫번째 차트*/}
                 <div className={'chartLine'}>
                     <div className={'chartLine-child-1'}>
@@ -212,14 +245,7 @@ function ProjectChart(p) {
                             height={'300px'}
                             chartType="Bar"
                             loader={<div>로딩중...</div>}
-                            data={
-                                [
-                                    ['', '전체 업무', '완료된 업무'], //차트 이름, 첫번째 막대 이름, 두번째 막대 이름
-                                    [
-                                        p.memberList[0].projmember_name, countMyTask[0], countMyTask[1]
-                                    ]
-                                ]
-                            }
+                            data={memberTasks}
                             options={{
                                 chart:{
                                     title: '프로젝트 어벤져스',

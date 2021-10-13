@@ -1,9 +1,13 @@
 package com.project.pium.service;
 
+import com.project.pium.domain.TaskDTO;
+import com.project.pium.domain.TaskmemberDTO;
 import com.project.pium.mapper.ChartMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -42,12 +46,7 @@ public class ChartServiceImpl implements ChartService {
     }
 
     @Override
-    public long countMyAllTask(long project_seq, long projmember_seq) {
-        return chartMapper.countMyAllTask(project_seq, projmember_seq);
-    }
-
-    @Override
-    public long countMyEndTask(long projmember_seq, long project_seq) {
-        return chartMapper.countMyEndTask(projmember_seq, project_seq);
+    public List<TaskmemberDTO> countMyAllTask(long project_seq) {
+        return chartMapper.countMyAllTask(project_seq);
     }
 }

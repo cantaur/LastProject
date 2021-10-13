@@ -1,7 +1,11 @@
 package com.project.pium.mapper;
 
+import com.project.pium.domain.TaskDTO;
+import com.project.pium.domain.TaskmemberDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 
 @Mapper
@@ -15,6 +19,5 @@ public interface ChartMapper {
     long countTaskMine(long project_seq, long projmember_seq, long member_seq);
     long countTaskStatusZero(long project_seq);
     long countTaskStatusOne(long project_seq);
-    long countMyAllTask(long project_seq, long projmember_seq);
-    long countMyEndTask(long projmember_seq, long project_seq);
+    List<TaskmemberDTO> countMyAllTask(long project_seq);
 }
