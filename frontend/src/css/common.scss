@@ -4070,6 +4070,39 @@ body{
       }
     }
   }
+  .chartLine{
+    margin-top:20px;
+    display: flex;
+    flex-wrap: wrap;
+    .chartArea{
+      background-color: #fff;
+      border:1px solid #ccc;
+      border-radius: 8px;
+      overflow: hidden;
+      padding:20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &.chartA{
+        flex-shrink: 1;
+        width: calc(33.333333% - 13.333333px);
+        height: 294px;
+        &>div{
+          margin-bottom:-20px;
+        }
+        &+.chartA{
+          margin-left: 20px;
+        }
+      }
+      &.chartB{
+        margin-top:20px;
+        padding:20px;
+        height: 280px;
+        
+        
+      }
+    }
+  }
 }
 
 

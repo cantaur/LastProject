@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, {useState, useEffect} from 'react';
-import '../css/test6.css';
+// import '../css/test6.css';
 import Chart from "react-google-charts";
 import {host} from "./Helper";
 

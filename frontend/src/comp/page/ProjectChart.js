@@ -24,16 +24,12 @@ function ProjectChart(p) {
     //네번째 차트 데이터
     const [countMyTask,setCountMyTask] = useState([]);
 
-    // const prjSeq = p.projectInfo.project_seq;
-    // const prjMSeq = p.memberList[0].projmember_seq;
-    // const MSeq = p.projectInfo.member_seq;
-    console.log(p.myMemberInfo.projmember_seq)
     const history = useHistory();
 
     const countAllMyTaskGetFunc = () =>{
       axios.get(host +'/ajax/countAllMyTask/'+p.projectInfo.project_seq)
       .then(r=>{
-        let countMyTaskDummy = [['','배정된 업무','완료']];
+        let countMyTaskDummy = [['','배정된 업무','완료된 업무']];
         r.data.map(row=>{
           let name = '';
           p.memberList.map(member=>{
@@ -89,39 +85,6 @@ function ProjectChart(p) {
     },[p.memberList])
 
 
-
-
-    // useEffect(() => {
-    //     axios
-    //         .all([
-    //             axios.get(host + '/ajax/milestoneOneChart/' + prjSeq),
-    //             axios.get(host + '/ajax/taskChart/' + prjSeq + '/' + prjMSeq + '/' + MSeq),
-    //             axios.get(host + '/ajax/countTaskStatus/' + prjSeq),
-    //             axios.get(host +'/ajax/countAllMyTask/'+ prjSeq),
-    //         ])
-    //         .then(
-    //             axios.spread((r1, r2, r3, r4) => {
-    //                 c(r1.data);
-    //                 setCountTaskChart(r2.data);
-    //                 setCountTask(r3.data);
-    //                 setCountMyTask(r4.data);
-    //             }),
-    //             setMemberTasks([
-    //                 ['', '전체 업무', '완료된 업무'],
-    //                 countMyTask.map(r=>{
-    //                     memberTasks.push([{
-    //                         projmember_seq : r.projmember_seq,
-    //                         total: r.total,
-    //                         done: r.done
-    //                     }]);
-    //                 })
-    //             ]),
-    //         )
-    //         .catch(e => {
-    //             console.log(e)
-    //         });
-    // }, []);
-
     return (
         <div className="projectChartWrap pageContentWrap">
             <div className="pageBtnWrap">
@@ -146,7 +109,7 @@ function ProjectChart(p) {
             <div>
                 {/*첫번째 차트*/}
                 <div className={'chartLine'}>
-                    <div className={'chartLine-child-1'}>
+                    <div className={'chartArea chartA chartLine-child-1'}>
                         {
                             p.memberList
                             ?
@@ -154,9 +117,8 @@ function ProjectChart(p) {
                                 ?
                                     <Chart
                                         width={'100%'}
-                                        height={'300px'}
+                                        height={'100%'}
                                         chartType="PieChart"
-                                        loader={<div>로딩중...</div>}
                                         data={countMilestone[0] !== 0 && countMilestone[1] !== 0
                                             ?
                                             [
@@ -170,19 +132,15 @@ function ProjectChart(p) {
                                             ]}
                                         options={{
                                             title: '마일스톤 진행도',
-                                            // is3D: true,
                                             width: '100%',
-                                            // legend: 'none', //범례 컨트롤
                                             chartArea: {
-                                                left: 30,
-                                                top: 100,
                                                 width: '100%',
                                             },
+
                                             titleTextStyle: {
-                                                fontSize: 25,
-                                                bold: false
+                                              fontSize: 15,
+                                              bold: true,
                                             }
-                                            //추가 옵션은 여기로!!
                                         }}
                                         rootProps={{'data-testid': '1'}}
                                     />
@@ -191,7 +149,7 @@ function ProjectChart(p) {
                         }
                     </div>
                     {/*두번째 차트*/}
-                    <div className={'chartLine-child-2'}>
+                    <div className={'chartArea chartA chartLine-child-2'}>
                         {
                             p.memberList
                             ?
@@ -199,7 +157,7 @@ function ProjectChart(p) {
                                 ?
                                 <Chart
                                     width={'100%'}
-                                    height={'300px'}
+                                    height={'100%'}
                                     chartType="PieChart"
                                     loader={<div>로딩중...</div>}
                                     data={countTaskChart[0] !== 0 && countTaskChart[1] !== 0
@@ -216,20 +174,15 @@ function ProjectChart(p) {
                                     }
                                     options={{
                                         title: '할당된 업무',
-                                        is3D: true,
-                                        // legend: 'none', //범례 컨트롤
                                         width: '100%',
                                         chartArea: {
-                                            left: 30,
-                                            top: 100,
                                             width: '100%',
                                         },
                                         titleTextStyle: {
-                                            fontSize: 25,
-                                            bold: false
+                                          fontSize: 15,
+                                          bold: true
                                         }
 
-                                        //추가 옵션은 여기로!!
                                     }}
                                     rootProps={{'data-testid': '1'}}
                                 />
@@ -238,16 +191,15 @@ function ProjectChart(p) {
                         }
                     </div>
                     {/*세번째 차트*/}
-                    <div className={'chartLine-child-3'}>{
+                    <div className={'chartArea chartA chartLine-child-3'}>{
                     p.memberList
                     ?
                         countTask.length > 0
                         ?
                             <Chart
                                 width={'100%'}
-                                height={'300px'}
+                                height={'100%'}
                                 chartType="PieChart"
-                                loader={<div>로딩중...</div>}
                                 data={countTask[0] !== 0 && countTask[1] !== 0
                                     ?
                                     [
@@ -266,16 +218,13 @@ function ProjectChart(p) {
                                     pieHole: 0.4,
                                     width: '100%',
                                     chartArea: {
-                                        left: 30,
-                                        top: 100,
                                         width: '100%',
                                     },
                                     titleTextStyle: {
-                                        fontSize: 25,
-                                        bold: false
+                                        fontSize: 15,
+                                        bold: true
                                     }
-                                    // legend: 'none', //범례 컨트롤
-                                    //추가 옵션은 여기로!!
+  
                                 }}
                                 rootProps={{'data-testid': '1'}}
                             />
@@ -284,7 +233,7 @@ function ProjectChart(p) {
                     }
                     </div>
                     {/*네번째 차트*/}
-                    <div className={'chartLine-child-4'} style={{width:'100%'}}>
+                    <div className={'chartArea chartB chartLine-child-4'} style={{width:'100%'}}>
                       {
                         p.memberList
                         ?
@@ -292,47 +241,27 @@ function ProjectChart(p) {
                           ?
                             <Chart
                                 width={'100%'}
-                                height={'300px'}
-                                chartType="Bar"
-                                loader={<div>로딩중...</div>}
+                                height={'100%'}
+                                chartType="ColumnChart"
                                 data={countMyTask}
                                 options={{
-                                    chart:{
-                                        title: '프로젝트 어벤져스',
-                                    },
-                                    bars: 'vertical', // 'vertical' 'horizontal'
+                                  title:'업무 기여도',
+                                  titleTextStyle: {
+                                    fontSize: 15,
+                                    bold: true
+                                  },
+                                  chartArea:{
+                                    left:20,
+                                    width: '880',
+                                  }
                                 }}
-                                rootProps={{'data-testid':'1'}}
+                                rootProps={{'data-testid':'3'}}
                             />
                           :<CircularProgress />
                         :<CircularProgress />
                       }
 
                     </div>
-                    {/*다섯번째 차트*/}
-                    {/* <div className={'chartLine-child-5'}>
-                        <Chart
-                            width={'100%'}
-                            height={'300px'}
-                            chartType="Bar"
-                            loader={<div>로딩중...</div>}
-                            data={[
-                                ['Year', 'Sales', 'Expenses', 'Profit'],
-                                ['2014', 1000, 400, 200],
-                                ['2015', 1170, 460, 250],
-                                ['2016', 660, 1120, 300],
-                                ['2017', 1030, 540, 350],
-
-                            ]}
-                            options={{
-                                chart:{
-                                    title: 'Company Performance',
-                                    subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-                                },
-                            }}
-                            rootProps={{'data-testid':'1'}}
-                        />
-                    </div> */}
                 </div>
             </div>
         </div>
