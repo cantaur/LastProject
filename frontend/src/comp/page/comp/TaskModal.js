@@ -211,7 +211,6 @@ function TaskModal(p){
     axios.get(host+'/ajax/taskComment/'+p.taskModalData.task_seq)
     .then(r=>{
       commentListCng(r.data)
-      console.log(r.data)
     })
     .catch(e=>{
       console.log(e)
@@ -231,7 +230,6 @@ function TaskModal(p){
     fileListCng();
     axios.get(host+'/ajax/taskFileList/'+p.taskModalData.task_seq)
     .then(r=>{
-      console.log(r.data)
       fileListCng(r.data)
     })
     .catch(e=>{
@@ -1007,7 +1005,6 @@ function TaskModal(p){
                       p.dispatch({type:'loadingOn'})
                       if(commentFile){
                         const formData = new FormData();
-                        console.log(commentFile)
                         formData.append('file', commentFile)
                         formData.append('project_seq', p.projectInfo.project_seq)
                         formData.append('task_seq', p.taskModalData.task_seq)
@@ -1046,7 +1043,6 @@ function TaskModal(p){
                       }else {
                         let membersString = commentMember != ''?commentMember.join(','):'none';
 
-                        console.log(membersString)
                         axios.post(host+'/ajax/taskComment',{
                           comment_content:commentText,
                           members : membersString,
@@ -1096,7 +1092,7 @@ function TaskModal(p){
                             <p className="name">{r.file_savename}</p>
                             <div className="info">
                               <p className="writer">{writer.name + ', ' + r.file_uploaddate}</p>
-                              <p className="byte">{formatBytes(494231)}</p>
+                              <p className="byte">{formatBytes(r.file_size)}</p>
 
                             </div>
                           </div>

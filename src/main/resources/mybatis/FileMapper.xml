@@ -16,8 +16,9 @@
         select * from file where task_seq=#{task_seq}
     </select>
 
-    <select id="findFileByProjseq" parameterType="long" resultType="FileDTO">
-        select * from file where project_seq=#{project_seq}
+    <select id="findFileByProjseq" parameterType="long" resultType="Map">
+        SELECT f.*, t.milestone_seq,t.task_title FROM file AS f LEFT JOIN task as t ON f.task_seq = t.task_seq
+        WHERE f.project_seq = #{project_seq} order BY f.file_seq DESC
     </select>
 
     <!--  마지막으로 입력된 파일 seq 검색-->

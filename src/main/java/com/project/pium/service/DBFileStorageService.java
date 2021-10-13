@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Map;
 
 @Log
 @Service
@@ -75,8 +76,8 @@ public class DBFileStorageService {
         return fileMapper.findFileByTaskseq(taskSeq);
     }
 
-    public List<FileDTO> findFileByProjseq(long projSeq){
-        return fileMapper.findFileByTaskseq(projSeq);
+    public List<Map<String,Object>> findFileByProjseq(long projSeq){
+        return fileMapper.findFileByProjseq(projSeq);
     }
 
 }

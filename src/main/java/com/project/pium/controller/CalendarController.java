@@ -24,13 +24,13 @@ public class CalendarController {
 
     //새 달력 MEMO 만들기
 
-    @PostMapping("/ajax/createCal")
+    @PostMapping("ajax/createCal")
     public void insertCalMemo (@RequestBody CalendarDTO calendarDTO) {
         calendarService.insertCalMemo(calendarDTO);
     }
 
     //이 프로젝트에서 생성한 모든 캘린더 리스트 조회, 이 프로젝트의 모든 업무 조회
-    @GetMapping("/ajax/calList/{projSeq}")
+    @GetMapping("ajax/calList/{projSeq}")
     public ArrayList<Object> calList(@PathVariable long projSeq){
         ArrayList<Object> calList = new ArrayList<>();
         LinkedHashMap<String,Object> tempCal = new LinkedHashMap<>();
@@ -46,7 +46,7 @@ public class CalendarController {
     }
 
     //캘린더>메모 상세보기
-    @GetMapping("/ajax/calendar/{calSeq}")
+    @GetMapping("ajax/calendar/{calSeq}")
     public CalendarDTO calDetail(@PathVariable long calSeq){
         CalendarDTO calendarDTO = calendarService.calListBySeq(calSeq);
         return calendarDTO;
@@ -54,21 +54,21 @@ public class CalendarController {
     }
 
     //캘린더>메모 날짜 업데이트
-    @PostMapping("/ajax/updateDate")
+    @PostMapping("ajax/updateDate")
     public void updateDate(@RequestBody CalendarDTO calendarDTO){
         calendarService.upCalDate(calendarDTO);
     }
 
 
     //캘린더>메모 내용 업데이트
-    @PostMapping("/ajax/updateCal")
+    @PostMapping("ajax/updateCal")
     public void updateCal(@RequestBody CalendarDTO calendarDTO){
         calendarService.updateCal(calendarDTO);
 
     }
 
     //캘린더 메모 삭제
-    @GetMapping("/ajax/deleteCal/{calSeq}")
+    @GetMapping("ajax/deleteCal/{calSeq}")
     public void delCal(@PathVariable long calSeq){
         calendarService.delCal(calSeq);
     }

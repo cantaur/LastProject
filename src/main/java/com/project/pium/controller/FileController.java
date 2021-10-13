@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Log
@@ -45,7 +46,7 @@ public class FileController {
         }
     }
 
-    @PostMapping("/ajax/uploadFile")
+    @PostMapping("ajax/uploadFile")
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file, FileDTO fileDTO) {
         String fileName = dbFileStorageService.storeFile(file);
         long projMemSeq= fileDTO.getProjmember_seq();
@@ -64,7 +65,7 @@ public class FileController {
                 file.getContentType(), file.getSize());
     }
 
-    @PostMapping("/ajax/uploadMulti")
+    @PostMapping("ajax/uploadMulti")
     public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files, FileDTO fileDTO) {
         return Arrays.asList(files)
                 .stream()
@@ -72,7 +73,7 @@ public class FileController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/downloadFile/{fileName:.+}")
+    @GetMapping("downloadFile/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
         // Load file as Resource
         Resource resource = fileStorageService.loadFileAsResource(fileName);
@@ -96,14 +97,14 @@ public class FileController {
                 .body(resource);
     }
 
-    @GetMapping("/ajax/taskFileList/{taskSeq}")
+    @GetMapping("ajax/taskFileList/{taskSeq}")
     public List<FileDTO> taskFilelist(@PathVariable long taskSeq){
         log.info("####"+dbFileStorageService.findFileByTaskseq(taskSeq));
         return dbFileStorageService.findFileByTaskseq(taskSeq);
     }
 
-    @GetMapping("/ajax/FileList/{projSeq}")
-    public List<FileDTO> projectFilelist(@PathVariable long projSeq){
+    @GetMapping("ajax/FileList/{projSeq}")
+    public List<Map<String,Object>> projectFilelist(@PathVariable long projSeq){
         log.info("####"+dbFileStorageService.findFileByProjseq(projSeq));
         return dbFileStorageService.findFileByProjseq(projSeq);
     }
