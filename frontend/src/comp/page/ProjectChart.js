@@ -92,10 +92,10 @@ function ProjectChart(p) {
                     p.dispatch({type: 'pagePush', val: 'calendar'})
                     history.push('/project/' + p.prjSeq + '/calendar')
                 }}>캘린더</p>
-                <p className="pageBtn" onClick={() => {
+                {/* <p className="pageBtn" onClick={() => {
                     p.dispatch({type: 'pagePush', val: 'timeLine'})
                     history.push('/project/' + p.prjSeq + '/timeLine')
-                }}>타임라인</p>
+                }}>타임라인</p> */}
                 <p className="pageBtn on" style={{color: p.prjColor, borderColor: p.prjColor}} onClick={() => {
                     p.dispatch({type: 'pagePush', val: 'projectChart'})
                     history.push('/project/' + p.prjSeq + '/projectChart')

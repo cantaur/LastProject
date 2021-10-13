@@ -7,6 +7,8 @@ import {connect} from 'react-redux';
 import {Badge, Button, FloatingLabel, Form, Modal, Nav} from 'react-bootstrap';
 import {Menu, MenuItem} from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
+import LinearProgress from '@mui/material/LinearProgress';
+import Box from '@mui/material/Box';
 
 
 
@@ -169,7 +171,6 @@ function Todo(p){
   
   //전체리스트 불러오기
   const myTodoGet = () =>{
-    p.dispatch({type:'loadingOn'})
     
     axios.get(host+'/ajax/mytodo/'+p.myMemberInfo.projmember_seq)
     .then(r=>{
@@ -311,265 +312,272 @@ function Todo(p){
 
       <div className="app">
         <div className="lists">
+          {
+            list?
+            <>
+              {/* todo */}
+              <div className="listWrap">
+                
+                <div className="list-label">
+                  <p className="title">
+                    <b className="cnt" style={{backgroundColor:'#D72B3C'}}>{cntTodo}</b>
+                    To do
+                  </p>
+                  <i class="fas fa-plus toolTipTopBox" onClick={()=>{
+                    insertFormEmpty();
+                    todoTitleInput.current.focus();
+                    formShowCng({
+                      todo:true,
+                      prog:false,
+                      done:false,
+                    })
+                    formDataCng({
+                      title:'',
+                      content:'',
+                      task_seq:'',
+                      task_title:'',
+                    })
+                  }}>
+                    <div className="toolTip" style={{marginLeft:'-41.58px'}}>새 To do 만들기</div>
+                  </i>
+                  
+                </div>
 
-          {/* todo */}
-          <div className="listWrap">
-            
-            <div className="list-label">
-              <p className="title">
-                <b className="cnt" style={{backgroundColor:'#D72B3C'}}>{cntTodo}</b>
-                To do
-              </p>
-              <i class="fas fa-plus toolTipTopBox" onClick={()=>{
-                insertFormEmpty();
-                todoTitleInput.current.focus();
-                formShowCng({
-                  todo:true,
-                  prog:false,
-                  done:false,
-                })
-                formDataCng({
-                  title:'',
-                  content:'',
-                  task_seq:'',
-                  task_title:'',
-                })
-              }}>
-                <div className="toolTip" style={{marginLeft:'-41.58px'}}>새 To do 만들기</div>
-              </i>
+                <div className={"addListWrap "+(formShow.todo?'on':'')}>
+                  {
+                    taskList&&
+                      <Form.Select size="sm" name="task" onChange={(e)=>{
+                        formDataCng({
+                          ...formData,
+                          task_seq:e.target.value,
+                          task_title:e.target[e.target.selectedIndex].getAttribute('data-title'),
+                        })
+                      }}>
+                        <option value="" data-title="">업무를 선택하세요.</option>
+                        {
+                          taskList.map(r=>{
+                            return(
+                              <option value={r.task_seq} data-title={r.task_title}>{r.task_title}</option>
+                            )
+                          })
+                        }
+                      </Form.Select>
+                  }
+                  
+                  <input type="text" placeholder="제목" className="createTitle" ref={todoTitleInput} name="title" onChange={formDataCngFunc}/>
+                  <textarea placeholder="내용" name="content" onChange={formDataCngFunc}/>
+                  <div className="btnWrap">
+                    <p onClick={()=>{
+                      formShowCng({
+                        todo:false,
+                        prog:false,
+                        done:false,
+                      })
+                      formDataCng({
+                        title:'',
+                        content:'',
+                        task_seq:'',
+                        task_title:''
+                      })
+
+                    insertFormEmpty();
+                    }}>취소</p>
+                    <button style={{backgroundColor:p.prjColor, color:'#fff'}} onClick={()=>{
+                      myTodoInsert('10')
+                    }}>작성완료</button>
+                  </div>
+                </div>
+
+                <div className="list" data-status="10">
+                  <List
+                    myTodoUpdate={myTodoUpdate} 
+                    taskList={taskList}
+                    myMemberInfo={p.myMemberInfo} 
+                    todoUpdateInfoCng={todoUpdateInfoCng} 
+                    todoUpdateInfo={todoUpdateInfo} 
+                    myTodoDelete={myTodoDelete} 
+                    list={todos} 
+                    prjColor={p.prjColor}
+                  />
+                </div>
+
+              </div>
+
+
+
               
-            </div>
+              {/* in progress */}
+              <div className="listWrap">
+                <div className="list-label">
+                  <p className="title">
+                    <b className="cnt" style={{backgroundColor:'#187D4D'}}>{cntProg}</b>
+                    In Progress
+                  </p>
 
-            <div className={"addListWrap "+(formShow.todo?'on':'')}>
-              {
-                taskList&&
-                  <Form.Select size="sm" name="task" onChange={(e)=>{
+                  <i class="fas fa-plus toolTipTopBox" onClick={()=>{
+                    progTitleInput.current.focus();
+                    insertFormEmpty();
+                    formShowCng({
+                      todo:false,
+                      prog:true,
+                      done:false,
+                    })
                     formDataCng({
-                      ...formData,
-                      task_seq:e.target.value,
-                      task_title:e.target[e.target.selectedIndex].getAttribute('data-title'),
+                      title:'',
+                      content:'',
+                      task_seq:'',
+                      task_title:''
                     })
                   }}>
-                    <option value="" data-title="">업무를 선택하세요.</option>
-                    {
-                      taskList.map(r=>{
-                        return(
-                          <option value={r.task_seq} data-title={r.task_title}>{r.task_title}</option>
-                        )
+                    <div className="toolTip" style={{marginLeft:'-49.775px'}}>새 Progress 만들기</div>
+                  </i>
+                </div>
+                <div className={"addListWrap "+(formShow.prog?'on':'')}>
+                  {
+                    taskList&&
+                      <Form.Select size="sm" name="task" onChange={e=>{
+                        formDataCng({
+                          ...formData,
+                          task_seq:e.target.value,
+                          task_title:e.target[e.target.selectedIndex].getAttribute('data-title')
+                        })
+                      }}>
+                        <option value="" data-title=''>업무를 선택하세요.</option>
+                        {
+                          taskList.map(r=>{
+                            return(
+                              <option value={r.task_seq} data-title={r.task_title}>{r.task_title}</option>
+                            )
+                          })
+                        }
+                      </Form.Select>
+                  }
+                  <input type="text" placeholder="제목" className="createTitle" ref={progTitleInput} name="title" onChange={formDataCngFunc}/>
+                  <textarea placeholder="내용" name="content" onChange={formDataCngFunc}/>
+                  <div className="btnWrap">
+                    <p onClick={()=>{
+                      formShowCng({
+                        todo:false,
+                        prog:false,
+                        done:false,
                       })
-                    }
-                  </Form.Select>
-              }
-              
-              <input type="text" placeholder="제목" className="createTitle" ref={todoTitleInput} name="title" onChange={formDataCngFunc}/>
-              <textarea placeholder="내용" name="content" onChange={formDataCngFunc}/>
-              <div className="btnWrap">
-                <p onClick={()=>{
-                  formShowCng({
-                    todo:false,
-                    prog:false,
-                    done:false,
-                  })
-                  formDataCng({
-                    title:'',
-                    content:'',
-                    task_seq:'',
-                    task_title:''
-                  })
-
-                insertFormEmpty();
-                }}>취소</p>
-                <button style={{backgroundColor:p.prjColor, color:'#fff'}} onClick={()=>{
-                  myTodoInsert('10')
-                }}>작성완료</button>
-              </div>
-            </div>
-
-            <div className="list" data-status="10">
-              <List
-                myTodoUpdate={myTodoUpdate} 
-                taskList={taskList}
-                myMemberInfo={p.myMemberInfo} 
-                todoUpdateInfoCng={todoUpdateInfoCng} 
-                todoUpdateInfo={todoUpdateInfo} 
-                myTodoDelete={myTodoDelete} 
-                list={todos} 
-                prjColor={p.prjColor}
-              />
-            </div>
-
-          </div>
-
-
-
-          
-          {/* in progress */}
-          <div className="listWrap">
-            <div className="list-label">
-              <p className="title">
-                <b className="cnt" style={{backgroundColor:'#187D4D'}}>{cntProg}</b>
-                In Progress
-              </p>
-
-              <i class="fas fa-plus toolTipTopBox" onClick={()=>{
-                progTitleInput.current.focus();
-                insertFormEmpty();
-                formShowCng({
-                  todo:false,
-                  prog:true,
-                  done:false,
-                })
-                formDataCng({
-                  title:'',
-                  content:'',
-                  task_seq:'',
-                  task_title:''
-                })
-              }}>
-                <div className="toolTip" style={{marginLeft:'-49.775px'}}>새 Progress 만들기</div>
-              </i>
-            </div>
-            <div className={"addListWrap "+(formShow.prog?'on':'')}>
-              {
-                taskList&&
-                  <Form.Select size="sm" name="task" onChange={e=>{
-                    formDataCng({
-                      ...formData,
-                      task_seq:e.target.value,
-                      task_title:e.target[e.target.selectedIndex].getAttribute('data-title')
-                    })
-                  }}>
-                    <option value="" data-title=''>업무를 선택하세요.</option>
-                    {
-                      taskList.map(r=>{
-                        return(
-                          <option value={r.task_seq} data-title={r.task_title}>{r.task_title}</option>
-                        )
+                      formDataCng({
+                        title:'',
+                        content:'',
+                        task_seq:'',
+                        task_title:''
                       })
-                    }
-                  </Form.Select>
-              }
-              <input type="text" placeholder="제목" className="createTitle" ref={progTitleInput} name="title" onChange={formDataCngFunc}/>
-              <textarea placeholder="내용" name="content" onChange={formDataCngFunc}/>
-              <div className="btnWrap">
-                <p onClick={()=>{
-                  formShowCng({
-                    todo:false,
-                    prog:false,
-                    done:false,
-                  })
-                  formDataCng({
-                    title:'',
-                    content:'',
-                    task_seq:'',
-                    task_title:''
-                  })
 
-                insertFormEmpty();
-                }}>취소</p>
-                <button style={{backgroundColor:p.prjColor, color:'#fff'}} onClick={()=>{
-                  myTodoInsert('20')
-                }}>작성완료</button>
+                    insertFormEmpty();
+                    }}>취소</p>
+                    <button style={{backgroundColor:p.prjColor, color:'#fff'}} onClick={()=>{
+                      myTodoInsert('20')
+                    }}>작성완료</button>
+                  </div>
+                </div>
+
+                <div className="list" data-status="20">
+                  <List
+                    myTodoUpdate={myTodoUpdate} 
+                    taskList={taskList}
+                    myMemberInfo={p.myMemberInfo} 
+                    todoUpdateInfoCng={todoUpdateInfoCng} 
+                    todoUpdateInfo={todoUpdateInfo} 
+                    myTodoDelete={myTodoDelete} 
+                    list={progresses} 
+                    prjColor={p.prjColor}
+                  />
+                </div>
+
               </div>
-            </div>
 
-            <div className="list" data-status="20">
-              <List
-                myTodoUpdate={myTodoUpdate} 
-                taskList={taskList}
-                myMemberInfo={p.myMemberInfo} 
-                todoUpdateInfoCng={todoUpdateInfoCng} 
-                todoUpdateInfo={todoUpdateInfo} 
-                myTodoDelete={myTodoDelete} 
-                list={progresses} 
-                prjColor={p.prjColor}
-              />
-            </div>
-
-          </div>
-
-          {/* done */}
-          <div className="listWrap">
-            <div className="list-label">
-              <p className="title">
-                <b className="cnt" style={{backgroundColor:'#135CF8'}}>{cntDone}</b>
-                Done
-              </p>
-              <i class="fas fa-plus toolTipTopBox" onClick={()=>{
-                  doneTitleInput.current.focus();
-                  insertFormEmpty();
-                  formShowCng({
-                    todo:false,
-                    prog:false,
-                    done:true,
-                  })
-                  formDataCng({
-                    title:'',
-                    content:'',
-                    task_seq:'',
-                    task_title:''
-                  })
-                }}>
-                <div className="toolTip" style={{marginLeft:'-40.885px'}}>새 Done 만들기</div>
-              </i>
-            </div>
-            <div className={"addListWrap "+(formShow.done?'on':'')}>
-              {
-                taskList&&
-                  <Form.Select size="sm" name="task" onChange={e=>{
-                    formDataCng({
-                      ...formData,
-                      task_seq:e.target.value,
-                      task_title:e.target[e.target.selectedIndex].getAttribute('data-title')
-                    })
-                  }}>
-                    <option value="" data-title=''>업무를 선택하세요.</option>
-                    {
-                      taskList.map(r=>{
-                        return(
-                          <option value={r.task_seq} data-title={r.task_title}>{r.task_title}</option>
-                        )
+              {/* done */}
+              <div className="listWrap">
+                <div className="list-label">
+                  <p className="title">
+                    <b className="cnt" style={{backgroundColor:'#135CF8'}}>{cntDone}</b>
+                    Done
+                  </p>
+                  <i class="fas fa-plus toolTipTopBox" onClick={()=>{
+                      doneTitleInput.current.focus();
+                      insertFormEmpty();
+                      formShowCng({
+                        todo:false,
+                        prog:false,
+                        done:true,
                       })
-                    }
-                  </Form.Select>
-              }
-              <input type="text" placeholder="제목" className="createTitle" ref={doneTitleInput} name="title" onChange={formDataCngFunc}/>
-              <textarea placeholder="내용" name="content" onChange={formDataCngFunc}/>
-              <div className="btnWrap">
-                <p onClick={()=>{
-                  formShowCng({
-                    todo:false,
-                    prog:false,
-                    done:false,
-                  })
-                  formDataCng({
-                    title:'',
-                    content:'',
-                    task_seq:'',
-                    task_title:''
-                  })
+                      formDataCng({
+                        title:'',
+                        content:'',
+                        task_seq:'',
+                        task_title:''
+                      })
+                    }}>
+                    <div className="toolTip" style={{marginLeft:'-40.885px'}}>새 Done 만들기</div>
+                  </i>
+                </div>
+                <div className={"addListWrap "+(formShow.done?'on':'')}>
+                  {
+                    taskList&&
+                      <Form.Select size="sm" name="task" onChange={e=>{
+                        formDataCng({
+                          ...formData,
+                          task_seq:e.target.value,
+                          task_title:e.target[e.target.selectedIndex].getAttribute('data-title')
+                        })
+                      }}>
+                        <option value="" data-title=''>업무를 선택하세요.</option>
+                        {
+                          taskList.map(r=>{
+                            return(
+                              <option value={r.task_seq} data-title={r.task_title}>{r.task_title}</option>
+                            )
+                          })
+                        }
+                      </Form.Select>
+                  }
+                  <input type="text" placeholder="제목" className="createTitle" ref={doneTitleInput} name="title" onChange={formDataCngFunc}/>
+                  <textarea placeholder="내용" name="content" onChange={formDataCngFunc}/>
+                  <div className="btnWrap">
+                    <p onClick={()=>{
+                      formShowCng({
+                        todo:false,
+                        prog:false,
+                        done:false,
+                      })
+                      formDataCng({
+                        title:'',
+                        content:'',
+                        task_seq:'',
+                        task_title:''
+                      })
 
-insertFormEmpty();}}>취소</p>
-                <button style={{backgroundColor:p.prjColor, color:'#fff'}} onClick={()=>{
-                  myTodoInsert('30')
-                }}>작성완료</button>
+                      insertFormEmpty();
+                    }}>취소</p>
+                    <button style={{backgroundColor:p.prjColor, color:'#fff'}} onClick={()=>{
+                      myTodoInsert('30')
+                    }}>작성완료</button>
+                  </div>
+                </div>
+
+                <div className="list" data-status="30">
+                  <List
+                    myTodoUpdate={myTodoUpdate} 
+                    taskList={taskList}
+                    myMemberInfo={p.myMemberInfo} 
+                    todoUpdateInfoCng={todoUpdateInfoCng} 
+                    todoUpdateInfo={todoUpdateInfo} 
+                    myTodoDelete={myTodoDelete} 
+                    list={dones} 
+                    prjColor={p.prjColor}
+                  />
+                </div>
+
               </div>
-            </div>
-
-            <div className="list" data-status="30">
-              <List
-                myTodoUpdate={myTodoUpdate} 
-                taskList={taskList}
-                myMemberInfo={p.myMemberInfo} 
-                todoUpdateInfoCng={todoUpdateInfoCng} 
-                todoUpdateInfo={todoUpdateInfo} 
-                myTodoDelete={myTodoDelete} 
-                list={dones} 
-                prjColor={p.prjColor}
-              />
-            </div>
-
-          </div>
+            </>
+            :<Box sx={{ width: '100%' }}><LinearProgress /></Box>
+          }
+ 
         </div>
       </div>
 
