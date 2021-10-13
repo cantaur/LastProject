@@ -147,119 +147,141 @@ function ProjectChart(p) {
                 {/*첫번째 차트*/}
                 <div className={'chartLine'}>
                     <div className={'chartLine-child-1'}>
-                        <Chart
-                            width={'100%'}
-                            height={'300px'}
-                            chartType="PieChart"
-                            loader={<div>로딩중...</div>}
-                            data={countMilestone[0] !== 0 && countMilestone[1] !== 0
+                        {
+                            p.memberList
+                            ?
+                                countMilestone.length > 0
                                 ?
-                                [
-                                    ['Task', 'Hours per Day'],
-                                    ['진행중인 마일스톤', countMilestone[0]],
-                                    ['완료된 마일스톤', countMilestone[1]],
-                                ]
-                                : [
-                                    ['Task', 'Hours per Day'],
-                                    ['업무가 없습니다.', 1],
-                                ]}
-                            options={{
-                                title: '마일스톤 진행도',
-                                // is3D: true,
-                                width: '100%',
-                                // legend: 'none', //범례 컨트롤
-                                chartArea: {
-                                    left: 30,
-                                    top: 100,
-                                    width: '100%',
-                                },
-                                titleTextStyle: {
-                                    fontSize: 25,
-                                    bold: false
-                                }
-                                //추가 옵션은 여기로!!
-                            }}
-                            rootProps={{'data-testid': '1'}}
-                        />
+                                    <Chart
+                                        width={'100%'}
+                                        height={'300px'}
+                                        chartType="PieChart"
+                                        loader={<div>로딩중...</div>}
+                                        data={countMilestone[0] !== 0 && countMilestone[1] !== 0
+                                            ?
+                                            [
+                                                ['Task', 'Hours per Day'],
+                                                ['진행중인 마일스톤', countMilestone[0]],
+                                                ['완료된 마일스톤', countMilestone[1]],
+                                            ]
+                                            : [
+                                                ['Task', 'Hours per Day'],
+                                                ['업무가 없습니다.', 1],
+                                            ]}
+                                        options={{
+                                            title: '마일스톤 진행도',
+                                            // is3D: true,
+                                            width: '100%',
+                                            // legend: 'none', //범례 컨트롤
+                                            chartArea: {
+                                                left: 30,
+                                                top: 100,
+                                                width: '100%',
+                                            },
+                                            titleTextStyle: {
+                                                fontSize: 25,
+                                                bold: false
+                                            }
+                                            //추가 옵션은 여기로!!
+                                        }}
+                                        rootProps={{'data-testid': '1'}}
+                                    />
+                                :<CircularProgress />
+                            :<CircularProgress />
+                        }
                     </div>
                     {/*두번째 차트*/}
                     <div className={'chartLine-child-2'}>
-                        <Chart
-                            width={'100%'}
-                            height={'300px'}
-                            chartType="PieChart"
-                            loader={<div>로딩중...</div>}
-                            data={countTaskChart[0] !== 0 && countTaskChart[1] !== 0
+                        {
+                            p.memberList
+                            ?
+                                countTaskChart.length > 0
                                 ?
-                                [
-                                    ['Task', 'Hours per Day'],
-                                    ['전체 프로젝트 업무', countTaskChart[0]],
-                                    ['나의 업무', countTaskChart[1]],
-                                ]
-                                : [
-                                    ['Task', 'Hours per Day'],
-                                    ['업무가 없습니다.', 1],
-                                ]
-                            }
-                            options={{
-                                title: '할당된 업무',
-                                is3D: true,
-                                // legend: 'none', //범례 컨트롤
-                                width: '100%',
-                                chartArea: {
-                                    left: 30,
-                                    top: 100,
-                                    width: '100%',
-                                },
-                                titleTextStyle: {
-                                    fontSize: 25,
-                                    bold: false
-                                }
+                                <Chart
+                                    width={'100%'}
+                                    height={'300px'}
+                                    chartType="PieChart"
+                                    loader={<div>로딩중...</div>}
+                                    data={countTaskChart[0] !== 0 && countTaskChart[1] !== 0
+                                        ?
+                                        [
+                                            ['Task', 'Hours per Day'],
+                                            ['전체 프로젝트 업무', countTaskChart[0]],
+                                            ['나의 업무', countTaskChart[1]],
+                                        ]
+                                        : [
+                                            ['Task', 'Hours per Day'],
+                                            ['업무가 없습니다.', 1],
+                                        ]
+                                    }
+                                    options={{
+                                        title: '할당된 업무',
+                                        is3D: true,
+                                        // legend: 'none', //범례 컨트롤
+                                        width: '100%',
+                                        chartArea: {
+                                            left: 30,
+                                            top: 100,
+                                            width: '100%',
+                                        },
+                                        titleTextStyle: {
+                                            fontSize: 25,
+                                            bold: false
+                                        }
 
-                                //추가 옵션은 여기로!!
-                            }}
-                            rootProps={{'data-testid': '1'}}
-                        />
+                                        //추가 옵션은 여기로!!
+                                    }}
+                                    rootProps={{'data-testid': '1'}}
+                                />
+                                :<CircularProgress />
+                            :<CircularProgress />
+                        }
                     </div>
                     {/*세번째 차트*/}
-                    <div className={'chartLine-child-3'}>
-                        <Chart
-                            width={'100%'}
-                            height={'300px'}
-                            chartType="PieChart"
-                            loader={<div>로딩중...</div>}
-                            data={countTask[0] !== 0 && countTask[1] !== 0
-                                ?
-                                [
-                                    ['Task', 'Hours per Day'],
-                                    ['진행중인 업무', countTask[0]],
-                                    ['완료된 업무', countTask[1]],
-                                ]
-                                :
-                                [
-                                    ['Task', 'Hours per Day'],
-                                    ['업무가 없습니다.', 1],
-                                ]
-                            }
-                            options={{
-                                title: '현재 업무 진행도',
-                                pieHole: 0.4,
-                                width: '100%',
-                                chartArea: {
-                                    left: 30,
-                                    top: 100,
-                                    width: '100%',
-                                },
-                                titleTextStyle: {
-                                    fontSize: 25,
-                                    bold: false
+                    <div className={'chartLine-child-3'}>{
+                    p.memberList
+                    ?
+                        countTask.length > 0
+                        ?
+                            <Chart
+                                width={'100%'}
+                                height={'300px'}
+                                chartType="PieChart"
+                                loader={<div>로딩중...</div>}
+                                data={countTask[0] !== 0 && countTask[1] !== 0
+                                    ?
+                                    [
+                                        ['Task', 'Hours per Day'],
+                                        ['진행중인 업무', countTask[0]],
+                                        ['완료된 업무', countTask[1]],
+                                    ]
+                                    :
+                                    [
+                                        ['Task', 'Hours per Day'],
+                                        ['업무가 없습니다.', 1],
+                                    ]
                                 }
-                                // legend: 'none', //범례 컨트롤
-
-                                //추가 옵션은 여기로!!
-                            }}
-                            rootProps={{'data-testid': '1'}}
-                        />
+                                options={{
+                                    title: '현재 업무 진행도',
+                                    pieHole: 0.4,
+                                    width: '100%',
+                                    chartArea: {
+                                        left: 30,
+                                        top: 100,
+                                        width: '100%',
+                                    },
+                                    titleTextStyle: {
+                                        fontSize: 25,
+                                        bold: false
+                                    }
+                                    // legend: 'none', //범례 컨트롤
+                                    //추가 옵션은 여기로!!
+                                }}
+                                rootProps={{'data-testid': '1'}}
+                            />
+                            :<CircularProgress />
+                        :<CircularProgress />
+                    }
                     </div>
                     {/*네번째 차트*/}
                     <div className={'chartLine-child-4'} style={{width:'100%'}}>
