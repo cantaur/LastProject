@@ -106,7 +106,9 @@ function Calendar(p){
       setTimeout(()=>{
         window.removeEventListener('click', taskModalClose)
       })
+      p.dispatch({type:'tabRedux', val:false})
     }
+    
   },[])
 
   //업무 일정수정_edit(drag)

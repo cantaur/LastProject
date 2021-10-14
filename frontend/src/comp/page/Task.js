@@ -33,6 +33,7 @@ function Task(p){
       setTimeout(()=>{
         window.removeEventListener('click', taskModalClose)
       })
+      p.dispatch({type:'tabRedux', val:false})
     }
   },[])
 

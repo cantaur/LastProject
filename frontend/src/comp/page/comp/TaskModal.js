@@ -315,8 +315,12 @@ function TaskModal(p){
     editTitleCng(false)
     editContentCng(false)
     editLabelCng(false)
-    tabStateCng(0)
-
+    if(p.tabRedux){
+      tabStateCng(1)
+    }else {
+      tabStateCng(0)
+    }
+    commentListGetFunc();
   },[p.taskModalData])
 
   useEffect(()=>{
@@ -328,6 +332,7 @@ function TaskModal(p){
     }
     
   },[tabState])
+
 
   return(
     <>
@@ -899,7 +904,6 @@ function TaskModal(p){
                         commentList.map((r,i)=>{
                           const writer = memberInfoGetFunc(r.comment.projmember_seq)
                           const membersArr = r.comment.members?r.comment.members.split(','):''
-                          console.log(r)
                           if(r.comment.comment_isdelete == '0'){
                             return(
                               <div className="comment">
@@ -1180,7 +1184,8 @@ function transReducer(state){
     projectInfo : state.projectInfo,
     memberList : state.memberList,
     refresh : state.refresh,
-    myMemberInfo : state.myMemberInfo
+    myMemberInfo : state.myMemberInfo,
+    tabRedux:state.tabRedux,
   }
 }
 

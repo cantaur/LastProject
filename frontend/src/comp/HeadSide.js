@@ -102,15 +102,25 @@ function HeadSide(p){
   //알림목록 state
   const [noticeList, noticeListCng] = useState([]);
 
-  const noticeListGetFunc = () =>{
-    axios.get(host+'/ajax/'+p.myMemberInfo.projmember_seq)
-    .then(r=>{
+  //알림이 있는지 여부
+  const [unReadNotice, unReadNoticeCng] =useState(false);
 
+  const noticeListGetFunc = () =>{
+    axios.get(host+'/ajax/notice/'+p.myMemberInfo.projmember_seq)
+    .then(r=>{
+      noticeListCng([]);
+      if(r.data.length == 0){
+        unReadNoticeCng(false)
+      }else {
+        unReadNoticeCng(true)
+        noticeListCng(r.data);
+      }
     })
     .catch(e=>{
       console.log(e)
     })
   }
+
 
   //알림 모달 상태
   const [noticeModal, noticeModalCng] = useState(false);
@@ -125,6 +135,36 @@ function HeadSide(p){
     }
   },[])
 
+  //알림 문구 arr
+  const noticeMsg ={
+    'mention':'코멘트에 멘션되었습니다.'
+  }
+  //멤버정보 가져오기
+  const memberInfoGetFunc = (seq) =>{
+    let info = {
+        name:'',
+        data:''
+    }
+    if(p.memberList){
+        p.memberList.map(r=>{
+            if(r.projmember_seq == seq){
+                if(r.projmember_data){
+                    info.data = 'data:image;base64,'+r.projmember_data;
+                }else{
+                    info.data = pub.img+'defaultProfile.svg'
+                }
+                if(r.projmember_name){
+                    info.name = r.projmember_name
+                }else {
+                    info.name = 'User#'+r.member_seq
+                }
+            }
+        })
+    }
+
+    return info;
+  }
+
   useEffect(()=>{
     outMemberCng('');
     inviteAlertCng(false)
@@ -134,6 +174,15 @@ function HeadSide(p){
   useEffect(()=>{
     memberListCng(p.memberList)
   },[p.memberList])
+
+
+  useEffect(() => {
+    if(p.myMemberInfo){
+      noticeListGetFunc();
+    }
+  }, [p.myMemberInfo]);
+
+
 
   return(
     <>
@@ -207,14 +256,17 @@ function HeadSide(p){
 
           <div className="noticeWrap">
             <div className="noticeBtn" onClick={()=>{
+              noticeListGetFunc();
               noticeModalCng(true)
               setTimeout(()=>{
-
                 window.addEventListener('click', noticeModalClose)
               })
             }}>
               <i class="far fa-bell"></i>
-              <div className="bellCnt"></div>
+              {
+                unReadNotice&&
+                <div className="bellCnt"></div>
+              }
             </div>
           </div>
         </div>
@@ -607,50 +659,46 @@ function HeadSide(p){
       <div className={"noticeModal "+(noticeModal?'on':'')}>
         <div className="noticeHead">
           <p>읽지 않은 알림 <b style={{color:seqColorTrans(p.prjSeq)}}>{noticeList.length?noticeList.length:0}</b></p>
-          <div style={{backgroundColor:seqColorTrans(p.prjSeq)}}>전체 알림 보기</div>
+          <div style={{backgroundColor:seqColorTrans(p.prjSeq)}} onClick={()=>{
+            history.push('/project/'+p.prjSeq+'/notice')
+            p.dispatch({type:'pagePush', val:'notice'})
+            noticeModalCng(false)
+          }}>전체 알림 보기</div>
         </div>
         {
           noticeList
           ?
-            noticeList.length == 0
+            noticeList.length > 0
             ?
-              <>
-              <div className="noticeList">
-                <i class="fas fa-times-circle deleteBtn"></i>
-                <p className="title">업무에 배정되었습니다.</p>
-                <p className="sub">첫째, 2020-12-12</p>
-              </div>
-              <div className="noticeList">
-                <i class="fas fa-times-circle deleteBtn"></i>
-                <p className="title">업무에 배정되었습니다.</p>
-                <p className="sub">첫째, 2020-12-12</p>
-              </div>
-              <div className="noticeList">
-                <i class="fas fa-times-circle deleteBtn"></i>
-                <p className="title">업무에 배정되었습니다.</p>
-                <p className="sub">첫째, 2020-12-12</p>
-              </div>
-              <div className="noticeList">
-                <i class="fas fa-times-circle deleteBtn"></i>
-                <p className="title">업무에 배정되었습니다.</p>
-                <p className="sub">첫째, 2020-12-12</p>
-              </div>
-              <div className="noticeList">
-                <i class="fas fa-times-circle deleteBtn"></i>
-                <p className="title">업무에 배정되었습니다.</p>
-                <p className="sub">첫째, 2020-12-12</p>
-              </div>
-              <div className="noticeList">
-                <i class="fas fa-times-circle deleteBtn"></i>
-                <p className="title">업무에 배정되었습니다.</p>
-                <p className="sub">첫째, 2020-12-12</p>
-              </div>
-              <div className="noticeList">
-                <i class="fas fa-times-circle deleteBtn"></i>
-                <p className="title">업무에 배정되었습니다.</p>
-                <p className="sub">첫째, 2020-12-12</p>
-              </div>
-              </>
+              noticeList.map(r=>{
+                let type = '';
+                let seq = '';
+                if(r.task_seq){
+                  type = 'task';
+                  seq =r.task_seq
+                }else if(r.milestone_seq){
+                  type = 'mileStoneView';
+                  seq =r.milestone_seq
+                }
+
+                return(
+                  <div className="noticeList">
+                    <i class="fas fa-times-circle deleteBtn"></i>
+                    <p className="title" onClick={()=>{
+                      noticeModalCng(false)
+                      p.dispatch({type:'pagePush', val:type})
+                      history.push('/project/'+p.prjSeq+'/'+type+'/'+seq)
+                      if(r.notice_type=='mention'){
+                        p.dispatch({type:'tabReduxCng',val:true});
+                      }else {
+                        p.dispatch({type:'tabReduxCng',val:false});
+                      }
+                      
+                    }}>{noticeMsg[r.notice_type]}</p>
+                    <p className="sub">{memberInfoGetFunc(r.notice_sender).name}, {r.notice_date}</p>
+                  </div>
+                )
+              })
             :<p className="noNotice">새로운 알림이 없습니다.</p>
           :<div className="loadingBox"><CircularProgress/></div>
         }
@@ -669,7 +717,8 @@ function transReducer(state){
     memberList:state.memberList,
     myMemberInfo:state.myMemberInfo,
     isMaster:state.isMaster,
-    isProfileEmpty:state.isProfileEmpty
+    isProfileEmpty:state.isProfileEmpty,
+    tabRedux:state.tabRedux
   }
 }
 

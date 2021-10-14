@@ -27,7 +27,9 @@ function MileStoneView(p){
       setTimeout(()=>{
         window.removeEventListener('click', taskModalClose)
       })
+      p.dispatch({type:'tabRedux', val:false})
     }
+    
   },[])
 
   //마일스톤 정보

@@ -157,6 +157,14 @@ function refreshMyInfo(state=false, action){
       return state;
   }
 }
+function tabRedux(state=false, action){
+  switch (action.type){
+    case 'tabReduxCng':
+      return action.val;
+    default:
+      return state;
+  }
+}
 
 
 let store = createStore(combineReducers(
@@ -176,6 +184,7 @@ let store = createStore(combineReducers(
     taskModalData,
     refresh,
     refreshMyInfo,
+    tabRedux,
   }
 ));
 
