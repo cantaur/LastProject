@@ -3,13 +3,16 @@ import React, {useCallback, useEffect, useRef, useState} from "react"
 import {pub, colors, pages,seqColorTrans, host} from '../Helper.js'
 import DatePicker from '../DatePicker.js'
 import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstrap'
-import { Link, useParams, withRouter, useHistory } from "react-router-dom";
+import { Link, useParams, withRouter, useHistory, useLocation } from "react-router-dom";
 import {connect} from 'react-redux';
 import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
 
 
 function Task(p){
+  const history = useHistory();
+  const location = useLocation();
+  const params = useParams();
 
   // 상세보기_배정된 멤버 추가 모달
   let [appendMemberModal, appendMemberModalCng] = useState(false);
@@ -212,8 +215,47 @@ function Task(p){
   },[p.refresh])
 
   useEffect(()=>{
+    if(params.pageSeq){
+      axios.get(host+'/ajax/taskView/'+params.pageSeq)
+      .then(r=>{
+        p.dispatch(
+            {
+              type:'taskModalDataCng',
+              val:{
+                "task_seq":r.data[0].task.task_seq,
+                "task_title":r.data[0].task.task_title,
+                "task_content":r.data[0].task.task_content,
+                "task_status":r.data[0].task.task_status,
+                "task_isdelete":r.data[0].task.task_isdelete,
+                "task_startdate":r.data[0].task.task_startdate?r.data[0].task.task_startdate.substring(0,10):'',
+                "task_duedate":r.data[0].task.task_duedate?r.data[0].task.task_duedate.substring(0,10):'',
+                "projmember_seq":r.data[0].task.projmember_seq,
+                "milestone_seq":r.data[0].task.milestone_seq,
+                "label_seq":r.data[0].task.label_seq==0?null:r.data[0].task.label_seq,
+                "label_title":r.data[0].task?r.data[0].task.label_title:null,
+                "priority_code":r.data[0].task.priority_code,
+                "taskMembers":r.data[0].taskMembers,
+                "task_date":r.data[0].task.task_date.substring(0,10),
+              }
+            }
+        )
 
-  },[])
+        p.dispatch({type:'taskModalCng',val:true})
+
+        setTimeout(()=>{
+          window.addEventListener('click', taskModalClose)
+        })
+        p.dispatch({type:'loadingOff'})
+      })
+      .catch(e=>{
+        history.push('/404')
+        p.dispatch({type:'loadingOff'})
+
+      })
+    }else {
+      p.dispatch({type:'taskModalCng',val:false})
+    }
+  },[location])
 
   return(
     <div className="pageContentWrap taskWrap">
@@ -730,7 +772,8 @@ function transReducer(state){
     memberList:state.memberList,
     myMemberInfo:state.myMemberInfo,
     mileStoneList : state.mileStoneList,
-    refresh:state.refresh
+    refresh:state.refresh,
+    pageInfo:state.pageInfo
   }
 }
 

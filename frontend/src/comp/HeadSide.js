@@ -148,15 +148,27 @@ function HeadSide(p){
               <Form.Control type="text" placeholder="검색어를 입력해주세요." className="searchInput" ref={searchInput}/>
             </Modal.Header>
             <Modal.Body>
-              <div className="result">
+              <div className="result" onClick={()=>{
+                history.push('/project/'+p.prjSeq+'/mileStoneView/'+37)
+                p.dispatch({type:'pagePush', val:'mileStoneView'})
+                searchModalCng(false)
+              }}>
                 <b style={{backgroundColor:p.prjColor}}>마일스톤</b>
                 <p>검색결과로 나온 마일스톤 이름</p>
               </div>
-              <div className="result">
+              <div className="result" onClick={()=>{
+                history.push('/project/'+p.prjSeq+'/task/'+3)
+                p.dispatch({type:'pagePush', val:'task'})
+                searchModalCng(false)
+              }}>
                 <b style={{backgroundColor:p.prjColor}}>업무</b>
                 <p>검색결과로 나온 업무 이름</p>
               </div>
-              <div className="result">
+              <div className="result" onClick={()=>{
+                history.push('/project/'+p.prjSeq+'/task/'+11)
+                p.dispatch({type:'pagePush', val:'task'})
+                searchModalCng(false)
+              }}>
                 <b style={{backgroundColor:p.prjColor}}>프로젝트</b>
                 <p>검색결과로 나온 업무 이름</p>
               </div>
