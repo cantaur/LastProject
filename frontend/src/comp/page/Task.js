@@ -106,7 +106,17 @@ function Task(p){
   //task 리스트
   const [taskList, taskListCng] = useState();
 
-
+  //task 필터_내업무
+  const taskMyFilterFunc = list =>{
+    let result = false;
+    list.taskMembers.map(r=>{
+      if(r.projmember_seq == p.myMemberInfo.projmember_seq){
+        result = true
+      }
+    })
+    return result;
+  }
+  
   //task 리스트 불러오기
   const taskListGetFunc = () =>{
       
@@ -116,7 +126,7 @@ function Task(p){
     axios.get(host+'/ajax/'+p.prjSeq+'/tasklist')
     .then(r=>{
       if(taskFilter.myTaskFilter != '전체'){
-        listDummy = r.data.filter(rr => rr.task.projmember_seq == p.myMemberInfo.projmember_seq);
+        listDummy = r.data.filter(rr => taskMyFilterFunc(rr));
       } else {
         listDummy = r.data;
       }
