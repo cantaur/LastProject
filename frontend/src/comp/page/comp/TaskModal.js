@@ -215,8 +215,6 @@ function TaskModal(p){
     .catch(e=>{
       console.log(e)
     })
-    //여기 나중에해야함
-    commentWrap.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
   }
 
   //코멘트 삭제 확인용
@@ -670,7 +668,7 @@ function TaskModal(p){
                   <div className="memberWrap">
                     {
                       p.taskModalData.taskMembers &&
-                      p.taskModalData.taskMembers.length > 0
+                      p.taskModalData.taskMembers.length > 0 && p.memberList
                       ?
                         p.taskModalData.taskMembers.map(r=>{
                           let name = '';
