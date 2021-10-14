@@ -9,7 +9,7 @@ function Test7(){//For 간트차트
     useEffect(()=>{
         axios
             .all([
-                axios.get(host+'/ajax/1/milestonelist')//마일스톤 전부조회.
+                axios.get(host+'/ajax/3/milestonelist')//마일스톤 전부조회.
             ])
             .then(
                 axios.spread((r1)=>{
@@ -52,7 +52,7 @@ function Test7(){//For 간트차트
             'milestone',
             new Date(milestones[i].milestone_startdate),
             new Date(milestones[i].milestone_duedate),
-            null,
+            100,
             100,
             null
         ])
@@ -63,7 +63,7 @@ function Test7(){//For 간트차트
                 'task',
                 new Date(milestones[i].milestone_startdate),
                 new Date(milestones[i].milestone_duedate),
-                null,
+                100,
                 100,
                 null
             ])
@@ -146,7 +146,7 @@ function Test7(){//For 간트차트
                          ],
                      },
                     }}
-                    // rootProps={{ 'data-testid': '3' }}
+                     rootProps={{ 'data-testid': '3' }}
                 />
 
             </div>

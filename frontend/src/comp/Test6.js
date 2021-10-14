@@ -3,161 +3,185 @@ import React, {useState, useEffect} from 'react';
 // import '../css/test6.css';
 import Chart from "react-google-charts";
 import {host} from "./Helper";
+import {connect} from "react-redux";
+import { Link, useParams, withRouter, useHistory } from "react-router-dom";
+import ChartHead from './page/comp/ChartHead.js'
 
+function Test6(p) {
 
-function Test6() {
+    const [milestones, setMilestones] = useState([]);
 
-    const [countMilestone, setCountMilestone] = useState([]);
-    const [countTaskChart, setCountTaskChart] = useState([]);
-    const [countTask, setCountTask] = useState([]);
+    const history = useHistory();
+    useEffect(()=>{
+        axios
+            .all([
+                axios.get(host+'/ajax/3/milestonelist')//마일스톤 전부조회.
+            ])
+            .then(
+                axios.spread((r1)=>{
+                    setMilestones(r1.data);
+                    // console.log("#milestones:"+JSON.stringify(r1.data));
+                })
+            )
+            .catch(e=>{
+                console.log(e)
+            });
+    },[]);
 
-    const [prjSeq, setPrjSeq] = useState(2);  //얘네 어떻게받는걸까요...??
-    const [prjMSeq, setPrjMSeq] = useState(1);  //얘네 어떻게받는걸까요...??
-    const [MSeq, setMSeq] = useState(3);    //얘네 어떻게받는걸까요...??
-
-useEffect(()=>{
-
-   axios
-       .all([
-           axios.get(host+'/ajax/milestoneOneChart/'+prjSeq),
-           axios.get(host+'/ajax/taskChart/'+prjSeq+'/'+prjMSeq+'/'+MSeq),
-           axios.get(host+'/ajax/countTaskStatus/'+prjSeq),
-       ])
-       .then(
-           axios.spread((r1,r2,r3)=>{
-                setCountMilestone(r1.data);
-                setCountTaskChart(r2.data);
-                setCountTask(r3.data);
-           })
-       )
-       .catch(e =>{
-          console.log(e)
-       });
-}, []);
+    var arr=[[
+        { type: 'string', label: 'Task ID' },
+        { type: 'string', label: 'Task Name' },//title(왼쪽에 들어갈 이름)
+        { type: 'string', label: 'resource' },
+        { type: 'date', label: 'Start Date' },//startdate
+        { type: 'date', label: 'End Date' }, //duedate
+        { type: 'number', label: 'Duration' },
+        { type: 'number', label: 'Percent Complete' },
+        { type: 'string', label: 'Dependencies' },
+    ]
+    ];
+    for(var i=0;i<milestones.length;i++) {
+        arr.push([
+            'Mile'+milestones[i].milestone_seq,
+            milestones[i].milestone_title,
+            'milestone',
+            new Date(milestones[i].milestone_startdate),
+            new Date(milestones[i].milestone_duedate),
+            100,
+            100,
+            null
+        ])
+        for(var j=0;j<2;j++){//test
+            arr.push([
+                'Task'+milestones[i].milestone_seq+j,
+                'test',
+                'task',
+                new Date(milestones[i].milestone_startdate),
+                new Date(milestones[i].milestone_duedate),
+                100,
+                100,
+                null
+            ])
+        }
+    }
 
     return(
-    <div className="viewOutWrap">
-        <div>
-            <div className="project-title">
-                <h1>프로젝트 이름</h1>
+        <div className="timeLineWrap pageContentWrap">
+            <div className="pageBtnWrap">
+                <p className="pageBtn" onClick={() => {
+                    p.dispatch({type: 'pagePush', val: 'calendar'})
+                    history.push('/project/' + p.prjSeq + '/calendar')
+                }}>캘린더</p>
+                {/* <p className="pageBtn" onClick={() => {
+                    p.dispatch({type: 'pagePush', val: 'timeLine'})
+                    history.push('/project/' + p.prjSeq + '/timeLine')
+                }}>타임라인</p> */}
+                <p className="pageBtn on" style={{color: p.prjColor, borderColor: p.prjColor}} onClick={() => {
+                    p.dispatch({type: 'pagePush', val: 'projectChart'})
+                    history.push('/project/' + p.prjSeq + '/projectChart')
+                }}>프로젝트개요</p>
+                <p className="pageBtn" onClick={() => {
+                    p.dispatch({type: 'pagePush', val: 'fileList'})
+                    history.push('/project/' + p.prjSeq + '/fileList')
+                }}>파일보관함</p>
             </div>
-            <div className="project-progress-bar">
-                <h3>프로젝트 개요</h3>
-                <h6>프로그래스바</h6>
-            </div>
-            {/*첫번째 차트*/}
-            <div className={'chartLine'}>
-                <div className={'chartLine-child-1'}>
-                    <Chart
-                        width={'100%'}
-                        height={'300px'}
-                        chartType="PieChart"
-                        loader={<div>로딩중...</div>}
-                        data={countMilestone?[
-                            ['Task','Hours per Day'],
-                            ['진행중인 마일스톤', countMilestone[0]],
-                            ['완료된 마일스톤', countMilestone[1]],
-                        ]:[
-                            ['Task','Hours per Day'],
-                            ['업무가 없습니다.', 1],
-                        ]}
-                        options={{
-                            title: '마일스톤 진행도',
-                            // is3D: true,
-                            width: '100%',
-                            // legend: 'none', //범례 컨트롤
-                            chartArea: {
-                                left: 30,
-                                top: 100,
-                                width: '100%',
-                            },
-                            titleTextStyle:{
-                                fontSize: 25,
-                                bold: false
-                            }
-                            //추가 옵션은 여기로!!
-                        }}
-                        rootProps={{ 'data-testid' : '1'}}
-                    />
-                </div>
-                {/*두번째 차트*/}
-                <div className={'chartLine-child-2'}>
-                    <Chart
-                        width={'100%'}
-                        height={'300px'}
-                        chartType="PieChart"
-                        loader={<div>로딩중...</div>}
-                        data={countTaskChart?[
-                            ['Task','Hours per Day'],
-                            ['전체 프로젝트 업무', countTaskChart[0]],
-                            ['나의 업무', countTaskChart[1]],
-                        ]
-                            :[
-                                ['Task','Hours per Day'],
-                                ['업무가 없습니다.', 1],
-                            ]
-                        }
-                        options={{
-                            title: '할당된 업무',
-                            is3D: true,
-                            legend: 'none', //범례 컨트롤
-                            width: '100%',
-                            chartArea: {
-                                left: 30,
-                                top: 100,
-                                width: '100%',
-                            },
-                            titleTextStyle:{
-                                fontSize: 25,
-                                bold: false
-                            }
-
-                            //추가 옵션은 여기로!!
-                        }}
-                        rootProps={{ 'data-testid' : '2'}}
-                    />
-                </div>
-                {/*세번째 차트*/}
-                <div className={'chartLine-child-3'}>
-                    <Chart
-                        width={'100%'}
-                        height={'300px'}
-                        chartType="PieChart"
-                        loader={<div>로딩중...</div>}
-                        data={countTask?[
-                                ['Task','Hours per Day'],
-                                ['진행중인 업무', countTask[0]],
-                                ['완료된 업무', countTask[1]],
-                        ]
-                            :[
-                                ['Task','Hours per Day'],
-                                ['업무가 없습니다.', 1],
-                            ]
-                        }
-                        options={{
-                            title: '현재 업무 진행도',
-                            pieHole: 0.4,
-                            width: '100%',
-                            chartArea: {
-                                left: 30,
-                                top: 100,
-                                width: '100%',
-                            },
-                            titleTextStyle:{
-                                fontSize: 25,
-                                bold: false
-                            }
-                            // legend: 'none', //범례 컨트롤
-
-                            //추가 옵션은 여기로!!
-                        }}
-                        rootProps={{ 'data-testid' : '3'}}
-                    />
+            <ChartHead/>
+            <div>
+                <div className="viewOutWrap">
+                    <div>
+                        <div className="app">
+                            <Chart
+                                width={'100%'}
+                                height={'400px'}
+                                chartType="Gantt"
+                                loader={<div>로딩중...</div>}
+                                data={arr}
+                                options={{
+                                    heigth: 275,
+                                    gantt: {
+                                        palette:[
+                                            {
+                                                "color": "#f48fb1",//리소스text, 죄측text 컬러
+                                                "dark": "#880e4f",//보이는 바 색상
+                                                "light": "#d8cfea" //눌린 후 밝아지는 다른 바 색상
+                                            },
+                                            {
+                                                "color": "#dcd8d0",
+                                                "dark": "#00838f",
+                                                "light": "#b2ebf2"
+                                            },
+                                            {
+                                                "color": "#f2a600",
+                                                "dark": "#ee8100",
+                                                "light": "#fce8b2"
+                                            },
+                                            {
+                                                "color": "#0f9d58",
+                                                "dark": "#0b8043",
+                                                "light": "#b7e1cd"
+                                            },
+                                            {
+                                                "color": "#ab47bc",
+                                                "dark": "#6a1b9a",
+                                                "light": "#e1bee7"
+                                            },
+                                            {
+                                                "color": "#dcd8d0",
+                                                "dark": "#00838f",
+                                                "light": "#b2ebf2"
+                                            },
+                                            {
+                                                "color": "#ff7043",
+                                                "dark": "#e64a19",
+                                                "light": "#ffccbc"
+                                            },
+                                            {
+                                                "color": "#9e9d24",
+                                                "dark": "#827717",
+                                                "light": "#f0f4c3"
+                                            },
+                                            {
+                                                "color": "#fee8f4",
+                                                "dark": "#3949ab",
+                                                "light": "#c5cae9"
+                                            },
+                                            {
+                                                "color": "#c0d6e4",
+                                                "dark": "#e91e63",
+                                                "light": "#f8bbd0"
+                                            },
+                                            {
+                                                "color": "#e4cfea",
+                                                "dark": "#004d40",
+                                                "light": "#b2dfdb"
+                                            },
+                                            {
+                                                "color": "#d8cfea",
+                                                "dark": "#880e4f",
+                                                "light": "#f48fb1"
+                                            },
+                                        ],
+                                    }
+                                    //추가 옵션은 여기로!!
+                                }}
+                                rootProps={{ 'data-testid' : '1'}}
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     );
 }
 
-export default Test6;
+function transReducer(state){
+    return {
+        loading : state.loading,
+        datePickerModal : state.datePickerModal,
+        projectInfo : state.projectInfo,
+        pageInfo : state.pageInfo,
+        myMemberInfo : state.myMemberInfo,
+        memberList : state.memberList,
+    }
+}
+
+export default connect(transReducer)(Test6);
