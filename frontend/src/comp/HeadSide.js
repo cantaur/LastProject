@@ -352,7 +352,7 @@ function HeadSide(p){
               memberList&&
               memberList.map((r, i)=>{
                 let src = r.projmember_data?'data:image;base64,'+r.projmember_data:'/img/defaultProfile.svg'
-                let name = r.projmember_name?r.projmember_name:'#'+r.member_seq
+                let name = r.projmember_name?r.projmember_name:'User#'+r.member_seq
                 let isManager = r.projmember_type==0?true:false;
 
                 return(

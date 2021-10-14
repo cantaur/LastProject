@@ -34,7 +34,7 @@ function ProjectChart(p) {
           let name = '';
           p.memberList.map(member=>{
             if(row.projmember_seq == member.projmember_seq){
-              name = member.projmember_name?member.projmember_name:'#'+member.projmember_seq;
+              name = member.projmember_name?member.projmember_name:'User#'+member.projmember_seq;
             }
           })
           let done = Number(row.done);

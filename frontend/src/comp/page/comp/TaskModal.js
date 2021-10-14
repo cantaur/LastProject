@@ -287,7 +287,7 @@ function TaskModal(p){
           if(r.projmember_name){
             info.name = r.projmember_name
           }else {
-            info.name = '#'+r.member_seq
+            info.name = 'User#'+r.member_seq
           }
         }
       })
@@ -494,7 +494,7 @@ function TaskModal(p){
               </div>
 
               <div className="text">
-                <p className="name">{writerData.projmember_name?writerData.projmember_name:'#'+writerData.projmember_seq}</p>
+                <p className="name">{writerData.projmember_name?writerData.projmember_name:'User#'+writerData.projmember_seq}</p>
                 <p className="email">{writerData.member_email}</p>
               </div>
             </div>
@@ -683,11 +683,11 @@ function TaskModal(p){
                               if(name){
                                 deleteMemberNameCng(name)
                               }else {
-                                deleteMemberNameCng('#'+r.projmember_seq)
+                                deleteMemberNameCng('User#'+r.projmember_seq)
                               }
                               deleteMemberSeqCng(r.projmember_seq)
                             }}>
-                              <p className="toolTip">{name?name:'#'+r.projmember_seq}</p>
+                              <p className="toolTip">{name?name:'User#'+r.projmember_seq}</p>
                               <div>
                                 <img src={
                                   data
@@ -750,7 +750,7 @@ function TaskModal(p){
                                 }/>
                               </div>
                               <div className="info">
-                                <p className="name">{r.projmember_name?r.projmember_name:'#'+r.member_seq}</p>
+                                <p className="name">{r.projmember_name?r.projmember_name:'User#'+r.member_seq}</p>
                                 <p className="email">{r.member_email}</p>
                               </div>
                             </div>
@@ -1011,7 +1011,7 @@ function TaskModal(p){
                                     }/>
                                   </div>
                                   <div className="info">
-                                    <p className="name">{r.projmember_name?r.projmember_name:'#'+r.member_seq}</p>
+                                    <p className="name">{r.projmember_name?r.projmember_name:'User#'+r.member_seq}</p>
                                     <p className="email">{r.member_email}</p>
                                   </div>
                                 </div>
@@ -1026,7 +1026,7 @@ function TaskModal(p){
                             commentMember &&
                             commentMember.map((r,i)=>{
                               let member = p.memberList.find(rr=>rr.projmember_seq == r)
-                              let name = member.projmember_name?member.projmember_name:'#'+member.projmember_seq
+                              let name = member.projmember_name?member.projmember_name:'User#'+member.projmember_seq
                               
                               return(
                                 <p className="commentMemberList toolTipTopBox" onClick={()=>{

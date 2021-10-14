@@ -116,7 +116,7 @@ function Task(p){
     })
     return result;
   }
-  
+
   //task 리스트 불러오기
   const taskListGetFunc = () =>{
       
@@ -179,7 +179,7 @@ function Task(p){
           if(r.projmember_name){
             info.name = r.projmember_name
           }else {
-            info.name = '#'+r.member_seq
+            info.name = 'User#'+r.member_seq
           }
         }
       })
@@ -210,6 +210,10 @@ function Task(p){
       taskListGetFunc();
     }
   },[p.refresh])
+
+  useEffect(()=>{
+
+  },[])
 
   return(
     <div className="pageContentWrap taskWrap">
@@ -621,7 +625,7 @@ function TaskCreateModal(p) {
                         }/>
                       </div>
                       <div className="info">
-                        <p className="name">{r.projmember_name?r.projmember_name:'#'+r.member_seq}</p>
+                        <p className="name">{r.projmember_name?r.projmember_name:'User#'+r.member_seq}</p>
                         <p className="email">{r.member_email}</p>
                       </div>
                     </div>
@@ -658,7 +662,7 @@ function TaskCreateModal(p) {
                           }
                         })
                       }}>
-                        <p className="toolTip">{rr[0].projmember_name?rr[0].projmember_name:'#'+rr[0].projmember_seq}</p>
+                        <p className="toolTip">{rr[0].projmember_name?rr[0].projmember_name:'User#'+rr[0].projmember_seq}</p>
                         <div>
                           <img src={rr[0].projmember_data?'data:image;base64,'+rr[0].projmember_data:pub.img+'defaultProfile.svg'}/>
                         </div>

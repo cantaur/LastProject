@@ -105,7 +105,7 @@ function MileStoneView(p){
           if(r.projmember_name){
             info.name = r.projmember_name
           }else {
-            info.name = '#'+r.member_seq
+            info.name = 'User#'+r.member_seq
           }
         }
       })
