@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class NoticeDTO {
     private long notice_seq;
+    private String notice_title;
     private String notice_type;
     private Date notice_date;
     private String notice_status;
