@@ -148,48 +148,6 @@ function ProjectChart(p) {
                             :<CircularProgress />
                         }
                     </div>
-                    {/*두번째 차트*/}
-                    <div className={'chartArea chartA chartLine-child-2'}>
-                        {
-                            p.memberList
-                            ?
-                                countTaskChart.length > 0
-                                ?
-                                <Chart
-                                    width={'100%'}
-                                    height={'100%'}
-                                    chartType="PieChart"
-                                    loader={<div>로딩중...</div>}
-                                    data={countTaskChart[0] !== 0 && countTaskChart[1] !== 0
-                                        ?
-                                        [
-                                            ['Task', 'Hours per Day'],
-                                            ['전체 프로젝트 업무', countTaskChart[0]],
-                                            ['나의 업무', countTaskChart[1]],
-                                        ]
-                                        : [
-                                            ['Task', 'Hours per Day'],
-                                            ['업무가 없습니다.', 1],
-                                        ]
-                                    }
-                                    options={{
-                                        title: '할당된 업무',
-                                        width: '100%',
-                                        chartArea: {
-                                            width: '100%',
-                                        },
-                                        titleTextStyle: {
-                                          fontSize: 15,
-                                          bold: true
-                                        }
-
-                                    }}
-                                    rootProps={{'data-testid': '1'}}
-                                />
-                                :<CircularProgress />
-                            :<CircularProgress />
-                        }
-                    </div>
                     {/*세번째 차트*/}
                     <div className={'chartArea chartA chartLine-child-3'}>{
                     p.memberList
@@ -232,6 +190,49 @@ function ProjectChart(p) {
                         :<CircularProgress />
                     }
                     </div>
+                    {/*두번째 차트*/}
+                    <div className={'chartArea chartA chartLine-child-2'}>
+                        {
+                            p.memberList
+                            ?
+                                countTaskChart.length > 0
+                                ?
+                                <Chart
+                                    width={'100%'}
+                                    height={'100%'}
+                                    chartType="PieChart"
+                                    loader={<div>로딩중...</div>}
+                                    data={countTaskChart[0] !== 0 && countTaskChart[1] !== 0
+                                        ?
+                                        [
+                                            ['Task', 'Hours per Day'],
+                                            ['전체 프로젝트 업무', countTaskChart[0]],
+                                            ['나의 업무', countTaskChart[1]],
+                                        ]
+                                        : [
+                                            ['Task', 'Hours per Day'],
+                                            ['업무가 없습니다.', 1],
+                                        ]
+                                    }
+                                    options={{
+                                        title: '나에게 할당된 업무',
+                                        width: '100%',
+                                        chartArea: {
+                                            width: '100%',
+                                        },
+                                        titleTextStyle: {
+                                          fontSize: 15,
+                                          bold: true
+                                        }
+
+                                    }}
+                                    rootProps={{'data-testid': '1'}}
+                                />
+                                :<CircularProgress />
+                            :<CircularProgress />
+                        }
+                    </div>
+                    
                     {/*네번째 차트*/}
                     <div className={'chartArea chartB chartLine-child-4'} style={{width:'100%'}}>
                       {
