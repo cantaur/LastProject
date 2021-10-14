@@ -1,11 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState, useRef, useCallback } from "react"
-import {pub, colors, host,axiosHelper} from './Helper.js'
+import {pub, colors, host,axiosHelper, seqColorTrans} from './Helper.js'
 import DatePicker from './DatePicker.js'
 import {FloatingLabel, Form, Button, Dropdown, Alert, Modal, Row} from 'react-bootstrap'
 import { Link, useParams, withRouter, useHistory, useLocation, NavLink } from "react-router-dom";
 import {CSSTransition} from 'react-transition-group';
 import {connect} from 'react-redux';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 
 
@@ -96,6 +98,33 @@ function HeadSide(p){
   //멤버목록 state
   const [memberList, memberListCng] = useState();
 
+
+  //알림목록 state
+  const [noticeList, noticeListCng] = useState([]);
+
+  const noticeListGetFunc = () =>{
+    axios.get(host+'/ajax/'+p.myMemberInfo.projmember_seq)
+    .then(r=>{
+
+    })
+    .catch(e=>{
+      console.log(e)
+    })
+  }
+
+  //알림 모달 상태
+  const [noticeModal, noticeModalCng] = useState(false);
+
+  //알림 모달_바깥클릭시 닫기 이벤트 핸들러
+  let noticeModalClose =useCallback((e)=>{
+    if(!e.target.closest('.noticeModal')){
+      noticeModalCng(false)
+      setTimeout(()=>{
+        window.removeEventListener('click', noticeModalClose)
+      })
+    }
+  },[])
+
   useEffect(()=>{
     outMemberCng('');
     inviteAlertCng(false)
@@ -177,8 +206,16 @@ function HeadSide(p){
           </Modal>
 
           <div className="noticeWrap">
-            <i class="far fa-bell"></i>
-            <div className="bellCnt"></div>
+            <div className="noticeBtn" onClick={()=>{
+              noticeModalCng(true)
+              setTimeout(()=>{
+
+                window.addEventListener('click', noticeModalClose)
+              })
+            }}>
+              <i class="far fa-bell"></i>
+              <div className="bellCnt"></div>
+            </div>
           </div>
         </div>
 
@@ -566,6 +603,59 @@ function HeadSide(p){
             </Modal>
         }
 
+      </div>
+      <div className={"noticeModal "+(noticeModal?'on':'')}>
+        <div className="noticeHead">
+          <p>읽지 않은 알림 <b style={{color:seqColorTrans(p.prjSeq)}}>{noticeList.length?noticeList.length:0}</b></p>
+          <div style={{backgroundColor:seqColorTrans(p.prjSeq)}}>전체 알림 보기</div>
+        </div>
+        {
+          noticeList
+          ?
+            noticeList.length == 0
+            ?
+              <>
+              <div className="noticeList">
+                <i class="fas fa-times-circle deleteBtn"></i>
+                <p className="title">업무에 배정되었습니다.</p>
+                <p className="sub">첫째, 2020-12-12</p>
+              </div>
+              <div className="noticeList">
+                <i class="fas fa-times-circle deleteBtn"></i>
+                <p className="title">업무에 배정되었습니다.</p>
+                <p className="sub">첫째, 2020-12-12</p>
+              </div>
+              <div className="noticeList">
+                <i class="fas fa-times-circle deleteBtn"></i>
+                <p className="title">업무에 배정되었습니다.</p>
+                <p className="sub">첫째, 2020-12-12</p>
+              </div>
+              <div className="noticeList">
+                <i class="fas fa-times-circle deleteBtn"></i>
+                <p className="title">업무에 배정되었습니다.</p>
+                <p className="sub">첫째, 2020-12-12</p>
+              </div>
+              <div className="noticeList">
+                <i class="fas fa-times-circle deleteBtn"></i>
+                <p className="title">업무에 배정되었습니다.</p>
+                <p className="sub">첫째, 2020-12-12</p>
+              </div>
+              <div className="noticeList">
+                <i class="fas fa-times-circle deleteBtn"></i>
+                <p className="title">업무에 배정되었습니다.</p>
+                <p className="sub">첫째, 2020-12-12</p>
+              </div>
+              <div className="noticeList">
+                <i class="fas fa-times-circle deleteBtn"></i>
+                <p className="title">업무에 배정되었습니다.</p>
+                <p className="sub">첫째, 2020-12-12</p>
+              </div>
+              </>
+            :<p className="noNotice">새로운 알림이 없습니다.</p>
+          :<div className="loadingBox"><CircularProgress/></div>
+        }
+        
+      
       </div>
     </>
   )
