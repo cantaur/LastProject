@@ -16,7 +16,6 @@ import java.util.Map;
 @Log
 @RestController
 @AllArgsConstructor
-@ResponseBody
 public class SearchController {
     private SearchService service;
 

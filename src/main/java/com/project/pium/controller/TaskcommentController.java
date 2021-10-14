@@ -21,7 +21,7 @@ public class TaskcommentController {
     private DBFileStorageService fileStorageService;
 
     //코멘트 입력하기 :
-    @PostMapping("/ajax/taskComment")
+    @PostMapping("ajax/taskComment")
     public void insertComment(@RequestBody Map<String,Object> param ) {
         String content = String.valueOf(param.get("comment_content"));
         String members = String.valueOf(param.get("members"));
@@ -39,7 +39,7 @@ public class TaskcommentController {
     }
     
     //해당 업무를 클릭했을때 오른쪽에서 튀어나오는 업무 상세창의 comment 탭을 눌렀을때 나오는 모든 코멘트를 조회
-    @GetMapping("/ajax/taskComment/{taskSeq}")//업무에 따라 분류
+    @GetMapping("ajax/taskComment/{taskSeq}")//업무에 따라 분류
     public ArrayList<Object> selectBySeqS(@PathVariable long taskSeq) {
         ArrayList<Object> commentArray = new ArrayList<>();
         List<TaskcommentDTO> list = taskcommentService.selectBySeqS(taskSeq);
@@ -65,14 +65,14 @@ public class TaskcommentController {
 
 
     // task comment isDel 상태로 변경 _ 마일스톤 참고
-    @PostMapping("/ajax/taskCmtdelete")
+    @PostMapping("ajax/taskCmtdelete")
     public void delete(@RequestBody Map<String, Integer> param) {
         Long seq = Long.valueOf(param.get("comment_seq"));
         taskcommentService.deleteS(seq);
     }
 
     // task comment 수정
-    @PostMapping("/ajax/taskCmtupdate")
+    @PostMapping("ajax/taskCmtupdate")
     public void update(@RequestBody TaskcommentDTO taskcommentDTO) {
         log.info("taskcommentDTO" + taskcommentDTO);
         taskcommentService.updateS(taskcommentDTO);
