@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MilestoneDTO {
-    private long milestone_seq;
+    private Long milestone_seq;
     private String milestone_title;
     private String milestone_content;
     private String milestone_status;

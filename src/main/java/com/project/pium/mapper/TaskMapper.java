@@ -66,6 +66,6 @@ public interface TaskMapper {
     void deleteTaskmem(long task_seq, long projmember_seq);
 
     //최신 task_seq
-    long lasttaskSeq(long milestone_seq);
+    long lasttaskSeq(long projSeq);
 
 }

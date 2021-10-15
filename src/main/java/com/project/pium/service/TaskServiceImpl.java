@@ -26,11 +26,12 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void createTask(TaskDTO taskDTO) {
         taskMapper.createTask(taskDTO);
+
         String no_title = taskDTO.getTask_title(); // no_title
         String no_type = "addtask"; //no_type
         long sender_seq = taskDTO.getProjmember_seq(); //no_sender
-        long task_seq = taskMapper.lasttaskSeq(taskDTO.getMilestone_seq()); //no_task_seq
-        long milestone_seq = taskDTO.getMilestone_seq(); //no_mile_seq
+        Long milestone_seq = taskDTO.getMilestone_seq(); //no_mile_seq
+        long task_seq = taskMapper.lasttaskSeq(taskDTO.getProject_seq()); //no_task_seq
         List<ProjectmemberDTO> projmember_seq = projectmemberMapper.allProMemberSeq(taskDTO.getProject_seq());
         NoticeDTO NoTaskDTO = new NoticeDTO();
 
@@ -39,7 +40,7 @@ public class TaskServiceImpl implements TaskService {
             NoTaskDTO.setNotice_type(no_type);
             NoTaskDTO.setNotice_sender(sender_seq);
             NoTaskDTO.setTask_seq(task_seq);
-            if(milestone_seq != 0) {
+            if(milestone_seq != null) {
                 NoTaskDTO.setMilestone_seq(milestone_seq);
             }
             NoTaskDTO.setProjmember_seq(projmember_seq.get(i).getProjmember_seq());

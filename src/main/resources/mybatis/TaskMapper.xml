@@ -129,7 +129,7 @@
 
     <!-- 최신 task seq -->
     <select id="lasttaskSeq" parameterType="long" resultType="long">
-        SELECT MAX( task_seq ) FROM task where milestone_seq=#{milestone_seq};
+        SELECT MAX( task_seq ) FROM task where project_seq=#{project_seq};
 
     </select>
 
