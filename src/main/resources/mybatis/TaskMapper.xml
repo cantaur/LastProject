@@ -19,12 +19,12 @@
 
     <!--    해당 마일스톤에서 생성된 업무 갯수-->
     <select id="countTask" parameterType="long" resultType="int">
-        SELECT COUNT(task_seq) FROM task WHERE milestone_seq = #{milestone_seq}
+        SELECT COUNT(task_seq) FROM task WHERE milestone_seq = #{milestone_seq}  AND task_isdelete = 0
     </select>
 
     <!--    해당 마일스톤에서 완료된 업무의 갯수-->
     <select id="countClosedTask" parameterType="long" resultType="int">
-        SELECT COUNT(task_status) FROM task WHERE milestone_seq = #{milestone_seq} AND task_status = 1
+        SELECT COUNT(task_status) FROM task WHERE milestone_seq = #{milestone_seq} AND task_status = 1 AND task_isdelete = 0
     </select>
 
     <!-- 해당 마일스톤에서 생성된 전체 업무리스트 -->
