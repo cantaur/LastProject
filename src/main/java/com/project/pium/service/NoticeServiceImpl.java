@@ -23,5 +23,8 @@ public class NoticeServiceImpl implements NoticeService {
     public void mileNoticeS(NoticeDTO noticeDTO){
         noticeMapper.mileNotice(noticeDTO);
     }
+    public void taskNoticeS(NoticeDTO noticeDTO) {
+        noticeMapper.taskNotice(noticeDTO);
+    }
 
 }

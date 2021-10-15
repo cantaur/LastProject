@@ -45,7 +45,7 @@ public class MilestoneServiceImpl implements MilestoneService {
             NoDTO.setMilestone_seq(mileSeq);
             NoDTO.setProjmember_seq(projectmembers.get(i).getProjmember_seq());
             log.info("#NoDTO : "+NoDTO);
-
+            noticeMapper.mileNotice(NoDTO);
         }
 
 

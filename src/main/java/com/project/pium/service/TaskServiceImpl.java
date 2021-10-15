@@ -1,11 +1,7 @@
 package com.project.pium.service;
 
-import com.project.pium.domain.LabelDTO;
-import com.project.pium.domain.TaskDTO;
-import com.project.pium.domain.TaskmemberDTO;
-import com.project.pium.mapper.TaskMapper;
-import com.project.pium.mapper.TaskmemberMapper;
-import com.project.pium.mapper.WorklabelMapper;
+import com.project.pium.domain.*;
+import com.project.pium.mapper.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
@@ -21,6 +17,8 @@ public class TaskServiceImpl implements TaskService {
     private TaskMapper taskMapper;
     private TaskmemberMapper taskmemberMapper;
     private WorklabelMapper worklabelMapper;
+    private NoticeMapper noticeMapper;
+    private ProjectmemberMapper projectmemberMapper;
 
 
 
@@ -28,6 +26,26 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void createTask(TaskDTO taskDTO) {
         taskMapper.createTask(taskDTO);
+        String no_title = taskDTO.getTask_title(); // no_title
+        String no_type = "addtask"; //no_type
+        long sender_seq = taskDTO.getProjmember_seq(); //no_sender
+        long task_seq = taskMapper.lasttaskSeq(taskDTO.getMilestone_seq()); //no_task_seq
+        long milestone_seq = taskDTO.getMilestone_seq(); //no_mile_seq
+        List<ProjectmemberDTO> projmember_seq = projectmemberMapper.allProMemberSeq(taskDTO.getProject_seq());
+        NoticeDTO NoTaskDTO = new NoticeDTO();
+
+        for(int i = 0; i < projmember_seq.size(); i++) {
+            NoTaskDTO.setNotice_title(no_title);
+            NoTaskDTO.setNotice_type(no_type);
+            NoTaskDTO.setNotice_sender(sender_seq);
+            NoTaskDTO.setTask_seq(task_seq);
+            NoTaskDTO.setMilestone_seq(milestone_seq);
+            NoTaskDTO.setProjmember_seq(projmember_seq.get(i).getProjmember_seq());
+            noticeMapper.taskNotice(NoTaskDTO);
+        }
+
+
+
     }
 
     @Override

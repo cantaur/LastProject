@@ -65,6 +65,7 @@ public interface TaskMapper {
     //업무에서 멤버 삭제
     void deleteTaskmem(long task_seq, long projmember_seq);
 
-
+    //최신 task_seq
+    long lasttaskSeq(long milestone_seq);
 
 }
