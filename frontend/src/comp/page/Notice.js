@@ -27,7 +27,7 @@ function Notice(p){
         }}>알림</p>
       </div>
         
-      <p>알림 페이지 입니다.</p>
+      
     </div>
       
     </>  

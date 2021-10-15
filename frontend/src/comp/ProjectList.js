@@ -111,7 +111,6 @@ function ProjectList(p){
     p.dispatch({type:'loadingOn'})
     axios.get(host+'/ajax/myproject')
     .then(r=>{
-      console.log(r.data)
       listCng(r.data);
       p.dispatch({type:'loadingOff'})
 
@@ -120,10 +119,6 @@ function ProjectList(p){
       console.log(e)
       p.dispatch({type:'loadingOff'})
     })
-    if(p.loginUser.email == ''){
-      history.push('/sign')
-    }
-  
     // listCng(listSample)
     
   },[])

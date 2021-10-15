@@ -30,7 +30,8 @@ function Sign(p){
     })
     .then((r)=>{
       p.dispatch({type:"loadingOff"})
-      window.location.href = '/project'
+      p.dispatch()
+      history.push('/project')
     })
     .catch((e)=>{
       p.dispatch({type:"loadingOff"})
