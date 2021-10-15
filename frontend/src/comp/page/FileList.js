@@ -124,9 +124,10 @@ function FileList(p){
                                     fileList.map(r=>{
                                         let writer=memberInfoGetFunc(r.projmember_seq)
                                         let mileTitle = ''
-                                        // let mileTitle = p.mileStoneList.filter(row=>row.milestone_seq==r.milestone_seq)[0].milestone_title
-                                        console.log(p.mileStoneList)
+                                        if(p.mileStoneList.filter(row=>row.milestone_seq==r.milestone_seq).length >0){
+                                          mileTitle = p.mileStoneList.filter(row=>row.milestone_seq==r.milestone_seq)[0].milestone_title
 
+                                        }
                                         return(
                                             <div className="fileRow">
                                                 <p className="fileName">
@@ -135,7 +136,7 @@ function FileList(p){
                                                         <p onClick={()=>{
                                                             window.location.href = host+"/downloadFile/"+r.file_savename
                                                         }}>{r.file_savename}</p>
-                                                        <div>{mileTitle}>{r.task_title}</div>
+                                                        <div>{mileTitle == ''?'':mileTitle + ' > '}{r.task_title}</div>
                                                     </div>
 
                                                 </p>
