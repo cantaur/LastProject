@@ -11,7 +11,9 @@ import lombok.extern.java.Log;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Log
 @AllArgsConstructor
@@ -21,7 +23,6 @@ public class MilestoneServiceImpl implements MilestoneService {
     private MilestoneMapper milestoneMapper;
     private NoticeMapper noticeMapper;
     private ProjectmemberMapper projectmemberMapper;
-    private ProjectmemberDTO projectmemberDTO;
 
     @Override
     public void createMile(MilestoneDTO milestoneDTO) {
@@ -32,15 +33,18 @@ public class MilestoneServiceImpl implements MilestoneService {
         long sender_seq = milestoneDTO.getProjmember_seq(); //notice_sender
         long project_seq = milestoneDTO.getProject_seq();
         long mileSeq = milestoneMapper.lastMileSeq(project_seq);//최신 마일스톤 seq
-        List<ProjectmemberDTO> projmember_seq = projectmemberMapper.allProMemberSeq(project_seq); //projmember_seq
+        List<ProjectmemberDTO> projectmembers = projectmemberMapper.allProMemberSeq(project_seq); //projmember_seq
         NoticeDTO NoDTO = new NoticeDTO();
+        log.info("#projectmembers : "+projectmembers);
 
-        for(int i = 0; i < projmember_seq.size(); i++){
+
+        for(int i = 0; i < projectmembers.size(); i++){
             NoDTO.setNotice_title(no_title);
             NoDTO.setNotice_type(no_type);
             NoDTO.setNotice_sender(sender_seq);
             NoDTO.setMilestone_seq(mileSeq);
-            NoDTO.setProjmember_seq(projmember_seq.get(i));
+            NoDTO.setProjmember_seq(projectmembers.get(i).getProjmember_seq());
+            log.info("#NoDTO : "+NoDTO);
 
         }
 

@@ -96,7 +96,7 @@
     </select>
 
 
-<select id="allProMemberSeq" parameterType="long" resultType="projectmember_DTO">
+<select id="allProMemberSeq" parameterType="long" resultType="projectmemberDTO">
     select projmember_seq
     from project_member
     where project_seq = #{project_seq}

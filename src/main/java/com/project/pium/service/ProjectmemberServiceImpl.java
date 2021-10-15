@@ -99,8 +99,5 @@ public class ProjectmemberServiceImpl implements ProjectmemberService  {
         return projectmemberMapper.findProjMember(projSeq,memSeq);
     }
 
-    @Override
-    public List<ProjectmemberDTO> allProMemberSeqS(long project_seq){
-        return projectmemberMapper.allProMemberSeq(project_seq);
-    }
+
 }
