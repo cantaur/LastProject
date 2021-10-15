@@ -13,5 +13,6 @@ import java.util.List;
 public interface NoticeMapper {
     void mentionedMember(NoticeDTO noticeDTO);
     List<NoticeDTO> selectNotice(@Param("projmember_seq") long projmemberSeq);
+    void mileNotice(NoticeDTO noticeDTO);
 
 }

@@ -28,7 +28,8 @@ public interface MilestoneMapper {
     //isdel
     int delMilestone(long mileSeq);
 
-
+    //최신 마일스톤seq
+    long lastMileSeq(long project_seq);
 
 
 

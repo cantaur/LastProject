@@ -40,6 +40,9 @@ public interface ProjectmemberMapper {
     //memberSeq로 이 유저가 이 프로젝트에 포함되어 있는지를 찾는다
     List<ProjectmemberDTO> findProjMember(@Param("project_seq") long projSeq, @Param("member_seq")long memSeq);
 
+    //플젝seq로 전체 플젝멤버 seq받기
+    List<ProjectmemberDTO> allProMemberSeq(long project_seq);
+
 
 
 }

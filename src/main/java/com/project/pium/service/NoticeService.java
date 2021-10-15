@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface NoticeService {
     List<NoticeDTO> selectNoticeS(long projmemberSeq);
+    void mileNoticeS(NoticeDTO noticeDTO);
 
 }

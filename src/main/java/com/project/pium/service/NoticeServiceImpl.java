@@ -18,4 +18,10 @@ public class NoticeServiceImpl implements NoticeService {
     public List<NoticeDTO> selectNoticeS(long projmemberSeq) {
         return noticeMapper.selectNotice(projmemberSeq);
     }
+
+    @Override
+    public void mileNoticeS(NoticeDTO noticeDTO){
+        noticeMapper.mileNotice(noticeDTO);
+    }
+
 }

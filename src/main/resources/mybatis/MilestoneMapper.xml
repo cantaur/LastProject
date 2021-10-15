@@ -60,6 +60,13 @@
         where milestone_seq = #{milestone_seq}
     </update>
 
+    <!-- 최신 마일스톤 seq-->
+    <select id="lastMileSeq" parameterType="long" resultType="long">
+        SELECT MAX( milestone_seq ) FROM Milestone where project_seq=#{project_seq};
+
+    </select>
+
+
 
 
 

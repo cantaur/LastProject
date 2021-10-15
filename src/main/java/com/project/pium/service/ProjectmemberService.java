@@ -29,6 +29,7 @@ public interface ProjectmemberService {
     //memberSeq로 이 유저가 이 프로젝트에 포함되어 있는지를 찾는다
     List<ProjectmemberDTO> findProjMember(@Param("project_seq") long projSeq, @Param("member_seq")long memSeq);
 
+    List<ProjectmemberDTO> allProMemberSeqS(long project_seq);
 
 
 }
