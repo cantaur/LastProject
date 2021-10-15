@@ -39,7 +39,9 @@ public class TaskServiceImpl implements TaskService {
             NoTaskDTO.setNotice_type(no_type);
             NoTaskDTO.setNotice_sender(sender_seq);
             NoTaskDTO.setTask_seq(task_seq);
-            NoTaskDTO.setMilestone_seq(milestone_seq);
+            if(milestone_seq != 0) {
+                NoTaskDTO.setMilestone_seq(milestone_seq);
+            }
             NoTaskDTO.setProjmember_seq(projmember_seq.get(i).getProjmember_seq());
             noticeMapper.taskNotice(NoTaskDTO);
         }
