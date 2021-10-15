@@ -23,6 +23,7 @@ public class TaskcommentController {
     //코멘트 입력하기 :
     @PostMapping("ajax/taskComment")
     public void insertComment(@RequestBody Map<String,Object> param ) {
+
         String content = String.valueOf(param.get("comment_content"));
         String members = String.valueOf(param.get("members"));
         Long projmemberSeq = Long.valueOf(String.valueOf(param.get("projmember_seq")));

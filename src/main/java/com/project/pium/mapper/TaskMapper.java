@@ -66,6 +66,9 @@ public interface TaskMapper {
     void deleteTaskmem(long task_seq, long projmember_seq);
 
     //최신 task_seq
-    long lasttaskSeq(long milestone_seq);
+    long lasttaskSeq(long projSeq);
+    
+    //task제목 받아오기(comment 입력시 title에 쓸것임)
+    String findTaskTitle(long task_seq);
 
 }
