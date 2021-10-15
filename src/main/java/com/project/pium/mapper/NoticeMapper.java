@@ -15,5 +15,6 @@ public interface NoticeMapper {
     List<NoticeDTO> selectNotice(@Param("projmember_seq") long projmemberSeq);
     void mileNotice(NoticeDTO noticeDTO);
     void taskNotice(NoticeDTO noticeDTO);
+    void deletenotic(long notice_seq);
 
 }

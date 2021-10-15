@@ -27,5 +27,10 @@ public class NoticeController {
     public void checkNotice(@RequestBody Map<String,Integer> param){
 
     }
+    //공지 삭제
+    @GetMapping("ajax/deleteNo/{Notice_seq}")
+    public void delNotice(@PathVariable long Notice_seq){
+        noticeService.deletenoticS(Notice_seq);
+    }
 
 }

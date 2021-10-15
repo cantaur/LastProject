@@ -29,6 +29,10 @@
         values (#{notice_title}, #{notice_type}, now(), #{notice_sender}, #{task_seq}, #{milestone_seq}, #{projmember_seq})
     </insert>
 
+    <delete id="deletenotice" parameterType="long">
+        delete from notice where notice_seq = #{notice_seq}
+    </delete>
+
 
 
 
