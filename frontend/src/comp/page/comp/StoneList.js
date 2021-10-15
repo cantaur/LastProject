@@ -258,16 +258,20 @@ function StoneList(p){
                   <i class="far fa-clock"></i>
                   {p.mileStoneInfo.milestone_startdate} ~ {p.mileStoneInfo.milestone_duedate}
                   <div className="datePickerWrap">
-                    <DatePicker
-                      pickerDateCng={p.mileStoneInfoCng}
-                      pickerDate={p.mileStoneInfo}
-                      pickerStartKey={'milestone_startdate'}
-                      pickerEndKey={'milestone_duedate'}
-                      completeKey={true}
-                      dateModalClose={p.dateModalClose}
-                      dateUpdate={p.mileStoneUpdate}
-                      dateEmpty={p.mileStoneDateNull}
-                    />
+                    {
+                      p.taskModal == false &&
+                      <DatePicker
+                        pickerDateCng={p.mileStoneInfoCng}
+                        pickerDate={p.mileStoneInfo}
+                        pickerStartKey={'milestone_startdate'}
+                        pickerEndKey={'milestone_duedate'}
+                        completeKey={true}
+                        dateModalClose={p.dateModalClose}
+                        dateUpdate={p.mileStoneUpdate}
+                        dateEmpty={p.mileStoneDateNull}
+                      />
+                    }
+                    
                   </div>
                 </div>
               : <div className="date on" onClick={()=>{
@@ -279,16 +283,19 @@ function StoneList(p){
                   <i class="far fa-clock"></i>
                   마일스톤 일정 추가하기
                   <div className="datePickerWrap">
-                    <DatePicker
-                      pickerDateCng={p.mileStoneInfoCng}
-                      pickerDate={p.mileStoneInfo}
-                      pickerStartKey={'milestone_startdate'}
-                      pickerEndKey={'milestone_duedate'}
-                      completeKey={true}
-                      dateModalClose={p.dateModalClose}
-                      dateUpdate={p.mileStoneUpdate}
-                      dateEmpty={p.mileStoneDateNull}
-                    />
+                    {
+                      p.taskModal == false &&
+                      <DatePicker
+                        pickerDateCng={p.mileStoneInfoCng}
+                        pickerDate={p.mileStoneInfo}
+                        pickerStartKey={'milestone_startdate'}
+                        pickerEndKey={'milestone_duedate'}
+                        completeKey={true}
+                        dateModalClose={p.dateModalClose}
+                        dateUpdate={p.mileStoneUpdate}
+                        dateEmpty={p.mileStoneDateNull}
+                      />
+                    }
                   </div>
                 </div>
             :
@@ -330,6 +337,7 @@ function transReducer(state){
   return {
     datePickerModal : state.datePickerModal,
     isMaster:state.isMaster,
+    taskModal : state.taskModal
   }
 }
 

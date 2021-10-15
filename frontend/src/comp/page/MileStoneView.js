@@ -191,6 +191,21 @@ function MileStoneView(p){
     taskFilterCng('전체')
   },[])
 
+  useEffect(()=>{
+    // 마일스톤 하위 업무 리스트
+    axios.get(host+'/ajax/milestone/'+mileStoneSeq+'/tasks')
+    .then(r=>{
+      taskListCng(r.data)
+      p.dispatch({type:'loadingOff'})
+    })
+    .catch(e=>{
+      console.log(e)
+      p.dispatch({type:'loadingOff'})
+    })
+    taskFilterCng('전체')
+
+  },[p.refresh])
+
   return(
     <div className="pageContentWrap mileStoneWrap">
 
@@ -388,7 +403,8 @@ function MileStoneView(p){
 function transReducer(state){
   return {
     datePickerModal : state.datePickerModal,
-    memberList:state.memberList
+    memberList:state.memberList,
+    refresh:state.refresh
   }
 }
 

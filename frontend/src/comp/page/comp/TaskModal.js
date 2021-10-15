@@ -15,7 +15,7 @@ function TaskModal(p){
 
   const taskColor = seqColorTrans(p.taskModalData.task_seq)
 
-  //테스트 정보 새로고침
+  //테스크 정보 새로고침
   const taskRefresh = () =>{
     axios.get(host+'/ajax/taskView/'+p.taskModalData.task_seq)
     .then(r=>{
@@ -600,6 +600,7 @@ function TaskModal(p){
                   })
                   .then(r=>{
                     p.dispatch({type:'loadingOff'})
+                    taskRefresh();
                   })
                   .catch(e=>{
                     console.log(e)
@@ -783,6 +784,7 @@ function TaskModal(p){
                         }}
                         onKeyPress={e=>{
                           if(e.key == "Enter"){
+                            p.dispatch({type:'loadingOn'})
                             axios.post(host+'/ajax/addLabel',{
                               taskSeq:p.taskModalData.task_seq,
                               label:labelData,
@@ -793,6 +795,7 @@ function TaskModal(p){
                             })
                             .catch(e=>{
                               console.log(e)
+                              p.dispatch({type:'loadingOff'})
                             })
                           }
                         }}
@@ -804,6 +807,7 @@ function TaskModal(p){
                         }}
                         />
                         <p className="submitBtn labelEditBtn" onClick={()=>{
+                          p.dispatch({type:'loadingOn'})
                           axios.post(host+'/ajax/addLabel',{
                             taskSeq:p.taskModalData.task_seq,
                             label:labelData,
@@ -814,6 +818,7 @@ function TaskModal(p){
                           })
                           .catch(e=>{
                             console.log(e)
+                            p.dispatch({type:'loadingOff'})
                           })
 
                         }}>수정완료</p>
@@ -851,6 +856,7 @@ function TaskModal(p){
                   })
                   .then(r=>{
                     p.dispatch({type:'loadingOff'})
+                    taskRefresh()
                   })
                   .catch(e=>{
                     console.log(e)
