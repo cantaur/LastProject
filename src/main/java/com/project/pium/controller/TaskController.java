@@ -21,7 +21,7 @@ public class TaskController {
     private TaskmemberService taskmemberService;
 
     //업무페이지>새 업무 생성
-    @PostMapping("/ajax/createTask")
+    @PostMapping("ajax/createTask")
     public void createTask(@RequestBody Map<String,Object> param) throws ParseException {
         log.info("#param: "+param);
         //1. TaskDTO 객체 생성
@@ -69,7 +69,7 @@ public class TaskController {
 
     //업무페이지>업무리스트
     //해당 프로젝트에서 생성된 모든 업무 리스트
-    @GetMapping("/ajax/{projSeq}/tasklist")
+    @GetMapping("ajax/{projSeq}/tasklist")
     public ArrayList<Object> taskList(@PathVariable long projSeq){
         ArrayList<Object> taskAllInfo = new ArrayList<>();
         List<TaskDTO> tasks= taskService.taskList(projSeq);
@@ -89,14 +89,14 @@ public class TaskController {
     }
 
     //해당 마일스톤에서 생성된 전체 업무리스트 (Test7.js에서 사용)
-    @GetMapping("/ajax/task/{mileSeq}")
+    @GetMapping("ajax/task/{mileSeq}")
     public List<TaskDTO> taskListByMile(@PathVariable long mileSeq){
         return taskService.taskListByMile(mileSeq);
     }
 
 
     //업무를 클릭하였을때 나오는 업무 상세보기(업무 모달)
-    @GetMapping("/ajax/taskView/{taskSeq}")
+    @GetMapping("ajax/taskView/{taskSeq}")
     public ArrayList<Object> showTaskByTaskseq(@PathVariable long taskSeq){
         //빈 배열 선언 및 초기화
         ArrayList<Object> taskInfo = new ArrayList<>();
@@ -120,7 +120,7 @@ public class TaskController {
 
 
     //업무 모달>title update
-    @PostMapping("/ajax/updateTaskTitle")
+    @PostMapping("ajax/updateTaskTitle")
     public void updateTitle(@RequestBody Map<String,Object> param){
         Long taskSeq = Long.valueOf(String.valueOf(param.get("taskSeq"))); //task_seq
         String taskTitle = String.valueOf(param.get("taskTitle"));
@@ -129,7 +129,7 @@ public class TaskController {
     }
 
     //업무 모달>content update
-    @PostMapping("/ajax/updateTaskCont")
+    @PostMapping("ajax/updateTaskCont")
     public void updateContent(@RequestBody Map<String,Object> param){
         Long taskSeq = Long.valueOf(String.valueOf(param.get("taskSeq"))); //task_seq
         String taskContent = String.valueOf(param.get("taskContent"));
@@ -138,7 +138,7 @@ public class TaskController {
     }
 
     //업무 모달>마일스톤 변경하기
-    @PostMapping("/ajax/changeMile")
+    @PostMapping("ajax/changeMile")
     public void updateMilestone(@RequestBody Map<String,Integer> param){
         Long taskSeq= Long.valueOf(param.get("taskSeq")); //task_seq
         Long mileSeq= Long.valueOf(param.get("mileSeq")); //mileSeq
@@ -148,7 +148,7 @@ public class TaskController {
 
 
     //업무 모달>task 날짜 비우기(get으로 task_seq 주면 date에 null 셋팅)
-    @GetMapping("/ajax/setDateEmpty/{taskSeq}")
+    @GetMapping("ajax/setDateEmpty/{taskSeq}")
     public void setDateEmpty(@PathVariable long taskSeq){
         taskService.setTaskDateEmpty(taskSeq);
     }
@@ -156,14 +156,14 @@ public class TaskController {
 
 
     //업무 모달>날짜 업데이트
-    @PostMapping("/ajax/updateTaskDate")
+    @PostMapping("ajax/updateTaskDate")
     public void updateDate(@RequestBody TaskDTO taskdto){
         log.info("taskdto : "+taskdto);
         taskService.updateDate(taskdto);
     }
 
     //업무 모달>업무에 멤버 배정
-    @PostMapping("/ajax/addMember")
+    @PostMapping("ajax/addMember")
     public void addTaskmember(@RequestBody Map<String,Object> param){
         Long taskSeq = Long.valueOf(String.valueOf(param.get("taskSeq"))); //task_seq
         Long projmemberSeq = Long.valueOf(String.valueOf(param.get("projmemberSeq")));
@@ -172,7 +172,7 @@ public class TaskController {
     }
 
     //업무 모달>업무에서 멤버 빼기
-    @PostMapping("/ajax/deleteProjMember")
+    @PostMapping("ajax/deleteProjMember")
     public void projectout(@RequestBody Map<String, Integer> param){
         Long task_seq = Long.valueOf(param.get("taskSeq"));
         Long projmember_seq = Long.valueOf(param.get("projmemberSeq"));
@@ -184,7 +184,7 @@ public class TaskController {
 
 
     //업무 모달>업무에 라벨 넣기
-    @PostMapping("/ajax/addLabel")
+    @PostMapping("ajax/addLabel")
     public void addLabel(@RequestBody Map<String,Object> param){
 
         Long taskSeq = Long.valueOf(String.valueOf(param.get("taskSeq"))); //task_seq
@@ -202,7 +202,7 @@ public class TaskController {
     }
 
     //업무 모달>업무에 중요도 셋팅하기
-    @PostMapping("/ajax/updatePriority")
+    @PostMapping("ajax/updatePriority")
     public void updatePriority(@RequestBody Map<String,Integer> param){
         Long taskSeq= Long.valueOf(param.get("taskSeq")); //task_seq
         String priorityCode = String.valueOf(param.get("priorityCode")); //중요도코드(문자열임)
@@ -213,21 +213,21 @@ public class TaskController {
 
 
     //업무 모달>업무 상태 마감으로 변경
-    @PostMapping("/ajax/closeTask")
+    @PostMapping("ajax/closeTask")
     public void updateStatusFinish(@RequestBody Map<String,Integer> param){
         Long taskSeq= Long.valueOf(param.get("taskSeq"));
         taskService.updateStatusFinish(taskSeq);
     }
 
     //업무 모달>업무 다시 활성화 시키기
-    @PostMapping("/ajax/openTask")
+    @PostMapping("ajax/openTask")
     public void updateStatusDefault(@RequestBody Map<String,Integer> param){
         Long taskSeq= Long.valueOf(param.get("taskSeq"));
         taskService.updateStatusDefault(taskSeq);
     }
 
     //업무 모달>업무 삭제상태로 변경
-    @PostMapping("/ajax/deleteTask")
+    @PostMapping("ajax/deleteTask")
     public void updateIsdelete(@RequestBody Map<String,Integer> param){
         Long taskSeq= Long.valueOf(param.get("taskSeq"));
         taskService.updateIsdelete(taskSeq);
