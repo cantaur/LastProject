@@ -80,7 +80,7 @@ function ProjectView(p){
       .catch(e=>{
         console.log(e)
       })
-    }else if(window.location.href.indexOf(':8000') != -1){
+    }else{
       axios.get(host+'/ajax/myproject') //프론트용 샘플
       .then(r=>{
         p.dispatch({type:'projectListCng', val:r.data})

@@ -136,7 +136,7 @@ function Sign(p){
     .then(r=>{
       naverUrlCng(r.data)
     })
-    if(p.loginUser){
+    if(p.loginUser.email != ''){
       history.push('/project')
     }
   },[])

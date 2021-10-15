@@ -120,7 +120,7 @@ function ProjectList(p){
       console.log(e)
       p.dispatch({type:'loadingOff'})
     })
-    if(!p.loginUser){
+    if(p.loginUser.email == ''){
       history.push('/sign')
     }
   
