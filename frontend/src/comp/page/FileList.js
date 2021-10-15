@@ -123,7 +123,9 @@ function FileList(p){
                                 ?
                                     fileList.map(r=>{
                                         let writer=memberInfoGetFunc(r.projmember_seq)
-                                        let mileTitle = p.mileStoneList.filter(row=>row.milestone_seq==r.milestone_seq)[0].milestone_title
+                                        let mileTitle = ''
+                                        // let mileTitle = p.mileStoneList.filter(row=>row.milestone_seq==r.milestone_seq)[0].milestone_title
+                                        console.log(p.mileStoneList)
 
                                         return(
                                             <div className="fileRow">

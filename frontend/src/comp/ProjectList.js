@@ -120,6 +120,29 @@ function ProjectList(p){
       p.dispatch({type:'loadingOff'})
     })
     // listCng(listSample)
+
+    axios.get(host+'/ajax/loginUser')
+    .then(r=>{
+      if(r.data == 'false'){
+        console.log('---로그인한 유저없음---')
+        p.dispatch({type:'logout'})
+        history.push('/sign/login')
+      }else {
+        if(r.data.email){
+          p.dispatch({type:'login', email:r.data.email, seq:r.data.seq})
+          console.log('---로그인한 유저---')
+          console.log(p.loginUser)
+        }else {
+          console.log('---로그인한 유저없음---')
+          p.dispatch({type:'logout'})
+          history.push('/sign/login')
+        }
+      }
+    })
+    .catch(e=>{
+      console.log(e)
+      p.dispatch({type:'logout'})
+    })
     
   },[])
 

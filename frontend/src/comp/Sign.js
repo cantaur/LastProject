@@ -18,7 +18,7 @@ function Sign(p){
 
 
   const onFailure = async(r) => {
-    // history.push('/err')
+    //
   }
 
   const onSuccessGoogle = async(r) => {
@@ -30,12 +30,11 @@ function Sign(p){
     })
     .then((r)=>{
       p.dispatch({type:"loadingOff"})
-      p.dispatch()
       history.push('/project')
     })
-    .catch((e)=>{
+    .catch(e=>{
       p.dispatch({type:"loadingOff"})
-      history.push('/err')
+      console.log(e)
     })
   }
 
@@ -106,13 +105,11 @@ function Sign(p){
         signUpDataCng(signData);
       } else if(r.data == 'success') {
         history.push('/emailSend/'+signUpData['email'])
-      } else {
-        history.push('/err')
       }
     })
     .catch((e)=>{
       p.dispatch({type:"loadingOff"})
-      history.push('/err')
+      
       console.log(e)
     })
   }
@@ -137,9 +134,33 @@ function Sign(p){
     .then(r=>{
       naverUrlCng(r.data)
     })
-    if(p.loginUser.email != ''){
-      history.push('/project')
-    }
+    // if(p.loginUser.email != ''){
+    //   history.push('/project')
+    // }
+
+
+    axios.get(host+'/ajax/loginUser')
+    .then(r=>{
+      if(r.data == 'false'){
+        console.log('---로그인한 유저없음---')
+        p.dispatch({type:'logout'})
+        
+      }else {
+        if(r.data.email){
+          p.dispatch({type:'login', email:r.data.email, seq:r.data.seq})
+          console.log('---로그인한 유저---')
+          console.log(p.loginUser)
+          history.push('/project')
+        }else {
+          console.log('---로그인한 유저없음---')
+          p.dispatch({type:'logout'})
+        }
+      }
+    })
+    .catch(e=>{
+      console.log(e)
+      p.dispatch({type:'logout'})
+    })
   },[])
   
   
