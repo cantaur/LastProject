@@ -124,7 +124,6 @@ function MileStoneView(p){
     .then(r=>{
       axios.get(host+'/ajax/milestone/'+mileStoneSeq)
       .then(r=>{
-
         mileStoneInfoCng(r.data)
 
         p.dispatch({type:'loadingOff'})

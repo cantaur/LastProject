@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react"
 import DatePicker from '../../DatePicker.js'
 
 import {pub, host, colors, pages, seqColorTrans} from '../../Helper.js'
-import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstrap'
+import {FloatingLabel, Form, Button, Dropdown, Alert, Modal, InputGroup} from 'react-bootstrap'
 import { Link, useParams, withRouter, useHistory } from "react-router-dom";
 import {connect} from 'react-redux';
 
@@ -154,8 +154,10 @@ function StoneList(p){
                   }}
                   onKeyPress={e=>{
                     if(e.key === "Enter"){
-                      p.mileStoneUpdate(infoDummy)
-                      titleModifyCng(false)
+                      if(infoDummy.milestone_title){
+                        p.mileStoneUpdate(infoDummy)
+                        titleModifyCng(false)
+                      }
                     }
                   }
                   }/>
@@ -169,8 +171,10 @@ function StoneList(p){
                 ?
                 <>
                   <i class="fas fa-check updateBtn" onClick={()=>{
-                    p.mileStoneUpdate(infoDummy)
-                    titleModifyCng(false)
+                    if(infoDummy.milestone_title){
+                      p.mileStoneUpdate(infoDummy)
+                      titleModifyCng(false)
+                    }
                   }}></i>
                   <i class="fas fa-times updateBtn" onClick={()=>{
                     infoDummyCng({

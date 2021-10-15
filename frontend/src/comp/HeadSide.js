@@ -108,12 +108,16 @@ function HeadSide(p){
   const noticeListGetFunc = () =>{
     axios.get(host+'/ajax/notice/'+p.myMemberInfo.projmember_seq)
     .then(r=>{
+      let unReadList = r.data.filter(rr=>rr.notice_status == '0');
+
       noticeListCng([]);
-      if(r.data.length == 0){
-        unReadNoticeCng(false)
-      }else {
+      if(unReadList.length > 0){
         unReadNoticeCng(true)
-        noticeListCng(r.data);
+        noticeListCng(unReadList);
+      }else {
+        unReadNoticeCng(false)
+        noticeListCng([]);
+
       }
     })
     .catch(e=>{
@@ -137,7 +141,26 @@ function HeadSide(p){
 
   //알림 문구 arr
   const noticeMsg ={
-    'mention':'코멘트에 멘션되었습니다.'
+    '업무배정':{
+      'msg':'업무에 배정되었습니다.',
+      'type':'task',
+      'seq':'task_seq',
+    },
+    'mention':{
+      'msg':'님이 코멘트에 멘션을 하였습니다.',
+      'type':'task',
+      'seq':'task_seq'
+    },
+    'addtask':{
+      'msg':'님이 새로운 업무를 등록하였습니다.',
+      'type':'task',
+      'seq':'task_seq'
+    },
+    'addmile':{
+      'msg':'님이 새로운 마일스톤을 등록하였습니다.',
+      'type':'mileStoneView',
+      'seq':'milestone_seq'
+    }
   }
   //멤버정보 가져오기
   const memberInfoGetFunc = (seq) =>{
@@ -181,7 +204,6 @@ function HeadSide(p){
       noticeListGetFunc();
     }
   }, [p.myMemberInfo]);
-
 
 
   return(
@@ -671,31 +693,49 @@ function HeadSide(p){
             noticeList.length > 0
             ?
               noticeList.map(r=>{
-                let type = '';
-                let seq = '';
-                if(r.task_seq){
-                  type = 'task';
-                  seq =r.task_seq
-                }else if(r.milestone_seq){
-                  type = 'mileStoneView';
-                  seq =r.milestone_seq
-                }
-
                 return(
                   <div className="noticeList">
-                    <i class="fas fa-times-circle deleteBtn"></i>
+                    <i class="fas fa-times-circle deleteBtn" onClick={()=>{
+                      p.dispatch({type:'loadingOn'})
+                      axios.post(host+'/ajax/noticeChk',{
+                        notice_seq:r.notice_seq
+                      })
+                      .then(r=>{
+                        noticeListGetFunc();
+                        p.dispatch({type:'loadingOff'})
+                      })
+                      .catch(e=>{
+                        console.log(e)
+                        p.dispatch({type:'loadingOff'})
+                      })
+                    }}></i>
+                    <div className="linkBtn">
+                      <b style={{backgroundColor:seqColorTrans(r[noticeMsg[r.notice_type].seq])}}>{noticeMsg[r.notice_type].type=='task'?'업무':'마일스톤'}</b>
+                      <p>{r.notice_title}</p>
+                    </div>
                     <p className="title" onClick={()=>{
-                      noticeModalCng(false)
-                      p.dispatch({type:'pagePush', val:type})
-                      history.push('/project/'+p.prjSeq+'/'+type+'/'+seq)
-                      if(r.notice_type=='mention'){
-                        p.dispatch({type:'tabReduxCng',val:true});
-                      }else {
-                        p.dispatch({type:'tabReduxCng',val:false});
-                      }
+                      p.dispatch({type:'loadingOn'})
+                      axios.post(host+'/ajax/noticeChk',{
+                        notice_seq:r.notice_seq
+                      })
+                      .then(rr=>{
+                        noticeModalCng(false)
+                        p.dispatch({type:'pagePush', val:noticeMsg[r.notice_type].type})
+                        history.push('/project/'+p.prjSeq+'/'+noticeMsg[r.notice_type].type+'/'+r[noticeMsg[r.notice_type].seq])
+                        if(r.notice_type=='mention'){
+                          p.dispatch({type:'tabReduxCng',val:true});
+                        }else {
+                          p.dispatch({type:'tabReduxCng',val:false});
+                        }
+                      })
+                      .catch(e=>{
+                        console.log(e);
+                        p.dispatch({type:'loadingOff'})
+                      })
                       
-                    }}>{noticeMsg[r.notice_type]}</p>
-                    <p className="sub">{memberInfoGetFunc(r.notice_sender).name}, {r.notice_date}</p>
+                      
+                    }}>{r.notice_type=='업무배정'?'':' '+memberInfoGetFunc(r.notice_sender).name}{noticeMsg[r.notice_type].msg}</p>
+                    <div className="sub">{r.notice_date}</div>
                   </div>
                 )
               })
