@@ -15,21 +15,11 @@ function TimeLine(p){
     const [milestones, setMilestones] = useState([]);
 
     const history = useHistory();
+
+
     useEffect(()=>{
-        axios
-            .all([
-                axios.get(host+'/ajax/'+p.prjSeq+'/milestonelist')//마일스톤 전부조회.
-            ])
-            .then(
-                axios.spread((r1)=>{
-                    setMilestones(r1.data);
-                    // console.log("#milestones:"+JSON.stringify(r1.data));
-                })
-            )
-            .catch(e=>{
-                console.log(e)
-            });
-    },[]);
+      setMilestones(p.mileStoneList)
+    },[p.mileStoneList]);
 
     var arr=[[
         { type: 'string', label: 'Task ID' },
@@ -186,6 +176,7 @@ function transReducer(state){
         pageInfo : state.pageInfo,
         myMemberInfo : state.myMemberInfo,
         memberList : state.memberList,
+        mileStoneList:state.mileStoneList,
     }
 }
 
