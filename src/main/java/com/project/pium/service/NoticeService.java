@@ -9,5 +9,6 @@ public interface NoticeService {
     void mileNoticeS(NoticeDTO noticeDTO);
     void taskNoticeS(NoticeDTO noticeDTO);
     void deletenoticS(long notice_seq);
+    void updateStatusS(long notice_seq);
 
 }

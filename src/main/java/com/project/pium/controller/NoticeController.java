@@ -25,7 +25,8 @@ public class NoticeController {
     //업무 모달>업무 삭제상태로 변경
     @PostMapping("ajax/noticeChk")
     public void checkNotice(@RequestBody Map<String,Integer> param){
-
+    Long notice_seq = Long.valueOf(param.get("notice_seq"));
+    noticeService.updateStatusS(notice_seq);
     }
     //공지 삭제
     @GetMapping("ajax/deleteNo/{Notice_seq}")

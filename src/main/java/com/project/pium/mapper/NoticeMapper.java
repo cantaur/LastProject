@@ -16,5 +16,6 @@ public interface NoticeMapper {
     void mileNotice(NoticeDTO noticeDTO);
     void taskNotice(NoticeDTO noticeDTO);
     void deletenotic(long notice_seq);
+    void updateStatus(long notice_seq);
 
 }

@@ -29,5 +29,8 @@ public class NoticeServiceImpl implements NoticeService {
     public void deletenoticS(long notice_seq){
         noticeMapper.deletenotic(notice_seq);
     }
+    public void updateStatusS(long notice_seq){
+        noticeMapper.updateStatus(notice_seq);
+    }
 
 }

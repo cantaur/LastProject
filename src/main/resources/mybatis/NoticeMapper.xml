@@ -29,11 +29,15 @@
         values (#{notice_title}, #{notice_type}, now(), #{notice_sender}, #{task_seq}, #{milestone_seq}, #{projmember_seq})
     </insert>
 
+    <!-- 공지 삭제 -->
     <delete id="deletenotice" parameterType="long">
         delete from notice where notice_seq = #{notice_seq}
     </delete>
 
-
+    <!-- 공지 읽음상태로 전환 -->
+    <update id="updateStatus" parameterType="long">
+        UPDATE notice SET notice_status ='1' WHERE notice_seq=#{notice_seq}
+    </update>
 
 
 </mapper>
