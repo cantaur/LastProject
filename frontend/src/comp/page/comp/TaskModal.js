@@ -318,7 +318,10 @@ function TaskModal(p){
     }else {
       tabStateCng(0)
     }
-    commentListGetFunc();
+    if(p.taskModalData){
+      commentListGetFunc();
+
+    }
   },[p.taskModalData])
 
   useEffect(()=>{

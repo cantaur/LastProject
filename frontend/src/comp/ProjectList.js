@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState, useCallback ,useRef} from "react"
 import {pub, colors,host,seqColorTrans} from './Helper.js'
 import DatePicker from './DatePicker.js'
-import {FloatingLabel, Form, Button, Dropdown, Alert, Modal} from 'react-bootstrap'
+import {FloatingLabel, Form, Button, Dropdown, Alert, Modal, InputGroup} from 'react-bootstrap'
 import { Link, useParams, withRouter, useHistory } from "react-router-dom";
 import {CSSTransition} from 'react-transition-group';
 import {connect} from 'react-redux';
@@ -120,6 +120,9 @@ function ProjectList(p){
       console.log(e)
       p.dispatch({type:'loadingOff'})
     })
+    if(!p.loginUser){
+      history.push('/sign')
+    }
   
     // listCng(listSample)
     
