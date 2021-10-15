@@ -133,6 +133,10 @@
 
     </select>
 
+<!--    task_seq로 제목 뽑기-->
+    <select id="findTaskTitle" parameterType="long" resultType="string">
+        select task_title from task where task_seq = #{task_seq}
+    </select>
 
 
 
