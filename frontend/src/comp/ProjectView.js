@@ -120,11 +120,15 @@ function ProjectView(p){
 
     //현재 프로젝트 정보 갱신
     if(p.projectList){
-      p.projectList.map((r,i)=>{
-        if(prjSeq == r.project_seq){
-          p.dispatch({type:'projectInfoCng', val:r})
-        }
-      })
+      let thisProject = p.projectList.find(r=>r.project_seq == prjSeq)
+      if(thisProject == undefined){
+        history.push('/err')
+
+      }else {
+        p.dispatch({type:'projectInfoCng', val:thisProject})
+
+      }
+
     }
 
   },[p.projectList])

@@ -721,7 +721,12 @@ function HeadSide(p){
                       .then(rr=>{
                         noticeModalCng(false)
                         p.dispatch({type:'pagePush', val:noticeMsg[r.notice_type].type})
-                        history.push('/project/'+p.prjSeq+'/'+noticeMsg[r.notice_type].type+'/'+r[noticeMsg[r.notice_type].seq])
+                        if(noticeMsg[r.notice_type].type=='task'){
+                          history.push('/project/'+p.prjSeq+'/'+noticeMsg[r.notice_type].type+'/'+r[noticeMsg[r.notice_type].seq])
+
+                        }else {
+                          window.location.href = '/project/'+p.prjSeq+'/'+noticeMsg[r.notice_type].type+'/'+r[noticeMsg[r.notice_type].seq]
+                        }
                         if(r.notice_type=='mention'){
                           p.dispatch({type:'tabReduxCng',val:true});
                         }else {

@@ -70,7 +70,7 @@ function App(p) {
         <ProjectView/>
       </Route>
         
-
+{/* 
       <Route path='/test' exact>
         <Test/>
       </Route>
@@ -92,7 +92,7 @@ function App(p) {
       </Route>
       <Route path='/test7' exact>
          <Test7/>
-      </Route>
+      </Route> */}
 
       <Route path='/err' exact>
         <ErrPage/>

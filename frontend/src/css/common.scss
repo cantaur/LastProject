@@ -3126,6 +3126,7 @@ body{
     margin-top: 20px;
     margin-bottom: 10px;
     font-weight: bold;
+
   }
   .fileListViewWrap{
     padding:20px;
@@ -3135,7 +3136,8 @@ body{
       background-color: #fff;
       border:1px solid #ececec;
       padding:10px;
-      font-size: .9rem;
+      color:#888;
+      font-size: 1rem;
     }
     .fileHeader{
       padding: 0px 10px;
@@ -3153,10 +3155,19 @@ body{
     .w400{
       width: 550px;
     }
+    .w780{
+      width: 780px;
+    }
     .w200{
       width: 150px;
     }
     .fileList{
+      &.readList{
+        color:#666;
+        .fileRow{
+          background-color: #fafafa;
+        }
+      }
       .fileRow{
         display: flex;
         justify-content: space-between;
@@ -3173,13 +3184,37 @@ body{
 
           display: flex;
           align-items: center;
-
+          &.noticeName{
+            width: 780px;
+          }
           svg{
             width: 30px !important;
             margin-right: 10px;
             flex-shrink: 0;
           }
           .fileInfo{
+            .tag{
+              display: flex;
+              align-items: center;
+              b{
+                margin-right: 5px;
+                border-radius: 4px;
+                padding:1px 4px;
+                color:#fff;
+                display: inline-block;
+                font-size: .7rem;
+              }
+              p{
+                text-overflow: ellipsis;
+                overflow: hidden;
+                font-size: .8rem;
+                white-space: nowrap;
+                cursor: default;
+                &:hover{
+                  text-decoration: none;
+                }
+              }
+            }
             p{
               width: 520px;
               text-overflow: ellipsis;
@@ -3193,7 +3228,7 @@ body{
             }
             span{
               display: block;
-              width: 320px;
+              width: 100%;
               text-overflow: ellipsis;
               overflow: hidden;
               white-space: nowrap;
@@ -3214,7 +3249,26 @@ body{
           text-align: center;
           width: 150px;
           font-size: .9rem;
+          &.profileImg{
+            width: 30px;
+          }
+          &.none{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            b{
+              background-color: #ccc;
+              color:#555;
+              padding:1px 4px;
+              padding-bottom:2px;
+              border-radius: 4px;
+              font-size: .7rem;
+              font-weight: normal;
+            }
+            
+          }
           &.linked{
+            
             cursor: pointer;
             overflow: hidden;
             text-overflow: ellipsis;
