@@ -81,6 +81,29 @@ function ProjectView(p){
         console.log(e)
       })
     }else{
+      axios.get(host+'/ajax/loginUser')
+      .then(r=>{
+        if(r.data == 'false'){
+          console.log('---로그인한 유저없음---')
+          p.dispatch({type:'logout'})
+          history.push('/sign/login')
+        }else {
+          if(r.data.email){
+            p.dispatch({type:'login', email:r.data.email, seq:r.data.seq})
+            console.log('---로그인한 유저---')
+            console.log(p.loginUser)
+          }else {
+            console.log('---로그인한 유저없음---')
+            p.dispatch({type:'logout'})
+            history.push('/sign/login')
+          }
+        }
+      })
+      .catch(e=>{
+        console.log(e)
+        p.dispatch({type:'logout'})
+      })
+      
       axios.get(host+'/ajax/myproject') //프론트용 샘플
       .then(r=>{
         p.dispatch({type:'projectListCng', val:r.data})
@@ -89,6 +112,7 @@ function ProjectView(p){
         console.log(e)
       })
     }
+
 
 
     //멤버정보 가져옴
@@ -130,6 +154,7 @@ function ProjectView(p){
       }
 
     }
+    // console.log('p.projectList')
 
   },[p.projectList])
 
@@ -147,6 +172,8 @@ function ProjectView(p){
         }
       })
     }
+    // console.log('p.memberList')
+
 
   },[p.memberList])
 
@@ -170,6 +197,8 @@ function ProjectView(p){
           profileSetModalCng(true)
       }
     }
+    // console.log('p.myMemberInfo')
+
   },[p.myMemberInfo])
 
   //내 멤버정보 새로고침 용

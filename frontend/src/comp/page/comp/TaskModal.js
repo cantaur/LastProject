@@ -467,6 +467,7 @@ function TaskModal(p){
                     taskTitle:titleData,
                   })
                       .then(r=>{
+                        p.dispatch({type:'refreshCng'})
                         p.dispatch({type:'loadingOff'})
                         editTitleCng(false)
                       })

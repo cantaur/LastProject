@@ -51,7 +51,7 @@ function MileStoneView(p){
     if(filter == '전체'){
       axios.get(host+'/ajax/milestone/'+mileStoneSeq+'/tasks')
       .then(r=>{
-        let list = r.data.filter(rr=>rr.task_isdelete == '0');
+        let list = r.data.filter((rr,i)=>rr.task.task_isdelete == '0');
         taskListCng(list)
         p.dispatch({type:'loadingOff'})
       })
@@ -62,7 +62,7 @@ function MileStoneView(p){
 
       axios.get(host+'/ajax/milestone/'+mileStoneSeq+'/taskOpend')
       .then(r=>{
-        let list = r.data.filter(rr=>rr.task_isdelete == '0');
+        let list = r.data.filter((rr,i)=>rr.task.task_isdelete == '0');
         taskListCng(list)
         p.dispatch({type:'loadingOff'})
       })
@@ -72,7 +72,7 @@ function MileStoneView(p){
     } else if(filter == '종료'){
       axios.get(host+'/ajax/milestone/'+mileStoneSeq+'/taskClosed')
       .then(r=>{
-        let list = r.data.filter(rr=>rr.task_isdelete == '0');
+        let list = r.data.filter((rr,i)=>rr.task.task_isdelete == '0');
         taskListCng(list)
         p.dispatch({type:'loadingOff'})
       })
@@ -184,7 +184,8 @@ function MileStoneView(p){
     // 마일스톤 하위 업무 리스트
     axios.get(host+'/ajax/milestone/'+mileStoneSeq+'/tasks')
     .then(r=>{
-      let list = r.data.filter(rr=>rr.task_isdelete == '0');
+      let list = r.data.filter((rr,i)=>rr.task.task_isdelete == '0');
+      
       taskListCng(list)
       p.dispatch({type:'loadingOff'})
     })
@@ -199,7 +200,7 @@ function MileStoneView(p){
     // 마일스톤 하위 업무 리스트
     axios.get(host+'/ajax/milestone/'+mileStoneSeq+'/tasks')
     .then(r=>{
-      let list = r.data.filter(rr=>rr.task_isdelete == '0');
+      let list = r.data.filter((rr,i)=>rr.task.task_isdelete == '0');
       taskListCng(list)
       p.dispatch({type:'loadingOff'})
     })
@@ -210,6 +211,7 @@ function MileStoneView(p){
     taskFilterCng('전체')
 
   },[p.refresh])
+  console.log(p.refresh)
 
   return(
     <div className="pageContentWrap mileStoneWrap">

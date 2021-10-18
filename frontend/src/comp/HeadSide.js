@@ -245,7 +245,14 @@ function HeadSide(p){
           <Modal className="searchBox" show={searchModal} onHide={()=>{searchModalCng(false)}}>
             <Modal.Header>
               <i class="fas fa-search" style={{color:p.prjColor}}></i>
-              <Form.Control type="text" placeholder="검색어를 입력해주세요." className="searchInput" ref={searchInput}/>
+              <Form.Control type="text" placeholder="검색어를 입력해주세요." className="searchInput" ref={searchInput} onChange={e=>{
+                axios.post(host+'/ajax/searchPMT',{
+                  param:'테스트'
+                })
+                .then(r=>{
+                  console.log(r.data)
+                })
+              }}/>
             </Modal.Header>
             <Modal.Body>
               <div className="result" onClick={()=>{
