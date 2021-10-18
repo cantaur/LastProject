@@ -8,9 +8,10 @@
            *
         FROM milestone
         WHERE
-            (project_seq = #{project_seq} AND milestone_title LIKE CONCAT('%',#{keyword},'%'))
+            (project_seq = #{project_seq} AND milestone_title LIKE CONCAT('%',#{keyword},'%') AND milestone_isdelete = '0')
            OR
-            (project_seq = #{project_seq} AND milestone_content LIKE CONCAT('%',#{keyword},'%'))
+            (project_seq = #{project_seq} AND milestone_content LIKE CONCAT('%',#{keyword},'%') AND milestone_isdelete = '0')
+        
     </select>
 
     <select id="searchT" resultType="TaskDTO" parameterType="Map">
@@ -18,9 +19,10 @@
            *
         FROM task
         WHERE
-            (project_seq = #{project_seq} AND task_title LIKE CONCAT('%',#{keyword},'%'))
+            (project_seq = #{project_seq} AND task_title LIKE CONCAT('%',#{keyword},'%') AND task_isdelete = '0')
            OR
-            (project_seq = #{project_seq} AND task_content LIKE CONCAT('%',#{keyword},'%'))
+            (project_seq = #{project_seq} AND task_content LIKE CONCAT('%',#{keyword},'%') AND task_isdelete = '0')
+        
     </select>
 
 

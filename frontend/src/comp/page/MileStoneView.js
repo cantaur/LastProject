@@ -211,7 +211,6 @@ function MileStoneView(p){
     taskFilterCng('전체')
 
   },[p.refresh])
-  console.log(p.refresh)
 
   return(
     <div className="pageContentWrap mileStoneWrap">

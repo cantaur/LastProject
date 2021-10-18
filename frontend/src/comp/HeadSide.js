@@ -188,6 +188,37 @@ function HeadSide(p){
     return info;
   }
 
+  //검색결과
+  let [searchResult, searchResultCng] = useState([]);
+
+  //검색결과 가공
+  const searchResultFunc= list => {
+    let Arr = [];
+    if(list.task && list.task.length > 0){
+      list.task.map(r=>{
+        Arr.push({
+          type:'task',
+          seq:r.task_seq,
+          title:r.task_title,
+          content:r.task_content,
+          // date:r.task_date.substring(0,10)
+        })
+      })
+    }
+    if(list.milestone && list.milestone.length > 0){
+      list.milestone.map(r=>{
+        Arr.push({
+          type:'milestone',
+          seq:r.milestone_seq,
+          title:r.milestone_title,
+          content:r.milestone_content,
+          // date:r.milestone_startdate
+        })
+      })
+    }
+    return Arr;
+  }
+
   useEffect(()=>{
     outMemberCng('');
     inviteAlertCng(false)
@@ -245,17 +276,57 @@ function HeadSide(p){
           <Modal className="searchBox" show={searchModal} onHide={()=>{searchModalCng(false)}}>
             <Modal.Header>
               <i class="fas fa-search" style={{color:p.prjColor}}></i>
-              <Form.Control type="text" placeholder="검색어를 입력해주세요." className="searchInput" ref={searchInput} onChange={e=>{
-                axios.post(host+'/ajax/searchPMT',{
-                  param:'테스트'
-                })
-                .then(r=>{
-                  console.log(r.data)
-                })
+              <Form.Control type="text" spellCheck={false} placeholder="검색어를 입력해주세요." className="searchInput" ref={searchInput} onChange={e=>{
+                searchResultFunc(false)
+                if(e.target.value.trim()){
+                  axios.post(host+'/ajax/searchPMT',{
+                    keyword:e.target.value,
+                    project_seq:p.projectInfo.project_seq
+                  })
+                  .then(r=>{
+                    console.log(searchResultFunc(r.data[0]))
+                    searchResultCng(searchResultFunc(r.data[0]))
+                  })
+                }else {
+                  searchResultCng([])
+                }
+                
               }}/>
             </Modal.Header>
             <Modal.Body>
-              <div className="result" onClick={()=>{
+              {
+                searchResult
+                ? 
+                  searchResult.length == 0
+                  ?<div className="noResult">검색결과가 없습니다.</div>
+                  :
+                    searchResult.map(r=>{
+                      return(
+                        <div className="result">
+                          <div className="title" onClick={()=>{
+                          if(r.type=='task'){
+                            history.push('/project/'+p.prjSeq+'/task/'+r.seq)
+                            p.dispatch({type:'pagePush', val:'task'})
+                            searchModalCng(false)
+                          }else if(r.type=='milestone'){
+                            window.location.href = '/project/'+p.prjSeq+'/mileStoneView/'+r.seq
+                            p.dispatch({type:'pagePush', val:'mileStoneView'})
+                            searchModalCng(false)
+                          }
+                        }}>
+                            <b style={{backgroundColor:seqColorTrans(r.seq)}}>
+                              {r.type=='task'?'업무':'마일스톤'}
+                            </b>
+                            <p>{r.title}</p>
+                          </div>
+                          <pre>{r.content}</pre>
+                          
+                        </div>
+                      )
+                    })
+                :<div className="progressResult"><CircularProgress/></div>
+              }
+              {/* <div className="result" onClick={()=>{
                 history.push('/project/'+p.prjSeq+'/mileStoneView/'+37)
                 p.dispatch({type:'pagePush', val:'mileStoneView'})
                 searchModalCng(false)
@@ -278,7 +349,7 @@ function HeadSide(p){
               }}>
                 <b style={{backgroundColor:p.prjColor}}>프로젝트</b>
                 <p>검색결과로 나온 업무 이름</p>
-              </div>
+              </div> */}
             </Modal.Body>
 
           </Modal>
