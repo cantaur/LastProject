@@ -1,5 +1,6 @@
 package com.project.pium.mapper;
 
+import com.project.pium.domain.MilestoneDTO;
 import com.project.pium.domain.TaskDTO;
 import com.project.pium.domain.TaskmemberDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -20,4 +21,8 @@ public interface ChartMapper {
     long countTaskStatusZero(long project_seq);
     long countTaskStatusOne(long project_seq);
     List<TaskmemberDTO> countMyAllTask(long project_seq);
+
+    //    TimeLine
+    List<MilestoneDTO> timelineMile(long project_seq);
+    List<TaskDTO> timelineTask(long project_seq);
 }

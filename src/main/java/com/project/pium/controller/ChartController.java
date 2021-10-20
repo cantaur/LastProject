@@ -1,6 +1,7 @@
 package com.project.pium.controller;
 
 
+import com.project.pium.domain.MilestoneDTO;
 import com.project.pium.domain.ProjectmemberDTO;
 import com.project.pium.domain.TaskDTO;
 import com.project.pium.domain.TaskmemberDTO;
@@ -49,21 +50,28 @@ public class ChartController {
     public List<Long> countTask(@PathVariable long prj_seq){
         long progress = chartService.countTaskStatusZero(prj_seq);
         long completion = chartService.countTaskStatusOne(prj_seq);
-
         List<Long> list = new ArrayList<>();
         list.add(progress);
         list.add(completion);
-
-
         return list;
     }
     //  chart 4
     @GetMapping("ajax/countAllMyTask/{prj_seq}")
     public List<TaskmemberDTO> countMyTask(@PathVariable long prj_seq){
-
         List<TaskmemberDTO> all = chartService.countMyAllTask(prj_seq);
-
-
         return all;
     }
+    // timeline
+    @GetMapping("ajax/timeline/{prj_seq}")
+    public List<Object> timeline(@PathVariable long prj_seq){
+        List<MilestoneDTO> mileList = chartService.timelineMile(prj_seq);
+        List<TaskDTO> taskList = chartService.timelineTask(prj_seq);
+        List<Object> list = new ArrayList<>();
+        list.add(mileList);
+        list.add(taskList);
+
+        log.info("timeline list : " + list);
+        return list;
+    }
+
 }

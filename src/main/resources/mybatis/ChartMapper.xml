@@ -38,5 +38,17 @@
         WHERE project_seq = #{project_seq} AND t.task_isdelete = 0  GROUP BY tm.projmember_seq;
     </select>
 
+    <!-- 타임라인 -->
+    <select id="timelineMile" resultType="MilestoneDTO" parameterType="long">
+        SELECT milestone_seq, milestone_title, milestone_content, milestone_status,
+               milestone_startdate, milestone_duedate
+        FROM milestone WHERE project_seq = #{project_seq} ORDER BY milestone_seq asc
+    </select>
+
+    <select id="timelineTask" resultType="TaskDTO" parameterType="long">
+        SELECT task_seq, task_title, task_content, task_startdate,
+               task_duedate, task_status, milestone_seq
+        FROM task WHERE project_seq = #{project_seq} ORDER BY milestone_seq ASC
+    </select>
 
 </mapper>

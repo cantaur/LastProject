@@ -1,5 +1,6 @@
 package com.project.pium.service;
 
+import com.project.pium.domain.MilestoneDTO;
 import com.project.pium.domain.TaskDTO;
 import com.project.pium.domain.TaskmemberDTO;
 
@@ -17,4 +18,8 @@ public interface ChartService {
     long countTaskStatusOne(long project_seq);
     //    chart4
     List<TaskmemberDTO> countMyAllTask(long project_seq);
+
+    //    TimeLine
+    List<MilestoneDTO> timelineMile(long project_seq);
+    List<TaskDTO> timelineTask(long project_seq);
 }

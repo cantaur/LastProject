@@ -1,5 +1,6 @@
 package com.project.pium.service;
 
+import com.project.pium.domain.MilestoneDTO;
 import com.project.pium.domain.TaskDTO;
 import com.project.pium.domain.TaskmemberDTO;
 import com.project.pium.mapper.ChartMapper;
@@ -48,5 +49,15 @@ public class ChartServiceImpl implements ChartService {
     @Override
     public List<TaskmemberDTO> countMyAllTask(long project_seq) {
         return chartMapper.countMyAllTask(project_seq);
+    }
+
+    // timeline
+    @Override
+    public List<MilestoneDTO> timelineMile(long project_seq) {
+        return chartMapper.timelineMile(project_seq);
+    }
+    @Override
+    public List<TaskDTO> timelineTask(long project_seq) {
+        return chartMapper.timelineTask(project_seq);
     }
 }
