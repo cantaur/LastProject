@@ -81,12 +81,12 @@ function TimeLine(p){
         axios.get(host+'/ajax/timeline/'+p.projectInfo.project_seq)
         .then(r=>{
           let chartDataDummy = [...chartData]
-          
+
           r.data.mile.map(m=>{
             if(m.milestone_startdate && m.milestone_duedate){
               let rowData = [
                 'mileNumber'+m.milestone_seq,
-                m.milestone_title,
+                '마일스톤 : '+m.milestone_title,
                 null,
                 new Date(m.milestone_startdate),
                 new Date(m.milestone_duedate),
@@ -96,14 +96,14 @@ function TimeLine(p){
               ]
               chartDataDummy.push(rowData)
             }
-            
+
           })
           r.data.task.map(t=>{
             if(t.task_startdate && t.task_duedate){
               let done = t.task_status == '0'?0:100;
               let rowData = [
                 'task'+t.task_seq,
-                t.task_title,
+                '업무 : '+t.task_title,
                 t.task_content,
                 new Date(t.task_startdate),
                 new Date(t.task_duedate),
@@ -111,12 +111,12 @@ function TimeLine(p){
                 done,
                 'mileNumber'+t.milestone_seq
               ]
-            
+
               chartDataDummy.push(rowData)
             }
-            
+
           })
-          
+
           console.log(chartDataDummy)
           setChartData(chartDataDummy);
         })
@@ -126,7 +126,7 @@ function TimeLine(p){
       }
     },[p.projectInfo])
 
-    
+
     return(
         <div className="projectChartWrap pageContentWrap">
             <div className="pageBtnWrap">
@@ -151,17 +151,20 @@ function TimeLine(p){
             <ChartHead progressHide={true}/>
             <div className="timeLineWrap" style={{marginTop:'30px'}}>
               {
-                chartData 
+                chartData
                 ?
                   chartData.length > 0
                   ?
                     <Chart
                       width={'100%'}
-                      height={'750px'}
+                      height='800px'
                       chartType="Gantt"
                       loader={<LinearProgress/>}
-                                
                       data={chartData}
+                      options={{
+                          // percentEnabled : false,
+                          // criticalPathEnabled : false
+                      }}
                       rootProps={{ 'data-testid': '3' }}
                     />
                   :<p>데이터가 없습니다.</p>
