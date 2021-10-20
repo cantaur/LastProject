@@ -100,17 +100,21 @@ function ChartHead(p){
           </div>
         </div>
       </div>
-      <div className="chartBar">
-        <div className="barTop">
-          <p className="title">프로젝트 개요</p>
-          <p className="info">총 {taskCnt.all}개의 업무 중 {taskCnt.done}개 완료</p>
-        </div>
-        <div className="barWrap">
-          <div className="bar" style={{backgroundColor:seqColorTrans(p.projectInfo.project_seq),width:taskPerGetFunc(taskCnt.all, taskCnt.done)}}>
-            <p>{taskPerGetFunc(taskCnt.all, taskCnt.done)}</p>
+      {
+        !p.progressHide&&
+        <div className="chartBar">
+          <div className="barTop">
+            <p className="title">프로젝트 개요</p>
+            <p className="info">총 {taskCnt.all}개의 업무 중 {taskCnt.done}개 완료</p>
+          </div>
+          <div className="barWrap">
+            <div className="bar" style={{backgroundColor:seqColorTrans(p.projectInfo.project_seq),width:taskPerGetFunc(taskCnt.all, taskCnt.done)}}>
+              <p>{taskPerGetFunc(taskCnt.all, taskCnt.done)}</p>
+            </div>
           </div>
         </div>
-      </div>
+      }
+      
 
     </>
     

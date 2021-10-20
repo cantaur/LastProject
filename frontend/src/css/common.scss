@@ -4392,6 +4392,18 @@ body{
     }
   }
 }
+//타임라인
+.timeLineWrap{
+  #reactgooglegraph-1{
+    svg{
+      g:nth-child(2){
+        rect{
+          fill:transparent !important
+        }
+      }
+    }
+  }
+}
 
 
 .fc-daygrid-day-number {
@@ -4425,3 +4437,4 @@ body{
   margin-top: 5px;
   width: 102%;
 }
+

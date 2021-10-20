@@ -17,11 +17,38 @@ function TimeLine(p){
     const history = useHistory();
 
 
+    const [chartData, setChartData] = useState();
+
+    let chartData2 = [
+      {
+        mile_seq : 3,
+        mile_title :'마일스톤1',
+        mile_content : '마일스톤내용',
+        startdate : '2020-12-12',
+        enddate : '2020-12-14',
+
+        tasks:[
+          {
+            task_seq:12,
+            task_title:'타이틀',
+            task_contet:'내용',
+            startdate : '2020-12-12',
+            enddate : '2020-12-14',
+            status: '0'
+          },
+        ]
+      },
+    ]
+
     useEffect(()=>{
       setMilestones(p.mileStoneList)
+
+
+
     },[p.mileStoneList]);
 
-    var arr=[[
+    var arr=[
+      [
         { type: 'string', label: 'Task ID' },
         { type: 'string', label: 'Task Name' },//title(왼쪽에 들어갈 이름)
         { type: 'string', label: 'resource' },
@@ -30,7 +57,7 @@ function TimeLine(p){
         { type: 'number', label: 'Duration' },
         { type: 'number', label: 'Percent Complete' },
         { type: 'string', label: 'Dependencies' },
-    ]
+      ]
     ];
     for(var i=0;i<milestones.length;i++) {
         arr.push([
@@ -56,6 +83,8 @@ function TimeLine(p){
             ])
         }
     }
+
+    
     return(
         <div className="projectChartWrap pageContentWrap">
             <div className="pageBtnWrap">
@@ -77,8 +106,57 @@ function TimeLine(p){
                 }}>파일보관함</p>
             </div>
 
-            <ChartHead/>
-            <div>
+            <ChartHead progressHide={true}/>
+            <div className="timeLineWrap" style={{marginTop:'30px'}}>
+              <Chart
+                width={'100%'}
+                height={'400px'}
+                chartType="Gantt"
+                loader={<div>Loading Chart</div>}
+                          
+                data={[
+                  [
+                    { type: 'string', label: 'Task ID' },
+                    { type: 'string', label: 'Task Name' },
+                    { type: 'string', label: 'Resource' },
+                    { type: 'date', label: 'Start Date' },
+                    { type: 'date', label: 'End Date' },
+                    { type: 'number', label: 'Duration' },
+                    { type: 'number', label: 'Percent Complete' },
+                    { type: 'string', label: 'Dependencies' },
+                  ],
+                  [
+                    'Find',
+                    'Find sources',
+                    null,
+                    new Date(2015, 0, 1),
+                    new Date(2015, 0, 5),
+                    null,
+                    100,
+                    null,
+                  ],
+
+                  [
+                    'asdffff',
+                    'Create bibliography',
+                    'write',
+
+                    new Date(2015, 0, 3),
+                    new Date(2015, 0, 5),
+
+                    null,
+                    100,
+                    'Find',
+                  ],
+
+                ]}
+                rootProps={{ 'data-testid': '3' }}
+              />
+            </div>
+
+            {
+              false &&
+              <div>
                 <div className="viewOutWrap">
                     <div>
                         <div className="app">
@@ -162,7 +240,9 @@ function TimeLine(p){
                     </div>
                 </div>
             </div>
-        </div>
+        
+            }
+          </div>
     );
 }
 

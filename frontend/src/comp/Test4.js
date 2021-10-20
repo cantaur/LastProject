@@ -3,7 +3,7 @@ import axios from 'axios';
 import React, {useState, useEffect} from 'react';
 import { useLocation } from 'react-router-dom';
 import {pub, host} from './Helper.js'
-import '../css/test.css';
+// import '../css/test.css';
 
 function Test4(){
   useEffect(()=>{
