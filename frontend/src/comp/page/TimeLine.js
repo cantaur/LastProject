@@ -9,36 +9,13 @@ import {Menu, MenuItem} from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import ChartHead from "./comp/ChartHead";
 import Chart from "react-google-charts";
+import LinearProgress from "@mui/material/LinearProgress";
 
 
 function TimeLine(p){
     const [milestones, setMilestones] = useState([]);
 
     const history = useHistory();
-
-
-    const [chartData, setChartData] = useState();
-
-    let chartData2 = [
-      {
-        mile_seq : 3,
-        mile_title :'마일스톤1',
-        mile_content : '마일스톤내용',
-        startdate : '2020-12-12',
-        enddate : '2020-12-14',
-
-        tasks:[
-          {
-            task_seq:12,
-            task_title:'타이틀',
-            task_contet:'내용',
-            startdate : '2020-12-12',
-            enddate : '2020-12-14',
-            status: '0'
-          },
-        ]
-      },
-    ]
 
     useEffect(()=>{
       setMilestones(p.mileStoneList)
@@ -84,6 +61,71 @@ function TimeLine(p){
         }
     }
 
+    const [chartData, setChartData] = useState(
+      [
+        [
+          { type: 'string', label: 'Task ID' },
+          { type: 'string', label: 'Task Name' },
+          { type: 'string', label: 'Resource' },
+          { type: 'date', label: 'Start Date' },
+          { type: 'date', label: 'End Date' },
+          { type: 'number', label: 'Duration' },
+          { type: 'number', label: 'Percent Complete' },
+          { type: 'string', label: 'Dependencies' },
+        ],
+      ]
+    );
+
+    useEffect(()=>{
+      if(p.projectInfo){
+        axios.get(host+'/ajax/timeline/'+p.projectInfo.project_seq)
+        .then(r=>{
+          let chartDataDummy = [...chartData]
+          
+          r.data.mile.map(m=>{
+            if(m.milestone_startdate && m.milestone_duedate){
+              let rowData = [
+                'mileNumber'+m.milestone_seq,
+                m.milestone_title,
+                null,
+                new Date(m.milestone_startdate),
+                new Date(m.milestone_duedate),
+                null,
+                100,
+                null
+              ]
+              chartDataDummy.push(rowData)
+            }
+            
+          })
+          r.data.task.map(t=>{
+            if(t.task_startdate && t.task_duedate){
+              let done = t.task_status == '0'?0:100;
+              let rowData = [
+                'task'+t.task_seq,
+                t.task_title,
+                t.task_content,
+                new Date(t.task_startdate),
+                new Date(t.task_duedate),
+                null,
+                done,
+                'mileNumber'+t.milestone_seq
+              ]
+            
+              chartDataDummy.push(rowData)
+            }
+            
+          })
+          
+          console.log(chartDataDummy)
+          setChartData(chartDataDummy);
+        })
+        .catch(e=>{
+          console.log(e);
+        })
+      }
+    },[p.projectInfo])
+
     
     return(
         <div className="projectChartWrap pageContentWrap">
@@ -108,140 +150,24 @@ function TimeLine(p){
 
             <ChartHead progressHide={true}/>
             <div className="timeLineWrap" style={{marginTop:'30px'}}>
-              <Chart
-                width={'100%'}
-                height={'400px'}
-                chartType="Gantt"
-                loader={<div>Loading Chart</div>}
-                          
-                data={[
-                  [
-                    { type: 'string', label: 'Task ID' },
-                    { type: 'string', label: 'Task Name' },
-                    { type: 'string', label: 'Resource' },
-                    { type: 'date', label: 'Start Date' },
-                    { type: 'date', label: 'End Date' },
-                    { type: 'number', label: 'Duration' },
-                    { type: 'number', label: 'Percent Complete' },
-                    { type: 'string', label: 'Dependencies' },
-                  ],
-                  [
-                    'Find',
-                    'Find sources',
-                    null,
-                    new Date(2015, 0, 1),
-                    new Date(2015, 0, 5),
-                    null,
-                    100,
-                    null,
-                  ],
-
-                  [
-                    'asdffff',
-                    'Create bibliography',
-                    'write',
-
-                    new Date(2015, 0, 3),
-                    new Date(2015, 0, 5),
-
-                    null,
-                    100,
-                    'Find',
-                  ],
-
-                ]}
-                rootProps={{ 'data-testid': '3' }}
-              />
+              {
+                chartData 
+                ?
+                  chartData.length > 0
+                  ?
+                    <Chart
+                      width={'100%'}
+                      height={'750px'}
+                      chartType="Gantt"
+                      loader={<LinearProgress/>}
+                                
+                      data={chartData}
+                      rootProps={{ 'data-testid': '3' }}
+                    />
+                  :<p>데이터가 없습니다.</p>
+                :<LinearProgress/>
+              }
             </div>
-
-            {
-              false &&
-              <div>
-                <div className="viewOutWrap">
-                    <div>
-                        <div className="app">
-                            <Chart
-                                width={'100%'}
-                                height={'400px'}
-                                chartType="Gantt"
-                                loader={<div>로딩중...</div>}
-                                data={arr}
-                                options={{
-                                    heigth: 275,
-                                    gantt: {
-                                        palette:[
-                                            {
-                                                "color": "#f48fb1",//리소스text, 죄측text 컬러
-                                                "dark": "#880e4f",//보이는 바 색상
-                                                "light": "#d8cfea" //눌린 후 밝아지는 다른 바 색상
-                                            },
-                                            {
-                                                "color": "#dcd8d0",
-                                                "dark": "#00838f",
-                                                "light": "#b2ebf2"
-                                            },
-                                            {
-                                                "color": "#f2a600",
-                                                "dark": "#ee8100",
-                                                "light": "#fce8b2"
-                                            },
-                                            {
-                                                "color": "#0f9d58",
-                                                "dark": "#0b8043",
-                                                "light": "#b7e1cd"
-                                            },
-                                            {
-                                                "color": "#ab47bc",
-                                                "dark": "#6a1b9a",
-                                                "light": "#e1bee7"
-                                            },
-                                            {
-                                                "color": "#dcd8d0",
-                                                "dark": "#00838f",
-                                                "light": "#b2ebf2"
-                                            },
-                                            {
-                                                "color": "#ff7043",
-                                                "dark": "#e64a19",
-                                                "light": "#ffccbc"
-                                            },
-                                            {
-                                                "color": "#9e9d24",
-                                                "dark": "#827717",
-                                                "light": "#f0f4c3"
-                                            },
-                                            {
-                                                "color": "#fee8f4",
-                                                "dark": "#3949ab",
-                                                "light": "#c5cae9"
-                                            },
-                                            {
-                                                "color": "#c0d6e4",
-                                                "dark": "#e91e63",
-                                                "light": "#f8bbd0"
-                                            },
-                                            {
-                                                "color": "#e4cfea",
-                                                "dark": "#004d40",
-                                                "light": "#b2dfdb"
-                                            },
-                                            {
-                                                "color": "#d8cfea",
-                                                "dark": "#880e4f",
-                                                "light": "#f48fb1"
-                                            },
-                                        ],
-                                    }
-                                    //추가 옵션은 여기로!!
-                                }}
-                                rootProps={{ 'data-testid' : '1'}}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        
-            }
           </div>
     );
 }

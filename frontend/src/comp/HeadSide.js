@@ -485,7 +485,7 @@ function HeadSide(p){
                     p.dispatch({type:'loadingOff'})
 
                   }else {
-                    axios.get('/ajax/allProjMembers/'+p.prjSeq)
+                    axios.get(host+'/ajax/allProjMembers/'+p.prjSeq)
                     .then(r=>{
                       memberListCng(r.data)
                       p.dispatch({type:'loadingOff'})
@@ -521,7 +521,7 @@ function HeadSide(p){
                     p.dispatch({type:'loadingOff'})
 
                   }else {
-                    axios.get('/ajax/allProjMembers/'+p.prjSeq)
+                    axios.get(host+'/ajax/allProjMembers/'+p.prjSeq)
                     .then(r=>{
                       memberListCng(r.data)
                       p.dispatch({type:'loadingOff'})
@@ -583,7 +583,7 @@ function HeadSide(p){
                                   projmember_seq:r.projmember_seq
                                 })
                                 .then(r => {
-                                  axios.get('/ajax/allProjMembers/'+p.prjSeq)
+                                  axios.get(host+'/ajax/allProjMembers/'+p.prjSeq)
                                   .then(r=>{
                                     memberListCng(r.data)
                                     p.dispatch({type:'loadingOff'})
@@ -694,7 +694,7 @@ function HeadSide(p){
                     projmember_seq:outMember.seq
                   })
                   .then(r => {
-                    axios.get('/ajax/allProjMembers/'+p.prjSeq)
+                    axios.get(host+'/ajax/allProjMembers/'+p.prjSeq)
                     .then(r=>{
                       memberListCng(r.data)
                       p.dispatch({type:'loadingOff'})
@@ -732,7 +732,7 @@ function HeadSide(p){
                     projmember_seq:outMember.seq
                   })
                   .then(r => {
-                    axios.get('/ajax/allProjMembers/'+p.prjSeq)
+                    axios.get(host+'/ajax/allProjMembers/'+p.prjSeq)
                     .then(r=>{
                       memberListCng(r.data)
                       outAlertModalCng(false)

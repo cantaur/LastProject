@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, {useState, useEffect} from 'react';
 import {pub, host} from './Helper.js'
-// import '../css/test.css';
+import '../css/test.css';
 import {Badge, Button, FloatingLabel, Form, Modal, Nav} from 'react-bootstrap';
 import {Menu, MenuItem} from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';

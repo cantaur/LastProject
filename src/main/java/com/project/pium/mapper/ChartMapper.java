@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Mapper
@@ -23,6 +24,6 @@ public interface ChartMapper {
     List<TaskmemberDTO> countMyAllTask(long project_seq);
 
     //    TimeLine
-    List<MilestoneDTO> timelineMile(long project_seq);
-    List<TaskDTO> timelineTask(long project_seq);
+    List<Map<String,Object>> timelineMile(long project_seq);
+    List<Map<String,Object>> timelineTask(long milestone_seq);
 }

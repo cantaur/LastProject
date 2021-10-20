@@ -116,7 +116,7 @@ function ProjectView(p){
 
 
     //멤버정보 가져옴
-    axios.get('/ajax/allProjMembers/'+prjSeq)
+    axios.get(host+'/ajax/allProjMembers/'+prjSeq)
     .then(r=>{
       p.dispatch({type:'memberListCng', val:r.data})
     })
@@ -204,7 +204,7 @@ function ProjectView(p){
   //내 멤버정보 새로고침 용
   useEffect(()=>{
     //멤버정보 가져옴
-    axios.get('/ajax/allProjMembers/'+prjSeq)
+    axios.get(host+'/ajax/allProjMembers/'+prjSeq)
     .then(r=>{
       p.dispatch({type:'memberListCng', val:r.data})
     })

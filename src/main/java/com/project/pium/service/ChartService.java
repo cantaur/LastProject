@@ -5,6 +5,7 @@ import com.project.pium.domain.TaskDTO;
 import com.project.pium.domain.TaskmemberDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ChartService {
     //    chart1
@@ -20,6 +21,6 @@ public interface ChartService {
     List<TaskmemberDTO> countMyAllTask(long project_seq);
 
     //    TimeLine
-    List<MilestoneDTO> timelineMile(long project_seq);
-    List<TaskDTO> timelineTask(long project_seq);
+    List<Map<String,Object>> timelineMile(long project_seq);
+    List<Map<String,Object>> timelineTask(long milestone_seq);
 }

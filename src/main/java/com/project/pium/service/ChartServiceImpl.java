@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -53,11 +54,11 @@ public class ChartServiceImpl implements ChartService {
 
     // timeline
     @Override
-    public List<MilestoneDTO> timelineMile(long project_seq) {
+    public List<Map<String,Object>> timelineMile(long project_seq) {
         return chartMapper.timelineMile(project_seq);
     }
     @Override
-    public List<TaskDTO> timelineTask(long project_seq) {
-        return chartMapper.timelineTask(project_seq);
+    public List<Map<String,Object>> timelineTask(long milestone_seq) {
+        return chartMapper.timelineTask(milestone_seq);
     }
 }

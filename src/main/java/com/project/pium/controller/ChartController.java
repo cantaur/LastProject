@@ -11,7 +11,9 @@ import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Log
@@ -63,15 +65,17 @@ public class ChartController {
     }
     // timeline
     @GetMapping("ajax/timeline/{prj_seq}")
-    public List<Object> timeline(@PathVariable long prj_seq){
-        List<MilestoneDTO> mileList = chartService.timelineMile(prj_seq);
-        List<TaskDTO> taskList = chartService.timelineTask(prj_seq);
-        List<Object> list = new ArrayList<>();
-        list.add(mileList);
-        list.add(taskList);
+    public Map<String, Object> timeline(@PathVariable long prj_seq){
+        List<Map<String, Object>> mileList = chartService.timelineMile(prj_seq);
+        List<Map<String, Object>> taskList = chartService.timelineTask(prj_seq);
+        Map<String, Object> result = new HashMap<String, Object>() {{
+            put("task", taskList);
+            put("mile", mileList);
+        }};
 
-        log.info("timeline list : " + list);
-        return list;
+                
+
+        return result;
     }
 
 }
