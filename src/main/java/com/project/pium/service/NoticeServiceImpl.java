@@ -20,15 +20,10 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public void mileNoticeS(NoticeDTO noticeDTO){
-        noticeMapper.mileNotice(noticeDTO);
-    }
-    public void taskNoticeS(NoticeDTO noticeDTO) {
-        noticeMapper.taskNotice(noticeDTO);
-    }
     public void deletenoticS(long notice_seq){
         noticeMapper.deletenotic(notice_seq);
     }
+    @Override
     public void updateStatusS(long notice_seq){
         noticeMapper.updateStatus(notice_seq);
     }
