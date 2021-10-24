@@ -1,0 +1,53 @@
+가은
+- 요구사항 분석 및 명세
+- 레이아웃 디자인
+- 백엔드 핵심 로직 구현
+- Github 셋팅, git과 notion을 통한 협업환경 구축 및 개발 스케줄 관리
+- Spring Initializr를 사용하여 Spring Boot, RestfulAPI 기반의 개발환경 구축
+- 프로젝트에 Spring Security 적용 
+- Oauth2 프로토콜 이용한 소셜 로그인 구현
+- 메일링 서비스(java mail sender), File 업로드 및 다운로드 Rest API 구현
+- AWS RDS 셋팅 및 Database 관리
+
+
+소연
+- 요구사항 분석 및 명세
+- 필요한 기술 분석 및 검증 : Open API(소셜 로그인, 구글 간트차트 API 등), Bootstrap4
+- UI/UX 개발
+- 프론트엔드 개발 전반(ReactJS)
+- 구글 Gantt Chart API 이용한 타임라인 모듈 구현
+- Drag and Drop API 이용한 칸반 모듈 구현
+- 백엔드 기본 업무 로직 구현
+
+
+정구
+- 요구사항 분석 및 명세, 요구사항 정의서 문서작성
+- 기획서(PPT) 작성 및 프레젠테이션
+- UI/UX 개발
+- 프론트엔드 개발 전반(ReactJS)
+- Fullcalendar API 이용한 캘린더 모듈 구현
+- 구글 Chart API 이용한 통계 및 분석 모듈 구현
+- 백엔드 기본 업무 로직 구현
+
+
+혜진
+- 요구사항 분석 및 명세
+- 기획서 작성(PPT)
+- Database 논리적 모델링(eXERD)
+- Fullcalendar API 조사 및 캘린더 모듈 구현(백엔드)
+- 백엔드 기본 업무 로직 구현
+
+
+현수
+- 요구사항 분석 및 명세
+- 필요한 기술 분석 및 검증 : I'mport API
+- Database 논리적 모델링(eXERD) 
+- 백엔드 기본 업무 로직 구현
+
+
+건희
+- 주제 선정 및 벤치마킹 대상 사이트 조사, 분석
+- 요구사항 분석 및 명세
+- HeidiSQL 이용한 Database 물리적 모델 구축 및 관리
+- 업무 로직에 필요한 쿼리문 작성
+- 백엔드 기본 업무 로직 구현
