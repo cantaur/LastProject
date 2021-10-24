@@ -6,7 +6,7 @@
 
     <!--notice 불러오기    -->
     <select id="selectNotice" parameterType="long" resultType="NoticeDTO">
-        SELECT * FROM notice WHERE projmember_seq=#{projmember_seq};
+        SELECT * FROM notice WHERE projmember_seq=#{projmember_seq} order by notice_date desc;
 
     </select>
 

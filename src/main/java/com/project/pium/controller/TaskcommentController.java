@@ -59,7 +59,7 @@ public class TaskcommentController {
             temp.put("file", fileDTO);
             commentArray.add(temp);
         }
-        log.info("#commentArray : "+commentArray);
+        //log.info("#commentArray : "+commentArray);
         return commentArray;
     }
 
