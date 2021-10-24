@@ -156,8 +156,8 @@ function TimeLine(p){
                   chartData.length > 0
                   ?
                     <Chart
-                      width={'100%'}
-                      height='800px'
+                        width = '100%'
+                        height = {'1700px'}
                       chartType="Gantt"
                       loader={<LinearProgress/>}
                       data={chartData}
