@@ -121,6 +121,10 @@ function Sign(p){
 
   let [naverUrl, naverUrlCng] = useState('');
 
+
+  //로컬호스트인 경우에만 소셜로그인 노출, 아닐경우 게스트로그인_포트폴리오용
+  const [showGuestBtn, showGuestBtnCng] = useState(false);
+
   useEffect(()=>{
     if(type != 'login' && type != 'signup'){
       history.push('/sign/login')
@@ -161,8 +165,14 @@ function Sign(p){
       console.log(e)
       p.dispatch({type:'logout'})
     })
+    if(window.location.href.indexOf('localhost:') != -1){//로컬인경우
+      showGuestBtnCng(false)
+    }else{//로컬이 아닌경우 (포폴)
+      showGuestBtnCng(true)
+
+    }
+
   },[])
-  
   
 
   return(
@@ -287,57 +297,72 @@ function Sign(p){
 
             
           </div>
-          <div className={'social ' + (type=='signup'?'close':'')}>
-            <div className="socialWrap">
-            
-              <GoogleLogin className="socialBtn"
-                icon={false}
-                buttonText=""
-                clientId={googleCid}
-                onSuccess={onSuccessGoogle}
-                onFailure={onFailure}
-                cookiePolicy={'single_host_origin'}
-              >
-                <img src={pub.img+'google.png'}/>
-              </GoogleLogin>
-              <p className="toolTip" style={{'right':'-13px'}}><div></div>구글로 로그인</p>
+          {
+            !showGuestBtn ?
+            <div className={'social ' + (type=='signup'?'close':'')}>
+              <div className="socialWrap">
+              
+                <GoogleLogin className="socialBtn"
+                  icon={false}
+                  buttonText=""
+                  clientId={googleCid}
+                  onSuccess={onSuccessGoogle}
+                  onFailure={onFailure}
+                  cookiePolicy={'single_host_origin'}
+                >
+                  <img src={pub.img+'google.png'}/>
+                </GoogleLogin>
+                <p className="toolTip" style={{'right':'-13px'}}><div></div>구글로 로그인</p>
 
-            </div>
-            
+              </div>
+              
 
-            <div className="socialWrap" >
+              <div className="socialWrap" >
 
-              <div className="socialBtn" onClick={()=>{
-                window.location.href = naverUrl;
-              }}>
-                <div id="naverIdLogin"></div>
-                <img src={pub.img+'naver.png'}/>
+                <div className="socialBtn" onClick={()=>{
+                  window.location.href = naverUrl;
+                }}>
+                  <div id="naverIdLogin"></div>
+                  <img src={pub.img+'naver.png'}/>
+                </div>
+
+                
+                <p className="toolTip"><div></div>네이버로 로그인</p>
+
               </div>
 
-              
-              <p className="toolTip"><div></div>네이버로 로그인</p>
 
-            </div>
-
-
-            <KakaoLogin className="socialBtn"
-              token={kakaoCid}
-              render={renderProps => (
-                <div className="socialWrap">
-                  <div className="socialBtn" onClick={renderProps.onClick} disabled={renderProps.disabled}>
-                    <img src={pub.img+'kakao.png'}/>
+              {/* <KakaoLogin className="socialBtn"
+                token={kakaoCid}
+                render={renderProps => (
+                  <div className="socialWrap">
+                    <div className="socialBtn" onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                      <img src={pub.img+'kakao.png'}/>
+                    </div>
+                    <p className="toolTip"><div></div>카카오로 로그인</p>
                   </div>
-                  <p className="toolTip"><div></div>카카오로 로그인</p>
-                </div>
-              )}
-              onSuccess={onSuccessKakao}
-              onFailure={onFailure}
-            />
+                )}
+                onSuccess={onSuccessKakao}
+                onFailure={onFailure}
+              /> */}
+                  
                 
-              
-              {/*<p onClick={()=>{window.location.href=naverUrl}}>네이버로그인 테스트용</p>*/}
-          </div>
-          
+                {/*<p onClick={()=>{window.location.href=naverUrl}}>네이버로그인 테스트용</p>*/}
+            </div>
+            :
+            <div className={'guestBtnWrap ' + (type=='signup'?'close':'')}>
+              <p className="msg">손님이신가요?<br/><b>게스트 계정으로 서비스를 체험</b>해보세요.</p>
+              <form action="/login" method="post">
+                <input type="hidden" value="guest@pium.com" name="username"/>
+                <input type="hidden" value="1234" name="password"/>
+                
+                <button className="guestBtn" type="submit">
+                  <i class="fas fa-user"></i> 게스트로 로그인
+                </button>
+              </form>
+            </div>
+            
+          }
           <p className="info">Copyright © pium 2021.</p>
         </div>
         

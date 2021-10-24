@@ -73,7 +73,7 @@ function ProjectView(p){
 
     // 프로젝트 리스트 가져옴
     if(window.location.href.indexOf(':3000') != -1){ // 프론트용 샘플
-      axios.get(host+'/ajax/myprojectTest/3')
+      axios.get(host+'/ajax/myprojectTest/4')
       .then(r=>{
         p.dispatch({type:'projectListCng', val:r.data})
       })
@@ -104,7 +104,7 @@ function ProjectView(p){
         p.dispatch({type:'logout'})
       })
       
-      axios.get(host+'/ajax/myproject') //프론트용 샘플
+      axios.get(host+'/ajax/myproject')
       .then(r=>{
         p.dispatch({type:'projectListCng', val:r.data})
       })
@@ -139,7 +139,7 @@ function ProjectView(p){
   useEffect(()=>{
     //프론트용
     if(window.location.href.indexOf(':3000') != -1){
-      p.dispatch({type:'login', email:'sudosoon@gmail.com', seq:3})
+      p.dispatch({type:'login', email:'guest@pium.com', seq:4})
     }
 
     //현재 프로젝트 정보 갱신

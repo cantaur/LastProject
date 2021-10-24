@@ -1080,7 +1080,7 @@ function TaskModal(p){
                         })
                         .then(r=>{
                           let membersString = commentMember != ''?commentMember.join(','):'none';
-                          
+                          commentTextInput.current.value = "";
                           axios.post(host+'/ajax/taskComment',{
                             comment_content:commentText,
                             members : membersString,
@@ -1104,7 +1104,7 @@ function TaskModal(p){
                         })
                       }else {
                         let membersString = commentMember != ''?commentMember.join(','):'none';
-
+                        commentTextInput.current.value = "";
                         axios.post(host+'/ajax/taskComment',{
                           comment_content:commentText,
                           members : membersString,
