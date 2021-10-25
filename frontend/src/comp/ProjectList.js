@@ -198,7 +198,8 @@ function ProjectList(p){
                 })
               }}style={{'fontSize':'.8rem'}}>프로젝트 만들기</Dropdown.Item>
               <Dropdown.Item href="sign/login" style={{'fontSize':'.8rem'}} onClick={()=>{
-                window.location.href = host+'/logout'
+                p.dispatch({type:'logout'})
+                window.location.href="/logout";
               }}>로그아웃</Dropdown.Item>
             
             </Dropdown.Menu>

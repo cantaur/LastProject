@@ -38,7 +38,7 @@ const pages = [
   'notice'
 ]
 
-const host = 'http://localhost:8000';
+const host = 'http://ec2-15-164-129-77.ap-northeast-2.compute.amazonaws.com:8000';
 
 
 
