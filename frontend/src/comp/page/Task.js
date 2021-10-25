@@ -205,10 +205,10 @@ function Task(p){
 
   useEffect(()=>{
     if(p.myMemberInfo){
-      p.dispatch({type:'loadingOn'})
+      // p.dispatch({type:'loadingOn'})
       taskListGetFunc();
     }
-  },[taskFilter, p.refresh])
+  },[taskFilter])
 
   // useEffect(()=>{
   //   if(p.myMemberInfo){
