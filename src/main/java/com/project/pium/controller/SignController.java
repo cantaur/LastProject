@@ -131,7 +131,7 @@ public class SignController {
             securityContext.setAuthentication(authentication);
             session = request.getSession(true);
             session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
-            return "<script type=\"text/javascript\">window.location.href=\"http://ec2-15-164-129-77.ap-northeast-2.compute.amazonaws.com:8000/project\"</script>";
+            return "<script type=\"text/javascript\">window.location.href=\"http://localhost:8000/project\"</script>";
         }else{
             return "success";
         }
