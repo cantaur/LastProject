@@ -199,7 +199,8 @@ function Task(p){
       priFilter:'전체',
       statusFilter:'전체',
     })
-  },[p.myMemberInfo])
+    taskListGetFunc();
+  },[])
 
 
   useEffect(()=>{
@@ -207,13 +208,13 @@ function Task(p){
       p.dispatch({type:'loadingOn'})
       taskListGetFunc();
     }
-  },[taskFilter])
+  },[taskFilter, p.refresh])
 
-  useEffect(()=>{
-    if(p.myMemberInfo){
-      taskListGetFunc();
-    }
-  },[p.refresh])
+  // useEffect(()=>{
+  //   if(p.myMemberInfo){
+  //     taskListGetFunc();
+  //   }
+  // },[p.refresh])
 
   useEffect(()=>{
     if(params.pageSeq){
@@ -257,6 +258,11 @@ function Task(p){
       p.dispatch({type:'taskModalCng',val:false})
     }
   },[location])
+
+  console.log('refresh')
+  console.log(p.refresh)
+  console.log('my')
+  console.log(p.myMemberInfo)
 
   return(
     <div className="pageContentWrap taskWrap">
