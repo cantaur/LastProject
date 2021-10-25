@@ -259,11 +259,6 @@ function Task(p){
     }
   },[location])
 
-  console.log('refresh')
-  console.log(p.refresh)
-  console.log('my')
-  console.log(p.myMemberInfo)
-
   return(
     <div className="pageContentWrap taskWrap">
       <div className="header">
