@@ -673,7 +673,10 @@ function HeadSide(p){
                 window.removeEventListener('click', profileModalClose)
               },300)
             }}>프로필 설정</p>
-            <a href={host+'/logout'} className='logoutBtn'>로그아웃</a>
+            <p onClick={()=>{
+              p.dispatch({type:'logout'})
+              window.location.href="/logout";
+            }} className='logoutBtn'>로그아웃</p>
           </div>
 
         </div>
