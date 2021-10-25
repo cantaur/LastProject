@@ -146,17 +146,13 @@ function Sign(p){
     axios.get(host+'/ajax/loginUser')
     .then(r=>{
       if(r.data == 'false'){
-        console.log('---로그인한 유저없음---')
         p.dispatch({type:'logout'})
         
       }else {
         if(r.data.email){
           p.dispatch({type:'login', email:r.data.email, seq:r.data.seq})
-          console.log('---로그인한 유저---')
-          console.log(p.loginUser)
           history.push('/project')
         }else {
-          console.log('---로그인한 유저없음---')
           p.dispatch({type:'logout'})
         }
       }
@@ -356,7 +352,9 @@ function Sign(p){
                 <input type="hidden" value="guest@pium.com" name="username"/>
                 <input type="hidden" value="1234" name="password"/>
                 
-                <button className="guestBtn" type="submit">
+                <button className="guestBtn" onClick={()=>{
+                  p.dispatch({type:'loadingOn'})
+                }} type="submit">
                   <i class="fas fa-user"></i> 게스트로 로그인
                 </button>
               </form>

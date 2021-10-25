@@ -117,7 +117,6 @@ function TimeLine(p){
 
           })
 
-          console.log(chartDataDummy)
           setChartData(chartDataDummy);
         })
         .catch(e=>{
